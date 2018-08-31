@@ -11,18 +11,11 @@ export class TerminusBootstrapService implements OnModuleInit {
   constructor(
     @Inject(TERMINUS_MODULE_OPTIONS)
     private readonly options: TerminusModuleOptions,
-    @Inject(HTTP_SERVER_REF) private readonly httpAdapter: any,
+    @Inject(HTTP_SERVER_REF) private readonly httpAdapter,
     @Inject(TERMINUS_LIB) private readonly terminus,
-  ) {
-    const adapter = this.httpAdapter.getInstance();
-    // Fastify
-    if (adapter.server) {
-      this.httpServer = adapter.server;
-    }
-  }
-
+  ) {}
   onModuleInit() {
-    console.log(this.options);
+    this.httpServer = this.httpAdapter.getHttpServer();
     this.terminus(this.httpServer, this.options);
   }
 }

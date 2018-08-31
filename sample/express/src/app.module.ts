@@ -5,16 +5,15 @@ import { TerminusOptions } from '../../../lib/interfaces/terminus-options';
 @Injectable()
 export class TerminusService implements TerminusOptions {
   public async onSignal() {
-    console.log('Got a signal');
+    console.log('1. on Signal');
   }
 
-  public async onSigterm() {
-    console.log('SIGTERM');
+  public async onShutdown() {
+    console.log('2. on Shutdown');
   }
 
-  public async beforeShutdown() {
-    console.log('Shutting down..');
-  }
+  public signal: string = 'SIGTERM';
+  public logger = console.log;
 }
 
 @Module({
