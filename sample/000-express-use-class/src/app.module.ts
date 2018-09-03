@@ -1,9 +1,19 @@
 import { Module, Injectable } from '@nestjs/common';
 import { TerminusModule } from '../../../lib/terminus.module';
 import { TerminusOptions } from '../../../lib/interfaces/terminus-options';
+import { TerminusOptionsFactory } from '../../../lib';
 
 @Injectable()
-export class TerminusService implements TerminusOptions {
+export class TerminusService implements TerminusOptionsFactory {
+  async createTerminusOptions(): Promise<TerminusOptions> {
+    return {
+      onSignal: this.onSignal,
+      onShutdown: this.onShutdown,
+      healthChecks: { '/health': this.health },
+      logger: console.log,
+      signal: 'SIGTERM',
+    };
+  }
   public async onSignal() {
     console.log('1. on Signal');
   }
@@ -15,10 +25,6 @@ export class TerminusService implements TerminusOptions {
   public async health() {
     return true;
   }
-
-  public healthChecks = { '/health': this.health };
-  public signal: string = 'SIGTERM';
-  public logger = console.log;
 }
 
 @Module({

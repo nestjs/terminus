@@ -6,7 +6,10 @@ import { async } from 'rxjs/internal/scheduler/async';
 import { TerminusBootstrapService } from '../lib/terminus-bootstrap.service';
 import { TerminusLibProvider } from '../lib/terminus-lib.provider';
 import { HTTP_SERVER_REF } from '@nestjs/core';
-import { TerminusModuleAsyncOptions } from '../lib/interfaces';
+import {
+  TerminusModuleAsyncOptions,
+  TerminusOptionsFactory,
+} from '../lib/interfaces';
 
 describe('Terminus', () => {
   let app: INestApplication;
@@ -52,7 +55,10 @@ describe('Terminus', () => {
     const onShutdown = async () => {
       return 'working';
     };
-    class TerminusService implements TerminusOptions {
+    class TerminusService implements TerminusOptionsFactory {
+      createTerminusOptions(): TerminusOptions {
+        return { onShutdown };
+      }
       public onShutdown = onShutdown;
     }
 
