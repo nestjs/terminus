@@ -71,6 +71,9 @@ export class TerminusCoreModule {
   private static createAsyncProviders(
     options: TerminusModuleAsyncOptions,
   ): Provider[] {
+    if (options.useFactory) {
+      return [this.createAsyncOptionsProvider(options)];
+    }
     return [
       {
         provide: TERMINUS_MODULE_OPTIONS,
@@ -89,17 +92,5 @@ export class TerminusCoreModule {
         inject: options.inject || [],
       };
     }
-    if (options.useClass) {
-      return {
-        provide: TERMINUS_MODULE_OPTIONS,
-        useClass: options.useClass,
-      };
-    }
-    return {
-      provide: TERMINUS_MODULE_OPTIONS,
-      useFactory: async (optionsFactory: TerminusOptionsFactory) =>
-        await optionsFactory.createTerminusOptions(),
-      inject: [options.useExisting],
-    };
   }
 }
