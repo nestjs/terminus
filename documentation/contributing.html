@@ -1,0 +1,279 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>@brunnerlivio/terminus documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+	      <link rel="stylesheet" href="./styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="./" class="navbar-brand">@brunnerlivio/terminus documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search">
+</div>
+            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content getting-started">
+                   <div class="content-data">
+
+<h1 id="contributing-to-nest">Contributing to Nest</h1>
+<p>We would love for you to contribute to Nest and help make it even better than it is
+today! As a contributor, here are the guidelines we would like you to follow:</p>
+<ul>
+<li><a href="#coc">Code of Conduct</a></li>
+<li><a href="#question">Question or Problem?</a></li>
+<li><a href="#issue">Issues and Bugs</a></li>
+<li><a href="#feature">Feature Requests</a></li>
+<li><a href="#submit">Submission Guidelines</a></li>
+<li><a href="#rules">Coding Rules</a></li>
+<li><a href="#commit">Commit Message Guidelines</a><!-- - [Signing the CLA](#cla) -->
+
+</li>
+</ul>
+<!-- ## <a name="coc"></a> Code of Conduct
+Help us keep Nest open and inclusive. Please read and follow our [Code of Conduct][coc]. -->
+
+<h2 id="-a-name-question-a-got-a-question-or-problem-"><a name="question"></a> Got a Question or Problem?</h2>
+<p><strong>Do not open issues for general support questions as we want to keep GitHub issues for bug reports and feature requests.</strong> You&#39;ve got much better chances of getting your question answered on <a href="https://stackoverflow.com/questions/tagged/nestjs">Stack Overflow</a> where the questions should be tagged with tag <code>nestjs</code>.</p>
+<p>Stack Overflow is a much better place to ask questions since:</p>
+<!-- - there are thousands of people willing to help on Stack Overflow [maybe one day] -->
+<ul>
+<li>questions and answers stay available for public viewing so your question / answer might help someone else</li>
+<li>Stack Overflow&#39;s voting system assures that the best answers are prominently visible.</li>
+</ul>
+<p>To save your and our time, we will systematically close all issues that are requests for general support and redirect people to Stack Overflow.</p>
+<p>If you would like to chat about the question in real-time, you can reach out via <a href="https://gitter.im/nestjs/nest">our gitter channel</a>.</p>
+<h2 id="-a-name-issue-a-found-a-bug-"><a name="issue"></a> Found a Bug?</h2>
+<p>If you find a bug in the source code, you can help us by
+<a href="#submit-issue">submitting an issue</a> to our <a href="https://github.com/nestjs/nest">GitHub Repository</a>. Even better, you can
+<a href="#submit-pr">submit a Pull Request</a> with a fix.</p>
+<h2 id="-a-name-feature-a-missing-a-feature-"><a name="feature"></a> Missing a Feature?</h2>
+<p>You can <em>request</em> a new feature by <a href="#submit-issue">submitting an issue</a> to our GitHub
+Repository. If you would like to <em>implement</em> a new feature, please submit an issue with
+a proposal for your work first, to be sure that we can use it.
+Please consider what kind of change it is:</p>
+<ul>
+<li>For a <strong>Major Feature</strong>, first open an issue and outline your proposal so that it can be
+discussed. This will also allow us to better coordinate our efforts, prevent duplication of work,
+and help you to craft the change so that it is successfully accepted into the project. For your issue name, please prefix your proposal with <code>[discussion]</code>, for example &quot;[discussion]: your feature idea&quot;.</li>
+<li><strong>Small Features</strong> can be crafted and directly <a href="#submit-pr">submitted as a Pull Request</a>.</li>
+</ul>
+<h2 id="-a-name-submit-a-submission-guidelines"><a name="submit"></a> Submission Guidelines</h2>
+<h3 id="-a-name-submit-issue-a-submitting-an-issue"><a name="submit-issue"></a> Submitting an Issue</h3>
+<p>Before you submit an issue, please search the issue tracker, maybe an issue for your problem already exists and the discussion might inform you of workarounds readily available.</p>
+<p>We want to fix all the issues as soon as possible, but before fixing a bug we need to reproduce and confirm it. In order to reproduce bugs we will systematically ask you to provide a minimal reproduction scenario using a repository or <a href="https://gist.github.com/">Gist</a>. Having a live, reproducible scenario gives us wealth of important information without going back &amp; forth to you with additional questions like:</p>
+<ul>
+<li>version of NestJS used</li>
+<li>3rd-party libraries and their versions</li>
+<li>and most importantly - a use-case that fails</li>
+</ul>
+<!--
+// TODO we need to create a playground, similar to plunkr
+
+A minimal reproduce scenario using a repository or Gist allows us to quickly confirm a bug (or point out coding problem) as well as confirm that we are fixing the right problem. If neither of these are not a suitable way to demonstrate the problem (for example for issues related to our npm packaging), please create a standalone git repository demonstrating the problem. -->
+
+<!-- We will be insisting on a minimal reproduce scenario in order to save maintainers time and ultimately be able to fix more bugs. Interestingly, from our experience users often find coding problems themselves while preparing a minimal plunk. We understand that sometimes it might be hard to extract essentials bits of code from a larger code-base but we really need to isolate the problem before we can fix it. -->
+
+<p>Unfortunately, we are not able to investigate / fix bugs without a minimal reproduction, so if we don&#39;t hear back from you we are going to close an issue that don&#39;t have enough info to be reproduced.</p>
+<p>You can file new issues by filling out our <a href="https://github.com/nestjs/nest/issues/new">new issue form</a>.</p>
+<h3 id="-a-name-submit-pr-a-submitting-a-pull-request-pr-"><a name="submit-pr"></a> Submitting a Pull Request (PR)</h3>
+<p>Before you submit your Pull Request (PR) consider the following guidelines:</p>
+<ol>
+<li>Search <a href="https://github.com/nestjs/nest/pulls">GitHub</a> for an open or closed PR
+that relates to your submission. You don&#39;t want to duplicate effort.<!-- 1. Please sign our [Contributor License Agreement (CLA)](#cla) before sending PRs.
+We cannot accept code without this. --></li>
+<li>Fork the nestjs/nest repo.</li>
+<li><p>Make your changes in a new git branch:</p>
+<div><pre class="line-numbers"><code class="language-shell">  git checkout -b my-fix-branch master</code></pre></div></li>
+<li><p>Create your patch, <strong>including appropriate test cases</strong>.</p>
+</li>
+<li>Follow our <a href="#rules">Coding Rules</a>.</li>
+<li>Run the full Nest test suite, as described in the <a href="https://github.com/nestjs/nest/blob/master/docs/DEVELOPER.md">developer documentation</a>,
+and ensure that all tests pass.</li>
+<li><p>Commit your changes using a descriptive commit message that follows our
+<a href="#commit">commit message conventions</a>. Adherence to these conventions
+is necessary because release notes are automatically generated from these messages.</p>
+<div><pre class="line-numbers"><code class="language-shell">  git commit -a</code></pre></div><p> Note: the optional commit <code>-a</code> command line option will automatically &quot;add&quot; and &quot;rm&quot; edited files.</p>
+</li>
+<li><p>Push your branch to GitHub:</p>
+<div><pre class="line-numbers"><code class="language-shell"> git push origin my-fix-branch</code></pre></div></li>
+<li><p>In GitHub, send a pull request to <code>nestjs:master</code>.</p>
+</li>
+<li><p>If we suggest changes then:</p>
+<ul>
+<li>Make the required updates.</li>
+<li>Re-run the Nest test suites to ensure tests are still passing.</li>
+<li><p>Rebase your branch and force push to your GitHub repository (this will update your Pull Request):</p>
+<div><pre class="line-numbers"><code class="language-shell">git rebase master -i
+git push -f</code></pre></div></li>
+</ul>
+</li>
+</ol>
+<p>That&#39;s it! Thank you for your contribution!</p>
+<h4 id="after-your-pull-request-is-merged">After your pull request is merged</h4>
+<p>After your pull request is merged, you can safely delete your branch and pull the changes
+from the main (upstream) repository:</p>
+<ul>
+<li><p>Delete the remote branch on GitHub either through the GitHub web UI or your local shell as follows:</p>
+<div><pre class="line-numbers"><code class="language-shell">  git push origin --delete my-fix-branch</code></pre></div></li>
+<li><p>Check out the master branch:</p>
+<div><pre class="line-numbers"><code class="language-shell">  git checkout master -f</code></pre></div></li>
+<li><p>Delete the local branch:</p>
+<div><pre class="line-numbers"><code class="language-shell">  git branch -D my-fix-branch</code></pre></div></li>
+<li><p>Update your master with the latest upstream version:</p>
+<div><pre class="line-numbers"><code class="language-shell">  git pull --ff upstream master</code></pre></div></li>
+</ul>
+<h2 id="-a-name-rules-a-coding-rules"><a name="rules"></a> Coding Rules</h2>
+<p>To ensure consistency throughout the source code, keep these rules in mind as you are working:</p>
+<ul>
+<li>All features or bug fixes <strong>must be tested</strong> by one or more specs (unit-tests).
+&lt;!--
+// We&#39;re working on auto-documentation.</li>
+<li>All public API methods <strong>must be documented</strong>. (Details TBC). --&gt;</li>
+<li>We follow <a href="https://google.github.io/styleguide/jsguide.html">Google&#39;s JavaScript Style Guide</a>, but wrap all code at
+<strong>100 characters</strong>. An automated formatter is available, see
+<a href="docs/DEVELOPER.md#clang-format">DEVELOPER.md</a>.</li>
+</ul>
+<h2 id="-a-name-commit-a-commit-message-guidelines"><a name="commit"></a> Commit Message Guidelines</h2>
+<p>We have very precise rules over how our git commit messages can be formatted.  This leads to <strong>more
+readable messages</strong> that are easy to follow when looking through the <strong>project history</strong>.  But also,
+we use the git commit messages to <strong>generate the Nest change log</strong>.</p>
+<h3 id="commit-message-format">Commit Message Format</h3>
+<p>Each commit message consists of a <strong>header</strong>, a <strong>body</strong> and a <strong>footer</strong>.  The header has a special
+format that includes a <strong>type</strong>, a <strong>scope</strong> and a <strong>subject</strong>:</p>
+<div><pre class="line-numbers"><code class="language-none">&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;
+&lt;BLANK LINE&gt;
+&lt;body&gt;
+&lt;BLANK LINE&gt;
+&lt;footer&gt;</code></pre></div><p>The <strong>header</strong> is mandatory and the <strong>scope</strong> of the header is optional.</p>
+<p>Any line of the commit message cannot be longer 100 characters! This allows the message to be easier
+to read on GitHub as well as in various git tools.</p>
+<p>Footer should contain a <a href="https://help.github.com/articles/closing-issues-via-commit-messages/">closing reference to an issue</a> if any.</p>
+<p>Samples: (even more <a href="https://github.com/nestjs/nest/commits/master">samples</a>)</p>
+<div><pre class="line-numbers"><code class="language-none">docs(changelog) update change log to beta.5</code></pre></div><div><pre class="line-numbers"><code class="language-none">bugfix(&#64;nestjs/core) need to depend on latest rxjs and zone.js
+
+The version in our package.json gets copied to the one we publish, and users need the latest of these.</code></pre></div><h3 id="revert">Revert</h3>
+<p>If the commit reverts a previous commit, it should begin with <code>revert:</code>, followed by the header of the reverted commit. In the body it should say: <code>This reverts commit &lt;hash&gt;.</code>, where the hash is the SHA of the commit being reverted.</p>
+<h3 id="type">Type</h3>
+<p>Must be one of the following:</p>
+<ul>
+<li><strong>build</strong>: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)</li>
+<li><strong>ci</strong>: Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)</li>
+<li><strong>docs</strong>: Documentation only changes</li>
+<li><strong>feature</strong>: A new feature</li>
+<li><strong>bugfix</strong>: A bug fix</li>
+<li><strong>perf</strong>: A code change that improves performance</li>
+<li><strong>refactor</strong>: A code change that neither fixes a bug nor adds a feature</li>
+<li><strong>style</strong>: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)</li>
+<li><strong>test</strong>: Adding missing tests or correcting existing tests</li>
+</ul>
+<h3 id="subject">Subject</h3>
+<p>The subject contains succinct description of the change:</p>
+<ul>
+<li>use the imperative, present tense: &quot;change&quot; not &quot;changed&quot; nor &quot;changes&quot;</li>
+<li>don&#39;t capitalize first letter</li>
+<li>no dot (.) at the end</li>
+</ul>
+<h3 id="body">Body</h3>
+<p>Just as in the <strong>subject</strong>, use the imperative, present tense: &quot;change&quot; not &quot;changed&quot; nor &quot;changes&quot;.
+The body should include the motivation for the change and contrast this with previous behavior.</p>
+<h3 id="footer">Footer</h3>
+<p>The footer should contain any information about <strong>Breaking Changes</strong> and is also the place to
+reference GitHub issues that this commit <strong>Closes</strong>.</p>
+<p><strong>Breaking Changes</strong> should start with the word <code>BREAKING CHANGE:</code> with a space or two newlines. The rest of the commit message is then used for this.</p>
+<p>A detailed explanation can be found in this <a href="https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#">document</a>.</p>
+<!-- ## <a name="cla"></a> Signing the CLA
+
+Please sign our Contributor License Agreement (CLA) before sending pull requests. For any code
+changes to be accepted, the CLA must be signed. It's a quick process, we promise!
+
+* For individuals we have a [simple click-through form][individual-cla].
+* For corporations we'll need you to
+  [print, sign and one of scan+email, fax or mail the form][corporate-cla]. -->
+
+
+<!-- [angular-group]: https://groups.google.com/forum/#!forum/angular -->
+<!-- [coc]: https://github.com/angular/code-of-conduct/blob/master/CODE_OF_CONDUCT.md -->
+<!-- [stackoverflow]: http://stackoverflow.com/questions/tagged/angular -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 0;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'getting-started';
+            var COMPODOC_CURRENT_PAGE_URL = 'contributing.html';
+       </script>
+
+       <script src="./js/libs/custom-elements.min.js"></script>
+       <script src="./js/libs/lit-html.js"></script>
+       <script src="./js/menu-wc.js"></script>
+
+       <script src="./js/libs/bootstrap-native.js"></script>
+
+       <script src="./js/libs/es6-shim.min.js"></script>
+       <script src="./js/libs/EventDispatcher.js"></script>
+       <script src="./js/libs/promise.min.js"></script>
+       <script src="./js/libs/zepto.min.js"></script>
+
+       <script src="./js/compodoc.js"></script>
+
+       <script src="./js/tabs.js"></script>
+       <script src="./js/menu.js"></script>
+       <script src="./js/libs/clipboard.min.js"></script>
+       <script src="./js/libs/prism.js"></script>
+       <script src="./js/sourceCode.js"></script>
+          <script src="./js/search/search.js"></script>
+          <script src="./js/search/lunr.min.js"></script>
+          <script src="./js/search/search-lunr.js"></script>
+          <script src="./js/search/search_index.js"></script>
+       <script src="./js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

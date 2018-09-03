@@ -6,16 +6,18 @@
   "license": "MIT",
   "scripts": {
     "build": "rm -rf dist && tsc -p tsconfig.json",
-    "precommit": "lint-staged",
+    "precommit": "lint-staged && npm run docs",
     "prepublish:npm": "npm run build",
     "publish:npm": "npm publish --access public",
     "prepublish:next": "npm run build",
     "publish:next": "npm publish --access public --tag next",
     "test": "npm run e2e",
     "e2e": "jest --config=e2e/jest-e2e.json --detectOpenHandles --forceExit",
-    "e2e:watch": "jest --watch --config=e2e/jest-e2e.json"
+    "e2e:watch": "jest --watch --config=e2e/jest-e2e.json",
+    "docs": "./node_modules/.bin/compodoc -p tsconfig.json"
   },
   "devDependencies": {
+    "@compodoc/compodoc": "^1.1.5",
     "@nestjs/common": "^5.3.0",
     "@nestjs/core": "^5.3.0",
     "@nestjs/testing": "^5.3.0",
