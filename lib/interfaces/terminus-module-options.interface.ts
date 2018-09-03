@@ -13,7 +13,6 @@ export interface TerminusOptionsFactory {
 export interface TerminusModuleAsyncOptions
   extends Pick<ModuleMetadata, 'imports'> {
   name?: string;
-  useExisting?: Type<TerminusModuleOptions>;
   useClass?: Type<TerminusModuleOptions>;
   useFactory?: (
     ...args: any[]

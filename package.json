@@ -10,18 +10,27 @@
     "prepublish:npm": "npm run build",
     "publish:npm": "npm publish --access public",
     "prepublish:next": "npm run build",
-    "publish:next": "npm publish --access public --tag next"
+    "publish:next": "npm publish --access public --tag next",
+    "test": "npm run e2e",
+    "e2e": "jest --config=e2e/jest-e2e.json --detectOpenHandles --forceExit",
+    "e2e:watch": "jest --watch --config=e2e/jest-e2e.json"
   },
   "devDependencies": {
     "@nestjs/common": "^5.3.0",
     "@nestjs/core": "^5.3.0",
+    "@nestjs/testing": "^5.3.0",
+    "@types/jest": "^23.3.1",
     "@types/node": "^7.0.41",
     "husky": "^0.14.3",
+    "jest": "^23.5.0",
     "lint-staged": "^7.0.0",
     "prettier": "^1.11.1",
     "reflect-metadata": "0.1.12",
     "rxjs": "^6.0.0",
     "rxjs-compat": "^6.2.0",
+    "supertest": "^3.1.0",
+    "ts-jest": "^23.1.4",
+    "ts-node": "^7.0.1",
     "typescript": "^2.8.0"
   },
   "peerDependencies": {
