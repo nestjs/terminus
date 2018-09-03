@@ -1,6 +1,6 @@
 {
-  "name": "@nestjs/terminus",
-  "version": "5.2.0",
+  "name": "@brunnerlivio/terminus",
+  "version": "5.3.0",
   "description": "Nest - modern, fast, powerful node.js web framework (@terminus)",
   "author": "Kamil Mysliwiec",
   "license": "MIT",
