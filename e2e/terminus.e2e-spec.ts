@@ -66,4 +66,13 @@ describe('Terminus', () => {
       onShutdown,
     });
   });
+
+  it('should correctly call Terminus with synchronous forRoot', async () => {
+    app = await bootstrapModule(TerminusModule.forRoot(terminusOptions));
+
+    expect(terminusLibProvider).toHaveBeenCalledWith(
+      httpServer,
+      terminusOptions,
+    );
+  });
 });
