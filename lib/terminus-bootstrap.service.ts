@@ -11,7 +11,16 @@ import { TerminusOptions } from './interfaces/terminus-options';
  */
 @Injectable()
 export class TerminusBootstrapService implements OnModuleInit {
+  /**
+   * The http server of NestJS
+   */
   private httpServer: Server;
+  /**
+   * Intiailizes the service
+   * @param options The terminus module options
+   * @param httpAdapter The http adapter from NestJS which will be used for the terminus instance
+   * @param terminus The terminus instance
+   */
   constructor(
     @Inject(TERMINUS_MODULE_OPTIONS)
     private readonly options: TerminusModuleOptions,
