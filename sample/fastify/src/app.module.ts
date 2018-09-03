@@ -12,6 +12,11 @@ export class TerminusService implements TerminusOptions {
     console.log('2. on Shutdown');
   }
 
+  public async health() {
+    return true;
+  }
+
+  public healthChecks = { '/health': this.health };
   public signal: string = 'SIGTERM';
   public logger = console.log;
 }
