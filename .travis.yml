@@ -13,3 +13,8 @@ install:
   - npm install
 script:
   - npm run test
+  - npm run doc
+  - bash ./deploy.sh
+env:
+  global:
+    - GH_REF: "github.com/BrunnerLivio/nest-terminus.git"

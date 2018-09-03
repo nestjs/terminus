@@ -14,7 +14,7 @@
     "test": "npm run e2e",
     "e2e": "jest --config=e2e/jest-e2e.json --detectOpenHandles --forceExit",
     "e2e:watch": "jest --watch --config=e2e/jest-e2e.json",
-    "docs": "./node_modules/.bin/compodoc -p tsconfig.json"
+    "doc": "./node_modules/.bin/compodoc -p tsconfig.json"
   },
   "devDependencies": {
     "@compodoc/compodoc": "^1.1.5",
@@ -34,6 +34,9 @@
     "ts-jest": "^23.1.4",
     "ts-node": "^7.0.1",
     "typescript": "^2.8.0"
+  },
+  "repository": {
+    "url": "https://github.com/BrunnerLivio/nest-terminus"
   },
   "peerDependencies": {
     "@nestjs/common": "^5.3.0",
