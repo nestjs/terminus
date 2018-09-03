@@ -6,7 +6,15 @@ import {
 import { TerminusCoreModule } from './terminus-core.module';
 
 @Module({})
+/**
+ * Terminus Module which represents the integration of the
+ * @godaddy/terminus module with the Nest ecosystem.
+ */
 export class TerminusModule {
+  /**
+   * Bootstraps the Terminus Module synchronously
+   * @param options The options for the Terminus Module
+   */
   static forRoot(options?: TerminusModuleOptions): DynamicModule {
     return {
       module: TerminusModule,
@@ -14,6 +22,10 @@ export class TerminusModule {
     };
   }
 
+  /**
+   * Bootstrap the Terminus Module asynchronously
+   * @param options The options for the Terminus module
+   */
   static forRootAsync(options: TerminusModuleAsyncOptions): DynamicModule {
     return {
       module: TerminusModule,

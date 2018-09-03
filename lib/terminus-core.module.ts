@@ -18,6 +18,10 @@ import { TerminusModule } from './terminus.module';
 
 @Global()
 @Module({})
+/**
+ * The internal Terminus Module which handles the integration
+ * with the third party Terminus library and Nest
+ */
 export class TerminusCoreModule {
   constructor(
     @Inject(TERMINUS_MODULE_OPTIONS)
@@ -25,6 +29,11 @@ export class TerminusCoreModule {
     private readonly moduleRef: ModuleRef,
   ) {}
 
+  /**
+   * Bootstrap the internal Terminus Module with the given options
+   * synchronously and sets the correct providers
+   * @param options The options to bootstrap the module synchronously
+   */
   static forRoot(options: TerminusModuleOptions = {}): DynamicModule {
     const terminusModuleOptions = {
       provide: TERMINUS_MODULE_OPTIONS,
@@ -35,12 +44,17 @@ export class TerminusCoreModule {
       module: TerminusCoreModule,
       providers: [
         terminusModuleOptions,
-        TerminusBootstrapService,
         TerminusLibProvider,
+        TerminusBootstrapService,
       ],
     };
   }
 
+  /**
+   * Bootstraps the internal Terminus Module with the given
+   * options asynchronously and sets the correct providers
+   * @param options The options to bootstrap the module
+   */
   static forRootAsync(options: TerminusModuleAsyncOptions): DynamicModule {
     const asyncProviders = this.createAsyncProviders(options);
     return {
