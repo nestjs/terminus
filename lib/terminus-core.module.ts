@@ -16,12 +16,12 @@ import { TerminusBootstrapService } from './terminus-bootstrap.service';
 import { TerminusLibProvider } from './terminus-lib.provider';
 import { TerminusModule } from './terminus.module';
 
-@Global()
-@Module({})
 /**
  * The internal Terminus Module which handles the integration
  * with the third party Terminus library and Nest
  */
+@Global()
+@Module({})
 export class TerminusCoreModule {
   constructor(
     @Inject(TERMINUS_MODULE_OPTIONS)
@@ -30,7 +30,7 @@ export class TerminusCoreModule {
   ) {}
 
   /**
-   * Bootstrap the internal Terminus Module with the given options
+   * Bootstraps the internal Terminus Module with the given options
    * synchronously and sets the correct providers
    * @param options The options to bootstrap the module synchronously
    */
@@ -68,6 +68,11 @@ export class TerminusCoreModule {
     };
   }
 
+  /**
+   * Returns the asynchrnous providers depending on the given module
+   * options
+   * @param options Options for the asynchrnous terminus module
+   */
   private static createAsyncProviders(
     options: TerminusModuleAsyncOptions,
   ): Provider[] {
@@ -83,6 +88,11 @@ export class TerminusCoreModule {
     ];
   }
 
+  /**
+   * Returns the asynchrnous Terminus options providers depending on the
+   * given module options
+   * @param options Options for the asynchrnous terminus module
+   */
   private static createAsyncOptionsProvider(
     options: TerminusModuleAsyncOptions,
   ): Provider {
