@@ -8,7 +8,8 @@ cache:
 stages:
   - test
   - name: deploy
-  # condition: "$TRAVIS_TAG =~ ^v.*$
+    if: "$TRAVIS_TAG =~ ^v.*$"
+
 
 jobs:
   include:
