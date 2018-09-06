@@ -10,6 +10,7 @@ stages:
   - name: deploy
     if: "$TRAVIS_TAG =~ ^v.*$"
 
+
 jobs:
   include:
     - stage: test
