@@ -1,17 +1,23 @@
 
 language: node_js
-node_js:
-  - "8"
-  - "9"
-  - "10"
+
 cache:
   directories:
     - "node_modules"
 
+stages:
+  - test
+  - name: deploy
+    if: "$TRAVIS_TAG =~ ^v.*$"
+
 jobs:
   include:
-    - stage: "Tests"
+    - stage: test
       name: "Test"
+      node_js:
+      - "8"
+      - "9"
+      - "10"
       before_install:
         - npm i -g npm@latest
       install:
@@ -26,10 +32,11 @@ jobs:
       install:
         - npm install
       script:
-        - echo "Deploying to gh-pages ..."
+        - echo "Deploying to gh-pages..."
         - npm run doc
         - bash ./bin/deploy-gh-pages.sh
+      skip_cleanup: true
 
 env:
   global:
-    - GH_REF: "github.com/BrunnerLivio/nest-terminus.git"
+    - "GH_REF=github.com/BrunnerLivio/nest-terminus.git"
