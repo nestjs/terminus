@@ -7,14 +7,29 @@ node_js:
 cache:
   directories:
     - "node_modules"
-before_install:
-  - npm i -g npm@latest
-install:
-  - npm install
-script:
-  - npm run test
-  - npm run doc
-  - bash ./bin/deploy-gh-pages.sh
+
+jobs:
+  include:
+    - stage: "Tests"
+      name: "Test"
+      before_install:
+        - npm i -g npm@latest
+      install:
+        - npm install
+      script:
+        - npm run test
+    - stage: deploy
+      name: "Deploy Docs"
+      node_js: "10"
+      before_install:
+        - npm i -g npm@latest
+      install:
+        - npm install
+      script:
+        - echo "Deploying to gh-pages ..."
+        - npm run doc
+        - bash ./bin/deploy-gh-pages.sh
+
 env:
   global:
     - GH_REF: "github.com/BrunnerLivio/nest-terminus.git"
