@@ -23,7 +23,14 @@ deploy:
     on:
       branch: master
       node_js: "10"
-
+  - provider: npm
+    email: "$NPM_EMAIL"
+    api_key: "$NPM_TOKEN"
+    on:
+      branch: master
+      node_js: "10"
+      tags: true
+      tag: beta
 
 env:
   global:
