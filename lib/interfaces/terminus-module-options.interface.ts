@@ -2,7 +2,9 @@ import { Type } from '@nestjs/common';
 import { ModuleMetadata } from '@nestjs/common/interfaces';
 import { TerminusOptions } from './terminus-options';
 
-export type TerminusModuleOptions = TerminusOptions;
+export interface TerminusModuleOptions {
+  healthUrl?: string;
+}
 
 /**
  * The interface for the factory which provides the Terminus options
@@ -28,7 +30,7 @@ export interface TerminusModuleAsyncOptions
   /**
    * The class which should be used to provide the Terminus options
    */
-  useClass?: Type<TerminusModuleOptions>;
+  useClass?: Type<TerminusOptionsFactory>;
   /**
    * The factory which should be used to provide the Terminus options
    */

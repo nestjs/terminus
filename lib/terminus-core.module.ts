@@ -15,13 +15,17 @@ import { TERMINUS_MODULE_OPTIONS } from './terminus.constants';
 import { TerminusBootstrapService } from './terminus-bootstrap.service';
 import { TerminusLibProvider } from './terminus-lib.provider';
 import { TerminusModule } from './terminus.module';
+import { TerminusRegistry } from './terminus-registry.service';
 
 /**
  * The internal Terminus Module which handles the integration
  * with the third party Terminus library and Nest
  */
 @Global()
-@Module({})
+@Module({
+  providers: [TerminusRegistry, TerminusLibProvider, TerminusBootstrapService],
+  exports: [TerminusRegistry],
+})
 export class TerminusCoreModule {
   constructor(
     @Inject(TERMINUS_MODULE_OPTIONS)
@@ -43,10 +47,12 @@ export class TerminusCoreModule {
     return {
       module: TerminusCoreModule,
       providers: [
+        TerminusRegistry,
         terminusModuleOptions,
         TerminusLibProvider,
         TerminusBootstrapService,
       ],
+      exports: [TerminusRegistry],
     };
   }
 
@@ -61,10 +67,12 @@ export class TerminusCoreModule {
       module: TerminusModule,
       imports: options.imports,
       providers: [
+        TerminusRegistry,
         ...asyncProviders,
         TerminusBootstrapService,
         TerminusLibProvider,
       ],
+      exports: [TerminusRegistry],
     };
   }
 

@@ -1,37 +1,19 @@
 import { Module, Injectable } from '@nestjs/common';
 import { TerminusModule } from '../../../lib/terminus.module';
 import { TerminusOptions } from '../../../lib/interfaces/terminus-options';
-import { TerminusOptionsFactory } from '../../../lib';
+import { TerminusOptionsFactory, TerminusModuleOptions } from '../../../lib';
+import { DogModule } from './dog/dog.module';
 
 @Injectable()
 export class TerminusService implements TerminusOptionsFactory {
-  async createTerminusOptions(): Promise<TerminusOptions> {
+  async createTerminusOptions(): Promise<TerminusModuleOptions> {
     return {
-      onSignal: this.onSignal,
-      onShutdown: this.onShutdown,
-      healthChecks: { '/health': this.health },
-      logger: console.log,
-      signal: 'SIGTERM',
+      healthUrl: '/healthcheck',
     };
-  }
-  public async onSignal() {
-    console.log('1. on Signal');
-  }
-
-  public async onShutdown() {
-    console.log('2. on Shutdown');
-  }
-
-  public async health() {
-    return true;
   }
 }
 
 @Module({
-  imports: [
-    TerminusModule.forRootAsync({
-      useClass: TerminusService,
-    }),
-  ],
+  imports: [DogModule],
 })
 export class ApplicationModule {}

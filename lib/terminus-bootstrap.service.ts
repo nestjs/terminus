@@ -1,20 +1,26 @@
-import { Injectable, Inject, OnModuleInit } from '@nestjs/common';
+import { Injectable, Inject, OnApplicationBootstrap } from '@nestjs/common';
 import { TERMINUS_MODULE_OPTIONS, TERMINUS_LIB } from './terminus.constants';
-import { TerminusModuleOptions } from './interfaces';
+import { TerminusModuleOptions, HealthCheckResult } from './interfaces';
 import { HTTP_SERVER_REF } from '@nestjs/core';
 import { Server } from 'http';
-import { TerminusOptions } from './interfaces/terminus-options';
+import { TerminusOptions, HealthCheck } from './interfaces/terminus-options';
+import { TerminusRegistry } from './terminus-registry.service';
 
 /**
  * Bootstraps the third party Terminus library with the
  * configured Module options
  */
 @Injectable()
-export class TerminusBootstrapService implements OnModuleInit {
+export class TerminusBootstrapService implements OnApplicationBootstrap {
   /**
    * The http server of NestJS
    */
   private httpServer: Server;
+
+  /**
+   * If the Terminus instance is bootstrapped.
+   */
+  private isTerminusBootstrapped: boolean = false;
   /**
    * Intiailizes the service
    * @param options The terminus module options
@@ -26,20 +32,39 @@ export class TerminusBootstrapService implements OnModuleInit {
     private readonly options: TerminusModuleOptions,
     @Inject(HTTP_SERVER_REF) private readonly httpAdapter,
     @Inject(TERMINUS_LIB) private readonly terminus,
+    private readonly terminusRegistry: TerminusRegistry,
   ) {}
+
+  private async executeHealthChecks(): Promise<HealthCheckResult[]> {
+    let result;
+    try {
+      const result = await Promise.all<HealthCheckResult>(
+        this.terminusRegistry.getHealthFunctions().map(func => func()),
+      );
+    } catch (err) {
+      console.log(err);
+    }
+    return result;
+  }
 
   /**
    * Bootstraps the third party terminus library with
    * the given module options
    */
   private bootstrapTerminus() {
-    this.terminus(this.httpServer, this.options);
+    this.terminus(this.httpServer, {
+      healthChecks: {
+        [this.options.healthUrl || '/health']: async () =>
+          await this.executeHealthChecks(),
+      },
+    });
+    this.isTerminusBootstrapped = true;
   }
 
   /**
-   * Gets called when the Module gets initialized.
+   * Gets called when the application gets bootstrapped.
    */
-  onModuleInit() {
+  public onApplicationBootstrap() {
     this.httpServer = this.httpAdapter.getHttpServer();
     this.bootstrapTerminus();
   }
