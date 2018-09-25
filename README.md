@@ -30,9 +30,7 @@ The [Terminus](https://github.com/godaddy/terminus) module for [Nest](https://gi
 
 ## Installation
 
-```bash
-$ npm i --save @nestjs/terminus @godaddy/terminus
-```
+NOT PUBLISHED YET
 
 ## Quick Start
 
