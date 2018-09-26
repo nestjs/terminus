@@ -36,15 +36,11 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
   ) {}
 
   private async executeHealthChecks(): Promise<HealthCheckResult[]> {
-    let result;
-    try {
-      const result = await Promise.all<HealthCheckResult>(
-        this.terminusRegistry.getHealthFunctions().map(func => func()),
-      );
-    } catch (err) {
-      console.log(err);
-    }
-    return result;
+    return await Promise.all<HealthCheckResult>(
+      this.terminusRegistry
+        .getHealthIndicators()
+        .map(healthIndiactor => healthIndiactor.isHealthy()),
+    );
   }
 
   /**
@@ -52,11 +48,18 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
    * the given module options
    */
   private bootstrapTerminus() {
-    this.terminus(this.httpServer, {
-      healthChecks: {
-        [this.options.healthUrl || '/health']: async () =>
-          await this.executeHealthChecks(),
+    const healthChecks = {
+      [this.options.healthUrl || '/health']: async () => {
+        const results = await this.executeHealthChecks();
+        return (results || []).reduce(
+          (previous, current) => Object.assign(previous, current),
+          {},
+        );
       },
+    };
+
+    this.terminus(this.httpServer, {
+      healthChecks,
     });
     this.isTerminusBootstrapped = true;
   }

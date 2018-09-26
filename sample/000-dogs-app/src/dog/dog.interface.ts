@@ -1,6 +1,6 @@
 export enum DogState {
-  GOODBOY,
-  BADBOY,
+  GOOD_BOY,
+  BAD_BOY,
 }
 
 export interface Dog {

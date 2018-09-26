@@ -9,16 +9,18 @@ export class DogHealth implements HealthIndicator {
     terminusRegistry: TerminusRegistry,
     private readonly dogService: DogService,
   ) {
+    // This registers the health indicator to terminus
     terminusRegistry.register(this);
   }
 
   async isHealthy(): Promise<any> {
     const dogs = await this.dogService.getDogs();
-    const isHealthy = dogs.some(dog => dog.state !== DogState.BADBOY);
+    const isHealthy = dogs.some(dog => dog.state !== DogState.BAD_BOY);
 
     return {
       dogs: {
         status: isHealthy ? 'up' : 'down',
+        goodboys: dogs.filter(dog => dog.state === DogState.GOOD_BOY).length,
       },
     };
   }

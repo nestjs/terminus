@@ -7,9 +7,7 @@ import {
 
 @Injectable()
 export class TerminusRegistry {
-  private healthFunctions: HealthCheckFunction[] = new Array<
-    HealthCheckFunction
-  >();
+  private healthIndicators: HealthIndicator[] = new Array<HealthIndicator>();
 
   constructor() {}
 
@@ -17,20 +15,14 @@ export class TerminusRegistry {
    * Registers the given health indicator
    * @param healthIndicator The function which determines the health of a certain functionality
    */
-  public register(healthIndicator: HealthIndicator | HealthCheckFunction) {
-    let healthFunction: HealthCheckFunction;
-    if (typeof healthIndicator !== 'function') {
-      healthFunction = (healthIndicator as HealthIndicator).isHealthy;
-    } else {
-      healthFunction = healthIndicator;
-    }
-    this.healthFunctions.push(healthFunction);
+  public register(healthIndicator: HealthIndicator) {
+    this.healthIndicators.push(healthIndicator);
   }
 
   /**
    * Returns the registered health functionsk
    */
-  public getHealthFunctions(): HealthCheckFunction[] {
-    return this.healthFunctions;
+  public getHealthIndicators(): HealthIndicator[] {
+    return this.healthIndicators;
   }
 }
