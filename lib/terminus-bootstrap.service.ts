@@ -1,9 +1,9 @@
-import { Injectable, Inject, OnModuleInit } from '@nestjs/common';
+import { Injectable, Inject, OnModuleInit, HttpServer } from '@nestjs/common';
 import { TERMINUS_MODULE_OPTIONS, TERMINUS_LIB } from './terminus.constants';
 import { TerminusModuleOptions } from './interfaces';
 import { HTTP_SERVER_REF } from '@nestjs/core';
 import { Server } from 'http';
-import { TerminusOptions } from './interfaces/terminus-options';
+import { Terminus } from '@godaddy/terminus';
 
 /**
  * Bootstraps the third party Terminus library with the
@@ -11,10 +11,6 @@ import { TerminusOptions } from './interfaces/terminus-options';
  */
 @Injectable()
 export class TerminusBootstrapService implements OnModuleInit {
-  /**
-   * The http server of NestJS
-   */
-  private httpServer: Server;
   /**
    * Intiailizes the service
    * @param options The terminus module options
@@ -24,23 +20,18 @@ export class TerminusBootstrapService implements OnModuleInit {
   constructor(
     @Inject(TERMINUS_MODULE_OPTIONS)
     private readonly options: TerminusModuleOptions,
-    @Inject(HTTP_SERVER_REF) private readonly httpAdapter,
-    @Inject(TERMINUS_LIB) private readonly terminus,
+    @Inject(HTTP_SERVER_REF) private readonly httpAdapter: HttpServer,
+    @Inject(TERMINUS_LIB) private readonly terminus: Terminus,
   ) {}
 
   /**
+   * Gets called when the Module gets initialized.
+   *
    * Bootstraps the third party terminus library with
    * the given module options
    */
-  private bootstrapTerminus() {
-    this.terminus(this.httpServer, this.options);
-  }
-
-  /**
-   * Gets called when the Module gets initialized.
-   */
-  onModuleInit() {
-    this.httpServer = this.httpAdapter.getHttpServer();
-    this.bootstrapTerminus();
+  public onModuleInit() {
+    const httpServer: HttpServer = this.httpAdapter.getHttpServer();
+    this.terminus(httpServer, this.options);
   }
 }
