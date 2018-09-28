@@ -5,6 +5,8 @@ import { HTTP_SERVER_REF } from '@nestjs/core';
 import { Server } from 'http';
 import { TerminusOptions, HealthCheck } from './interfaces/terminus-options';
 import { TerminusRegistry } from './terminus-registry.service';
+// @ts-ignore
+import { HealthCheckError } from '@godaddy/terminus';
 
 /**
  * Bootstraps the third party Terminus library with the
@@ -35,12 +37,27 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
     private readonly terminusRegistry: TerminusRegistry,
   ) {}
 
-  private async executeHealthChecks(): Promise<HealthCheckResult[]> {
-    return await Promise.all<HealthCheckResult>(
+  private async executeHealthChecks(): Promise<any> {
+    const results: any[] = [];
+    const errors: any[] = [];
+    await Promise.all<HealthCheckResult>(
       this.terminusRegistry
         .getHealthIndicators()
-        .map(healthIndiactor => healthIndiactor.isHealthy()),
+        .map(healthIndicator => healthIndicator.isHealthy())
+        .map(p =>
+          p.catch(error => {
+            errors.push(error.causes);
+            return undefined;
+          }),
+        )
+        .map(p =>
+          p.then(result => {
+            if (result) results.push(result);
+          }),
+        ),
     );
+
+    return { results, errors };
   }
 
   /**
@@ -50,11 +67,16 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
   private bootstrapTerminus() {
     const healthChecks = {
       [this.options.healthUrl || '/health']: async () => {
-        const results = await this.executeHealthChecks();
-        return (results || []).reduce(
-          (previous, current) => Object.assign(previous, current),
-          {},
-        );
+        const { results, errors } = await this.executeHealthChecks();
+        const info = (results || [])
+          .concat(errors)
+          .reduce((previous, current) => Object.assign(previous, current), {});
+
+        if (errors.length) {
+          throw new HealthCheckError('Healthcheck failed', info);
+        } else {
+          return info;
+        }
       },
     };
 

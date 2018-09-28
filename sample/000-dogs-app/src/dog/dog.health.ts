@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { TerminusRegistry, HealthIndicator } from '../../../../lib';
 import { DogService } from './dog.service';
 import { DogState } from './dog.interface';
+// @ts-ignore
+import { HealthCheckError } from '@godaddy/terminus';
 
 @Injectable()
 export class DogHealth implements HealthIndicator {
@@ -15,13 +17,22 @@ export class DogHealth implements HealthIndicator {
 
   async isHealthy(): Promise<any> {
     const dogs = await this.dogService.getDogs();
-    const isHealthy = dogs.some(dog => dog.state !== DogState.BAD_BOY);
+    const goodboys = dogs.filter(dog => dog.state === DogState.GOOD_BOY);
+    const badboys = dogs.filter(dog => dog.state === DogState.BAD_BOY);
+    const isHealthy = badboys.length === 0;
 
-    return {
+    const status = {
       dogs: {
         status: isHealthy ? 'up' : 'down',
-        goodboys: dogs.filter(dog => dog.state === DogState.GOOD_BOY).length,
+        goodboys: goodboys.length,
+        badboys: badboys.length,
       },
     };
+
+    if (!isHealthy) {
+      throw new HealthCheckError('Dogcheck failed', status);
+    } else {
+      return status;
+    }
   }
 }
