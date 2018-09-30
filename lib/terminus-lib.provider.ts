@@ -1,5 +1,4 @@
 import { TERMINUS_LIB } from './terminus.constants';
-// @ts-ignore
 import { createTerminus } from '@godaddy/terminus';
 
 /**

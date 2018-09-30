@@ -1,7 +1,8 @@
 {
     "defaultSeverity": "error",
     "extends": [
-        "tslint:recommended"
+        "tslint:recommended",
+        "tslint-config-prettier"
     ],
     "jsRules": {},
     "rules": {
@@ -20,9 +21,7 @@
         "indent": false,
         "member-access": false,
         "ban-types": false,
-        "max-classes-per-file": [
-            false
-        ],
+        "max-classes-per-file": false,
         "member-ordering": [
             false
         ],

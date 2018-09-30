@@ -1,15 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import {
-  HealthIndicator,
-  HealthCheckResult,
-  HealthCheckFunction,
-} from './interfaces';
+import { HealthIndicator } from './interfaces';
 
 @Injectable()
 export class TerminusRegistry {
   private healthIndicators: HealthIndicator[] = new Array<HealthIndicator>();
-
-  constructor() {}
 
   /**
    * Registers the given health indicator

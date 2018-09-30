@@ -18,23 +18,24 @@
   },
   "devDependencies": {
     "@compodoc/compodoc": "^1.1.5",
-    "@godaddy/terminus": "^3.0.0",
-    "@nestjs/common": "^5.3.7",
-    "@nestjs/core": "^5.3.7",
-    "@nestjs/testing": "^5.3.0",
-    "@types/jest": "^23.3.1",
-    "@types/node": "^7.0.41",
-    "husky": "^0.14.3",
-    "jest": "^23.5.0",
-    "lint-staged": "^7.0.0",
-    "prettier": "^1.11.1",
+    "@godaddy/terminus": "^3.0.1",
+    "@nestjs/common": "^5.3.9",
+    "@nestjs/core": "^5.3.10",
+    "@nestjs/testing": "^5.3.8",
+    "@types/jest": "^23.3.2",
+    "@types/node": "^8.9.0",
+    "husky": "^1.0.1",
+    "jest": "^23.6.0",
+    "lint-staged": "^7.3.0",
+    "prettier": "^1.14.3",
     "reflect-metadata": "0.1.12",
-    "rxjs": "^6.0.0",
-    "rxjs-compat": "^6.2.0",
-    "supertest": "^3.1.0",
-    "ts-jest": "^23.1.4",
+    "rxjs": "^6.3.3",
+    "rxjs-compat": "^6.3.3",
+    "supertest": "^3.3.0",
+    "ts-jest": "^23.10.2",
     "ts-node": "^7.0.1",
-    "typescript": "^2.8.0"
+    "tslint-config-prettier": "^1.15.0",
+    "typescript": "^3.1.1"
   },
   "repository": {
     "url": "https://github.com/BrunnerLivio/nest-terminus"
@@ -42,9 +43,9 @@
   "peerDependencies": {
     "@nestjs/common": "^5.3.0",
     "@nestjs/core": "^5.3.0",
-    "@godaddy/terminus": "^3.0.0",
+    "@godaddy/terminus": "^3.0.1",
     "reflect-metadata": "0.1.12",
-    "rxjs": "^6.0.0"
+    "rxjs": "^6.3.3"
   },
   "lint-staged": {
     "*.ts": [

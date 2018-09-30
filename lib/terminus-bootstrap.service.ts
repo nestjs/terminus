@@ -3,9 +3,7 @@ import { TERMINUS_MODULE_OPTIONS, TERMINUS_LIB } from './terminus.constants';
 import { TerminusModuleOptions, HealthCheckResult } from './interfaces';
 import { HTTP_SERVER_REF } from '@nestjs/core';
 import { Server } from 'http';
-import { TerminusOptions, HealthCheck } from './interfaces/terminus-options';
 import { TerminusRegistry } from './terminus-registry.service';
-// @ts-ignore
 import { HealthCheckError } from '@godaddy/terminus';
 
 /**
@@ -52,7 +50,9 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
         )
         .map(p =>
           p.then(result => {
-            if (result) results.push(result);
+            if (result) {
+              results.push(result);
+            }
           }),
         ),
     );
