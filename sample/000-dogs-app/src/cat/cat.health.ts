@@ -6,7 +6,6 @@ import { HealthIndicatorResult } from '../../../../lib';
 export class CatHealthIndicator {
   async isHealthy(key: string): Promise<HealthIndicatorResult> {
     const isHealthy = true;
-
     const status = {
       [key]: {
         status: isHealthy ? 'up' : 'down',

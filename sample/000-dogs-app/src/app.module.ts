@@ -28,7 +28,7 @@ const getTerminusOptions = (
   imports: [
     TerminusModule.forRootAsync({
       imports: [DogModule, CatModule],
-      inject: [DogHealthIndicator, DogHealthIndicator],
+      inject: [DogHealthIndicator, CatHealthIndicator],
       useFactory: getTerminusOptions,
     }),
   ],

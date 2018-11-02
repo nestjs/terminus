@@ -3,6 +3,7 @@ import {
   Inject,
   OnApplicationBootstrap,
   HttpServer,
+  Logger,
 } from '@nestjs/common';
 import { TERMINUS_MODULE_OPTIONS, TERMINUS_LIB } from './terminus.constants';
 import { TerminusModuleOptions } from './interfaces';
@@ -20,6 +21,7 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
    * The http server of NestJS
    */
   private httpServer: Server;
+  private readonly logger = new Logger(TerminusBootstrapService.name, true);
 
   /**
    * Intiailizes the service
@@ -48,7 +50,15 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
       healthIndicators
         // Register all promises
         .map(healthIndicator => healthIndicator())
-        .map(p => p.catch(error => error && errors.push(error.causes)))
+        .map(p =>
+          p.catch(error => {
+            if (error instanceof HealthCheckError) {
+              errors.push(error.causes);
+            } else {
+              throw error;
+            }
+          }),
+        )
         .map(p => p.then(result => result && results.push(result))),
     );
 
@@ -91,6 +101,8 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
     const healthChecks = this.prepareHealthChecks();
     this.terminus(this.httpServer, {
       healthChecks,
+      logger: (message: string, error: Error) =>
+        this.logger.error(message, error.stack),
     });
   }
 
