@@ -21,6 +21,7 @@ describe('Terminus', () => {
     healthChecks: {
       '/health': expect.any(Function),
     },
+    logger: expect.any(Function),
   };
 
   let terminusModuleOptions: TerminusModuleOptions = {

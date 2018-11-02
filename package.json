@@ -33,7 +33,6 @@
     "reflect-metadata": "0.1.12",
     "rxjs": "^6.3.3",
     "rxjs-compat": "^6.3.3",
-    "sqlite3": "^4.0.3",
     "supertest": "^3.3.0",
     "ts-jest": "^23.10.4",
     "ts-node": "^7.0.1",
@@ -58,5 +57,8 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "dependencies": {
+    "mysql": "^2.16.0"
   }
 }

@@ -33,9 +33,15 @@ describe('Database Health', () => {
         module: ApplicationModule,
         imports: [
           TypeOrmModule.forRoot({
-            type: 'sqlite',
+            type: 'mysql',
+            host: '0.0.0.0',
+            port: 3306,
+            username: 'root',
+            password: 'root',
             database: 'test',
             keepConnectionAlive: true,
+            retryAttempts: 2,
+            retryDelay: 1000,
           }),
           TerminusModule.forRootAsync(options),
         ],
