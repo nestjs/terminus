@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { HealthIndicator } from '../../../../lib';
 import { HealthCheckError } from '@godaddy/terminus';
+import { HealthIndicatorResult } from '../../../../lib';
 
 @Injectable()
-export class CatHealthIndicator implements HealthIndicator {
-  async isHealthy(key: string) {
+export class CatHealthIndicator {
+  async isHealthy(key: string): Promise<HealthIndicatorResult> {
     const isHealthy = true;
 
     const status = {

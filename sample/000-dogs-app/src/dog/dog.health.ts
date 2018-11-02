@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { DogService } from './dog.service';
 import { DogState } from './dog.interface';
 import { HealthCheckError } from '@godaddy/terminus';
-import { HealthIndicator } from '../../../../lib';
+import { HealthIndicatorResult } from '../../../../lib';
 
 @Injectable()
-export class DogHealthIndicator implements HealthIndicator {
+export class DogHealthIndicator {
   constructor(private readonly dogService: DogService) {}
 
-  async isHealthy(key: string): Promise<any> {
+  async isHealthy(key: string): Promise<HealthIndicatorResult> {
     const dogs = await this.dogService.getDogs();
     const goodboys = dogs.filter(dog => dog.state === DogState.GOOD_BOY);
     const badboys = dogs.filter(dog => dog.state === DogState.BAD_BOY);

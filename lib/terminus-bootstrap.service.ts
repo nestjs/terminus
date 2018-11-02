@@ -5,7 +5,7 @@ import {
   HttpServer,
 } from '@nestjs/common';
 import { TERMINUS_MODULE_OPTIONS, TERMINUS_LIB } from './terminus.constants';
-import { TerminusModuleOptions, HealthIndicator } from './interfaces';
+import { TerminusModuleOptions } from './interfaces';
 import { HTTP_SERVER_REF } from '@nestjs/core';
 import { Server } from 'http';
 import { HealthCheckError, Terminus } from '@godaddy/terminus';
@@ -44,7 +44,7 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
   ): Promise<{ results: any[]; errors: any[] }> {
     const results: any[] = [];
     const errors: any[] = [];
-    await Promise.all<HealthIndicator>(
+    await Promise.all(
       healthIndicators
         // Register all promises
         .map(healthIndicator => healthIndicator())

@@ -27,7 +27,9 @@ describe('Terminus', () => {
     endpoints: [
       {
         url: '/health',
-        healthIndicators: [async () => ({ key: true })],
+        healthIndicators: [
+          async () => ({ db: { whatever: true, status: 'up' } }),
+        ],
       },
     ],
   };

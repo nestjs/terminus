@@ -1,12 +1,17 @@
 import { Module, DynamicModule } from '@nestjs/common';
 import { DogModule } from './dog/dog.module';
 import { CatModule } from './cat/cat.module';
-import { TerminusModule, TerminusModuleOptions } from '../../../lib';
-import { DogHealthIndicator } from './dog/dog.healthcheck';
+import {
+  TerminusModule,
+  TerminusModuleOptions,
+  DatabaseHealthIndicator,
+} from '../../../lib';
+import { DogHealthIndicator } from './dog/dog.health';
+import { CatHealthIndicator } from './cat/cat.health';
 
 const getTerminusOptions = (
   dogHealthIndicator: DogHealthIndicator,
-  catHealthIndicator: DogHealthIndicator,
+  catHealthIndicator: CatHealthIndicator,
 ): TerminusModuleOptions => ({
   endpoints: [
     {

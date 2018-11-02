@@ -15,6 +15,7 @@ import { TERMINUS_MODULE_OPTIONS } from './terminus.constants';
 import { TerminusBootstrapService } from './terminus-bootstrap.service';
 import { TerminusLibProvider } from './terminus-lib.provider';
 import { TerminusModule } from './terminus.module';
+import { DatabaseHealthIndicator } from '.';
 
 /**
  * The internal Terminus Module which handles the integration
@@ -49,7 +50,9 @@ export class TerminusCoreModule {
         terminusModuleOptions,
         TerminusLibProvider,
         TerminusBootstrapService,
+        DatabaseHealthIndicator,
       ],
+      exports: [DatabaseHealthIndicator],
     };
   }
 
@@ -67,7 +70,9 @@ export class TerminusCoreModule {
         ...asyncProviders,
         TerminusBootstrapService,
         TerminusLibProvider,
+        DatabaseHealthIndicator,
       ],
+      exports: [DatabaseHealthIndicator],
     };
   }
 
