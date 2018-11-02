@@ -21,7 +21,10 @@ import { TerminusModule } from './terminus.module';
  * with the third party Terminus library and Nest
  */
 @Global()
-@Module({})
+@Module({
+  providers: [TerminusLibProvider, TerminusBootstrapService],
+  exports: [],
+})
 export class TerminusCoreModule {
   constructor(
     @Inject(TERMINUS_MODULE_OPTIONS)
@@ -34,7 +37,7 @@ export class TerminusCoreModule {
    * synchronously and sets the correct providers
    * @param options The options to bootstrap the module synchronously
    */
-  static forRoot(options: TerminusModuleOptions = {}): DynamicModule {
+  static forRoot(options: TerminusModuleOptions): DynamicModule {
     const terminusModuleOptions = {
       provide: TERMINUS_MODULE_OPTIONS,
       useValue: options,
@@ -76,7 +79,7 @@ export class TerminusCoreModule {
   private static createAsyncProviders(
     options: TerminusModuleAsyncOptions,
   ): Provider[] {
-    if (options.useFactory) {
+    if (options.useFactory || options.useExisting) {
       return [this.createAsyncOptionsProvider(options)];
     }
     return [
@@ -107,7 +110,7 @@ export class TerminusCoreModule {
       provide: TERMINUS_MODULE_OPTIONS,
       useFactory: async (optionsFactory: TerminusOptionsFactory) =>
         await optionsFactory.createTerminusOptions(),
-      inject: [options.useClass],
+      inject: [options.useClass || options.useExisting],
     };
   }
 }
