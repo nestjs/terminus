@@ -18,7 +18,11 @@ export interface DatabasePingCheckSettings {
 export class DatabaseHealthIndicator {
   constructor(@Optional() private readonly connection: Connection) {}
 
-  private getStatus(key: string, isHealthy: boolean, options?: any) {
+  private getStatus(
+    key: string,
+    isHealthy: boolean,
+    options?: { [key: string]: unknown },
+  ): HealthIndicatorResult {
     return {
       [key]: {
         status: isHealthy ? 'up' : 'down',
@@ -27,7 +31,7 @@ export class DatabaseHealthIndicator {
     };
   }
 
-  private async pingDb(connection, timeout) {
+  private async pingDb(connection: Connection, timeout: number) {
     return await promiseTimeout(timeout, connection.query('SELECT 1'));
   }
 

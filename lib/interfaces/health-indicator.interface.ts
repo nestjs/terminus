@@ -1,7 +1,7 @@
 export type HealthIndicatorResult = {
   [key: string]: {
     status: string;
-    [optionalKeys: string]: any;
+    [optionalKeys: string]: unknown;
   };
 };
 

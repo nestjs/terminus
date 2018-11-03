@@ -6,10 +6,10 @@ import {
   Logger,
 } from '@nestjs/common';
 import { TERMINUS_MODULE_OPTIONS, TERMINUS_LIB } from './terminus.constants';
-import { TerminusModuleOptions } from './interfaces';
+import { TerminusModuleOptions, HealthIndicatorFunction } from './interfaces';
 import { HTTP_SERVER_REF } from '@nestjs/core';
 import { Server } from 'http';
-import { HealthCheckError, Terminus } from '@godaddy/terminus';
+import { HealthCheckError, Terminus, HealthCheckMap } from '@godaddy/terminus';
 
 /**
  * Bootstraps the third party Terminus library with the
@@ -42,16 +42,16 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
    * @param healthIndicators The health indicators which should get executed
    */
   private async executeHealthIndicators(
-    healthIndicators,
-  ): Promise<{ results: any[]; errors: any[] }> {
-    const results: any[] = [];
-    const errors: any[] = [];
+    healthIndicators: HealthIndicatorFunction[],
+  ): Promise<{ results: unknown[]; errors: unknown[] }> {
+    const results: unknown[] = [];
+    const errors: unknown[] = [];
     await Promise.all(
       healthIndicators
         // Register all promises
         .map(healthIndicator => healthIndicator())
-        .map(p =>
-          p.catch(error => {
+        .map((p: Promise<unknown>) =>
+          p.catch((error: Error) => {
             if (error instanceof HealthCheckError) {
               errors.push(error.causes);
             } else {
@@ -59,7 +59,9 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
             }
           }),
         )
-        .map(p => p.then(result => result && results.push(result))),
+        .map((p: Promise<unknown>) =>
+          p.then((result: unknown) => result && results.push(result)),
+        ),
     );
 
     return { results, errors };
@@ -69,8 +71,8 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
    * Prepares the health check using the configured health
    * indicators
    */
-  private prepareHealthChecks() {
-    const healthChecks = {};
+  private prepareHealthChecks(): HealthCheckMap {
+    const healthChecks: HealthCheckMap = {};
     this.options.endpoints.forEach(endpoint => {
       const healthCheck = async () => {
         const { results, errors } = await this.executeHealthIndicators(
