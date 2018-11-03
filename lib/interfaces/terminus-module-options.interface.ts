@@ -59,10 +59,10 @@ export interface TerminusModuleAsyncOptions
    * The factory which should be used to provide the Terminus options
    */
   useFactory?: (
-    ...args: any[]
+    ...args: unknown[]
   ) => Promise<TerminusModuleOptions> | TerminusModuleOptions;
   /**
    * The providers which should get injected
    */
-  inject?: any[];
+  inject?: unknown[];
 }
