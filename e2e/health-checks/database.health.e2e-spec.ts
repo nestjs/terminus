@@ -32,7 +32,7 @@ describe('Database Health', () => {
         imports: [
           TypeOrmModule.forRoot({
             type: 'mysql',
-            host: '0.0.0.0',
+            host: 'mysql',
             port: 3306,
             username: 'root',
             password: 'root',
