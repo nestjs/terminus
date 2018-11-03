@@ -18,7 +18,8 @@ services:
       - mysql
     networks:
       - overlay
+    environment:
+      WAIT_HOSTS: mysql:3306
 
 networks:
   overlay:
-    driver: bridge

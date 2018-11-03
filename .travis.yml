@@ -21,7 +21,8 @@ before_install:
 install:
   - npm install
 script:
-  - docker-compose build && docker-compose up
+  - sudo service mysql stop
+  - docker-compose build && docker-compose run lib
 deploy:
   - provider: script
     # Have to use `&&` because of issue https://github.com/travis-ci/dpl/issues/673
