@@ -1,5 +1,21 @@
+/**
+ * An errors which gets raised when the timeout
+ * exceeded
+ */
 export class TimeoutError extends Error {}
-export const promiseTimeout = function(ms: number, promise: Promise<unknown>) {
+
+/**
+ * Executes a promise in the given timeout. If the promise
+ * does not finish in the given timeout, it will
+ * raise a TimeoutError
+ *
+ * @param {number} ms The timeout in milliseconds
+ * @param {Promise<unknown>} promise The promise which should get executed
+ */
+export const promiseTimeout = function(
+  ms: number,
+  promise: Promise<unknown>,
+): Promise<unknown> {
   // Create a promise that rejects in <ms> milliseconds
   let timeout = new Promise((resolve, reject) => {
     let id = setTimeout(() => {
