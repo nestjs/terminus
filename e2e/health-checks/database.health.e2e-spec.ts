@@ -1,13 +1,11 @@
 import { INestApplication, DynamicModule } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
-import { TerminusOptions } from '@godaddy/terminus';
 import {
   DatabaseHealthIndicator,
-  TerminusModuleOptions,
+  TerminusModuleAsyncOptions,
   TerminusModule,
+  TerminusModuleOptions,
 } from '../../lib';
-import { HTTP_SERVER_REF, NestFactory } from '@nestjs/core';
-import * as http from 'http';
+import { NestFactory } from '@nestjs/core';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
 import Axios from 'axios';
@@ -28,13 +26,13 @@ describe('Database Health', () => {
   });
 
   class ApplicationModule {
-    static forRoot(options): DynamicModule {
+    static forRoot(options: TerminusModuleAsyncOptions): DynamicModule {
       return {
         module: ApplicationModule,
         imports: [
           TypeOrmModule.forRoot({
             type: 'mysql',
-            host: '0.0.0.0',
+            host: 'mysql',
             port: 3306,
             username: 'root',
             password: 'root',
@@ -49,7 +47,7 @@ describe('Database Health', () => {
     }
   }
 
-  async function bootstrapModule(options) {
+  async function bootstrapModule(options: TerminusModuleAsyncOptions) {
     app = await NestFactory.create(ApplicationModule.forRoot(options));
     await app.listen(PORT);
   }
