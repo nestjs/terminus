@@ -18,6 +18,8 @@
     "**/*.spec.ts",
     "sample/**/*.ts",
     "e2e",
-    "index.ts"
+    "index.ts",
+    "index.js",
+    "index.d.ts"
   ]
 }
