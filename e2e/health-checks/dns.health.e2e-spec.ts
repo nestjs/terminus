@@ -1,6 +1,5 @@
 import { INestApplication, DynamicModule } from '@nestjs/common';
 import {
-  DatabaseHealthIndicator,
   TerminusModuleAsyncOptions,
   TerminusModule,
   TerminusModuleOptions,
@@ -54,6 +53,21 @@ describe('DNS Health', () => {
       info: { dns: { status: 'up' } },
     });
   });
+
+  it('should check if correctly display a timeout error', async () => {
+    await bootstrapModule({
+      inject: [DNSHealthIndicator],
+      useFactory: getTerminusOptions,
+    });
+
+    const response = await Axios.get(`http://0.0.0.0:${PORT}/health`);
+    expect(response.status).toBe(200);
+    expect(response.data).toEqual({
+      status: 'ok',
+      info: { dns: { status: 'up' } },
+    });
+  });
+
   afterEach(async () => {
     app.close();
   });
