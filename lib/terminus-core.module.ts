@@ -4,6 +4,7 @@ import {
   Inject,
   Module,
   Provider,
+  HttpModule,
 } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import {
@@ -16,6 +17,7 @@ import { TerminusBootstrapService } from './terminus-bootstrap.service';
 import { TerminusLibProvider } from './terminus-lib.provider';
 import { TerminusModule } from './terminus.module';
 import { DatabaseHealthIndicator } from '.';
+import { DNSHealthIndicator } from './health-indicators';
 
 /**
  * The internal Terminus Module which handles the integration
@@ -46,6 +48,7 @@ export class TerminusCoreModule {
 
     return {
       module: TerminusCoreModule,
+      imports: [HttpModule],
       providers: [
         terminusModuleOptions,
         TerminusLibProvider,
@@ -65,14 +68,15 @@ export class TerminusCoreModule {
     const asyncProviders = this.createAsyncProviders(options);
     return {
       module: TerminusModule,
-      imports: options.imports,
+      imports: [].concat(options.imports).concat([HttpModule]),
       providers: [
         ...asyncProviders,
         TerminusBootstrapService,
         TerminusLibProvider,
         DatabaseHealthIndicator,
+        DNSHealthIndicator,
       ],
-      exports: [DatabaseHealthIndicator],
+      exports: [DatabaseHealthIndicator, DNSHealthIndicator],
     };
   }
 

@@ -1,5 +1,9 @@
 import { Module } from '@nestjs/common';
-import { TerminusModule, TerminusModuleOptions } from '../../../lib';
+import {
+  TerminusModule,
+  TerminusModuleOptions,
+  DNSHealthIndicator,
+} from '../../../lib';
 
 import { DogModule } from './dog/dog.module';
 import { CatModule } from './cat/cat.module';
@@ -10,6 +14,7 @@ import { CatHealthIndicator } from './cat/cat.health';
 const getTerminusOptions = (
   dogHealthIndicator: DogHealthIndicator,
   catHealthIndicator: CatHealthIndicator,
+  dnsHealthIndicator: DNSHealthIndicator,
 ): TerminusModuleOptions => ({
   endpoints: [
     {
@@ -17,6 +22,8 @@ const getTerminusOptions = (
       healthIndicators: [
         async () => catHealthIndicator.isHealthy('cat'),
         async () => dogHealthIndicator.isHealthy('dog'),
+        async () =>
+          dnsHealthIndicator.pingCheck('google', 'https://google.com'),
       ],
     },
   ],
@@ -26,7 +33,7 @@ const getTerminusOptions = (
   imports: [
     TerminusModule.forRootAsync({
       imports: [DogModule, CatModule],
-      inject: [DogHealthIndicator, CatHealthIndicator],
+      inject: [DogHealthIndicator, CatHealthIndicator, DNSHealthIndicator],
       useFactory: getTerminusOptions,
     }),
   ],

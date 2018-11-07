@@ -11,6 +11,6 @@ export class TimeoutError extends HealthCheckError {
    * @param {unknown} cause The cause of the health check error
    */
   constructor(timeout: number, cause: unknown) {
-    super(`Database did not respond after ${timeout}ms`, cause);
+    super(`timeout of ${timeout}ms exceeded`, cause);
   }
 }

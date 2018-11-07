@@ -4,7 +4,10 @@ import {
   TerminusModuleAsyncOptions,
 } from './interfaces/terminus-module-options.interface';
 import { TerminusCoreModule } from './terminus-core.module';
-import { DatabaseHealthIndicator } from './health-indicators';
+import {
+  DatabaseHealthIndicator,
+  DNSHealthIndicator,
+} from './health-indicators';
 
 /**
  * Terminus Module which represents the integration of the
@@ -19,8 +22,6 @@ export class TerminusModule {
   static forRoot(options?: TerminusModuleOptions): DynamicModule {
     return {
       module: TerminusModule,
-      providers: [DatabaseHealthIndicator],
-      exports: [DatabaseHealthIndicator],
       imports: [TerminusCoreModule.forRoot(options)],
     };
   }

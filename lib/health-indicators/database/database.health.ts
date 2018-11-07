@@ -2,12 +2,12 @@ import { Injectable, Optional } from '@nestjs/common';
 import { HealthIndicatorResult } from '../..';
 import { Connection } from 'typeorm';
 import { HealthCheckError } from '@godaddy/terminus';
-import { ConnectionNotFoundError } from './connection-not-found.error';
 import {
   promiseTimeout,
   TimeoutError as PromiseTimeoutError,
 } from '../../utils';
-import { TimeoutError } from './timeout-error';
+import { TimeoutError, ConnectionNotFoundError } from '../../errors';
+import { HealthIndicator } from '../health-indicator';
 
 /**
  * The settings for the database ping check
@@ -27,33 +27,15 @@ export interface DatabasePingCheckSettings {
 /**
  * The DatabaseHealthIndicator contains health indicators
  * which are used for health checks related to database
- *
  */
 @Injectable()
-export class DatabaseHealthIndicator {
+export class DatabaseHealthIndicator extends HealthIndicator {
   /**
    * Initializes the database indicator
    * @param connection The database connection of the application context
    */
-  constructor(@Optional() private readonly connection: Connection) {}
-
-  /**
-   * Generates the health indicator result object
-   * @param key The key which will be used as key for the result object
-   * @param isHealthy Whether the health indicator is healthy
-   * @param options Additional options which will get appended to the result object
-   */
-  private getStatus(
-    key: string,
-    isHealthy: boolean,
-    options?: { [key: string]: unknown },
-  ): HealthIndicatorResult {
-    return {
-      [key]: {
-        status: isHealthy ? 'up' : 'down',
-        ...options,
-      },
-    };
+  constructor(@Optional() private readonly connection: Connection) {
+    super();
   }
 
   /**
@@ -74,7 +56,7 @@ export class DatabaseHealthIndicator {
    *
    * @example
    * ```TypeScript
-   * databaseHealthIndicator.pingDb('db', { timeout: 800 });
+   * databaseHealthIndicator.pingCheck('db', { timeout: 800 });
    * ```
    */
   async pingCheck(
@@ -101,7 +83,7 @@ export class DatabaseHealthIndicator {
         throw new TimeoutError(
           timeout,
           this.getStatus(key, isHealthy, {
-            message: `Database did not respond after ${timeout}ms`,
+            message: `timeout of ${timeout}ms exceeded`,
           }),
         );
       }
