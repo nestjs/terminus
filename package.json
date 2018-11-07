@@ -1,6 +1,6 @@
 {
-  "name": "@brunnerlivio/terminus",
-  "version": "5.4.0-rc9",
+  "name": "@nestjs/terminus",
+  "version": "5.4.0-rc.0",
   "description": "Nest - modern, fast, powerful node.js web framework (@terminus)",
   "author": "Kamil Mysliwiec",
   "main": "dist/index.js",
@@ -37,7 +37,8 @@
     "ts-jest": "^23.10.4",
     "ts-node": "^7.0.1",
     "tslint-config-prettier": "^1.15.0",
-    "typescript": "^3.1.6"
+    "typescript": "^3.1.6",
+    "opn": "^5.4.0"
   },
   "repository": {
     "url": "https://github.com/BrunnerLivio/nest-terminus"
