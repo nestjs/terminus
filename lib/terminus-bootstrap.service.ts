@@ -112,6 +112,19 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
   }
 
   /**
+   * Logs the health check registration to the logger
+   * @param healtChecks The health check map to log
+   */
+  private logHealthCheckRegister(healtChecks: HealthCheckMap) {
+    Object.keys(healtChecks).forEach(endpoint =>
+      this.logger.log(
+        `Mapped {${endpoint}, GET} healthcheck route`,
+        'TerminusExplorer',
+      ),
+    );
+  }
+
+  /**
    * Bootstraps the third party terminus library with
    * the given module options
    */
@@ -119,8 +132,9 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
     const healthChecks = this.prepareHealthChecks();
     this.terminus(this.httpServer, {
       healthChecks,
-      logger: this.logError,
+      logger: this.logError.bind(this),
     });
+    this.logHealthCheckRegister(healthChecks);
   }
 
   /**
