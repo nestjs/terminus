@@ -99,6 +99,19 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
   }
 
   /**
+   * Logs an error message of terminuss
+   * @param message The log message
+   * @param error The error which was thrown
+   */
+  private logError(message: string, error: HealthCheckError | Error) {
+    if ((error as HealthCheckError).causes) {
+      const healthError: HealthCheckError = error as HealthCheckError;
+      message = `${message} ${JSON.stringify(healthError.causes)}`;
+    }
+    this.logger.error(message, error.stack);
+  }
+
+  /**
    * Bootstraps the third party terminus library with
    * the given module options
    */
@@ -106,8 +119,7 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
     const healthChecks = this.prepareHealthChecks();
     this.terminus(this.httpServer, {
       healthChecks,
-      logger: (message: string, error: Error) =>
-        this.logger.error(message, error.stack),
+      logger: this.logError,
     });
   }
 
