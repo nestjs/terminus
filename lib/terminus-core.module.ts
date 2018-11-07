@@ -4,6 +4,7 @@ import {
   Inject,
   Module,
   Provider,
+  HttpModule,
 } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import {
@@ -15,13 +16,18 @@ import { TERMINUS_MODULE_OPTIONS } from './terminus.constants';
 import { TerminusBootstrapService } from './terminus-bootstrap.service';
 import { TerminusLibProvider } from './terminus-lib.provider';
 import { TerminusModule } from './terminus.module';
+import { DatabaseHealthIndicator } from '.';
+import { DNSHealthIndicator } from './health-indicators';
 
 /**
  * The internal Terminus Module which handles the integration
  * with the third party Terminus library and Nest
  */
 @Global()
-@Module({})
+@Module({
+  providers: [TerminusLibProvider, TerminusBootstrapService],
+  exports: [],
+})
 export class TerminusCoreModule {
   constructor(
     @Inject(TERMINUS_MODULE_OPTIONS)
@@ -34,7 +40,7 @@ export class TerminusCoreModule {
    * synchronously and sets the correct providers
    * @param options The options to bootstrap the module synchronously
    */
-  static forRoot(options: TerminusModuleOptions = {}): DynamicModule {
+  static forRoot(options: TerminusModuleOptions): DynamicModule {
     const terminusModuleOptions = {
       provide: TERMINUS_MODULE_OPTIONS,
       useValue: options,
@@ -42,11 +48,14 @@ export class TerminusCoreModule {
 
     return {
       module: TerminusCoreModule,
+      imports: [HttpModule],
       providers: [
         terminusModuleOptions,
         TerminusLibProvider,
         TerminusBootstrapService,
+        DatabaseHealthIndicator,
       ],
+      exports: [DatabaseHealthIndicator],
     };
   }
 
@@ -59,12 +68,15 @@ export class TerminusCoreModule {
     const asyncProviders = this.createAsyncProviders(options);
     return {
       module: TerminusModule,
-      imports: options.imports,
+      imports: [...(options.imports || []), HttpModule],
       providers: [
         ...asyncProviders,
         TerminusBootstrapService,
         TerminusLibProvider,
+        DatabaseHealthIndicator,
+        DNSHealthIndicator,
       ],
+      exports: [DatabaseHealthIndicator, DNSHealthIndicator],
     };
   }
 
@@ -76,7 +88,7 @@ export class TerminusCoreModule {
   private static createAsyncProviders(
     options: TerminusModuleAsyncOptions,
   ): Provider[] {
-    if (options.useFactory) {
+    if (options.useFactory || options.useExisting) {
       return [this.createAsyncOptionsProvider(options)];
     }
     return [
@@ -107,7 +119,7 @@ export class TerminusCoreModule {
       provide: TERMINUS_MODULE_OPTIONS,
       useFactory: async (optionsFactory: TerminusOptionsFactory) =>
         await optionsFactory.createTerminusOptions(),
-      inject: [options.useClass],
+      inject: [options.useClass || options.useExisting],
     };
   }
 }

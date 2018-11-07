@@ -1,30 +1,32 @@
 {
   "name": "@brunnerlivio/terminus",
-  "version": "5.3.0",
+  "version": "5.4.0-rc9",
   "description": "Nest - modern, fast, powerful node.js web framework (@terminus)",
   "author": "Kamil Mysliwiec",
+  "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
     "build": "rm -rf dist && tsc -p tsconfig.json",
     "precommit": "lint-staged",
     "prepublish:npm": "npm run build",
+    "prepublish": "npm run build",
     "publish:npm": "npm publish --access public",
     "prepublish:next": "npm run build",
     "publish:next": "npm publish --access public --tag next",
     "test": "npm run e2e",
-    "e2e": "jest --config=e2e/jest-e2e.json --detectOpenHandles --forceExit",
-    "e2e:watch": "jest --watch --config=e2e/jest-e2e.json",
+    "e2e": "jest --config=e2e/jest-e2e.json --detectOpenHandles --runInBand --forceExit",
+    "e2e:watch": "jest --watch --detectOpenHandles --runInBand --forceExit --config=e2e/jest-e2e.json",
     "doc": "./node_modules/.bin/compodoc -p tsconfig.json"
   },
   "devDependencies": {
-    "@compodoc/compodoc": "^1.1.5",
-    "@godaddy/terminus": "^3.0.1",
-    "@nestjs/common": "^5.3.9",
-    "@nestjs/core": "^5.3.10",
-    "@nestjs/testing": "^5.3.8",
-    "@types/jest": "^23.3.2",
-    "@types/node": "^10.11.3",
-    "husky": "^1.0.1",
+    "@compodoc/compodoc": "^1.1.6",
+    "@godaddy/terminus": "^4.1.0",
+    "@nestjs/common": "^5.4.0",
+    "@nestjs/core": "^5.4.0",
+    "@nestjs/testing": "^5.4.0",
+    "@types/jest": "^23.3.9",
+    "@types/node": "^8.9.0",
+    "husky": "^1.1.3",
     "jest": "^23.6.0",
     "lint-staged": "^7.3.0",
     "prettier": "^1.14.3",
@@ -32,19 +34,26 @@
     "rxjs": "^6.3.3",
     "rxjs-compat": "^6.3.3",
     "supertest": "^3.3.0",
-    "ts-jest": "^23.10.2",
+    "ts-jest": "^23.10.4",
     "ts-node": "^7.0.1",
-    "typescript": "^3.1.1"
+    "tslint-config-prettier": "^1.15.0",
+    "typescript": "^3.1.6"
   },
   "repository": {
     "url": "https://github.com/BrunnerLivio/nest-terminus"
   },
   "peerDependencies": {
-    "@nestjs/common": "^5.3.9",
-    "@nestjs/core": "^5.3.10",
-    "@godaddy/terminus": "^3.0.0",
+    "@nestjs/common": "^5.4.0",
+    "@nestjs/core": "^5.4.0",
+    "@nestjs/typeorm": "^5.2.2",
+    "typeorm": "^0.2.8",
+    "@godaddy/terminus": "^4.1.0",
     "reflect-metadata": "0.1.12",
     "rxjs": "^6.3.3"
+  },
+  "optionalDependencies": {
+    "typeorm": "^0.2.8",
+    "@nestjs/typeorm": "^5.2.2"
   },
   "lint-staged": {
     "*.ts": [
@@ -52,5 +61,7 @@
       "git add"
     ]
   },
-  "dependencies": {}
+  "dependencies": {
+    "mysql": "^2.16.0"
+  }
 }

@@ -4,6 +4,10 @@ import {
   TerminusModuleAsyncOptions,
 } from './interfaces/terminus-module-options.interface';
 import { TerminusCoreModule } from './terminus-core.module';
+import {
+  DatabaseHealthIndicator,
+  DNSHealthIndicator,
+} from './health-indicators';
 
 /**
  * Terminus Module which represents the integration of the

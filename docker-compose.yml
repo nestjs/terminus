@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  mysql:
+    image: mysql:5.7.22
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+    ports:
+      - "3306:3306"
+    networks:
+      - overlay
+
+  lib:
+    build:
+      context: .
+    depends_on:
+      - mysql
+    networks:
+      - overlay
+    environment:
+      WAIT_HOSTS: mysql:3306
+
+networks:
+  overlay:

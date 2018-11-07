@@ -6,3 +6,6 @@ tslint.json
 tsconfig.json
 .prettierrc
 documentation
+sample
+.github
+e2e

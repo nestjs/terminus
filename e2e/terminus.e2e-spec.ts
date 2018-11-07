@@ -1,15 +1,14 @@
 import { INestApplication, DynamicModule } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { TerminusModule } from '../lib/terminus.module';
-import { TerminusOptions } from '../lib/interfaces/terminus-options';
-import { async } from 'rxjs/internal/scheduler/async';
-import { TerminusBootstrapService } from '../lib/terminus-bootstrap.service';
 import { TerminusLibProvider } from '../lib/terminus-lib.provider';
 import { HTTP_SERVER_REF } from '@nestjs/core';
 import {
   TerminusModuleAsyncOptions,
   TerminusOptionsFactory,
+  TerminusModuleOptions,
 } from '../lib/interfaces';
+import { TerminusOptions } from '@godaddy/terminus';
 
 describe('Terminus', () => {
   let app: INestApplication;
@@ -20,8 +19,20 @@ describe('Terminus', () => {
   };
   let terminusOptions: TerminusOptions = {
     healthChecks: {
-      '/health': async () => true,
+      '/health': expect.any(Function),
     },
+    logger: expect.any(Function),
+  };
+
+  let terminusModuleOptions: TerminusModuleOptions = {
+    endpoints: [
+      {
+        url: '/health',
+        healthIndicators: [
+          async () => ({ db: { whatever: true, status: 'up' } }),
+        ],
+      },
+    ],
   };
 
   async function bootstrapModule(options: DynamicModule) {
@@ -42,7 +53,7 @@ describe('Terminus', () => {
   it('should correctly call Terminus with useFactory', async () => {
     await bootstrapModule(
       TerminusModule.forRootAsync({
-        useFactory: async (): Promise<TerminusOptions> => terminusOptions,
+        useFactory: () => terminusModuleOptions,
       }),
     );
     expect(terminusLibProvider).toHaveBeenCalledWith(
@@ -52,14 +63,10 @@ describe('Terminus', () => {
   });
 
   it('should correctly call Terminus with useClass', async () => {
-    const onShutdown = async () => {
-      return 'working';
-    };
     class TerminusService implements TerminusOptionsFactory {
-      createTerminusOptions(): TerminusOptions {
-        return { onShutdown };
+      createTerminusOptions(): TerminusModuleOptions {
+        return terminusModuleOptions;
       }
-      public onShutdown = onShutdown;
     }
 
     app = await bootstrapModule(
@@ -67,14 +74,6 @@ describe('Terminus', () => {
         useClass: TerminusService,
       }),
     );
-
-    expect(terminusLibProvider).toHaveBeenCalledWith(httpServer, {
-      onShutdown,
-    });
-  });
-
-  it('should correctly call Terminus with synchronous forRoot', async () => {
-    app = await bootstrapModule(TerminusModule.forRoot(terminusOptions));
 
     expect(terminusLibProvider).toHaveBeenCalledWith(
       httpServer,

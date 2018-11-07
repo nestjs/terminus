@@ -1,16 +1,31 @@
-import { Injectable, Inject, OnModuleInit, HttpServer } from '@nestjs/common';
+import {
+  Injectable,
+  Inject,
+  OnApplicationBootstrap,
+  HttpServer,
+  Logger,
+} from '@nestjs/common';
 import { TERMINUS_MODULE_OPTIONS, TERMINUS_LIB } from './terminus.constants';
-import { TerminusModuleOptions } from './interfaces';
+import { TerminusModuleOptions, HealthIndicatorFunction } from './interfaces';
 import { HTTP_SERVER_REF } from '@nestjs/core';
 import { Server } from 'http';
-import { Terminus } from '@godaddy/terminus';
+import { HealthCheckError, Terminus, HealthCheckMap } from '@godaddy/terminus';
 
 /**
  * Bootstraps the third party Terminus library with the
  * configured Module options
  */
 @Injectable()
-export class TerminusBootstrapService implements OnModuleInit {
+export class TerminusBootstrapService implements OnApplicationBootstrap {
+  /**
+   * The http server of NestJS
+   */
+  private httpServer: Server;
+  /**
+   * The NestJS logger
+   */
+  private readonly logger = new Logger(TerminusBootstrapService.name, true);
+
   /**
    * Intiailizes the service
    * @param options The terminus module options
@@ -25,13 +40,82 @@ export class TerminusBootstrapService implements OnModuleInit {
   ) {}
 
   /**
-   * Gets called when the Module gets initialized.
-   *
+   * Executes the given health indicators and stores the caused
+   * errors and results
+   * @param healthIndicators The health indicators which should get executed
+   */
+  private async executeHealthIndicators(
+    healthIndicators: HealthIndicatorFunction[],
+  ): Promise<{ results: unknown[]; errors: unknown[] }> {
+    const results: unknown[] = [];
+    const errors: unknown[] = [];
+    await Promise.all(
+      healthIndicators
+        // Register all promises
+        .map(healthIndicator => healthIndicator())
+        .map((p: Promise<unknown>) =>
+          p.catch((error: Error) => {
+            if (error instanceof HealthCheckError) {
+              errors.push(error.causes);
+            } else {
+              throw error;
+            }
+          }),
+        )
+        .map((p: Promise<unknown>) =>
+          p.then((result: unknown) => result && results.push(result)),
+        ),
+    );
+
+    return { results, errors };
+  }
+
+  /**
+   * Prepares the health check using the configured health
+   * indicators
+   */
+  private prepareHealthChecks(): HealthCheckMap {
+    const healthChecks: HealthCheckMap = {};
+    this.options.endpoints.forEach(endpoint => {
+      const healthCheck = async () => {
+        const { results, errors } = await this.executeHealthIndicators(
+          endpoint.healthIndicators,
+        );
+        const info = (results || [])
+          .concat(errors)
+          .reduce((previous, current) => Object.assign(previous, current), {});
+
+        if (errors.length) {
+          throw new HealthCheckError('Healthcheck failed', info);
+        } else {
+          return info;
+        }
+      };
+
+      healthChecks[endpoint.url] = healthCheck;
+    });
+
+    return healthChecks;
+  }
+
+  /**
    * Bootstraps the third party terminus library with
    * the given module options
    */
-  public onModuleInit() {
-    const httpServer: HttpServer = this.httpAdapter.getHttpServer();
-    this.terminus(httpServer, this.options);
+  private bootstrapTerminus() {
+    const healthChecks = this.prepareHealthChecks();
+    this.terminus(this.httpServer, {
+      healthChecks,
+      logger: (message: string, error: Error) =>
+        this.logger.error(message, error.stack),
+    });
+  }
+
+  /**
+   * Gets called when the application gets bootstrapped.
+   */
+  public onApplicationBootstrap() {
+    this.httpServer = this.httpAdapter.getHttpServer();
+    this.bootstrapTerminus();
   }
 }

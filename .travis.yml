@@ -1,20 +1,28 @@
 
 language: node_js
 
+services:
+  - docker
+
 cache:
   directories:
     - "node_modules"
 
 node_js:
-- "8"
-- "9"
 - "10"
+
+env:
+  global:
+    - "GH_REF=github.com/BrunnerLivio/nest-terminus.git"
+
 before_install:
   - npm i -g npm@latest
+
 install:
   - npm install
 script:
-  - npm run test
+  - sudo service mysql stop
+  - docker-compose build && docker-compose run lib
 deploy:
   - provider: script
     # Have to use `&&` because of issue https://github.com/travis-ci/dpl/issues/673
@@ -31,7 +39,3 @@ deploy:
       node_js: "10"
       tags: true
       tag: beta
-
-env:
-  global:
-    - "GH_REF=github.com/BrunnerLivio/nest-terminus.git"

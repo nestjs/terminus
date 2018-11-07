@@ -1,8 +1,30 @@
 import { Type } from '@nestjs/common';
 import { ModuleMetadata } from '@nestjs/common/interfaces';
-import { TerminusOptions } from '@godaddy/terminus';
+import { HealthIndicatorFunction } from './health-indicator.interface';
 
-export type TerminusModuleOptions = TerminusOptions;
+/**
+ * Represents one endpoint / health check
+ */
+export interface TerminusEndpoints {
+  /**
+   * The url of the endpoint / health check
+   */
+  url: string;
+  /**
+   * The health checks which should get executed.
+   */
+  healthIndicators: HealthIndicatorFunction[];
+}
+
+/**
+ * The options of the terminus module
+ */
+export interface TerminusModuleOptions {
+  /**
+   * A list of endpoints
+   */
+  endpoints: TerminusEndpoints[];
+}
 
 /**
  * The interface for the factory which provides the Terminus options
@@ -28,15 +50,19 @@ export interface TerminusModuleAsyncOptions
   /**
    * The class which should be used to provide the Terminus options
    */
-  useClass?: Type<TerminusModuleOptions>;
+  useClass?: Type<TerminusOptionsFactory>;
+  /**
+   * Import existing providers from other module
+   */
+  useExisting?: Type<TerminusOptionsFactory>;
   /**
    * The factory which should be used to provide the Terminus options
    */
   useFactory?: (
-    ...args: any[]
+    ...args: unknown[]
   ) => Promise<TerminusModuleOptions> | TerminusModuleOptions;
   /**
    * The providers which should get injected
    */
-  inject?: any[];
+  inject?: unknown[];
 }
