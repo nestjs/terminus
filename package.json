@@ -1,6 +1,6 @@
 {
   "name": "@brunnerlivio/terminus",
-  "version": "5.4.0-rc6",
+  "version": "5.4.0-rc9",
   "description": "Nest - modern, fast, powerful node.js web framework (@terminus)",
   "author": "Kamil Mysliwiec",
   "main": "dist/index.js",
