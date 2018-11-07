@@ -14,8 +14,8 @@
     "prepublish:next": "npm run build",
     "publish:next": "npm publish --access public --tag next",
     "test": "npm run e2e",
-    "e2e": "jest --config=e2e/jest-e2e.json --detectOpenHandles --forceExit",
-    "e2e:watch": "jest --watch --config=e2e/jest-e2e.json",
+    "e2e": "jest --config=e2e/jest-e2e.json --detectOpenHandles --runInBand --forceExit",
+    "e2e:watch": "jest --watch --detectOpenHandles --runInBand --forceExit --config=e2e/jest-e2e.json",
     "doc": "./node_modules/.bin/compodoc -p tsconfig.json"
   },
   "devDependencies": {

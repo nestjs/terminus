@@ -68,7 +68,7 @@ export class TerminusCoreModule {
     const asyncProviders = this.createAsyncProviders(options);
     return {
       module: TerminusModule,
-      imports: [].concat(options.imports).concat([HttpModule]),
+      imports: [...(options.imports || []), HttpModule],
       providers: [
         ...asyncProviders,
         TerminusBootstrapService,

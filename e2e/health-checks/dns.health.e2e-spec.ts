@@ -57,18 +57,95 @@ describe('DNS Health', () => {
   it('should check if correctly display a timeout error', async () => {
     await bootstrapModule({
       inject: [DNSHealthIndicator],
-      useFactory: getTerminusOptions,
+      useFactory: (dns: DNSHealthIndicator): TerminusModuleOptions => ({
+        endpoints: [
+          {
+            url: '/health',
+            healthIndicators: [
+              async () =>
+                dns.pingCheck('dns', 'https://google.com', { timeout: 1 }),
+            ],
+          },
+        ],
+      }),
     });
 
-    const response = await Axios.get(`http://0.0.0.0:${PORT}/health`);
-    expect(response.status).toBe(200);
-    expect(response.data).toEqual({
-      status: 'ok',
-      info: { dns: { status: 'up' } },
+    try {
+      const response = await Axios.get(`http://0.0.0.0:${PORT}/health`);
+    } catch (error) {
+      expect(error.response.status).toBe(503);
+      expect(error.response.data).toEqual({
+        status: 'error',
+        error: { dns: { status: 'down', message: expect.any(String) } },
+      });
+    }
+  });
+
+  it('should check if correctly display not found error', async () => {
+    await bootstrapModule({
+      inject: [DNSHealthIndicator],
+      useFactory: (dns: DNSHealthIndicator): TerminusModuleOptions => ({
+        endpoints: [
+          {
+            url: '/health',
+            healthIndicators: [
+              async () =>
+                dns.pingCheck('dns', 'https://asdfn-not-an-actual-address.com'),
+            ],
+          },
+        ],
+      }),
     });
+
+    try {
+      const response = await Axios.get(`http://0.0.0.0:${PORT}/health`);
+    } catch (error) {
+      expect(error.response.status).toBe(503);
+      expect(error.response.data).toEqual({
+        status: 'error',
+        error: { dns: { status: 'down', message: expect.any(String) } },
+      });
+    }
+  });
+
+  it('should check if correctly display not found error', async () => {
+    await bootstrapModule({
+      inject: [DNSHealthIndicator],
+      useFactory: (dns: DNSHealthIndicator): TerminusModuleOptions => ({
+        endpoints: [
+          {
+            url: '/health',
+            healthIndicators: [
+              async () =>
+                dns.pingCheck(
+                  'dns',
+                  'https://pokeapi.co/api/v2/pokemon/134125',
+                ),
+            ],
+          },
+        ],
+      }),
+    });
+
+    try {
+      const response = await Axios.get(`http://0.0.0.0:${PORT}/health`);
+    } catch (error) {
+      expect(error.response.status).toBe(503);
+      expect(error.response.data).toEqual({
+        status: 'error',
+        error: {
+          dns: {
+            status: 'down',
+            message: expect.any(String),
+            statusCode: 404,
+            statusText: 'Not Found',
+          },
+        },
+      });
+    }
   });
 
   afterEach(async () => {
-    app.close();
+    await app.close();
   });
 });

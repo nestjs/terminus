@@ -90,7 +90,7 @@ describe('Database Health', () => {
         error: {
           database: {
             status: 'down',
-            message: 'Database did not respond after 1ms',
+            message: expect.any(String),
           },
         },
       });
@@ -98,6 +98,6 @@ describe('Database Health', () => {
   });
 
   afterEach(async () => {
-    app.close();
+    await app.close();
   });
 });
