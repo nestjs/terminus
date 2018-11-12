@@ -5,7 +5,7 @@ import { HealthIndicatorFunction } from './health-indicator.interface';
 /**
  * Represents one endpoint / health check
  */
-export interface TerminusEndpoints {
+export interface TerminusEndpoint {
   /**
    * The url of the endpoint / health check
    */
@@ -23,7 +23,7 @@ export interface TerminusModuleOptions {
   /**
    * A list of endpoints
    */
-  endpoints: TerminusEndpoints[];
+  endpoints: TerminusEndpoint[];
 }
 
 /**
