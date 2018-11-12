@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { TERMINUS_MODULE_OPTIONS, TERMINUS_LIB } from './terminus.constants';
 import { TerminusModuleOptions, HealthIndicatorFunction } from './interfaces';
-import { HTTP_SERVER_REF } from '@nestjs/core';
+import { HTTP_SERVER_REF, ModuleRef } from '@nestjs/core';
 import { Server } from 'http';
 import { HealthCheckError, Terminus, HealthCheckMap } from '@godaddy/terminus';
 
@@ -25,18 +25,21 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
    * The NestJS logger
    */
   private readonly logger = new Logger(TerminusBootstrapService.name, true);
-
+  /**
+   * The http adapter of NestJS
+   */
+  private httpAdapter: HttpServer;
   /**
    * Intiailizes the service
    * @param options The terminus module options
-   * @param httpAdapter The http adapter from NestJS which will be used for the terminus instance
    * @param terminus The terminus instance
+   * @param moduleRef The module refeference
    */
   constructor(
     @Inject(TERMINUS_MODULE_OPTIONS)
     private readonly options: TerminusModuleOptions,
-    @Inject(HTTP_SERVER_REF) private readonly httpAdapter: HttpServer,
     @Inject(TERMINUS_LIB) private readonly terminus: Terminus,
+    private readonly moduleRef: ModuleRef,
   ) {}
 
   /**
@@ -141,6 +144,8 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
    * Gets called when the application gets bootstrapped.
    */
   public onApplicationBootstrap() {
+    // Get the http adapter of nestjs
+    this.httpAdapter = this.moduleRef.get<HttpServer>(HTTP_SERVER_REF);
     this.httpServer = this.httpAdapter.getHttpServer();
     this.bootstrapTerminus();
   }
