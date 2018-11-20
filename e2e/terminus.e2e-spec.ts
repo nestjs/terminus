@@ -2,7 +2,7 @@ import { INestApplication, DynamicModule } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { TerminusModule } from '../lib/terminus.module';
 import { TerminusLibProvider } from '../lib/terminus-lib.provider';
-import { HTTP_SERVER_REF } from '@nestjs/core';
+import { ApplicationReferenceHost } from '@nestjs/core';
 import {
   TerminusModuleAsyncOptions,
   TerminusOptionsFactory,
@@ -14,9 +14,6 @@ describe('Terminus', () => {
   let app: INestApplication;
   let terminusLibProvider = jest.fn();
   let httpServer = {};
-  let httpServerAdapter = {
-    getHttpServer: () => httpServer,
-  };
   let terminusOptions: TerminusOptions = {
     healthChecks: {
       '/health': expect.any(Function),
@@ -41,11 +38,11 @@ describe('Terminus', () => {
     })
       .overrideProvider(TerminusLibProvider.provide)
       .useValue(terminusLibProvider)
-      .overrideProvider(HTTP_SERVER_REF)
-      .useValue(httpServerAdapter)
       .compile();
 
     app = module.createNestApplication();
+    httpServer = app.get<ApplicationReferenceHost>(ApplicationReferenceHost)
+      .applicationRef.httpServer;
     await app.init();
     return app;
   }

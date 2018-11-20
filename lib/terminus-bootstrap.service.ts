@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { TERMINUS_MODULE_OPTIONS, TERMINUS_LIB } from './terminus.constants';
 import { TerminusModuleOptions, HealthIndicatorFunction } from './interfaces';
-import { HTTP_SERVER_REF } from '@nestjs/core';
+import { ApplicationReferenceHost } from '@nestjs/core';
 import { Server } from 'http';
 import { HealthCheckError, Terminus, HealthCheckMap } from '@godaddy/terminus';
 
@@ -27,16 +27,16 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
   private readonly logger = new Logger(TerminusBootstrapService.name, true);
 
   /**
-   * Intiailizes the service
+   * Initializes the service
    * @param options The terminus module options
-   * @param httpAdapter The http adapter from NestJS which will be used for the terminus instance
+   * @param refHost The application reference host of NestJS which contains the http server instance
    * @param terminus The terminus instance
    */
   constructor(
     @Inject(TERMINUS_MODULE_OPTIONS)
     private readonly options: TerminusModuleOptions,
-    @Inject(HTTP_SERVER_REF) private readonly httpAdapter: HttpServer,
     @Inject(TERMINUS_LIB) private readonly terminus: Terminus,
+    private readonly refHost: ApplicationReferenceHost,
   ) {}
 
   /**
@@ -99,7 +99,7 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
   }
 
   /**
-   * Logs an error message of terminuss
+   * Logs an error message of terminus
    * @param message The log message
    * @param error The error which was thrown
    */
@@ -113,10 +113,10 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
 
   /**
    * Logs the health check registration to the logger
-   * @param healtChecks The health check map to log
+   * @param healthChecks The health check map to log
    */
-  private logHealthCheckRegister(healtChecks: HealthCheckMap) {
-    Object.keys(healtChecks).forEach(endpoint =>
+  private logHealthCheckRegister(healthChecks: HealthCheckMap) {
+    Object.keys(healthChecks).forEach(endpoint =>
       this.logger.log(
         `Mapped {${endpoint}, GET} healthcheck route`,
         'TerminusExplorer',
@@ -141,7 +141,7 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
    * Gets called when the application gets bootstrapped.
    */
   public onApplicationBootstrap() {
-    this.httpServer = this.httpAdapter.getHttpServer();
+    this.httpServer = this.refHost.applicationRef.httpServer;
     this.bootstrapTerminus();
   }
 }
