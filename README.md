@@ -29,11 +29,15 @@ The [Terminus](https://github.com/godaddy/terminus) module for [Nest](https://gi
 
 ## Installation
 
-NOT PUBLISHED YET
+```shell
 
-## Quick Start
+npm install --save @nestjs/terminus @godaddy/terminus
 
-TODO
+```
+
+## Usage
+
+[See docs](https://docs.nestjs.com/recipes/terminus)
 
 ## Support
 
