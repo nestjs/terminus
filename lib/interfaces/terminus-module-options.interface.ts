@@ -1,6 +1,16 @@
 import { Type } from '@nestjs/common';
 import { ModuleMetadata } from '@nestjs/common/interfaces';
 import { HealthIndicatorFunction } from './health-indicator.interface';
+import { HealthCheckError } from '@godaddy/terminus';
+
+/**
+ * The logger which will be used inside the terminus application
+ * to log errors or messages
+ */
+export type TerminusLogger = (
+  message: any,
+  error?: HealthCheckError | Error,
+) => any;
 
 /**
  * Represents one endpoint / health check
@@ -24,6 +34,8 @@ export interface TerminusModuleOptions {
    * A list of endpoints
    */
   endpoints: TerminusEndpoint[];
+
+  logger?: TerminusLogger;
 }
 
 /**
@@ -39,7 +51,7 @@ export interface TerminusOptionsFactory {
 }
 
 /**
- * The options for the asynchronous Terminus module creation
+ * The options f$r the asynchronous Terminus module creation
  */
 export interface TerminusModuleAsyncOptions
   extends Pick<ModuleMetadata, 'imports'> {
