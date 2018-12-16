@@ -132,7 +132,9 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
     const healthChecks = this.prepareHealthChecks();
     this.terminus(this.httpServer, {
       healthChecks,
-      logger: this.logError.bind(this),
+      // Use the logger of the user
+      // or by the default logger if is not defined
+      logger: this.options.logger || this.logError.bind(this),
     });
     this.logHealthCheckRegister(healthChecks);
   }
