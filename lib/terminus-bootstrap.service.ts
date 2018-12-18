@@ -103,7 +103,7 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
    * @param message The log message
    * @param error The error which was thrown
    */
-  private logError(message: string, error: HealthCheckError | Error) {
+  private logError(message: string, error: HealthCheckError | Error): void {
     if ((error as HealthCheckError).causes) {
       const healthError: HealthCheckError = error as HealthCheckError;
       message = `${message} ${JSON.stringify(healthError.causes)}`;
@@ -125,17 +125,40 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
   }
 
   /**
+   * Checks which logger it should use and returns it
+   *
+   * @returns Returns the logger which should be used for the terminus
+   * library
+   */
+  private getTerminusLogger(): (...args: any[]) => void {
+    // Function which acts as a empty placeholder
+    // so the program does not break
+    const noop = (...args: any[]): void => null;
+
+    let terminusLogger = this.options.logger;
+
+    // If null (not undefined) is given, return the empty function placeholder
+    if (terminusLogger === null) {
+      terminusLogger = noop;
+    } else if (!terminusLogger) {
+      // If the userLogger is not defined or any false-value
+      // use the default logger
+      terminusLogger = this.logError.bind(this);
+    }
+
+    // If the user logger is truth-y then return it
+    return terminusLogger;
+  }
+
+  /**
    * Bootstraps the third party terminus library with
    * the given module options
    */
   private bootstrapTerminus() {
     const healthChecks = this.prepareHealthChecks();
-    this.terminus(this.httpServer, {
-      healthChecks,
-      // Use the logger of the user
-      // or by the default logger if is not defined
-      logger: this.options.logger || this.logError.bind(this),
-    });
+    const logger = this.getTerminusLogger();
+
+    this.terminus(this.httpServer, { healthChecks, logger });
     this.logHealthCheckRegister(healthChecks);
   }
 
