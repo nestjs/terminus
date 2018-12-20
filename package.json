@@ -19,6 +19,7 @@
     "doc": "./node_modules/.bin/compodoc -p tsconfig.json"
   },
   "devDependencies": {
+    "mysql": "^2.16.0",
     "@compodoc/compodoc": "^1.1.7",
     "@godaddy/terminus": "^4.1.0",
     "@nestjs/common": "^5.5.0",
@@ -61,8 +62,5 @@
       "prettier --write",
       "git add"
     ]
-  },
-  "dependencies": {
-    "mysql": "^2.16.0"
   }
 }
