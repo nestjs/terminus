@@ -26,9 +26,12 @@
     "@nestjs/testing": "^5.5.0",
     "@types/jest": "^23.3.10",
     "@types/node": "^10.12.15",
+    "fastify": "^1.13.2",
+    "fastify-formbody": "^2.0.3",
     "husky": "^1.2.1",
     "jest": "^23.6.0",
     "lint-staged": "^8.1.0",
+    "opn": "^5.4.0",
     "prettier": "^1.15.3",
     "reflect-metadata": "0.1.12",
     "rxjs": "^6.3.3",
@@ -37,8 +40,7 @@
     "ts-jest": "^23.10.5",
     "ts-node": "^7.0.1",
     "tslint-config-prettier": "^1.17.0",
-    "typescript": "^3.2.2",
-    "opn": "^5.4.0"
+    "typescript": "^3.2.2"
   },
   "repository": {
     "url": "https://github.com/BrunnerLivio/nest-terminus"
