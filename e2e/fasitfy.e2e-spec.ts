@@ -1,62 +1,38 @@
-import { INestApplication, DynamicModule } from '@nestjs/common';
-import {
-  TerminusModuleAsyncOptions,
-  TerminusModule,
-  TerminusModuleOptions,
-} from '../lib';
-import { NestFactory, FastifyAdapter } from '@nestjs/core';
+import { INestApplication } from '@nestjs/common';
+import { TerminusModuleOptions, TerminusEndpoint } from '../lib';
 
-import { TypeOrmModule } from '@nestjs/typeorm';
 import Axios from 'axios';
-import { HealthCheckError } from '@godaddy/terminus';
+import { bootstrapModule } from './helper/bootstrap-module';
 
 describe('Fastify', () => {
   let app: INestApplication;
-  const PORT = process.env.PORT || 3001;
+  let port: number;
 
-  class ApplicationModule {
-    static forRoot(options: TerminusModuleAsyncOptions): DynamicModule {
-      return {
-        module: ApplicationModule,
-        imports: [TerminusModule.forRootAsync(options)],
-      };
-    }
-  }
+  it('should run health checks with a fastify adapter', async done => {
+    const info = { test: { status: 'up' } };
 
-  async function bootstrapModule(options: TerminusModuleAsyncOptions) {
-    app = await NestFactory.create(
-      ApplicationModule.forRoot(options),
-      new FastifyAdapter(),
+    const endpoints: TerminusEndpoint[] = [
+      {
+        url: '/health',
+        healthIndicators: [async () => info],
+      },
+    ];
+
+    [app, port] = await bootstrapModule(
+      {
+        useFactory: (): TerminusModuleOptions => ({ endpoints }),
+      },
+      false,
+      true,
     );
-    await app.listen(PORT);
-  }
 
-  it('should run health checks with a fastify adapter', async () => {
-    await bootstrapModule({
-      useFactory: (): TerminusModuleOptions => ({
-        endpoints: [
-          {
-            url: '/health',
-            healthIndicators: [
-              async () => ({
-                test: {
-                  status: 'up',
-                },
-              }),
-            ],
-          },
-        ],
-      }),
-    });
-
-    const response = await Axios.get(`http://0.0.0.0:${PORT}/health`, {});
-    expect(response).toEqual({
-      status: 'ok',
-      info: { test: { status: 'up' } },
-    });
+    // Workaraound to wait until module is bootsrapped
+    setTimeout(async () => {
+      const response = await Axios.get(`http://0.0.0.0:${port}/health`);
+      expect(response.data).toEqual({ status: 'ok', info });
+      done();
+    }, 40);
   });
 
-  afterEach(async () => {
-    await app.close();
-  });
+  afterEach(async () => await app.close());
 });

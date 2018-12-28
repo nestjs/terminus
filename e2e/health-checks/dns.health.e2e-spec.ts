@@ -1,17 +1,12 @@
 import { INestApplication, DynamicModule } from '@nestjs/common';
-import {
-  TerminusModuleAsyncOptions,
-  TerminusModule,
-  TerminusModuleOptions,
-  DNSHealthIndicator,
-} from '../../lib';
-import { NestFactory } from '@nestjs/core';
+import { TerminusModuleOptions, DNSHealthIndicator } from '../../lib';
 
 import Axios from 'axios';
+import { bootstrapModule } from '../helper/bootstrap-module';
 
 describe('DNS Health', () => {
   let app: INestApplication;
-  const PORT = process.env.PORT || 3001;
+  let port: number;
 
   const getTerminusOptions = (
     dns: DNSHealthIndicator,
@@ -26,27 +21,15 @@ describe('DNS Health', () => {
     ],
   });
 
-  class ApplicationModule {
-    static forRoot(options: TerminusModuleAsyncOptions): DynamicModule {
-      return {
-        module: ApplicationModule,
-        imports: [TerminusModule.forRootAsync(options)],
-      };
-    }
-  }
-
-  async function bootstrapModule(options: TerminusModuleAsyncOptions) {
-    app = await NestFactory.create(ApplicationModule.forRoot(options));
-    await app.listen(PORT);
-  }
-
   it('should check if google is available', async () => {
-    await bootstrapModule({
-      inject: [DNSHealthIndicator],
-      useFactory: getTerminusOptions,
-    });
-
-    const response = await Axios.get(`http://0.0.0.0:${PORT}/health`);
+    [app, port] = await bootstrapModule(
+      {
+        inject: [DNSHealthIndicator],
+        useFactory: getTerminusOptions,
+      },
+      false,
+    );
+    const response = await Axios.get(`http://0.0.0.0:${port}/health`);
     expect(response.status).toBe(200);
     expect(response.data).toEqual({
       status: 'ok',
@@ -55,7 +38,7 @@ describe('DNS Health', () => {
   });
 
   it('should check if correctly display a timeout error', async () => {
-    await bootstrapModule({
+    [app, port] = await bootstrapModule({
       inject: [DNSHealthIndicator],
       useFactory: (dns: DNSHealthIndicator): TerminusModuleOptions => ({
         endpoints: [
@@ -71,7 +54,7 @@ describe('DNS Health', () => {
     });
 
     try {
-      const response = await Axios.get(`http://0.0.0.0:${PORT}/health`);
+      await Axios.get(`http://0.0.0.0:${port}/health`);
     } catch (error) {
       expect(error.response.status).toBe(503);
       expect(error.response.data).toEqual({
@@ -82,7 +65,7 @@ describe('DNS Health', () => {
   });
 
   it('should check if correctly display not found error', async () => {
-    await bootstrapModule({
+    [app, port] = await bootstrapModule({
       inject: [DNSHealthIndicator],
       useFactory: (dns: DNSHealthIndicator): TerminusModuleOptions => ({
         endpoints: [
@@ -98,7 +81,7 @@ describe('DNS Health', () => {
     });
 
     try {
-      const response = await Axios.get(`http://0.0.0.0:${PORT}/health`);
+      await Axios.get(`http://0.0.0.0:${port}/health`);
     } catch (error) {
       expect(error.response.status).toBe(503);
       expect(error.response.data).toEqual({
@@ -109,7 +92,7 @@ describe('DNS Health', () => {
   });
 
   it('should check if correctly display not found error', async () => {
-    await bootstrapModule({
+    [app, port] = await bootstrapModule({
       inject: [DNSHealthIndicator],
       useFactory: (dns: DNSHealthIndicator): TerminusModuleOptions => ({
         endpoints: [
@@ -128,7 +111,7 @@ describe('DNS Health', () => {
     });
 
     try {
-      const response = await Axios.get(`http://0.0.0.0:${PORT}/health`);
+      await Axios.get(`http://0.0.0.0:${port}/health`);
     } catch (error) {
       expect(error.response.status).toBe(503);
       expect(error.response.data).toEqual({
@@ -145,7 +128,5 @@ describe('DNS Health', () => {
     }
   });
 
-  afterEach(async () => {
-    await app.close();
-  });
+  afterEach(async () => await app.close());
 });

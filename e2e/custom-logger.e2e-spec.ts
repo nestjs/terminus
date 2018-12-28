@@ -1,74 +1,43 @@
-import { INestApplication, DynamicModule } from '@nestjs/common';
-import {
-  TerminusModuleAsyncOptions,
-  TerminusModule,
-  TerminusModuleOptions,
-} from '../lib';
-import { NestFactory } from '@nestjs/core';
+import { INestApplication } from '@nestjs/common';
+import { TerminusModuleOptions, TerminusEndpoint } from '../lib';
 
-import { TypeOrmModule } from '@nestjs/typeorm';
 import Axios from 'axios';
 import { HealthCheckError } from '@godaddy/terminus';
+import { bootstrapModule } from './helper/bootstrap-module';
 
 describe('Custom Logger', () => {
   let app: INestApplication;
-  const PORT = process.env.PORT || 3001;
-
-  class ApplicationModule {
-    static forRoot(options: TerminusModuleAsyncOptions): DynamicModule {
-      return {
-        module: ApplicationModule,
-        imports: [
-          TypeOrmModule.forRoot({
-            type: 'mysql',
-            host: 'mysql',
-            port: 3306,
-            username: 'root',
-            password: 'root',
-            database: 'test',
-            keepConnectionAlive: true,
-            retryAttempts: 2,
-            retryDelay: 1000,
-          }),
-          TerminusModule.forRootAsync(options),
-        ],
-      };
-    }
-  }
-
-  async function bootstrapModule(options: TerminusModuleAsyncOptions) {
-    app = await NestFactory.create(ApplicationModule.forRoot(options));
-    await app.listen(PORT);
-  }
+  let port: number;
 
   it('should log an error to the custom logger if an error has been thrown', async () => {
     const mockLogger = (message: string, error: HealthCheckError) => {
       expect(message).toBe('healthcheck failed');
       expect(error.causes).toEqual({ test: 'test' });
     };
+
     const healthError = new HealthCheckError('test', { test: 'test' });
-    await bootstrapModule({
+    const testHealthInidcator = async () => {
+      throw healthError;
+    };
+
+    const endpoints: TerminusEndpoint[] = [
+      {
+        url: '/health',
+        healthIndicators: [testHealthInidcator],
+      },
+    ];
+
+    [app, port] = await bootstrapModule({
       useFactory: (): TerminusModuleOptions => ({
+        endpoints,
         logger: mockLogger,
-        endpoints: [
-          {
-            url: '/health',
-            healthIndicators: [
-              async () => {
-                throw healthError;
-              },
-            ],
-          },
-        ],
       }),
     });
 
     try {
-      await Axios.get(`http://0.0.0.0:${PORT}/health`, {});
+      await Axios.get(`http://0.0.0.0:${port}/health`);
     } catch (err) {}
   });
 
-  afterEach(async () => {
-    await app.close();
-  });
+  afterEach(async () => await app.close());
 });
