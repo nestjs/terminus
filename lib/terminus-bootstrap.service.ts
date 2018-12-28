@@ -143,9 +143,7 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
    */
   public onApplicationBootstrap() {
     // httpServer for express, instance.server for fastify
-    this.httpServer =
-      this.refHost.applicationRef.httpServer ||
-      this.refHost.applicationRef.instance.server;
+    this.httpServer = this.refHost.applicationRef.getHttpServer();
     this.bootstrapTerminus();
   }
 }
