@@ -16,10 +16,10 @@
     "test": "npm run e2e",
     "e2e": "jest --config=e2e/jest-e2e.json --detectOpenHandles --forceExit",
     "e2e:watch": "jest --watch --detectOpenHandles --forceExit --config=e2e/jest-e2e.json",
-    "doc": "./node_modules/.bin/compodoc -p tsconfig.json"
+    "doc": "./node_modules/.bin/compodoc -p tsconfig.json",
+    "lint": "tslint -c tslint.json -p tsconfig.json"
   },
   "devDependencies": {
-    "mysql": "^2.16.0",
     "@compodoc/compodoc": "^1.1.7",
     "@godaddy/terminus": "^4.1.0",
     "@nestjs/common": "^5.5.0",
@@ -32,6 +32,7 @@
     "husky": "^1.2.1",
     "jest": "^23.6.0",
     "lint-staged": "^8.1.0",
+    "mysql": "^2.16.0",
     "opn": "^5.4.0",
     "portfinder": "^1.0.20",
     "prettier": "^1.15.3",
@@ -41,6 +42,7 @@
     "supertest": "^3.3.0",
     "ts-jest": "^23.10.5",
     "ts-node": "^7.0.1",
+    "tslint": "^5.12.0",
     "tslint-config-prettier": "^1.17.0",
     "typescript": "^3.2.2"
   },

@@ -17,7 +17,7 @@ export const promiseTimeout = function(
   promise: Promise<unknown>,
 ): Promise<unknown> {
   // Create a promise that rejects in <ms> milliseconds
-  let timeout = new Promise((resolve, reject) => {
+  let timeout = new Promise((_, reject) => {
     let id = setTimeout(() => {
       clearTimeout(id);
       reject(new TimeoutError('Timed out in ' + ms + 'ms.'));

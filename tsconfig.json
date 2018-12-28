@@ -11,7 +11,12 @@
     "sourceMap": false,
     "outDir": "./dist",
     "rootDir": "./lib",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "allowUnreachableCode": false,
+    "alwaysStrict": true
   },
   "include": [
     "lib/**/*"
