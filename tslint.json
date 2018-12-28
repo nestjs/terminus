@@ -1,9 +1,6 @@
 {
     "defaultSeverity": "error",
-    "extends": [
-        "tslint:recommended",
-        "tslint-config-prettier"
-    ],
+    "extends": "tslint-config-prettier",
     "jsRules": {},
     "rules": {
         "quotemark": [true, "single", "avoid-escape"],
@@ -18,7 +15,7 @@
         "linebreak-style": [
             false
         ],
-        "indent": false,
+        "indent": [true, "spaces", 2],
         "member-access": false,
         "ban-types": false,
         "max-classes-per-file": false,

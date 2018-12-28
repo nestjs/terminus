@@ -2,7 +2,6 @@ import {
   Injectable,
   Inject,
   OnApplicationBootstrap,
-  HttpServer,
   Logger,
 } from '@nestjs/common';
 import { TERMINUS_MODULE_OPTIONS, TERMINUS_LIB } from './terminus.constants';
@@ -143,7 +142,10 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
    * Gets called when the application gets bootstrapped.
    */
   public onApplicationBootstrap() {
-    this.httpServer = this.refHost.applicationRef.httpServer;
+    // httpServer for express, instance.server for fastify
+    this.httpServer =
+      this.refHost.applicationRef.httpServer ||
+      this.refHost.applicationRef.instance.server;
     this.bootstrapTerminus();
   }
 }
