@@ -1,12 +1,10 @@
 import {
   DynamicModule,
   Global,
-  Inject,
   Module,
   Provider,
   HttpModule,
 } from '@nestjs/common';
-import { ModuleRef } from '@nestjs/core';
 import {
   TerminusModuleOptions,
   TerminusModuleAsyncOptions,
@@ -29,12 +27,6 @@ import { DNSHealthIndicator } from './health-indicators';
   exports: [],
 })
 export class TerminusCoreModule {
-  constructor(
-    @Inject(TERMINUS_MODULE_OPTIONS)
-    private readonly options: TerminusModuleOptions,
-    private readonly moduleRef: ModuleRef,
-  ) {}
-
   /**
    * Bootstraps the internal Terminus Module with the given options
    * synchronously and sets the correct providers

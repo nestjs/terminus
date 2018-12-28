@@ -9,7 +9,9 @@
             "import-sources-order": "any",
             "named-imports-order": "any"
         }],
-        "no-console": [false],
+        "semicolon": [true],
+        "no-console": [true],
+        "no-require-imports": true,
         "interface-name": [true, "never-prefix"],
         "eofline": false,
         "linebreak-style": [
