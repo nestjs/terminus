@@ -4,7 +4,6 @@ import { TerminusModule } from '../lib/terminus.module';
 import { TerminusLibProvider } from '../lib/terminus-lib.provider';
 import { ApplicationReferenceHost } from '@nestjs/core';
 import {
-  TerminusModuleAsyncOptions,
   TerminusOptionsFactory,
   TerminusModuleOptions,
 } from '../lib/interfaces';

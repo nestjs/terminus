@@ -1,4 +1,4 @@
-import { INestApplication, DynamicModule } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
 import { TerminusModuleOptions, DNSHealthIndicator } from '../../lib';
 
 import Axios from 'axios';
