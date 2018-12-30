@@ -8,9 +8,9 @@
   "transform": {
     "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
   },
-  "testRegex": "/src/.*\\.(test|spec).(ts|tsx|js)$",
+  "testRegex": "/lib/.*\\.(test|spec).(ts|tsx|js)$",
   "collectCoverageFrom": [
-    "src/**/*.{js,jsx,tsx,ts}",
+    "lib/**/*.{js,jsx,tsx,ts}",
     "!**/node_modules/**",
     "!**/vendor/**"
   ],
@@ -18,5 +18,6 @@
     "json",
     "lcov"
   ],
+  "coverageDirectory": "./coverage",
   "testEnvironment": "node"
 }
