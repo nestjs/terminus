@@ -20,22 +20,29 @@ before_install:
 
 install:
   - npm install
-script:
-  - sudo service mysql stop
-  - docker-compose build && docker-compose run lib
+
+jobs:
+  include:
+
+    - stage: "Testing"
+      script: sudo service mysql stop && docker-compose build && docker-compose run lib
+
+    - stage: "Testing"
+      script: npm run test:ut
+
 deploy:
-  - provider: script
-    # Have to use `&&` because of issue https://github.com/travis-ci/dpl/issues/673
-    script: npm run doc && bash ./bin/deploy-gh-pages.sh
-    skip_cleanup: true
-    on:
-      branch: master
-      node_js: "10"
-  - provider: npm
-    email: "$NPM_EMAIL"
-    api_key: "$NPM_TOKEN"
-    on:
-      branch: master
-      node_js: "10"
-      tags: true
-      tag: beta
+- provider: script
+  # Have to use `&&` because of issue https://github.com/travis-ci/dpl/issues/673
+  script: npm run doc && bash ./bin/deploy-gh-pages.sh
+  skip_cleanup: true
+  on:
+    branch: master
+    node_js: "10"
+- provider: npm
+  email: "$NPM_EMAIL"
+  api_key: "$NPM_TOKEN"
+  on:
+    branch: master
+    node_js: "10"
+    tags: true
+    tag: beta

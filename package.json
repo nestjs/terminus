@@ -13,9 +13,10 @@
     "publish:npm": "npm publish --access public",
     "prepublish:next": "npm run build",
     "publish:next": "npm publish --access public --tag next",
-    "test": "npm run e2e",
-    "e2e": "jest --config=e2e/jest-e2e.json --detectOpenHandles --forceExit",
-    "e2e:watch": "jest --watch --detectOpenHandles --forceExit --config=e2e/jest-e2e.json",
+    "test": "npm run test:e2e && npm run test:ut",
+    "test:ut": "jest --config=jest.json",
+    "test:ut:cov": "npm run test:ut -- --coverage",
+    "test:e2e": "jest --config=e2e/jest-e2e.json --detectOpenHandles --forceExit",
     "doc": "./node_modules/.bin/compodoc -p tsconfig.json",
     "lint": "tslint -c tslint.json -p tsconfig.json"
   },
