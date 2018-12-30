@@ -5,7 +5,11 @@ import {
   Logger,
 } from '@nestjs/common';
 import { TERMINUS_MODULE_OPTIONS, TERMINUS_LIB } from './terminus.constants';
-import { TerminusModuleOptions, HealthIndicatorFunction } from './interfaces';
+import {
+  TerminusModuleOptions,
+  HealthIndicatorFunction,
+  TerminusEndpoint,
+} from './interfaces';
 import { ApplicationReferenceHost } from '@nestjs/core';
 import { Server } from 'http';
 import { HealthCheckError, Terminus, HealthCheckMap } from '@godaddy/terminus';
@@ -70,34 +74,6 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
   }
 
   /**
-   * Prepares the health check using the configured health
-   * indicators
-   */
-  private prepareHealthChecks(): HealthCheckMap {
-    const healthChecks: HealthCheckMap = {};
-    this.options.endpoints.forEach(endpoint => {
-      const healthCheck = async () => {
-        const { results, errors } = await this.executeHealthIndicators(
-          endpoint.healthIndicators,
-        );
-        const info = (results || [])
-          .concat(errors)
-          .reduce((previous, current) => Object.assign(previous, current), {});
-
-        if (errors.length) {
-          throw new HealthCheckError('Healthcheck failed', info);
-        } else {
-          return info;
-        }
-      };
-
-      healthChecks[endpoint.url] = healthCheck;
-    });
-
-    return healthChecks;
-  }
-
-  /**
    * Logs an error message of terminus
    * @param message The log message
    * @param error The error which was thrown
@@ -123,12 +99,50 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
     );
   }
 
+  private getHealthCheckExecutor(
+    endpoint: TerminusEndpoint,
+  ): () => Promise<any> {
+    return async () => {
+      const { results, errors } = await this.executeHealthIndicators(
+        endpoint.healthIndicators,
+      );
+
+      const info = (results || [])
+        .concat(errors || [])
+        .reduce(
+          (previous: Object, current: Object) =>
+            Object.assign(previous, current),
+          {},
+        );
+
+      if (errors.length) {
+        throw new HealthCheckError('Healthcheck failed', info);
+      } else {
+        return info;
+      }
+    };
+  }
+
+  /**
+   * Returns the health check map using the configured health
+   * indicators
+   */
+  public getHealthChecksMap(): HealthCheckMap {
+    return this.options.endpoints.reduce(
+      (healthChecks, endpoint) => {
+        healthChecks[endpoint.url] = this.getHealthCheckExecutor(endpoint);
+        return healthChecks;
+      },
+      {} as HealthCheckMap,
+    );
+  }
+
   /**
    * Bootstraps the third party terminus library with
    * the given module options
    */
   private bootstrapTerminus() {
-    const healthChecks = this.prepareHealthChecks();
+    const healthChecks = this.getHealthChecksMap();
     this.terminus(this.httpServer, {
       healthChecks,
       // Use the logger of the user
