@@ -3,7 +3,9 @@ import {
   Inject,
   OnApplicationBootstrap,
   Logger,
+  RequestMethod,
 } from '@nestjs/common';
+import { METHOD_METADATA, PATH_METADATA } from '@nestjs/common/constants';
 import { TERMINUS_MODULE_OPTIONS, TERMINUS_LIB } from './terminus.constants';
 import {
   TerminusModuleOptions,
@@ -28,6 +30,7 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
    * The NestJS logger
    */
   private readonly logger = new Logger(TerminusBootstrapService.name, true);
+  private endpoints: (TerminusEndpoint & { callback: () => Promise<any> })[];
 
   /**
    * Initializes the service
@@ -40,7 +43,14 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
     private readonly options: TerminusModuleOptions,
     @Inject(TERMINUS_LIB) private readonly terminus: Terminus,
     private readonly refHost: ApplicationReferenceHost,
-  ) {}
+  ) {
+    this.endpoints = this.options.endpoints.map((endpoint: any) => ({
+      ...endpoint,
+      callback: this.getHealthCheckExecutor(endpoint),
+    }));
+
+    this.registerRoutes();
+  }
 
   /**
    * Executes the given health indicators and stores the caused
@@ -123,14 +133,25 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
     };
   }
 
+  private registerRoutes() {
+    this.endpoints.forEach(endpoint => {
+      Reflect.defineMetadata(PATH_METADATA, endpoint.url, endpoint.callback);
+      Reflect.defineMetadata(
+        METHOD_METADATA,
+        RequestMethod.GET,
+        endpoint.callback,
+      );
+    });
+  }
+
   /**
    * Returns the health check map using the configured health
    * indicators
    */
   public getHealthChecksMap(): HealthCheckMap {
-    return this.options.endpoints.reduce(
+    return this.endpoints.reduce(
       (healthChecks, endpoint) => {
-        healthChecks[endpoint.url] = this.getHealthCheckExecutor(endpoint);
+        healthChecks[endpoint.url] = endpoint.callback;
         return healthChecks;
       },
       {} as HealthCheckMap,
