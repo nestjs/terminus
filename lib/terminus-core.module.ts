@@ -9,12 +9,12 @@ import {
   TerminusModuleOptions,
   TerminusModuleAsyncOptions,
   TerminusOptionsFactory,
-} from './interfaces/terminus-module-options.interface';
+} from './interfaces';
 import { TERMINUS_MODULE_OPTIONS } from './terminus.constants';
 import { TerminusBootstrapService } from './terminus-bootstrap.service';
 import { TerminusLibProvider } from './terminus-lib.provider';
 import { TerminusModule } from './terminus.module';
-import { DatabaseHealthIndicator, MongooseHealthIndicator } from '.';
+import { TypeOrmHealthIndicator, MongooseHealthIndicator } from '.';
 import { DNSHealthIndicator } from './health-indicators';
 
 /**
@@ -45,10 +45,10 @@ export class TerminusCoreModule {
         terminusModuleOptions,
         TerminusLibProvider,
         TerminusBootstrapService,
-        DatabaseHealthIndicator,
+        TypeOrmHealthIndicator,
         MongooseHealthIndicator,
       ],
-      exports: [DatabaseHealthIndicator, MongooseHealthIndicator],
+      exports: [TypeOrmHealthIndicator, MongooseHealthIndicator],
     };
   }
 
@@ -66,12 +66,12 @@ export class TerminusCoreModule {
         ...asyncProviders,
         TerminusBootstrapService,
         TerminusLibProvider,
-        DatabaseHealthIndicator,
+        TypeOrmHealthIndicator,
         DNSHealthIndicator,
         MongooseHealthIndicator,
       ],
       exports: [
-        DatabaseHealthIndicator,
+        TypeOrmHealthIndicator,
         DNSHealthIndicator,
         MongooseHealthIndicator,
       ],

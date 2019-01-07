@@ -19,7 +19,7 @@ describe('Database Health', () => {
     ],
   });
 
-  it('should check if the database is available', async () => {
+  it('should check if the typeorm is available', async () => {
     [app, port] = await bootstrapModule(
       {
         inject: [DatabaseHealthIndicator],

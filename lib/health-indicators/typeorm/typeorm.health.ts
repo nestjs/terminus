@@ -1,24 +1,24 @@
 import { Injectable, Optional } from '@nestjs/common';
 import { Connection } from 'typeorm';
 import { promiseTimeout } from '../../utils';
-import { HealthIndicator } from '../health-indicator';
+import { DatabaseHealthIndicator } from '../abstract/database-health-indicator';
 
 /**
- * The DatabaseHealthIndicator contains health indicators
- * which are used for health checks related to database
+ * The TypeOrmeHealthIndicator contains health indicators
+ * which are used for health checks related to typeorm
  */
 @Injectable()
-export class DatabaseHealthIndicator extends HealthIndicator<Connection> {
+export class TypeOrmHealthIndicator extends DatabaseHealthIndicator {
   /**
-   * Initializes the database indicator
-   * @param connection The database connection of the application context
+   * Initializes the typeorm indicator
+   * @param connection The typeorm connection of the application context
    */
   constructor(@Optional() readonly connection: Connection) {
     super(connection);
   }
 
   /**
-   * Pings a database
+   * Pings a typeorm
    * @param connection The connection which the ping should get executed
    * @param timeout The timeout how long the ping should maximum take
    *
