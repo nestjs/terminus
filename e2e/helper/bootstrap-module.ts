@@ -18,10 +18,11 @@ const DbModule = TypeOrmModule.forRoot({
 });
 
 const MongooseDbModule = MongooseModule.forRoot(
-  'mongodb://travis:test@127.0.0.1:27017/mydb_test',
+  'mongodb://127.0.0.1:27017/mydb_test',
   {
     retryAttempts: 5,
     retryDelay: 5000,
+    useNewUrlParser: true,
   },
 );
 
