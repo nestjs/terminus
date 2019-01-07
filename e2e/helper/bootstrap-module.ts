@@ -17,7 +17,7 @@ const DbModule = TypeOrmModule.forRoot({
   retryDelay: 1000,
 });
 
-const MongooseDbModule = MongooseModule.forRoot('mongodb://127.0.0.1:27017/', {
+const MongooseDbModule = MongooseModule.forRoot('mongodb://localhost:27017', {
   retryAttempts: 5,
   retryDelay: 5000,
   useNewUrlParser: true,
