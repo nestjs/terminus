@@ -1,20 +1,20 @@
 import { INestApplication } from '@nestjs/common';
-import { DatabaseHealthIndicator, TerminusModuleOptions } from '../../lib';
+import { TypeOrmHealthIndicator, TerminusModuleOptions } from '../../lib';
 
 import Axios from 'axios';
 import { bootstrapModule } from '../helper/bootstrap-module';
 
-describe('Database Health', () => {
+describe('TypeOrm Database Health', () => {
   let app: INestApplication;
   let port: number;
 
   const getTerminusOptions = (
-    db: DatabaseHealthIndicator,
+    db: TypeOrmHealthIndicator,
   ): TerminusModuleOptions => ({
     endpoints: [
       {
         url: '/health',
-        healthIndicators: [async () => db.pingCheck('database')],
+        healthIndicators: [async () => db.pingCheck('typeorm')],
       },
     ],
   });
@@ -22,7 +22,7 @@ describe('Database Health', () => {
   it('should check if the typeorm is available', async () => {
     [app, port] = await bootstrapModule(
       {
-        inject: [DatabaseHealthIndicator],
+        inject: [TypeOrmHealthIndicator],
         useFactory: getTerminusOptions,
       },
       true,
@@ -39,13 +39,13 @@ describe('Database Health', () => {
   it('should throw an error if runs into timeout error', async () => {
     [app, port] = await bootstrapModule(
       {
-        inject: [DatabaseHealthIndicator],
-        useFactory: (db: DatabaseHealthIndicator): TerminusModuleOptions => ({
+        inject: [TypeOrmHealthIndicator],
+        useFactory: (db: TypeOrmHealthIndicator): TerminusModuleOptions => ({
           endpoints: [
             {
               url: '/health',
               healthIndicators: [
-                async () => db.pingCheck('database', { timeout: 1 }),
+                async () => db.pingCheck('typeorm', { timeout: 1 }),
               ],
             },
           ],
