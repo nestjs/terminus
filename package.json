@@ -64,7 +64,9 @@
   },
   "optionalDependencies": {
     "typeorm": "^0.2.9",
-    "@nestjs/typeorm": "^5.2.2"
+    "@nestjs/typeorm": "^5.2.2",
+    "mongoose": "^5.4.2",
+    "@nestjs/mongoose": "^5.2.2"
   },
   "lint-staged": {
     "*.ts": [
