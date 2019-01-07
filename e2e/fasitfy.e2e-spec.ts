@@ -1,7 +1,7 @@
 import { INestApplication } from '@nestjs/common';
-import { TerminusModuleOptions, TerminusEndpoint } from '../lib';
 
 import Axios from 'axios';
+import { TerminusEndpoint, TerminusModuleOptions } from '../lib';
 import { bootstrapModule } from './helper/bootstrap-module';
 
 describe('Fastify', () => {
@@ -18,13 +18,9 @@ describe('Fastify', () => {
       },
     ];
 
-    [app, port] = await bootstrapModule(
-      {
-        useFactory: (): TerminusModuleOptions => ({ endpoints }),
-      },
-      false,
-      true,
-    );
+    [app, port] = await bootstrapModule({
+      useFactory: (): TerminusModuleOptions => ({ endpoints }),
+    });
 
     // Workaraound to wait until module is bootsrapped
     setTimeout(async () => {

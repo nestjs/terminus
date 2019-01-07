@@ -26,6 +26,7 @@ describe('TypeOrm Database Health', () => {
         useFactory: getTerminusOptions,
       },
       true,
+      false,
     );
 
     const response = await Axios.get(`http://0.0.0.0:${port}/health`);
@@ -52,6 +53,7 @@ describe('TypeOrm Database Health', () => {
         }),
       },
       true,
+      false,
     );
 
     try {

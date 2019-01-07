@@ -1,7 +1,7 @@
 import { INestApplication } from '@nestjs/common';
-import { TerminusModuleOptions, DNSHealthIndicator } from '../../lib';
 
 import Axios from 'axios';
+import { DNSHealthIndicator, TerminusModuleOptions } from '../../lib';
 import { bootstrapModule } from '../helper/bootstrap-module';
 
 describe('DNS Health', () => {
@@ -22,13 +22,10 @@ describe('DNS Health', () => {
   });
 
   it('should check if google is available', async () => {
-    [app, port] = await bootstrapModule(
-      {
-        inject: [DNSHealthIndicator],
-        useFactory: getTerminusOptions,
-      },
-      false,
-    );
+    [app, port] = await bootstrapModule({
+      inject: [DNSHealthIndicator],
+      useFactory: getTerminusOptions,
+    });
     const response = await Axios.get(`http://0.0.0.0:${port}/health`);
     expect(response.status).toBe(200);
     expect(response.data).toEqual({

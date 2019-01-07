@@ -30,12 +30,18 @@ class ApplicationModule {
   static forRoot(
     options: TerminusModuleAsyncOptions,
     useDb: boolean,
+    useMongoose: boolean,
   ): DynamicModule {
     const imports = [TerminusModule.forRootAsync(options)];
 
     if (useDb) {
-      imports.push(DbModule, MongooseDbModule);
+      imports.push(DbModule);
     }
+
+    if (useMongoose) {
+      imports.push(MongooseDbModule);
+    }
+
     return {
       module: ApplicationModule,
       imports,
@@ -46,10 +52,11 @@ class ApplicationModule {
 export async function bootstrapModule(
   options: TerminusModuleAsyncOptions,
   useDb: boolean = false,
+  useMongoose: boolean = false,
   useFastify?: boolean,
 ): Promise<[INestApplication, number]> {
   const app = await NestFactory.create(
-    ApplicationModule.forRoot(options, useDb),
+    ApplicationModule.forRoot(options, useDb, useMongoose),
     useFastify ? new FastifyAdapter() : null,
   );
 

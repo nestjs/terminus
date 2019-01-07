@@ -25,6 +25,7 @@ describe('Mongoose Database Health', () => {
         inject: [MongooseHealthIndicator],
         useFactory: getTerminusOptions,
       },
+      false,
       true,
     );
 
@@ -51,6 +52,7 @@ describe('Mongoose Database Health', () => {
           ],
         }),
       },
+      false,
       true,
     );
 
