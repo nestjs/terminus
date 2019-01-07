@@ -6,7 +6,7 @@
     "json"
   ],
   "transform": {
-    "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    "^.+\\.tsx?$": "ts-jest"
   },
   "testRegex": "/lib/.*\\.(test|spec).(ts|tsx|js)$",
   "collectCoverageFrom": [

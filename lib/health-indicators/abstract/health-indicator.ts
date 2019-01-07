@@ -1,4 +1,4 @@
-import { HealthIndicatorResult } from '../';
+import { HealthIndicatorResult } from '../..';
 
 /**
  * Represents an abstract health indicator

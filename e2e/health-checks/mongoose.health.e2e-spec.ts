@@ -1,30 +1,31 @@
 import { INestApplication } from '@nestjs/common';
-import { DatabaseHealthIndicator, TerminusModuleOptions } from '../../lib';
 
 import Axios from 'axios';
+import { MongooseHealthIndicator, TerminusModuleOptions } from '../../lib';
 import { bootstrapModule } from '../helper/bootstrap-module';
 
-describe('Database Health', () => {
+describe('Mongoose Database Health', () => {
   let app: INestApplication;
   let port: number;
 
   const getTerminusOptions = (
-    db: DatabaseHealthIndicator,
+    db: MongooseHealthIndicator,
   ): TerminusModuleOptions => ({
     endpoints: [
       {
         url: '/health',
-        healthIndicators: [async () => db.pingCheck('database')],
+        healthIndicators: [async () => db.pingCheck('mongo')],
       },
     ],
   });
 
-  it('should check if the database is available', async () => {
+  it('should check if the mongoose is available', async () => {
     [app, port] = await bootstrapModule(
       {
-        inject: [DatabaseHealthIndicator],
+        inject: [MongooseHealthIndicator],
         useFactory: getTerminusOptions,
       },
+      false,
       true,
     );
 
@@ -32,25 +33,26 @@ describe('Database Health', () => {
     expect(response.status).toBe(200);
     expect(response.data).toEqual({
       status: 'ok',
-      info: { database: { status: 'up' } },
+      info: { mongo: { status: 'up' } },
     });
   });
 
   it('should throw an error if runs into timeout error', async () => {
     [app, port] = await bootstrapModule(
       {
-        inject: [DatabaseHealthIndicator],
-        useFactory: (db: DatabaseHealthIndicator): TerminusModuleOptions => ({
+        inject: [MongooseHealthIndicator],
+        useFactory: (db: MongooseHealthIndicator): TerminusModuleOptions => ({
           endpoints: [
             {
               url: '/health',
               healthIndicators: [
-                async () => db.pingCheck('database', { timeout: 1 }),
+                async () => db.pingCheck('mongo', { timeout: 1 }),
               ],
             },
           ],
         }),
       },
+      false,
       true,
     );
 
@@ -61,7 +63,7 @@ describe('Database Health', () => {
       expect(error.response.data).toEqual({
         status: 'error',
         error: {
-          database: {
+          mongo: {
             status: 'down',
             message: expect.any(String),
           },

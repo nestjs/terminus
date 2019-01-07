@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
 import {
+  DNSHealthIndicator,
   TerminusModule,
   TerminusModuleOptions,
-  DNSHealthIndicator,
 } from '../../../lib';
-
-import { DogModule } from './dog/dog.module';
+import { CatHealthIndicator } from './cat/cat.health';
 import { CatModule } from './cat/cat.module';
 
 import { DogHealthIndicator } from './dog/dog.health';
-import { CatHealthIndicator } from './cat/cat.health';
+
+import { DogModule } from './dog/dog.module';
 
 const getTerminusOptions = (
   dogHealthIndicator: DogHealthIndicator,

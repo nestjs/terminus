@@ -11,6 +11,16 @@ services:
     networks:
       - overlay
 
+  mongodb:
+    image: mongo:latest
+    hostname: mongodb
+    environment:
+      - MONGODB_DATABASE="test"
+    networks:
+      - overlay
+    ports:
+      - 27017:27017
+
   lib:
     build:
       context: .
@@ -19,7 +29,7 @@ services:
     networks:
       - overlay
     environment:
-      WAIT_HOSTS: mysql:3306
+      WAIT_HOSTS: mysql:3306, mongodb:27017
 
 networks:
   overlay:
