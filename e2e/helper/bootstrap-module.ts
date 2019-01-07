@@ -17,14 +17,11 @@ const DbModule = TypeOrmModule.forRoot({
   retryDelay: 1000,
 });
 
-const MongooseDbModule = MongooseModule.forRoot(
-  'mongodb://127.0.0.1:27017/mydb_test',
-  {
-    retryAttempts: 5,
-    retryDelay: 5000,
-    useNewUrlParser: true,
-  },
-);
+const MongooseDbModule = MongooseModule.forRoot('mongodb://127.0.0.1:27017/', {
+  retryAttempts: 5,
+  retryDelay: 5000,
+  useNewUrlParser: true,
+});
 
 class ApplicationModule {
   static forRoot(

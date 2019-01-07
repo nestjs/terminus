@@ -19,9 +19,6 @@ env:
 before_install:
   - npm i -g npm@latest
 
-before_script:
-  - sleep 15
-
 install:
   - npm install
 
