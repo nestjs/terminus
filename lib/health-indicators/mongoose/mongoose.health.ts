@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Optional } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { promiseTimeout } from '../../utils';
@@ -10,7 +10,7 @@ export class MongooseHealthIndicator extends DatabaseHealthIndicator {
    * Initializes the typeorm indicator
    * @param connection The typeorm connection of the application context
    */
-  constructor(@InjectConnection() readonly connection: Connection) {
+  constructor(@Optional() @InjectConnection() readonly connection: Connection) {
     super(connection);
   }
 
