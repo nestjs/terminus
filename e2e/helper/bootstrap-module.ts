@@ -1,9 +1,9 @@
-import { TerminusModuleAsyncOptions, TerminusModule } from '../../lib';
-import { DynamicModule, INestApplication } from '@nestjs/common';
-import { NestFactory, FastifyAdapter } from '@nestjs/core';
-import * as portfinder from 'portfinder';
+import { DynamicModule, INestApplication, Module } from '@nestjs/common';
+import { FastifyAdapter, NestFactory } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { MongooseModule } from '@nestjs/mongoose';
+import { connect } from 'mongoose';
+import * as portfinder from 'portfinder';
+import { TerminusModule, TerminusModuleAsyncOptions } from '../../lib';
 
 const DbModule = TypeOrmModule.forRoot({
   type: 'mysql',
@@ -17,14 +17,28 @@ const DbModule = TypeOrmModule.forRoot({
   retryDelay: 1000,
 });
 
-const MongooseDbModule = MongooseModule.forRoot(
-  'mongodb://127.0.0.1:27017/mydb_test',
+const mongooseDbProvders = [
   {
-    retryAttempts: 5,
-    retryDelay: 1000,
-    useNewUrlParser: true,
+    provide: 'DatabaseConnection',
+    useFactory: async () => {
+      await connect(
+        'mongodb://127.0.0.1:27017/mydb_test',
+        {
+          reconnectTries: 2,
+          reconnectInterval: 1000,
+          useNewUrlParser: true,
+          autoReconnect: true,
+        },
+      );
+    },
   },
-);
+];
+
+@Module({
+  providers: [...mongooseDbProvders],
+  exports: [...mongooseDbProvders],
+})
+class MongooseDbModule {}
 
 class ApplicationModule {
   static forRoot(
@@ -39,7 +53,7 @@ class ApplicationModule {
     }
 
     if (useMongoose) {
-      imports.push(MongooseDbModule);
+      imports.push(MongooseDbModule as any);
     }
 
     return {
