@@ -19,6 +19,9 @@ env:
 before_install:
   - npm i -g npm@latest
 
+before_script:
+  - mongo 'getHostName()'
+
 install:
   - npm install
 
