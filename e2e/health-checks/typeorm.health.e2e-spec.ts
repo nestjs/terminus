@@ -32,7 +32,7 @@ describe('TypeOrm Database Health', () => {
     expect(response.status).toBe(200);
     expect(response.data).toEqual({
       status: 'ok',
-      info: { database: { status: 'up' } },
+      info: { typeorm: { status: 'up' } },
     });
   });
 
@@ -61,7 +61,7 @@ describe('TypeOrm Database Health', () => {
       expect(error.response.data).toEqual({
         status: 'error',
         error: {
-          database: {
+          typeorm: {
             status: 'down',
             message: expect.any(String),
           },

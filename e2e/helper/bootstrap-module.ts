@@ -3,6 +3,7 @@ import { DynamicModule, INestApplication } from '@nestjs/common';
 import { NestFactory, FastifyAdapter } from '@nestjs/core';
 import * as portfinder from 'portfinder';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { MongooseModule } from '@nestjs/mongoose';
 
 const DbModule = TypeOrmModule.forRoot({
   type: 'mysql',
@@ -16,6 +17,14 @@ const DbModule = TypeOrmModule.forRoot({
   retryDelay: 1000,
 });
 
+const MongooseDbModule = MongooseModule.forRoot(
+  'mongodb://travis:test@127.0.0.1:27017/mydb_test',
+  {
+    retryAttempts: 5,
+    retryDelay: 5000,
+  },
+);
+
 class ApplicationModule {
   static forRoot(
     options: TerminusModuleAsyncOptions,
@@ -24,7 +33,7 @@ class ApplicationModule {
     const imports = [TerminusModule.forRootAsync(options)];
 
     if (useDb) {
-      imports.push(DbModule);
+      imports.push(DbModule, MongooseDbModule);
     }
     return {
       module: ApplicationModule,

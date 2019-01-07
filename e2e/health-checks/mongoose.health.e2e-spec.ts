@@ -1,7 +1,7 @@
 import { INestApplication } from '@nestjs/common';
-import { MongooseHealthIndicator, TerminusModuleOptions } from '../../lib';
 
 import Axios from 'axios';
+import { MongooseHealthIndicator, TerminusModuleOptions } from '../../lib';
 import { bootstrapModule } from '../helper/bootstrap-module';
 
 describe('Mongoose Database Health', () => {
@@ -32,7 +32,7 @@ describe('Mongoose Database Health', () => {
     expect(response.status).toBe(200);
     expect(response.data).toEqual({
       status: 'ok',
-      info: { database: { status: 'up' } },
+      info: { mongo: { status: 'up' } },
     });
   });
 
@@ -61,7 +61,7 @@ describe('Mongoose Database Health', () => {
       expect(error.response.data).toEqual({
         status: 'error',
         error: {
-          database: {
+          mongo: {
             status: 'down',
             message: expect.any(String),
           },

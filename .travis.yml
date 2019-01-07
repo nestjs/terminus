@@ -3,6 +3,7 @@ language: node_js
 
 services:
   - docker
+  - mongodb
 
 cache:
   directories:
@@ -17,6 +18,10 @@ env:
 
 before_install:
   - npm i -g npm@latest
+
+before_script:
+  - sleep 15
+  - mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
 
 install:
   - npm install
