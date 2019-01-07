@@ -14,7 +14,7 @@ import { TERMINUS_MODULE_OPTIONS } from './terminus.constants';
 import { TerminusBootstrapService } from './terminus-bootstrap.service';
 import { TerminusLibProvider } from './terminus-lib.provider';
 import { TerminusModule } from './terminus.module';
-import { DatabaseHealthIndicator } from '.';
+import { DatabaseHealthIndicator, MongooseHealthIndicator } from '.';
 import { DNSHealthIndicator } from './health-indicators';
 
 /**
@@ -46,8 +46,9 @@ export class TerminusCoreModule {
         TerminusLibProvider,
         TerminusBootstrapService,
         DatabaseHealthIndicator,
+        MongooseHealthIndicator,
       ],
-      exports: [DatabaseHealthIndicator],
+      exports: [DatabaseHealthIndicator, MongooseHealthIndicator],
     };
   }
 
@@ -67,8 +68,13 @@ export class TerminusCoreModule {
         TerminusLibProvider,
         DatabaseHealthIndicator,
         DNSHealthIndicator,
+        MongooseHealthIndicator,
       ],
-      exports: [DatabaseHealthIndicator, DNSHealthIndicator],
+      exports: [
+        DatabaseHealthIndicator,
+        DNSHealthIndicator,
+        MongooseHealthIndicator,
+      ],
     };
   }
 

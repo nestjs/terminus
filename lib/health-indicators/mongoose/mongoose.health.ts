@@ -1,19 +1,16 @@
-import { Injectable, Optional } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { InjectConnection } from '@nestjs/mongoose';
+import { Connection } from 'mongoose';
 import { promiseTimeout } from '../../utils';
 import { HealthIndicator } from '../health-indicator';
 
-/**
- * The DatabaseHealthIndicator contains health indicators
- * which are used for health checks related to database
- */
 @Injectable()
-export class DatabaseHealthIndicator extends HealthIndicator<Connection> {
+export class MongooseHealthIndicator extends HealthIndicator<Connection> {
   /**
    * Initializes the database indicator
    * @param connection The database connection of the application context
    */
-  constructor(@Optional() readonly connection: Connection) {
+  constructor(@InjectConnection() readonly connection: Connection) {
     super(connection);
   }
 
@@ -24,6 +21,6 @@ export class DatabaseHealthIndicator extends HealthIndicator<Connection> {
    *
    */
   async pingDb(connection: Connection, timeout: number) {
-    return await promiseTimeout(timeout, connection.query('SELECT 1'));
+    return await promiseTimeout(timeout, connection.startSession());
   }
 }
