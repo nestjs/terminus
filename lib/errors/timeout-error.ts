@@ -2,7 +2,7 @@ import { HealthCheckError } from '@godaddy/terminus';
 
 /**
  * Gets thrown when the timeout of the
- * database health check exceeds
+ * typeorm health check exceeds
  */
 export class TimeoutError extends HealthCheckError {
   /**
