@@ -26,6 +26,7 @@ services:
       context: .
     depends_on:
       - mysql
+      - mongodb
     networks:
       - overlay
     environment:
