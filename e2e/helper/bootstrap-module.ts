@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as portfinder from 'portfinder';
 import { TerminusModule, TerminusModuleAsyncOptions } from '../../lib';
+import { Transport } from '@nestjs/microservices';
 
 const DbModule = TypeOrmModule.forRoot({
   type: 'mysql',
@@ -42,16 +43,33 @@ class ApplicationModule {
   }
 }
 
+async function bootstrapMicroservice(tcpPort: number) {
+  const tcpApp = await NestFactory.createMicroservice(ApplicationModule, {
+    transport: Transport.TCP,
+    options: {
+      host: '0.0.0.0',
+      port: tcpPort,
+    },
+  });
+
+  await tcpApp.listenAsync();
+}
+
 export async function bootstrapModule(
   options: TerminusModuleAsyncOptions,
   useDb: boolean = false,
   useMongoose: boolean = false,
   useFastify?: boolean,
+  tcpPort?: number,
 ): Promise<[INestApplication, number]> {
   const app = await NestFactory.create(
     ApplicationModule.forRoot(options, useDb, useMongoose),
     useFastify ? new FastifyAdapter() : null,
   );
+
+  if (tcpPort) {
+    await bootstrapMicroservice(tcpPort);
+  }
 
   const port = await portfinder.getPortPromise({
     port: 3000,
