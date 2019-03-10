@@ -1,0 +1,41 @@
+{
+  "name": "002-microservice-app",
+  "version": "1.0.0",
+  "description": "Microservice ping check app",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/main.ts",
+    "prestart:prod": "tsc",
+    "start:prod": "node dist/main.js",
+    "test": "jest --config=jest.json",
+    "test:watch": "jest --watch --config=jest.json",
+    "test:coverage": "jest --config=jest.json --coverage --coverageDirectory=coverage",
+    "e2e": "jest --config=e2e/jest-e2e.json --forceExit",
+    "e2e:watch": "jest --watch --config=e2e/jest-e2e.json"
+  },
+  "dependencies": {
+    "@godaddy/terminus": "^4.1.0",
+    "@nestjs/common": "^5.7.4",
+    "@nestjs/core": "^5.7.4",
+    "@nestjs/microservices": "^5.7.4",
+    "@nestjs/testing": "^5.7.4",
+    "@nestjs/websockets": "^5.7.4",
+    "class-transformer": "^0.2.0",
+    "class-validator": "^0.9.1",
+    "fastify": "^2.0.1",
+    "lodash": "^4.17.11",
+    "redis": "^2.8.0",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^6.4.0",
+    "typescript": "^3.3.3333"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.11",
+    "@types/node": "^11.11.0",
+    "jest": "^24.3.1",
+    "supertest": "^4.0.0",
+    "ts-jest": "^24.0.0",
+    "ts-node": "^8.0.3",
+    "tslint": "^5.13.1"
+  }
+}

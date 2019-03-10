@@ -21,6 +21,14 @@ services:
     ports:
       - 27017:27017
 
+  redis_test:
+    image: redis:latest
+    hostname: redis_test
+    networks:
+      - overlay
+    ports:
+      - 6379:6379
+
   lib:
     build:
       context: .
