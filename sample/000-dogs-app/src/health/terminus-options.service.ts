@@ -4,13 +4,11 @@ import {
   TerminusModuleOptions,
 } from '../../../../lib';
 import { DogHealthIndicator } from '../dog/dog.health';
-import { Inject } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class TerminusOptionsService implements TerminusOptionsFactory {
-  constructor(
-    @Inject(DogHealthIndicator)
-    private readonly dogHealthIndicator: DogHealthIndicator,
-  ) {}
+  constructor(private readonly dogHealthIndicator: DogHealthIndicator) {}
 
   public createTerminusOptions(): TerminusModuleOptions {
     const healthEndpoint: TerminusEndpoint = {
