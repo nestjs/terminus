@@ -5,12 +5,12 @@ import { ConnectionNotFoundError, TimeoutError } from '../../errors';
 import { HealthIndicatorResult } from '../../interfaces';
 import { TimeoutError as PromiseTimeoutError } from '../../utils';
 import { DatabasePingCheckSettings } from '../databse-ping-check-settings.interface';
-import { HealthIndicator } from './health-indicator';
+import { HealthIndicator } from '../health-indicator';
 
 /**
- * Abstract AbstractDatabaseHealthIndicator
+ * Abstract DatabaseHealthIndicator
  */
-export abstract class AbstractDatabaseHealthIndicator extends HealthIndicator {
+export abstract class DatabaseHealthIndicator extends HealthIndicator {
   /**
    * Constructor with the connection
    * @param connection The underlying Connection instance from TypeOrm or Mongoose connection

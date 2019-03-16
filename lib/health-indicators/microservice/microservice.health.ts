@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { HealthIndicatorResult } from '../../interfaces';
-import { HealthIndicator } from '../abstract/health-indicator';
+import { HealthIndicator } from '../health-indicator';
 import { HealthCheckError } from '@godaddy/terminus';
 import { ClientProxyFactory, ClientOptions } from '@nestjs/microservices';
 import {
@@ -16,6 +16,8 @@ export type MicroserviceHealthIndicatorOptions = ClientOptions & {
 /**
  * The MicroserviceHealthIndicator is a health indicators
  * which is used for health checks related to microservices
+ *
+ * @public
  */
 @Injectable()
 export class MicroserviceHealthIndicator extends HealthIndicator {
@@ -69,12 +71,10 @@ export class MicroserviceHealthIndicator extends HealthIndicator {
    * @throws {HealthCheckError} If the microservice is not reachable
    *
    * @example
-   * ```TypeScript
    * microservice.pingCheck('tcp', {
    *   transport: Transport.TCP,
    *   options: { host: 'localhost', port: 3001 },
    * })
-   * ```
    */
   async pingCheck(
     key: string,

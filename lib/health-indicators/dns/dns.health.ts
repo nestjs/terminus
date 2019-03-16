@@ -1,7 +1,7 @@
 import { Injectable, HttpService } from '@nestjs/common';
 import { HealthIndicatorResult } from '../../interfaces';
 import { AxiosResponse, AxiosRequestConfig, AxiosError } from 'axios';
-import { HealthIndicator } from '../abstract/health-indicator';
+import { HealthIndicator } from '../health-indicator';
 import { HealthCheckError } from '@godaddy/terminus';
 
 /**
@@ -14,6 +14,8 @@ export class DNSHealthIndicator extends HealthIndicator {
   /**
    * Initializes the health indicator
    * @param httpService The HttpService provided by Nest
+   *
+   * @public
    */
   constructor(private readonly httpService: HttpService) {
     super();
@@ -69,9 +71,7 @@ export class DNSHealthIndicator extends HealthIndicator {
    * @throws {HealthCheckError} In case the health indicator failed
    *
    * @example
-   * ```TypeScript
    * dnsHealthIndicator.pingCheck('google', 'https://google.com', { timeout: 800 })
-   * ```
    */
   async pingCheck(
     key: string,
