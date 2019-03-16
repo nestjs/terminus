@@ -8,7 +8,7 @@ import { AbstractDatabaseHealthIndicator } from '../abstract/abstract-database-h
  * which are used for health checks related to typeorm
  */
 @Injectable()
-export class DatabaseHealthIndicator extends AbstractDatabaseHealthIndicator {
+export class TypeOrmHealthIndicator extends AbstractDatabaseHealthIndicator {
   /**
    * Initializes the typeorm indicator
    * @param connection The typeorm connection of the application context

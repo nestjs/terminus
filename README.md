@@ -42,7 +42,7 @@ Import the Terminus module with the following options for a **database health ch
 ```ts
 
 const getTerminusOptions = (
-  db: DatabaseHealthIndicator,
+  db: TypeOrmHealthIndicator,
 ): TerminusModuleOptions => ({
   endpoints: [
     {
@@ -62,8 +62,8 @@ const getTerminusOptions = (
     // Make sure TypeOrmModule is available in the module context
     TypeOrmModule.forRoot({ ... }),
     TerminusModule.forRootAsync({
-      // Inject the DatabaseHealthIndicator provided by nestjs/terminus
-      inject: [DatabaseHealthIndicator],
+      // Inject the TypeOrmHealthIndicator provided by nestjs/terminus
+      inject: [TypeOrmHealthIndicator],
       useFactory: db => getTerminusOptions(db),
     }),
   ],
