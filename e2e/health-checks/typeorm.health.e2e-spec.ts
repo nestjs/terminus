@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import { DatabaseHealthIndicator, TerminusModuleOptions } from '../../lib';
+import { TypeOrmHealthIndicator, TerminusModuleOptions } from '../../lib';
 
 import Axios from 'axios';
 import { bootstrapModule } from '../helper/bootstrap-module';
@@ -9,7 +9,7 @@ describe('TypeOrm Database Health', () => {
   let port: number;
 
   const getTerminusOptions = (
-    db: DatabaseHealthIndicator,
+    db: TypeOrmHealthIndicator,
   ): TerminusModuleOptions => ({
     endpoints: [
       {
@@ -22,7 +22,7 @@ describe('TypeOrm Database Health', () => {
   it('should check if the typeorm is available', async () => {
     [app, port] = await bootstrapModule(
       {
-        inject: [DatabaseHealthIndicator],
+        inject: [TypeOrmHealthIndicator],
         useFactory: getTerminusOptions,
       },
       true,
@@ -40,8 +40,8 @@ describe('TypeOrm Database Health', () => {
   it('should throw an error if runs into timeout error', async () => {
     [app, port] = await bootstrapModule(
       {
-        inject: [DatabaseHealthIndicator],
-        useFactory: (db: DatabaseHealthIndicator): TerminusModuleOptions => ({
+        inject: [TypeOrmHealthIndicator],
+        useFactory: (db: TypeOrmHealthIndicator): TerminusModuleOptions => ({
           endpoints: [
             {
               url: '/health',

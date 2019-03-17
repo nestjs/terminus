@@ -1,17 +1,19 @@
 import { Injectable, Optional } from '@nestjs/common';
 import { Connection } from 'typeorm';
 import { promiseTimeout } from '../../utils';
-import { AbstractDatabaseHealthIndicator } from '../abstract/abstract-database-health-indicator';
+import { DatabaseHealthIndicator } from './database-health-indicator';
 
 /**
  * The TypeOrmeHealthIndicator contains health indicators
  * which are used for health checks related to typeorm
  */
 @Injectable()
-export class DatabaseHealthIndicator extends AbstractDatabaseHealthIndicator {
+export class TypeOrmHealthIndicator extends DatabaseHealthIndicator {
   /**
    * Initializes the typeorm indicator
    * @param connection The typeorm connection of the application context
+   *
+   * @public
    */
   constructor(@Optional() readonly connection: Connection) {
     super(connection);

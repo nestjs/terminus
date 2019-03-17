@@ -1,5 +1,7 @@
 import { DynamicModule, INestApplication } from '@nestjs/common';
-import { FastifyAdapter, NestFactory } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
+import { FastifyAdapter } from '@nestjs/platform-fastify';
+import { ExpressAdapter } from '@nestjs/platform-express';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as portfinder from 'portfinder';
@@ -64,7 +66,7 @@ export async function bootstrapModule(
 ): Promise<[INestApplication, number]> {
   const app = await NestFactory.create(
     ApplicationModule.forRoot(options, useDb, useMongoose),
-    useFastify ? new FastifyAdapter() : null,
+    useFastify ? new FastifyAdapter() : new ExpressAdapter(),
   );
 
   if (tcpPort) {

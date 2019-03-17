@@ -2,7 +2,7 @@ import { INestApplication, DynamicModule } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { TerminusModule } from '../lib/terminus.module';
 import { TerminusLibProvider } from '../lib/terminus-lib.provider';
-import { ApplicationReferenceHost } from '@nestjs/core';
+import { HttpAdapterHost } from '@nestjs/core';
 import {
   TerminusOptionsFactory,
   TerminusModuleOptions,
@@ -40,8 +40,9 @@ describe('Terminus', () => {
       .compile();
 
     app = module.createNestApplication();
-    httpServer = app.get<ApplicationReferenceHost>(ApplicationReferenceHost)
-      .applicationRef.httpServer;
+    httpServer = app
+      .get<HttpAdapterHost>(HttpAdapterHost)
+      .httpAdapter.getHttpServer();
     await app.init();
     return app;
   }

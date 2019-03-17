@@ -10,7 +10,7 @@ import {
   HealthIndicatorFunction,
   TerminusEndpoint,
 } from './interfaces';
-import { ApplicationReferenceHost } from '@nestjs/core';
+import { HttpAdapterHost } from '@nestjs/core';
 import { Server } from 'http';
 import { HealthCheckError, Terminus, HealthCheckMap } from '@godaddy/terminus';
 
@@ -38,8 +38,9 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
   constructor(
     @Inject(TERMINUS_MODULE_OPTIONS)
     private readonly options: TerminusModuleOptions,
-    @Inject(TERMINUS_LIB) private readonly terminus: Terminus,
-    private readonly refHost: ApplicationReferenceHost,
+    @Inject(TERMINUS_LIB)
+    private readonly terminus: Terminus,
+    private readonly refHost: HttpAdapterHost<any>,
   ) {}
 
   /**
@@ -157,7 +158,7 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
    */
   public onApplicationBootstrap() {
     // httpServer for express, instance.server for fastify
-    this.httpServer = this.refHost.applicationRef.getHttpServer();
+    this.httpServer = this.refHost.httpAdapter.getHttpServer();
     this.bootstrapTerminus();
   }
 }
