@@ -34,7 +34,7 @@
     "@types/mongoose": "5.3.22",
     "jest": "23.6.0",
     "nodemon": "1.18.10",
-    "prettier": "1.15.3",
+    "prettier": "1.16.4",
     "supertest": "3.3.0",
     "ts-jest": "23.10.5",
     "ts-loader": "4.5.0",
