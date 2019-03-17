@@ -1,12 +1,12 @@
 import { TerminusBootstrapService } from './terminus-bootstrap.service';
-import { ApplicationReferenceHost } from '@nestjs/core';
+import { HttpAdapterHost } from '@nestjs/core';
 import { TerminusEndpoint, TerminusModuleOptions } from './interfaces';
 import { HealthCheckError } from '@godaddy/terminus';
 
 const httpServer = jest.fn();
 
 const refhostMock = {
-  applicationRef: {
+  httpAdapter: {
     getHttpServer: jest.fn().mockImplementation(() => httpServer),
   },
 };
@@ -39,7 +39,7 @@ describe('TerminusBootstrapService', () => {
       const bootstrapService = new TerminusBootstrapService(
         options,
         terminus,
-        refhostMock as ApplicationReferenceHost,
+        refhostMock as HttpAdapterHost<any>,
       );
 
       expect(terminus).not.toHaveBeenCalled();
@@ -61,7 +61,7 @@ describe('TerminusBootstrapService', () => {
       const bootstrapService = new TerminusBootstrapService(
         { ...options, logger },
         terminus,
-        refhostMock as ApplicationReferenceHost,
+        refhostMock as HttpAdapterHost<any>,
       );
 
       bootstrapService.onApplicationBootstrap();
@@ -79,7 +79,7 @@ describe('TerminusBootstrapService', () => {
       bootstrapService = new TerminusBootstrapService(
         options,
         terminus,
-        refhostMock as ApplicationReferenceHost,
+        refhostMock as HttpAdapterHost<any>,
       );
     });
 
