@@ -21,7 +21,7 @@
     "@nestjs/testing": "5.4.0",
     "@nestjs/websockets": "5.4.0",
     "class-transformer": "0.2.0",
-    "class-validator": "0.8.5",
+    "class-validator": "0.9.1",
     "fastify": "1.14.4",
     "lodash": "^4.17.10",
     "reflect-metadata": "0.1.12",
