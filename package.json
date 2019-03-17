@@ -2,23 +2,33 @@
   "name": "@nestjs/terminus",
   "version": "6.0.0",
   "description": "Nest - modern, fast, powerful node.js web framework (@terminus)",
-  "author": "Kamil Mysliwiec",
-  "main": "dist/index.js",
+  "repository": {
+    "url": "https://github.com/nestjs/terminus"
+  },
   "license": "MIT",
+  "author": "Livio Brunner",
+  "main": "dist/index.js",
   "scripts": {
     "build": "rm -rf dist && tsc -p tsconfig.json",
+    "doc": "./node_modules/.bin/compodoc --disableProtected --disableInternal --disablePrivate -p tsconfig.json",
+    "lint": "tslint -c tslint.json -p tsconfig.json",
     "precommit": "lint-staged",
-    "prepublish:npm": "npm run build",
     "prepublish": "npm run build",
-    "publish:npm": "npm publish --access public",
     "prepublish:next": "npm run build",
     "publish:next": "npm publish --access public --tag next",
+    "prepublish:npm": "npm run build",
+    "publish:npm": "npm publish --access public",
     "test": "npm run test:e2e && npm run test:ut",
-    "test:ut": "jest --config=jest.json",
-    "test:ut:cov": "npm run test:ut -- --coverage",
     "test:e2e": "jest --config=e2e/jest-e2e.json --detectOpenHandles --forceExit",
-    "doc": "./node_modules/.bin/compodoc --disableProtected --disableInternal --disablePrivate -p tsconfig.json",
-    "lint": "tslint -c tslint.json -p tsconfig.json"
+    "test:ut": "jest --config=jest.json",
+    "test:ut:cov": "npm run test:ut -- --coverage"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "prettier --write",
+      "sort-package-json",
+      "git add"
+    ]
   },
   "devDependencies": {
     "@compodoc/compodoc": "1.1.9",
@@ -51,6 +61,7 @@
     "reflect-metadata": "0.1.13",
     "rxjs": "6.4.0",
     "rxjs-compat": "6.4.0",
+    "sort-package-json": "^1.21.0",
     "supertest": "4.0.2",
     "ts-jest": "24.0.0",
     "ts-node": "8.0.3",
@@ -58,44 +69,37 @@
     "tslint-config-prettier": "1.18.0",
     "typescript": "3.3.3333"
   },
-  "repository": {
-    "url": "https://github.com/BrunnerLivio/nest-terminus"
-  },
   "peerDependencies": {
+    "@godaddy/terminus": "^4.1.0",
+    "@grpc/proto-loader": "^0.4.0",
     "@nestjs/common": "^6.0.0",
     "@nestjs/core": "^6.0.0",
-    "@nestjs/typeorm": "^6.0.0",
     "@nestjs/mongoose": "^6.0.0",
-    "typeorm": "^0.2.14",
+    "@nestjs/platform-express": "^6.0.0",
+    "@nestjs/platform-fastify": "^6.0.0",
+    "@nestjs/typeorm": "^6.0.0",
+    "amqp-connection-manager": "^2.3.0",
+    "amqplib": "^0.5.3",
+    "grpc": "^1.19.0",
     "mongoose": "^5.4.19",
-    "@godaddy/terminus": "^4.1.0",
+    "nats": "^1.2.2",
+    "redis": "^2.8.0",
     "reflect-metadata": "0.1.13",
     "rxjs": "^6.4.0",
-    "nats": "^1.2.2",
-    "redis": "^2.8.0",
-    "@grpc/proto-loader": "^0.4.0",
-    "grpc": "^1.19.0",
-    "amqp-connection-manager": "^2.3.0",
-    "amqplib": "^0.5.3"
+    "typeorm": "^0.2.14"
   },
   "optionalDependencies": {
-    "typeorm": "^0.2.14",
-    "@nestjs/typeorm": "^6.0.0",
-    "mongoose": "^5.4.19",
-    "@nestjs/mongoose": "^6.0.0",
-    "mqtt": "^2.18.8",
+    "@grpc/proto-loader": "^0.4.0",
     "@nestjs/microservices": "^6.0.0",
+    "@nestjs/mongoose": "^6.0.0",
+    "@nestjs/typeorm": "^6.0.0",
+    "amqp-connection-manager": "^2.3.0",
+    "amqplib": "^0.5.3",
+    "grpc": "^1.19.0",
+    "mongoose": "^5.4.19",
+    "mqtt": "^2.18.8",
     "nats": "^1.2.2",
     "redis": "^2.8.0",
-    "@grpc/proto-loader": "^0.4.0",
-    "grpc": "^1.19.0",
-    "amqp-connection-manager": "^2.3.0",
-    "amqplib": "^0.5.3"
-  },
-  "lint-staged": {
-    "*.ts": [
-      "prettier --write",
-      "git add"
-    ]
+    "typeorm": "^0.2.14"
   }
 }
