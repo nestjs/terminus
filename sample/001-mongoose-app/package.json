@@ -18,7 +18,7 @@
     "@godaddy/terminus": "4.1.0",
     "@nestjs/common": "6.0.1",
     "@nestjs/core": "6.0.1",
-    "@nestjs/mongoose": "5.2.2",
+    "@nestjs/mongoose": "6.0.0",
     "mongoose": "5.4.19",
     "reflect-metadata": "0.1.12",
     "rimraf": "2.6.3",
