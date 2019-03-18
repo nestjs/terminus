@@ -32,7 +32,7 @@
     "@types/node": "7.10.5",
     "jest": "24.5.0",
     "supertest": "4.0.2",
-    "ts-jest": "20.0.14",
+    "ts-jest": "24.0.0",
     "ts-node": "6.2.0",
     "tslint": "5.14.0"
   }
