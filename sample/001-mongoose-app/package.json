@@ -23,7 +23,7 @@
     "reflect-metadata": "0.1.12",
     "rimraf": "2.6.3",
     "rxjs": "6.4.0",
-    "typescript": "3.2.2"
+    "typescript": "3.3.3333"
   },
   "devDependencies": {
     "@nestjs/testing": "6.0.0",
