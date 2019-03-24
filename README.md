@@ -25,7 +25,7 @@
 
 ## Description
 
-The [Terminus](https://github.com/godaddy/terminus) module for [Nest](https://github.com/nestjs/nest).
+This module contains integrated healthchecks for [Nest](https://github.com/nestjs/nest). These healthchecks run in an internal execution manager based on the [Terminus](https://github.com/godaddy/terminus)-package.
 
 ## Installation
 
@@ -37,7 +37,7 @@ npm install --save @nestjs/terminus @godaddy/terminus
 
 ## Usage
 
-Import the Terminus module with the following options for a **database health check**
+Import the Terminus module with the following options for a healthcheck with a **database** health inidcator.
 
 ```ts
 
@@ -87,7 +87,7 @@ If everything is set up correctly, you can access the healthcheck on `http://loc
     
 ```
 
-For more information, [see docs](https://docs.nestjs.com/recipes/terminus) or for the [internal documentation](https://nestjs.github.io/terminus/)
+For more information, [see docs](https://docs.nestjs.com/recipes/terminus) or [internal documentation](https://nestjs.github.io/terminus/). You can find further samples in the [samples/](https://github.com/nestjs/terminus/tree/master/sample) folder of this repository.
 
 ## Support
 
@@ -95,7 +95,7 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## Stay in touch
 
-* Author - [Kamil Myśliwiec](https://kamilmysliwiec.com) & [Livio Brunner](https://brunnerliv.io)
+* Author - [Kamil Myśliwiec](https://kamilmysliwiec.com) and [Livio Brunner](https://brunnerliv.io)
 * Website - [https://nestjs.com](https://nestjs.com/)
 * Twitter - [@nestframework](https://twitter.com/nestframework)
 
