@@ -42,7 +42,7 @@
     "@nestjs/testing": "6.0.2",
     "@types/jest": "24.0.11",
     "@types/mongoose": "5.3.23",
-    "@types/node": "11.11.6",
+    "@types/node": "11.11.7",
     "amqp-connection-manager": "2.3.0",
     "amqplib": "0.5.3",
     "fastify": "2.1.0",
