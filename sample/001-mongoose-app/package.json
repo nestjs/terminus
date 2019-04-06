@@ -32,7 +32,7 @@
     "@types/node": "10.14.4",
     "@types/supertest": "2.0.7",
     "@types/mongoose": "5.3.24",
-    "jest": "24.5.0",
+    "jest": "24.7.1",
     "nodemon": "1.18.10",
     "prettier": "1.15.3",
     "supertest": "4.0.2",

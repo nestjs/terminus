@@ -30,7 +30,7 @@
   "devDependencies": {
     "@types/jest": "24.0.11",
     "@types/node": "7.10.5",
-    "jest": "24.5.0",
+    "jest": "24.7.1",
     "supertest": "4.0.2",
     "ts-jest": "24.0.2",
     "ts-node": "8.0.3",
