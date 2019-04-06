@@ -18,7 +18,9 @@ import { TypeOrmHealthIndicator, MongooseHealthIndicator } from '.';
 import {
   DNSHealthIndicator,
   MicroserviceHealthIndicator,
+  DiskHealthIndicator,
 } from './health-indicators';
+import { DiskusageLibProvider } from './health-indicators/disk/diskusage-lib.provider';
 
 /**
  * The internal Terminus Module which handles the integration
@@ -51,12 +53,15 @@ export class TerminusCoreModule {
         TypeOrmHealthIndicator,
         MongooseHealthIndicator,
         MicroserviceHealthIndicator,
+        DiskusageLibProvider,
+        DiskHealthIndicator,
       ],
       exports: [
         TypeOrmHealthIndicator,
         MongooseHealthIndicator,
         DNSHealthIndicator,
         MicroserviceHealthIndicator,
+        DiskHealthIndicator,
       ],
     };
   }
@@ -79,12 +84,15 @@ export class TerminusCoreModule {
         DNSHealthIndicator,
         MongooseHealthIndicator,
         MicroserviceHealthIndicator,
+        DiskusageLibProvider,
+        DiskHealthIndicator,
       ],
       exports: [
         TypeOrmHealthIndicator,
         DNSHealthIndicator,
         MongooseHealthIndicator,
         MicroserviceHealthIndicator,
+        DiskHealthIndicator,
       ],
     };
   }

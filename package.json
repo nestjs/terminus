@@ -26,9 +26,15 @@
   "lint-staged": {
     "*.ts": [
       "prettier --write",
-      "sort-package-json",
+      "git add"
+    ],
+    "package.json": [
+      "sort-package-json ./package.json",
       "git add"
     ]
+  },
+  "dependencies": {
+    "check-disk-space": "^1.5.0"
   },
   "devDependencies": {
     "@compodoc/compodoc": "1.1.9",

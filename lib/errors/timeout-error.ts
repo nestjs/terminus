@@ -1,8 +1,8 @@
 import { HealthCheckError } from '@godaddy/terminus';
+import { TIMEOUT_EXCEEDED } from './messages.constant';
 
 /**
- * Gets thrown when the timeout of the
- * typeorm health check exceeds
+ * Gets thrown when the timeout of the health check exceeds
  */
 export class TimeoutError extends HealthCheckError {
   /**
@@ -11,6 +11,6 @@ export class TimeoutError extends HealthCheckError {
    * @param {unknown} cause The cause of the health check error
    */
   constructor(timeout: number, cause: unknown) {
-    super(`timeout of ${timeout}ms exceeded`, cause);
+    super(TIMEOUT_EXCEEDED(timeout), cause);
   }
 }
