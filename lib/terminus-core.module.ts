@@ -19,6 +19,7 @@ import {
   DNSHealthIndicator,
   MicroserviceHealthIndicator,
   DiskHealthIndicator,
+  MemoryHealthIndicator,
 } from './health-indicators';
 import { DiskusageLibProvider } from './health-indicators/disk/diskusage-lib.provider';
 
@@ -55,6 +56,7 @@ export class TerminusCoreModule {
         MicroserviceHealthIndicator,
         DiskusageLibProvider,
         DiskHealthIndicator,
+        MemoryHealthIndicator,
       ],
       exports: [
         TypeOrmHealthIndicator,
@@ -62,6 +64,7 @@ export class TerminusCoreModule {
         DNSHealthIndicator,
         MicroserviceHealthIndicator,
         DiskHealthIndicator,
+        MemoryHealthIndicator,
       ],
     };
   }
@@ -86,6 +89,7 @@ export class TerminusCoreModule {
         MicroserviceHealthIndicator,
         DiskusageLibProvider,
         DiskHealthIndicator,
+        MemoryHealthIndicator,
       ],
       exports: [
         TypeOrmHealthIndicator,
@@ -93,6 +97,7 @@ export class TerminusCoreModule {
         MongooseHealthIndicator,
         MicroserviceHealthIndicator,
         DiskHealthIndicator,
+        MemoryHealthIndicator,
       ],
     };
   }

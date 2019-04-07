@@ -18,7 +18,8 @@ describe('Disk Health', () => {
         {
           url: '/health',
           healthIndicators: [
-            async () => disk.check('disk', { path: '/', threshold: free + 1 }),
+            async () =>
+              disk.checkStorage('disk', { path: '/', threshold: free + 1 }),
           ],
         },
       ],
@@ -46,7 +47,8 @@ describe('Disk Health', () => {
           {
             url: '/health',
             healthIndicators: [
-              async () => disk.check('disk', { path: '/', threshold: 0 }),
+              async () =>
+                disk.checkStorage('disk', { path: '/', threshold: 0 }),
             ],
           },
         ],
@@ -74,7 +76,8 @@ describe('Disk Health', () => {
           {
             url: '/health',
             healthIndicators: [
-              async () => disk.check('disk', { path: '/', thresholdPercent }),
+              async () =>
+                disk.checkStorage('disk', { path: '/', thresholdPercent }),
             ],
           },
         ],

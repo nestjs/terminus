@@ -4,5 +4,5 @@ export const CONNECTION_NOT_FOUND =
 export const TIMEOUT_EXCEEDED = (timeout: number) =>
   `timeout of ${timeout.toString()}ms exceeded`;
 
-export const DISK_STORAGE_EXCEEDED =
-  'Available disk storage exceeded the set threshold';
+export const STORAGE_EXCEEDED = (keyword: string) =>
+  `Used ${keyword} exceeded the set threshold`;
