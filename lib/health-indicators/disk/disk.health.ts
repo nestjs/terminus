@@ -5,8 +5,8 @@ import * as checkdiskspace from 'check-disk-space';
 import { HealthIndicatorResult } from '../../interfaces';
 import { HealthIndicator } from '../health-indicator';
 import { CHECKDISKSPACE_LIB } from '../../terminus.constants';
-import { DiskStorageExceededError } from '../../errors/disk-threshold.error';
-import { DISK_STORAGE_EXCEEDED } from '../../errors/messages.constant';
+import { StorageExceededError } from '../../errors';
+import { STORAGE_EXCEEDED } from '../../errors/messages.constant';
 import {
   DiskHealthIndicatorOptions,
   DiskOptionsWithThresholdPercent,
@@ -79,9 +79,10 @@ export class DiskHealthIndicator extends HealthIndicator {
     }
 
     if (!isHealthy) {
-      throw new DiskStorageExceededError(
+      throw new StorageExceededError(
+        'disk storage',
         this.getStatus(key, false, {
-          message: DISK_STORAGE_EXCEEDED,
+          message: STORAGE_EXCEEDED('disk storage'),
         }),
       );
     }
@@ -95,7 +96,7 @@ export class DiskHealthIndicator extends HealthIndicator {
    * @param key The key which will be used for the result object
    *
    * @throws {HealthCheckError} In case the health indicator failed
-   * @throws {DiskStorageExceededError} In case the disk storage has exceeded the given threshold
+   * @throws {StorageExceededError} In case the disk storage has exceeded the given threshold
    *
    * @returns {Promise<HealthIndicatorResult>} The result of the health indicator check
    *
