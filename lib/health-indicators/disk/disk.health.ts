@@ -89,8 +89,9 @@ export class DiskHealthIndicator extends HealthIndicator {
   }
 
   /**
-   * Checks if the given url respons in the given timeout
-   * and returns a result object corresponding to the result
+   * Checks if the size of the given size has exceeded the
+   * given threshold
+   *
    * @param key The key which will be used for the result object
    *
    * @throws {HealthCheckError} In case the health indicator failed
@@ -99,9 +100,11 @@ export class DiskHealthIndicator extends HealthIndicator {
    * @returns {Promise<HealthIndicatorResult>} The result of the health indicator check
    *
    * @example
-   * diskHealthIndicator.checkStorage('storage', { threshold: 120000000000, path: '/' });
+   * // The used disk storage should not exceed 250 GB
+   * diskHealthIndicator.check('storage', { threshold: 250 * 1024 * 1024 * 1024, path: '/' });
    * @example
-   * diskHealthIndicator.checkSotrage('storage', { thresholdPercent: 0.5, path: 'C:\\' });
+   * // The used disk storage should not exceed 50% of the full disk size
+   * diskHealthIndicator.check('storage', { thresholdPercent: 0.5, path: 'C:\\' });
    */
   async check(
     key: string,
