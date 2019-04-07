@@ -54,17 +54,24 @@ export class DiskHealthIndicator extends HealthIndicator {
   }
 
   /**
-   * Checks the storage space and returns the status
+   * Checks if the size of the given size has exceeded the
+   * given threshold
+   *
    * @param key The key which will be used for the result object
-   * @param options The options of the `DiskHealthIndicator`
    *
-   * @throws {DiskStorageExceededError} In case the disk storage has exceeded the given threshold
-   *
-   * @private
+   * @throws {HealthCheckError} In case the health indicator failed
+   * @throws {StorageExceededError} In case the disk storage has exceeded the given threshold
    *
    * @returns {Promise<HealthIndicatorResult>} The result of the health indicator check
+   *
+   * @example
+   * // The used disk storage should not exceed 250 GB
+   * diskHealthIndicator.checkStorage('storage', { threshold: 250 * 1024 * 1024 * 1024, path: '/' });
+   * @example
+   * // The used disk storage should not exceed 50% of the full disk size
+   * diskHealthIndicator.checkStorage('storage', { thresholdPercent: 0.5, path: 'C:\\' });
    */
-  private async checkStorage(
+  public async checkStorage(
     key: string,
     options: DiskHealthIndicatorOptions,
   ): Promise<HealthIndicatorResult> {
@@ -87,30 +94,5 @@ export class DiskHealthIndicator extends HealthIndicator {
       );
     }
     return this.getStatus(key, true);
-  }
-
-  /**
-   * Checks if the size of the given size has exceeded the
-   * given threshold
-   *
-   * @param key The key which will be used for the result object
-   *
-   * @throws {HealthCheckError} In case the health indicator failed
-   * @throws {StorageExceededError} In case the disk storage has exceeded the given threshold
-   *
-   * @returns {Promise<HealthIndicatorResult>} The result of the health indicator check
-   *
-   * @example
-   * // The used disk storage should not exceed 250 GB
-   * diskHealthIndicator.check('storage', { threshold: 250 * 1024 * 1024 * 1024, path: '/' });
-   * @example
-   * // The used disk storage should not exceed 50% of the full disk size
-   * diskHealthIndicator.check('storage', { thresholdPercent: 0.5, path: 'C:\\' });
-   */
-  async check(
-    key: string,
-    options: DiskHealthIndicatorOptions,
-  ): Promise<HealthIndicatorResult> {
-    return await this.checkStorage(key, options);
   }
 }
