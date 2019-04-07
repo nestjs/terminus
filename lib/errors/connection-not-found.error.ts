@@ -1,4 +1,5 @@
 import { HealthCheckError } from '@godaddy/terminus';
+import { CONNECTION_NOT_FOUND } from './messages.constant';
 
 /**
  * Error which gets thrown when the connection
@@ -10,6 +11,6 @@ export class ConnectionNotFoundError extends HealthCheckError {
    * @param {unknown} cause The cause of the health check error
    */
   constructor(cause: unknown) {
-    super('Connection provider not found in application context', cause);
+    super(CONNECTION_NOT_FOUND, cause);
   }
 }
