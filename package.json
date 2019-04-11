@@ -59,7 +59,7 @@
     "lint-staged": "8.1.5",
     "mqtt": "2.18.8",
     "mysql": "2.16.0",
-    "nats": "1.2.8",
+    "nats": "1.2.10",
     "opn": "5.5.0",
     "portfinder": "1.0.20",
     "prettier": "1.16.4",
