@@ -39,7 +39,7 @@
   "devDependencies": {
     "@compodoc/compodoc": "1.1.9",
     "@godaddy/terminus": "4.1.0",
-    "@grpc/proto-loader": "0.4.0",
+    "@grpc/proto-loader": "0.5.0",
     "@nestjs/common": "6.1.0",
     "@nestjs/core": "6.1.0",
     "@nestjs/microservices": "6.1.0",
@@ -77,7 +77,7 @@
   },
   "peerDependencies": {
     "@godaddy/terminus": "^4.1.0",
-    "@grpc/proto-loader": "^0.4.0",
+    "@grpc/proto-loader": "^0.4.0 || ^0.5.0",
     "@nestjs/common": "^6.0.0",
     "@nestjs/core": "^6.0.0",
     "@nestjs/mongoose": "^6.0.0",
@@ -95,7 +95,7 @@
     "typeorm": "^0.2.14"
   },
   "optionalDependencies": {
-    "@grpc/proto-loader": "^0.4.0",
+    "@grpc/proto-loader": "^0.5.0",
     "@nestjs/microservices": "^6.0.0",
     "@nestjs/mongoose": "^6.0.0",
     "@nestjs/typeorm": "^6.0.0",
