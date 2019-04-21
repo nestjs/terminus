@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Scope } from '@nestjs/common';
 import { Connection } from 'typeorm';
 import { ModuleRef } from '@nestjs/core';
 import { HealthCheckError } from '@godaddy/terminus';
@@ -30,7 +30,7 @@ export interface TypeOrmPingCheckSettings {
  * The TypeOrmHealthIndicator contains health indicators
  * which are used for health checks related to TypeOrm
  */
-@Injectable()
+@Injectable({ scope: Scope.TRANSIENT })
 export class TypeOrmHealthIndicator extends HealthIndicator {
   /**
    * Initializes the TypeOrmHealthIndicator
@@ -41,6 +41,7 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
    */
   constructor(private moduleRef: ModuleRef) {
     super();
+    this.checkDependantPackages();
   }
 
   /**

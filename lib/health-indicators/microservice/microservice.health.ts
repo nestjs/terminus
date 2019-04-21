@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Scope } from '@nestjs/common';
 import { HealthCheckError } from '@godaddy/terminus';
 
 import * as NestJSMicroservices from '@nestjs/microservices';
@@ -22,7 +22,7 @@ export type MicroserviceHealthIndicatorOptions = NestJSMicroservices.ClientOptio
  *
  * @public
  */
-@Injectable()
+@Injectable({ scope: Scope.TRANSIENT })
 export class MicroserviceHealthIndicator extends HealthIndicator {
   private nestJsMicroservices: typeof NestJSMicroservices;
   /**
@@ -30,6 +30,13 @@ export class MicroserviceHealthIndicator extends HealthIndicator {
    */
   constructor() {
     super();
+    this.checkDependantPackages();
+  }
+
+  /**
+   * Checks if the dependant packages are present
+   */
+  private checkDependantPackages() {
     this.nestJsMicroservices = checkPackages(
       ['@nestjs/microservices'],
       this.constructor.name,

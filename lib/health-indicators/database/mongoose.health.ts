@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { Connection } from 'mongoose';
 import { HealthCheckError } from '@godaddy/terminus';
@@ -29,7 +29,7 @@ export interface MongoosePingCheckSettings {
  * The MongooseHealthIndicator contains health indicators
  * which are used for health checks related to Mongoose
  */
-@Injectable()
+@Injectable({ scope: Scope.TRANSIENT })
 export class MongooseHealthIndicator extends HealthIndicator {
   /**
    * Initializes the MongooseHealthIndicator
@@ -40,6 +40,7 @@ export class MongooseHealthIndicator extends HealthIndicator {
    */
   constructor(private moduleRef: ModuleRef) {
     super();
+    this.checkDependantPackages();
   }
 
   /**
