@@ -1,20 +1,64 @@
-import { Injectable, Optional } from '@nestjs/common';
-import { InjectConnection } from '@nestjs/mongoose';
+import { Injectable } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
 import { Connection } from 'mongoose';
-import { promiseTimeout } from '../../utils';
-import { DatabaseHealthIndicator } from './database-health-indicator';
+import { loadPackage } from '@nestjs/common/utils/load-package.util';
+import { HealthCheckError } from '@godaddy/terminus';
 
-@Injectable()
-export class MongooseHealthIndicator extends DatabaseHealthIndicator {
+import * as NestJSMongoose from '@nestjs/mongoose';
+
+import {
+  promiseTimeout,
+  TimeoutError as PromiseTimeoutError,
+} from '../../utils';
+import { HealthIndicatorResult, TimeoutError } from '../../';
+import { HealthIndicator } from '../health-indicator';
+
+export interface MongoosePingCheckSettings {
   /**
-   * Initializes the typeorm indicator
+   * The connection which the ping check should get executed
+   */
+  connection?: Connection;
+  /**
+   * The amount of time the check should require in ms
+   * @default 1000
+   */
+  timeout?: number;
+}
+
+/**
+ * The MongooseHealthIndicator contains health indicators
+ * which are used for health checks related to Mongoose
+ */
+@Injectable()
+export class MongooseHealthIndicator extends HealthIndicator {
+  /**
+   * Initializes the MongooseHealthIndicator
    *
-   * @param connection The typeorm connection of the application context
+   * @param {ModuleRef} moduleRef The NestJS module reference
    *
    * @public
    */
-  constructor(@Optional() @InjectConnection() readonly connection: Connection) {
-    super(connection);
+  constructor(private moduleRef: ModuleRef) {
+    super();
+  }
+
+  /**
+   * Checks if the dependant packages are present
+   */
+  private checkDependantPackages() {
+    loadPackage('@nestjs/mongoose', this.constructor.name);
+    loadPackage('mongoose', this.constructor.name);
+  }
+
+  /**
+   * Returns the connection of the current DI context
+   */
+  private getContextConnection(): Connection {
+    const {
+      getConnectionToken,
+    } = require('@nestjs/mongoose/dist/common/mongoose.utils') as typeof NestJSMongoose;
+
+    return this.moduleRef.get(getConnectionToken(null));
   }
 
   /**
@@ -23,7 +67,50 @@ export class MongooseHealthIndicator extends DatabaseHealthIndicator {
    * @param timeout The timeout how long the ping should maximum take
    *
    */
-  async pingDb(connection: Connection, timeout: number) {
+  private async pingDb(connection: Connection, timeout: number) {
     return await promiseTimeout(timeout, connection.startSession());
+  }
+
+  /**
+   * Checks if the MongoDB responds in (default) 1000ms and
+   * returns a result object corresponding to the result
+   *
+   * @param key The key which will be used for the result object
+   * @param options The options for the ping
+   * @example
+   * mongooseHealthIndicator.pingCheck('mongodb', { timeout: 1500 });
+   */
+  public async pingCheck(
+    key: string,
+    options: MongoosePingCheckSettings = {},
+  ): Promise<HealthIndicatorResult> {
+    let isHealthy = false;
+    this.checkDependantPackages();
+
+    const connection = options.connection || this.getContextConnection();
+    const timeout = options.timeout || 1000;
+
+    try {
+      await this.pingDb(connection, timeout);
+      isHealthy = true;
+    } catch (err) {
+      if (err instanceof PromiseTimeoutError) {
+        throw new TimeoutError(
+          timeout,
+          this.getStatus(key, isHealthy, {
+            message: `timeout of ${timeout}ms exceeded`,
+          }),
+        );
+      }
+    }
+
+    if (isHealthy) {
+      return this.getStatus(key, isHealthy);
+    } else {
+      throw new HealthCheckError(
+        `${key} is not available`,
+        this.getStatus(key, isHealthy),
+      );
+    }
   }
 }

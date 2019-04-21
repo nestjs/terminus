@@ -11,7 +11,7 @@
         }],
         "semicolon": [true],
         "no-console": [true],
-        "no-require-imports": true,
+        "no-require-imports": false,
         "interface-name": [true, "never-prefix"],
         "eofline": false,
         "linebreak-style": [
