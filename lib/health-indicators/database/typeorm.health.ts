@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
 import { ModuleRef } from '@nestjs/core';
-import { loadPackage } from '@nestjs/common/utils/load-package.util';
 import { HealthCheckError } from '@godaddy/terminus';
 
 import * as NestJSTypeOrm from '@nestjs/typeorm';
@@ -11,6 +10,7 @@ import { TimeoutError } from '../../errors';
 import {
   TimeoutError as PromiseTimeoutError,
   promiseTimeout,
+  checkPackages,
 } from '../../utils';
 import { HealthIndicator } from '../health-indicator';
 
@@ -47,8 +47,7 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
    * Checks if the dependant packages are present
    */
   private checkDependantPackages() {
-    loadPackage('@nestjs/typeorm', this.constructor.name);
-    loadPackage('typeorm', this.constructor.name);
+    checkPackages(['@nestjs/typeorm', 'typeorm'], this.constructor.name);
   }
 
   /**

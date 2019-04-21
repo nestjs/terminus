@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { HealthCheckError } from '@godaddy/terminus';
-import { loadPackage } from '@nestjs/common/utils/load-package.util';
 
 import * as NestJSMicroservices from '@nestjs/microservices';
 
@@ -9,6 +8,7 @@ import { HealthIndicatorResult } from '../../interfaces';
 import {
   promiseTimeout,
   TimeoutError as PromiseTimeoutError,
+  checkPackages,
 } from '../../utils';
 import { TimeoutError } from '../../errors';
 
@@ -30,10 +30,10 @@ export class MicroserviceHealthIndicator extends HealthIndicator {
    */
   constructor() {
     super();
-    this.nestJsMicroservices = loadPackage(
-      '@nestjs/microservices',
+    this.nestJsMicroservices = checkPackages(
+      ['@nestjs/microservices'],
       this.constructor.name,
-    );
+    )[0];
   }
 
   private async pingMicroservice(

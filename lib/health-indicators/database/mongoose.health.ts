@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { Connection } from 'mongoose';
-import { loadPackage } from '@nestjs/common/utils/load-package.util';
 import { HealthCheckError } from '@godaddy/terminus';
 
 import * as NestJSMongoose from '@nestjs/mongoose';
@@ -9,6 +8,7 @@ import * as NestJSMongoose from '@nestjs/mongoose';
 import {
   promiseTimeout,
   TimeoutError as PromiseTimeoutError,
+  checkPackages,
 } from '../../utils';
 import { HealthIndicatorResult, TimeoutError } from '../../';
 import { HealthIndicator } from '../health-indicator';
@@ -46,8 +46,7 @@ export class MongooseHealthIndicator extends HealthIndicator {
    * Checks if the dependant packages are present
    */
   private checkDependantPackages() {
-    loadPackage('@nestjs/mongoose', this.constructor.name);
-    loadPackage('mongoose', this.constructor.name);
+    checkPackages(['@nestjs/mongoose', 'mongoose'], this.constructor.name);
   }
 
   /**
