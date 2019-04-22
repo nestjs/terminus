@@ -60,12 +60,15 @@ export class MongooseHealthIndicator extends HealthIndicator {
   private getContextConnection(): Connection {
     const {
       getConnectionToken,
-    } = require('@nestjs/mongoose/dist/common/mongoose.utils') as typeof NestJSMongoose;
+    } = require('@nestjs/mongoose') as typeof NestJSMongoose;
 
     try {
-      return this.moduleRef.get(getConnectionToken() as string, {
-        strict: false,
-      });
+      return this.moduleRef.get(
+        getConnectionToken('DatabaseConnection') as string,
+        {
+          strict: false,
+        },
+      );
     } catch (err) {
       return null;
     }
