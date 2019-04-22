@@ -10,7 +10,11 @@ import {
   TimeoutError as PromiseTimeoutError,
   checkPackages,
 } from '../../utils';
-import { HealthIndicatorResult, TimeoutError } from '../../';
+import {
+  HealthIndicatorResult,
+  TimeoutError,
+  ConnectionNotFoundError,
+} from '../../';
 import { HealthIndicator } from '../health-indicator';
 
 export interface MongoosePingCheckSettings {
@@ -58,7 +62,13 @@ export class MongooseHealthIndicator extends HealthIndicator {
       getConnectionToken,
     } = require('@nestjs/mongoose/dist/common/mongoose.utils') as typeof NestJSMongoose;
 
-    return this.moduleRef.get(getConnectionToken(null));
+    try {
+      return this.moduleRef.get(getConnectionToken() as string, {
+        strict: false,
+      });
+    } catch (err) {
+      return null;
+    }
   }
 
   /**
@@ -89,6 +99,14 @@ export class MongooseHealthIndicator extends HealthIndicator {
 
     const connection = options.connection || this.getContextConnection();
     const timeout = options.timeout || 1000;
+
+    if (!connection) {
+      throw new ConnectionNotFoundError(
+        this.getStatus(key, isHealthy, {
+          message: 'Connection provider not found in application context',
+        }),
+      );
+    }
 
     try {
       await this.pingDb(connection, timeout);

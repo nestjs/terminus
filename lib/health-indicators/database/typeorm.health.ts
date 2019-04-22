@@ -6,7 +6,7 @@ import { HealthCheckError } from '@godaddy/terminus';
 import * as NestJSTypeOrm from '@nestjs/typeorm';
 
 import { HealthIndicatorResult } from '../../interfaces/health-indicator.interface';
-import { TimeoutError } from '../../errors';
+import { TimeoutError, ConnectionNotFoundError } from '../../errors';
 import {
   TimeoutError as PromiseTimeoutError,
   promiseTimeout,
@@ -54,12 +54,18 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
   /**
    * Returns the connection of the current DI context
    */
-  private getContextConnection(): Connection {
+  private getContextConnection(): Connection | null {
     const {
       getConnectionToken,
     } = require('@nestjs/typeorm/dist/common/typeorm.utils') as typeof NestJSTypeOrm;
 
-    return this.moduleRef.get(getConnectionToken() as string);
+    try {
+      return this.moduleRef.get(getConnectionToken() as string, {
+        strict: false,
+      });
+    } catch (err) {
+      return null;
+    }
   }
 
   /**
@@ -92,6 +98,14 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
     const connection: Connection =
       options.connection || this.getContextConnection();
     const timeout = options.timeout || 1000;
+
+    if (!connection) {
+      throw new ConnectionNotFoundError(
+        this.getStatus(key, isHealthy, {
+          message: 'Connection provider not found in application context',
+        }),
+      );
+    }
 
     try {
       await this.pingDb(connection, timeout);
