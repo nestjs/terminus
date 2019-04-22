@@ -157,7 +157,6 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
    * Gets called when the application gets bootstrapped.
    */
   public onApplicationBootstrap() {
-    // httpServer for express, instance.server for fastify
     this.httpServer = this.refHost.httpAdapter.getHttpServer();
     this.bootstrapTerminus();
   }
