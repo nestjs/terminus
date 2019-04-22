@@ -1,15 +1,18 @@
-import { Injectable } from '@nestjs/common';
-import { HealthIndicatorResult } from '../../interfaces';
-import { HealthIndicator } from '../health-indicator';
+import { Injectable, Scope } from '@nestjs/common';
 import { HealthCheckError } from '@godaddy/terminus';
-import { ClientProxyFactory, ClientOptions } from '@nestjs/microservices';
+
+import * as NestJSMicroservices from '@nestjs/microservices';
+
+import { HealthIndicator } from '../health-indicator';
+import { HealthIndicatorResult } from '../../interfaces';
 import {
   promiseTimeout,
   TimeoutError as PromiseTimeoutError,
+  checkPackages,
 } from '../../utils';
 import { TimeoutError } from '../../errors';
 
-export type MicroserviceHealthIndicatorOptions = ClientOptions & {
+export type MicroserviceHealthIndicatorOptions = NestJSMicroservices.ClientOptions & {
   timeout?: number;
 };
 
@@ -19,19 +22,31 @@ export type MicroserviceHealthIndicatorOptions = ClientOptions & {
  *
  * @public
  */
-@Injectable()
+@Injectable({ scope: Scope.TRANSIENT })
 export class MicroserviceHealthIndicator extends HealthIndicator {
+  private nestJsMicroservices: typeof NestJSMicroservices;
   /**
    * Initializes the health indicator
    */
   constructor() {
     super();
+    this.checkDependantPackages();
+  }
+
+  /**
+   * Checks if the dependant packages are present
+   */
+  private checkDependantPackages() {
+    this.nestJsMicroservices = checkPackages(
+      ['@nestjs/microservices'],
+      this.constructor.name,
+    )[0];
   }
 
   private async pingMicroservice(
     options: MicroserviceHealthIndicatorOptions,
   ): Promise<any> {
-    const client = ClientProxyFactory.create(options);
+    const client = this.nestJsMicroservices.ClientProxyFactory.create(options);
     return await client.connect();
   }
 
