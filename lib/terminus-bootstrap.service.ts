@@ -58,12 +58,11 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
         // Register all promises
         .map(healthIndicator => healthIndicator())
         .map((p: Promise<unknown>) =>
-          p.catch((error: Error) => {
-            if (error instanceof HealthCheckError) {
-              errors.push(error.causes);
-            } else {
-              throw error;
-            }
+          p.catch((error: any) => {
+            // Is not an expected error. Throw further!
+            if (!error.causes) throw error;
+            // Is a expected health check error
+            errors.push((error as HealthCheckError).causes);
           }),
         )
         .map((p: Promise<unknown>) =>
