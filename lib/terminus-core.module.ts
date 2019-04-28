@@ -26,6 +26,8 @@ import { DiskusageLibProvider } from './health-indicators/disk/diskusage-lib.pro
 /**
  * The internal Terminus Module which handles the integration
  * with the third party Terminus library and Nest
+ *
+ * @internal
  */
 @Global()
 @Module({

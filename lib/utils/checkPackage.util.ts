@@ -16,6 +16,9 @@ const MISSING_REQUIRED_DEPENDENCY = (names: string[], reason: string): string =>
     names.length > 1 ? 'ies' : 'y'
   } ($ npm install ${names.join(' ')}) to take advantage of ${reason}.`;
 
+/**
+ * @internal
+ */
 const logger = new Logger('PackageLoader');
 
 /**

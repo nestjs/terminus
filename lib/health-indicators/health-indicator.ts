@@ -5,6 +5,16 @@ import { HealthIndicatorResult } from '..';
  * with common functionalities
  *
  * @public
+ *
+ * @example
+ * class MyHealthIndicator extends HealthIndicator {
+ *   public check(key: string) {
+ *     // Replace with the actual check
+ *     const isHealthy = true;
+ *     // Returns { [key]: { status: 'up', message: 'Up and running' } }
+ *     return super.getStatus(key, isHealthy, { message: 'Up and running' });
+ *   }
+ * }
  */
 export abstract class HealthIndicator {
   /**
@@ -13,15 +23,7 @@ export abstract class HealthIndicator {
    * @param isHealthy Whether the health indicator is healthy
    * @param data Additional data which will get appended to the result object
    *
-   * @example
-   * class MyHealthIndicator extends HealthIndicator {
-   *   public check(key: string) {
-   *     // Replace with the actual check
-   *     const isHealthy = true;
-   *     // Returns { [key]: { status: 'up', message: 'Up and running' } }
-   *     return super.getStatus(key, isHealthy, { message: 'Up and running' });
-   *   }
-   * }
+
    */
   protected getStatus(
     key: string,

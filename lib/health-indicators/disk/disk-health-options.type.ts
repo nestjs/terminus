@@ -1,5 +1,8 @@
 import { XOR } from '../../utils/types';
 
+/**
+ * @internal
+ */
 interface DiskOptionsBase {
   /**
    * The path which should get checked
@@ -7,6 +10,9 @@ interface DiskOptionsBase {
   path: string;
 }
 
+/**
+ * @internal
+ */
 interface DiskOptionsThreshold {
   /**
    * The threshold in bytes
@@ -14,6 +20,9 @@ interface DiskOptionsThreshold {
   threshold: number;
 }
 
+/**
+ * @internal
+ */
 interface DiskOptionsThresholdPercent {
   /**
    * The threshold in percent (e.g. 0.5)
@@ -21,7 +30,13 @@ interface DiskOptionsThresholdPercent {
   thresholdPercent: number;
 }
 
+/**
+ * @internal
+ */
 export type DiskOptionsWithThreshold = DiskOptionsBase & DiskOptionsThreshold;
+/**
+ * @internal
+ */
 export type DiskOptionsWithThresholdPercent = DiskOptionsBase &
   DiskOptionsThresholdPercent;
 

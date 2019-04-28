@@ -10,7 +10,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "rm -rf dist && tsc -p tsconfig.json",
-    "doc": "./node_modules/.bin/compodoc --disableProtected --disableInternal --disablePrivate -p tsconfig.json",
+    "doc": "./node_modules/.bin/compodoc --disableInternal --disableSourceCode --disablePrivate -p tsconfig.json",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "precommit": "lint-staged",
     "prepublish": "npm run build",

@@ -12,6 +12,11 @@ import {
   DiskOptionsWithThresholdPercent,
 } from './disk-health-options.type';
 
+/**
+ * The type of the check-disk-space library
+ *
+ * @internal
+ */
 type CheckDiskSpace = typeof checkdiskspace;
 
 /**
@@ -27,7 +32,7 @@ export class DiskHealthIndicator extends HealthIndicator {
    *
    * @param {CheckDiskSpace} checkDiskSpace The check-disk-space library
    *
-   * @public
+   * @internal
    */
   constructor(
     @Inject(CHECKDISKSPACE_LIB)

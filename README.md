@@ -29,7 +29,7 @@ This module contains integrated healthchecks for [Nest](https://github.com/nestj
 
 ## Installation
 
-```shell
+```bash
 
 npm install --save @nestjs/terminus @godaddy/terminus
 
@@ -39,7 +39,7 @@ npm install --save @nestjs/terminus @godaddy/terminus
 
 Import the Terminus module with the following options for a healthcheck with a **database** health inidcator.
 
-```ts
+```typescript
 
 const getTerminusOptions = (
   db: TypeOrmHealthIndicator,

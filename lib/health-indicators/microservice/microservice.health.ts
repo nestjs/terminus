@@ -12,6 +12,9 @@ import {
 } from '../../utils';
 import { TimeoutError } from '../../errors';
 
+/**
+ * The options for the `MicroserviceHealthInidcator`
+ */
 export type MicroserviceHealthIndicatorOptions = NestJSMicroservices.ClientOptions & {
   timeout?: number;
 };

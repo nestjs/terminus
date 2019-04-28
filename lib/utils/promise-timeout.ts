@@ -1,6 +1,8 @@
 /**
  * An errors which gets raised when the timeout
  * exceeded
+ *
+ * @internal
  */
 export class TimeoutError extends Error {}
 
@@ -11,6 +13,8 @@ export class TimeoutError extends Error {}
  *
  * @param {number} ms The timeout in milliseconds
  * @param {Promise<unknown>} promise The promise which should get executed
+ *
+ * @internal
  */
 export const promiseTimeout = function(
   ms: number,
