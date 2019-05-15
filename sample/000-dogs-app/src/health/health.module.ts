@@ -5,11 +5,8 @@ import { TerminusOptionsService } from './terminus-options.service';
 import { DogModule } from '../dog/dog.module';
 
 @Module({
-  imports: [
-    TerminusModule.forRootAsync({
-      imports: [DogModule],
-      useClass: TerminusOptionsService,
-    }),
-  ],
+  imports: [TerminusModule, DogModule],
+  providers: [TerminusOptionsService],
+  exports: [TerminusOptionsService],
 })
 export class HealthModule {}

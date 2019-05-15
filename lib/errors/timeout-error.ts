@@ -8,9 +8,9 @@ export class TimeoutError extends HealthCheckError {
   /**
    * Initializes the error
    * @param {number} timeout The given timeout in ms
-   * @param {unknown} cause The cause of the health check error
+   * @param {any} cause The cause of the health check error
    */
-  constructor(timeout: number, cause: unknown) {
+  constructor(timeout: number, cause: any) {
     super(TIMEOUT_EXCEEDED(timeout), cause);
   }
 }

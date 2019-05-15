@@ -13,7 +13,7 @@ export type HealthIndicatorResult = {
     /**
      * Optional settings of the health indicator result
      */
-    [optionalKeys: string]: unknown;
+    [optionalKeys: string]: any;
   };
 };
 

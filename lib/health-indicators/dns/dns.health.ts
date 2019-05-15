@@ -29,7 +29,7 @@ export class DNSHealthIndicator extends HealthIndicator {
   private async pingDNS(
     url: string,
     options: AxiosRequestConfig,
-  ): Promise<AxiosResponse<unknown> | unknown> {
+  ): Promise<AxiosResponse<any> | any> {
     return await this.httpService.request({ url, ...options }).toPromise();
   }
 

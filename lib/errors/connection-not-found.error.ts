@@ -8,9 +8,9 @@ import { CONNECTION_NOT_FOUND } from './messages.constant';
 export class ConnectionNotFoundError extends HealthCheckError {
   /**
    * Initializes the error
-   * @param {unknown} cause The cause of the health check error
+   * @param {any} cause The cause of the health check error
    */
-  constructor(cause: unknown) {
+  constructor(cause: any) {
     super(CONNECTION_NOT_FOUND, cause);
   }
 }

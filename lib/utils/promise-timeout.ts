@@ -12,14 +12,14 @@ export class TimeoutError extends Error {}
  * raise a TimeoutError
  *
  * @param {number} ms The timeout in milliseconds
- * @param {Promise<unknown>} promise The promise which should get executed
+ * @param {Promise<any>} promise The promise which should get executed
  *
  * @internal
  */
 export const promiseTimeout = function(
   ms: number,
-  promise: Promise<unknown>,
-): Promise<unknown> {
+  promise: Promise<any>,
+): Promise<any> {
   // Create a promise that rejects in <ms> milliseconds
   let timeout = new Promise((_, reject) => {
     let id = setTimeout(() => {

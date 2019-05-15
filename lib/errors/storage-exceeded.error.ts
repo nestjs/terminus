@@ -10,9 +10,9 @@ export class StorageExceededError extends HealthCheckError {
    * Initializes the error
    *
    * @param {string} keyword The keyword (heap, rss, disk e.g.)
-   * @param {unknown} cause The cause of the health check error
+   * @param {any} cause The cause of the health check error
    */
-  constructor(keyword: string, cause: unknown) {
+  constructor(keyword: string, cause: any) {
     super(STORAGE_EXCEEDED(keyword), cause);
   }
 }
