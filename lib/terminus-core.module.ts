@@ -14,14 +14,8 @@ import { TERMINUS_MODULE_OPTIONS } from './terminus.constants';
 import { TerminusBootstrapService } from './terminus-bootstrap.service';
 import { TerminusLibProvider } from './terminus-lib.provider';
 import { TerminusModule } from './terminus.module';
-import { TypeOrmHealthIndicator, MongooseHealthIndicator } from '.';
-import {
-  DNSHealthIndicator,
-  MicroserviceHealthIndicator,
-  DiskHealthIndicator,
-  MemoryHealthIndicator,
-} from './health-indicators';
 import { DiskusageLibProvider } from './health-indicators/disk/diskusage-lib.provider';
+import { HEALTH_INDICATORS } from './health-indicators.provider';
 
 /**
  * The internal Terminus Module which handles the integration
@@ -30,10 +24,7 @@ import { DiskusageLibProvider } from './health-indicators/disk/diskusage-lib.pro
  * @internal
  */
 @Global()
-@Module({
-  providers: [TerminusLibProvider, TerminusBootstrapService],
-  exports: [],
-})
+@Module({})
 export class TerminusCoreModule {
   /**
    * Bootstraps the internal Terminus Module with the given options
@@ -53,21 +44,10 @@ export class TerminusCoreModule {
         terminusModuleOptions,
         TerminusLibProvider,
         TerminusBootstrapService,
-        TypeOrmHealthIndicator,
-        MongooseHealthIndicator,
-        MicroserviceHealthIndicator,
         DiskusageLibProvider,
-        DiskHealthIndicator,
-        MemoryHealthIndicator,
+        ...HEALTH_INDICATORS,
       ],
-      exports: [
-        TypeOrmHealthIndicator,
-        MongooseHealthIndicator,
-        DNSHealthIndicator,
-        MicroserviceHealthIndicator,
-        DiskHealthIndicator,
-        MemoryHealthIndicator,
-      ],
+      exports: [...HEALTH_INDICATORS],
     };
   }
 
@@ -85,22 +65,10 @@ export class TerminusCoreModule {
         ...asyncProviders,
         TerminusBootstrapService,
         TerminusLibProvider,
-        TypeOrmHealthIndicator,
-        DNSHealthIndicator,
-        MongooseHealthIndicator,
-        MicroserviceHealthIndicator,
         DiskusageLibProvider,
-        DiskHealthIndicator,
-        MemoryHealthIndicator,
+        ...HEALTH_INDICATORS,
       ],
-      exports: [
-        TypeOrmHealthIndicator,
-        DNSHealthIndicator,
-        MongooseHealthIndicator,
-        MicroserviceHealthIndicator,
-        DiskHealthIndicator,
-        MemoryHealthIndicator,
-      ],
+      exports: [...HEALTH_INDICATORS],
     };
   }
 

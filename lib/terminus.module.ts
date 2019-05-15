@@ -1,15 +1,21 @@
-import { DynamicModule, Module } from '@nestjs/common';
+import { DynamicModule, Module, HttpModule } from '@nestjs/common';
 import {
   TerminusModuleOptions,
   TerminusModuleAsyncOptions,
 } from './interfaces/terminus-module-options.interface';
 import { TerminusCoreModule } from './terminus-core.module';
+import { DiskusageLibProvider } from './health-indicators/disk/diskusage-lib.provider';
+import { HEALTH_INDICATORS } from './health-indicators.provider';
 
 /**
  * Terminus Module which represents the integration of the
  * @godaddy/terminus module with the Nest ecosystem.
  */
-@Module({})
+@Module({
+  imports: [HttpModule],
+  providers: [DiskusageLibProvider, ...HEALTH_INDICATORS],
+  exports: [...HEALTH_INDICATORS],
+})
 export class TerminusModule {
   /**
    * Bootstraps the Terminus Module synchronously
