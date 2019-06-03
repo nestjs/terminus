@@ -8,6 +8,7 @@ import {
   MemoryHealthIndicator,
   MicroserviceHealthIndicator,
   HealthIndicator,
+  GRPCHealthIndicator,
 } from './health-indicators';
 
 /**
@@ -20,4 +21,5 @@ export const HEALTH_INDICATORS: Type<HealthIndicator>[] = [
   DiskHealthIndicator,
   MemoryHealthIndicator,
   MicroserviceHealthIndicator,
+  GRPCHealthIndicator,
 ];

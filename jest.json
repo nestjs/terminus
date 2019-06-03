@@ -6,8 +6,12 @@
     "json"
   ],
   "transform": {
+    "^.+\\.ts$": "ts-jest",
     "^.+\\.tsx?$": "ts-jest"
   },
+  "setupFiles": [
+    "<rootDir>/node_modules/reflect-metadata/Reflect.js"
+  ],
   "testRegex": "/lib/.*\\.(test|spec).(ts|tsx|js)$",
   "collectCoverageFrom": [
     "lib/**/*.{js,jsx,tsx,ts}",

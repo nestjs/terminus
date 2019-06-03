@@ -1,0 +1,46 @@
+{
+  "name": "004-groc-app",
+  "version": "1.0.0",
+  "description": "GRPC ping check app",
+  "license": "MIT",
+  "scripts": {
+    "start": "concurrently -n client,server \"npm:start:client\" \"npm:start:server\" --prefix-colors blue,yellow",
+    "start:client": "ts-node src/client/main.ts",
+    "start:server": "ts-node src/server/main.ts",
+    "prestart:prod": "tsc",
+    "start:prod": "node dist/main.js",
+    "test": "jest --config=jest.json",
+    "test:watch": "jest --watch --config=jest.json",
+    "test:coverage": "jest --config=jest.json --coverage --coverageDirectory=coverage",
+    "e2e": "jest --config=e2e/jest-e2e.json --forceExit",
+    "e2e:watch": "jest --watch --config=e2e/jest-e2e.json"
+  },
+  "dependencies": {
+    "@godaddy/terminus": "4.1.0",
+    "@grpc/proto-loader": "^0.5.1",
+    "@nestjs/common": "6.2.2",
+    "@nestjs/core": "6.2.2",
+    "@nestjs/microservices": "6.2.2",
+    "@nestjs/testing": "6.2.2",
+    "@nestjs/websockets": "6.2.2",
+    "class-transformer": "0.2.2",
+    "class-validator": "0.9.1",
+    "fastify": "2.3.0",
+    "grpc": "^1.20.3",
+    "lodash": "4.17.11",
+    "redis": "2.8.0",
+    "reflect-metadata": "0.1.13",
+    "rxjs": "6.5.2",
+    "typescript": "3.4.5"
+  },
+  "devDependencies": {
+    "@types/jest": "24.0.13",
+    "@types/node": "12.0.2",
+    "concurrently": "^4.1.0",
+    "jest": "24.8.0",
+    "supertest": "4.0.2",
+    "ts-jest": "24.0.2",
+    "ts-node": "8.1.0",
+    "tslint": "5.16.0"
+  }
+}
