@@ -33,7 +33,7 @@ describe('Mongoose Database Health', () => {
     expect(response.status).toBe(200);
     expect(response.data).toEqual({
       status: 'ok',
-      info: { mongo: { status: 'up' } },
+      details: { mongo: { status: 'up' } },
     });
   });
 
@@ -62,7 +62,7 @@ describe('Mongoose Database Health', () => {
       expect(error.response.status).toBe(503);
       expect(error.response.data).toEqual({
         status: 'error',
-        error: {
+        details: {
           mongo: {
             status: 'down',
             message: expect.any(String),

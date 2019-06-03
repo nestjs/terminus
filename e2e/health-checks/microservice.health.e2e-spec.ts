@@ -47,7 +47,7 @@ describe('Microservice Health', () => {
     expect(response.status).toBe(200);
     expect(response.data).toEqual({
       status: 'ok',
-      info: { tcp: { status: 'up' } },
+      details: { tcp: { status: 'up' } },
     });
   });
 
@@ -88,7 +88,7 @@ describe('Microservice Health', () => {
       expect(error.response.status).toBe(503);
       expect(error.response.data).toEqual({
         status: 'error',
-        error: {
+        details: {
           tcp: {
             status: 'down',
             message: expect.any(String),

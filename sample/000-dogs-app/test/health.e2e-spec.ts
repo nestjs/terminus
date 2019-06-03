@@ -21,7 +21,7 @@ describe('HealthModule (e2e)', () => {
       .expect(503)
       .expect({
         status: 'error',
-        error: {
+        details: {
           dog: { status: 'down', badboys: 1 },
         },
       });

@@ -39,7 +39,7 @@ describe('Memory Health', () => {
       expect(response.status).toBe(200);
       expect(response.data).toEqual({
         status: 'ok',
-        info: { memory_rss: { status: 'up' } },
+        details: { memory_rss: { status: 'up' } },
       });
     });
   });
@@ -68,7 +68,7 @@ describe('Memory Health', () => {
       expect(response.status).toBe(200);
       expect(response.data).toEqual({
         status: 'ok',
-        info: { memory_heap: { status: 'up' } },
+        details: { memory_heap: { status: 'up' } },
       });
     });
 
@@ -91,7 +91,7 @@ describe('Memory Health', () => {
         expect(error.response.status).toBe(503);
         expect(error.response.data).toEqual({
           status: 'error',
-          error: {
+          details: {
             memory_heap: { status: 'down', message: expect.any(String) },
           },
         });

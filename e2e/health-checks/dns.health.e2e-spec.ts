@@ -30,7 +30,7 @@ describe('DNS Health', () => {
     expect(response.status).toBe(200);
     expect(response.data).toEqual({
       status: 'ok',
-      info: { dns: { status: 'up' } },
+      details: { dns: { status: 'up' } },
     });
   });
 
@@ -56,7 +56,7 @@ describe('DNS Health', () => {
       expect(error.response.status).toBe(503);
       expect(error.response.data).toEqual({
         status: 'error',
-        error: { dns: { status: 'down', message: expect.any(String) } },
+        details: { dns: { status: 'down', message: expect.any(String) } },
       });
     }
   });
@@ -83,7 +83,7 @@ describe('DNS Health', () => {
       expect(error.response.status).toBe(503);
       expect(error.response.data).toEqual({
         status: 'error',
-        error: { dns: { status: 'down', message: expect.any(String) } },
+        details: { dns: { status: 'down', message: expect.any(String) } },
       });
     }
   });
@@ -113,7 +113,7 @@ describe('DNS Health', () => {
       expect(error.response.status).toBe(503);
       expect(error.response.data).toEqual({
         status: 'error',
-        error: {
+        details: {
           dns: {
             status: 'down',
             message: expect.any(String),
