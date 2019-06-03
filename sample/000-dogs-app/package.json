@@ -20,7 +20,7 @@
     "@nestjs/core": "6.2.4",
     "@nestjs/platform-express": "^6.2.4",
     "@nestjs/testing": "6.2.4",
-    "fastify": "2.3.0",
+    "fastify": "2.4.1",
     "reflect-metadata": "0.1.13",
     "typescript": "3.5.1"
   },
