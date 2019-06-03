@@ -47,7 +47,7 @@
     "@nestjs/platform-express": "6.2.4",
     "@nestjs/platform-fastify": "6.2.4",
     "@nestjs/testing": "6.2.4",
-    "@nestjs/typeorm": "6.1.1",
+    "@nestjs/typeorm": "6.1.2",
     "@types/jest": "24.0.13",
     "@types/mongoose": "5.5.3",
     "@types/node": "11.13.13",
