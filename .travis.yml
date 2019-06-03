@@ -30,6 +30,9 @@ jobs:
     - stage: "Testing"
       script: npm run test:ut
 
+    - state : "Build samples"
+      script: bash ./bin/build-samples.sh
+
 deploy:
 - provider: script
   # Have to use `&&` because of issue https://github.com/travis-ci/dpl/issues/673

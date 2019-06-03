@@ -7,6 +7,7 @@
     "start": "ts-node src/main.ts",
     "prestart:prod": "tsc",
     "start:prod": "node dist/main.js",
+    "build": "rm -rf dist && tsc -p tsconfig.json",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
@@ -17,24 +18,19 @@
     "@godaddy/terminus": "4.1.0",
     "@nestjs/common": "6.2.4",
     "@nestjs/core": "6.2.4",
-    "@nestjs/microservices": "6.2.4",
+    "@nestjs/platform-express": "^6.2.4",
     "@nestjs/testing": "6.2.4",
-    "@nestjs/websockets": "6.2.4",
-    "class-transformer": "0.2.3",
-    "class-validator": "0.9.1",
     "fastify": "2.3.0",
-    "lodash": "4.17.11",
     "reflect-metadata": "0.1.13",
     "typescript": "3.5.1"
   },
   "devDependencies": {
     "@types/jest": "24.0.13",
-    "@types/node": "7.10.6",
+    "@types/node": "12.0.4",
     "jest": "24.8.0",
     "supertest": "4.0.2",
     "ts-jest": "24.0.2",
-    "ts-node": "8.2.0",
-    "tslint": "5.17.0"
+    "ts-node": "8.2.0"
   },
   "jest": {
     "moduleFileExtensions": [
