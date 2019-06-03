@@ -81,7 +81,9 @@ export class MongooseHealthIndicator extends HealthIndicator {
    *
    */
   private async pingDb(connection: Connection, timeout: number) {
-    return await promiseTimeout(timeout, connection.startSession());
+    const promise =
+      connection.readyState === 1 ? Promise.resolve() : Promise.reject();
+    return await promiseTimeout(timeout, promise);
   }
 
   /**
