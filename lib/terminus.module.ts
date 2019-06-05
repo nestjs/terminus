@@ -10,6 +10,8 @@ import { HEALTH_INDICATORS } from './health-indicators.provider';
 /**
  * Terminus Module which represents the integration of the
  * @godaddy/terminus module with the Nest ecosystem.
+ *
+ * @publicApi
  */
 @Module({
   imports: [HttpModule],
