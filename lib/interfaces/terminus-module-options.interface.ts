@@ -1,5 +1,5 @@
 import { Type } from '@nestjs/common';
-import { ModuleMetadata } from '@nestjs/common/interfaces';
+import { ModuleMetadata, Abstract } from '@nestjs/common/interfaces';
 import { HealthIndicatorFunction } from './health-indicator.interface';
 import { HealthCheckError } from '@godaddy/terminus';
 
@@ -76,5 +76,5 @@ export interface TerminusModuleAsyncOptions
   /**
    * The providers which should get injected
    */
-  inject?: any[];
+  inject?: (string | symbol | Function | Type<any> | Abstract<any>)[];
 }
