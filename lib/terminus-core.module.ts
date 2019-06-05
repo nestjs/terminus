@@ -88,7 +88,7 @@ export class TerminusCoreModule {
       {
         provide: options.useClass,
         useClass: options.useClass,
-        inject: [options.inject || []],
+        inject: [...(options.inject || [])],
       },
     ];
   }
