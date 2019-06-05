@@ -15,7 +15,7 @@ export class DNSHealthIndicator extends HealthIndicator {
    * Initializes the health indicator
    * @param httpService The HttpService provided by Nest
    *
-   * @public
+   * @publicApi
    */
   constructor(private readonly httpService: HttpService) {
     super();

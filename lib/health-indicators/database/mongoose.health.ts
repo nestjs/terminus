@@ -32,6 +32,7 @@ export interface MongoosePingCheckSettings {
 /**
  * The MongooseHealthIndicator contains health indicators
  * which are used for health checks related to Mongoose
+ * @publicApi
  */
 @Injectable({ scope: Scope.TRANSIENT })
 export class MongooseHealthIndicator extends HealthIndicator {
@@ -39,8 +40,6 @@ export class MongooseHealthIndicator extends HealthIndicator {
    * Initializes the MongooseHealthIndicator
    *
    * @param {ModuleRef} moduleRef The NestJS module reference
-   *
-   * @public
    */
   constructor(private moduleRef: ModuleRef) {
     super();

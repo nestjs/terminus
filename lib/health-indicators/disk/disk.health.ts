@@ -23,7 +23,7 @@ type CheckDiskSpace = typeof checkdiskspace;
  * The DiskHealthIndicator contains checks which are related
  * to the disk storage of the current running machine
  *
- * @public
+ * @publicApi
  */
 @Injectable()
 export class DiskHealthIndicator extends HealthIndicator {

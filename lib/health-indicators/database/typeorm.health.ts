@@ -29,6 +29,8 @@ export interface TypeOrmPingCheckSettings {
 /**
  * The TypeOrmHealthIndicator contains health indicators
  * which are used for health checks related to TypeOrm
+ * 
+ * @publicApi
  */
 @Injectable({ scope: Scope.TRANSIENT })
 export class TypeOrmHealthIndicator extends HealthIndicator {
@@ -36,8 +38,6 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
    * Initializes the TypeOrmHealthIndicator
    *
    * @param {ModuleRef} moduleRef The NestJS module reference
-   *
-   * @public
    */
   constructor(private moduleRef: ModuleRef) {
     super();

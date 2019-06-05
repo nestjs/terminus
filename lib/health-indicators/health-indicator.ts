@@ -4,7 +4,7 @@ import { HealthIndicatorResult } from '..';
  * Represents an abstract health indicator
  * with common functionalities
  *
- * @public
+ * @publicApi
  *
  * @example
  * class MyHealthIndicator extends HealthIndicator {

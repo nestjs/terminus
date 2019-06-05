@@ -80,7 +80,7 @@ export type CheckGRPCServiceOptions = Partial<GrpcOptionsOptions> & {
  * The `GRPCHealthIndicator` is used for health checks
  * related to GRPC
  *
- * @public
+ * @publicApi
  */
 @Injectable({ scope: Scope.TRANSIENT })
 export class GRPCHealthIndicator extends HealthIndicator {
