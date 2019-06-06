@@ -9,7 +9,8 @@
   "author": "Livio Brunner",
   "main": "dist/index.js",
   "scripts": {
-    "build": "rm -rf dist && tsc -p tsconfig.json",
+    "build": "gulp",
+    "clean": "gulp clean",
     "doc": "./node_modules/.bin/compodoc --disableInternal --disableSourceCode --disablePrivate -p tsconfig.json",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "precommit": "lint-staged",
@@ -34,7 +35,10 @@
     ]
   },
   "dependencies": {
-    "check-disk-space": "^2.0.0"
+    "check-disk-space": "^2.0.0",
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-typescript": "^5.0.1"
   },
   "devDependencies": {
     "@compodoc/compodoc": "1.1.9",
