@@ -10,7 +10,7 @@ const LIB = join(__dirname, 'lib');
 const terminus = ts.createProject(join(__dirname, 'tsconfig.json'));
 
 gulp.task('clean', () => {
-  return gulp.src(DIST).pipe(clean())
+  return gulp.src(DIST, { allowEmpty: true }).pipe(clean())
 });
 
 gulp.task('move', () => {
