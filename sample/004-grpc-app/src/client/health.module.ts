@@ -4,7 +4,7 @@ import {
   TerminusModuleOptions,
   MicroserviceHealthIndicator,
   GRPCHealthIndicator,
-} from '../../../../lib';
+} from '@nestjs/terminus';
 
 const getTerminusOptions = (
   grpc: GRPCHealthIndicator,

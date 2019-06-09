@@ -3,7 +3,7 @@ import {
   TerminusEndpoint,
   TerminusModuleOptions,
   DNSHealthIndicator,
-} from '../../../../lib';
+} from '@nestjs/terminus';
 import { DogHealthIndicator } from '../dog/dog.health';
 import { Injectable } from '@nestjs/common';
 

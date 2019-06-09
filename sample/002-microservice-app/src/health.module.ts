@@ -3,7 +3,7 @@ import {
   TerminusModule,
   TerminusModuleOptions,
   MicroserviceHealthIndicator,
-} from '../../../lib';
+} from '@nestjs/terminus';
 import { Transport } from '@nestjs/microservices';
 
 const getTerminusOptions = (

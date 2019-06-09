@@ -4,7 +4,7 @@ import {
   TerminusModuleOptions,
   DiskHealthIndicator,
   MemoryHealthIndicator,
-} from '../../../../lib';
+} from '@nestjs/terminus';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

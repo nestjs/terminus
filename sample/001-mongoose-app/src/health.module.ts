@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { TerminusModule } from '../../../lib';
-import { MongooseHealthIndicator } from '../../../lib/health-indicators';
-import { TerminusModuleOptions } from '../../../lib/interfaces';
+import {
+  TerminusModule,
+  MongooseHealthIndicator,
+  TerminusModuleOptions,
+} from '@nestjs/terminus';
 
 const getTerminusOptions = (
   mongoose: MongooseHealthIndicator,

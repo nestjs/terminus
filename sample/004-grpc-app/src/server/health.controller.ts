@@ -1,9 +1,4 @@
-import {
-  GrpcMethod,
-  Client,
-  Transport,
-  ClientGrpc,
-} from '@nestjs/microservices';
+import { GrpcMethod } from '@nestjs/microservices';
 import { Controller } from '@nestjs/common';
 
 enum ServingStatus {

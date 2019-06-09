@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { HealthModule } from './health/health.module';
 import { DogModule } from './dog/dog.module';
-import { TerminusModule } from '../../../lib';
+import { TerminusModule } from '@nestjs/terminus';
 import { TerminusOptionsService } from './health/terminus-options.service';
 
 @Module({
