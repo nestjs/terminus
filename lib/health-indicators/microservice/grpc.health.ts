@@ -1,7 +1,6 @@
 import { join } from 'path';
 import { Observable } from 'rxjs';
 import { Injectable, Scope } from '@nestjs/common';
-import { Transport } from '@nestjs/microservices';
 import { HealthCheckError } from '@godaddy/terminus';
 import { GrpcOptions } from '@nestjs/common/interfaces/microservices/microservice-configuration.interface';
 
@@ -118,7 +117,7 @@ export class GRPCHealthIndicator extends HealthIndicator {
       ...grpcOptions
     } = options;
     return this.nestJsMicroservices.ClientProxyFactory.create({
-      transport: Transport.GRPC,
+      transport: this.nestJsMicroservices.Transport.GRPC,
       options: grpcOptions as GrpcOptionsOptions,
     });
   }
