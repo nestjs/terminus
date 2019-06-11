@@ -117,11 +117,10 @@ export class GRPCHealthIndicator extends HealthIndicator {
       healthServiceCheck,
       ...grpcOptions
     } = options;
-    // TODO: Remove `as any` as soon nestjs/nest#2240 gets merged
     return this.nestJsMicroservices.ClientProxyFactory.create({
       transport: Transport.GRPC,
       options: grpcOptions as GrpcOptionsOptions,
-    }) as any;
+    });
   }
 
   /**
