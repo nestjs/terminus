@@ -117,7 +117,7 @@ export class GRPCHealthIndicator extends HealthIndicator {
       ...grpcOptions
     } = options;
     return this.nestJsMicroservices.ClientProxyFactory.create({
-      transport: this.nestJsMicroservices.Transport.GRPC,
+      transport: 4,
       options: grpcOptions as GrpcOptionsOptions,
     });
   }
