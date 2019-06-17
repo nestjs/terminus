@@ -43,11 +43,13 @@ describe('Microservice Health', () => {
       8890,
     );
 
+    const info = { tcp: { status: 'up' } };
     const response = await Axios.get(`http://0.0.0.0:${port}/health`);
     expect(response.status).toBe(200);
     expect(response.data).toEqual({
       status: 'ok',
-      info: { tcp: { status: 'up' } },
+      info,
+      details: info,
     });
   });
 
@@ -85,15 +87,17 @@ describe('Microservice Health', () => {
     try {
       await Axios.get(`http://0.0.0.0:${port}/health`, {});
     } catch (error) {
+      const details = {
+        tcp: {
+          status: 'down',
+          message: expect.any(String),
+        },
+      };
       expect(error.response.status).toBe(503);
       expect(error.response.data).toEqual({
         status: 'error',
-        error: {
-          tcp: {
-            status: 'down',
-            message: expect.any(String),
-          },
-        },
+        error: details,
+        details,
       });
     }
   });

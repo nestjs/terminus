@@ -26,11 +26,13 @@ describe('DNS Health', () => {
       inject: [DNSHealthIndicator],
       useFactory: getTerminusOptions,
     });
+    const info = { dns: { status: 'up' } };
     const response = await Axios.get(`http://0.0.0.0:${port}/health`);
     expect(response.status).toBe(200);
     expect(response.data).toEqual({
       status: 'ok',
-      info: { dns: { status: 'up' } },
+      info,
+      details: info,
     });
   });
 
@@ -50,13 +52,15 @@ describe('DNS Health', () => {
       }),
     });
 
+    const details = { dns: { status: 'down', message: expect.any(String) } };
     try {
       await Axios.get(`http://0.0.0.0:${port}/health`);
     } catch (error) {
       expect(error.response.status).toBe(503);
       expect(error.response.data).toEqual({
         status: 'error',
-        error: { dns: { status: 'down', message: expect.any(String) } },
+        error: details,
+        details,
       });
     }
   });
@@ -77,13 +81,16 @@ describe('DNS Health', () => {
       }),
     });
 
+    const details = { dns: { status: 'down', message: expect.any(String) } };
+
     try {
       await Axios.get(`http://0.0.0.0:${port}/health`);
     } catch (error) {
       expect(error.response.status).toBe(503);
       expect(error.response.data).toEqual({
         status: 'error',
-        error: { dns: { status: 'down', message: expect.any(String) } },
+        error: details,
+        details,
       });
     }
   });
@@ -107,20 +114,22 @@ describe('DNS Health', () => {
       }),
     });
 
+    const details = {
+      dns: {
+        status: 'down',
+        message: expect.any(String),
+        statusCode: 404,
+        statusText: 'Not Found',
+      },
+    };
     try {
       await Axios.get(`http://0.0.0.0:${port}/health`);
     } catch (error) {
       expect(error.response.status).toBe(503);
       expect(error.response.data).toEqual({
         status: 'error',
-        error: {
-          dns: {
-            status: 'down',
-            message: expect.any(String),
-            statusCode: 404,
-            statusText: 'Not Found',
-          },
-        },
+        error: details,
+        details,
       });
     }
   });
