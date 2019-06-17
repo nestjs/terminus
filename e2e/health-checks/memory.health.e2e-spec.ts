@@ -35,11 +35,13 @@ describe('Memory Health', () => {
         inject: [MemoryHealthIndicator],
         useFactory: getTerminusOptions,
       });
+      const info = { memory_rss: { status: 'up' } };
       const response = await Axios.get(`http://0.0.0.0:${port}/health`);
       expect(response.status).toBe(200);
       expect(response.data).toEqual({
         status: 'ok',
-        info: { memory_rss: { status: 'up' } },
+        info,
+        details: info,
       });
     });
   });
@@ -64,11 +66,13 @@ describe('Memory Health', () => {
         inject: [MemoryHealthIndicator],
         useFactory: getTerminusOptions,
       });
+      const info = { memory_heap: { status: 'up' } };
       const response = await Axios.get(`http://0.0.0.0:${port}/health`);
       expect(response.status).toBe(200);
       expect(response.data).toEqual({
         status: 'ok',
-        info: { memory_heap: { status: 'up' } },
+        info,
+        details: info,
       });
     });
 
@@ -85,15 +89,18 @@ describe('Memory Health', () => {
         }),
       });
 
+      const details = {
+        memory_heap: { status: 'down', message: expect.any(String) },
+      };
+
       try {
         await Axios.get(`http://0.0.0.0:${port}/health`);
       } catch (error) {
         expect(error.response.status).toBe(503);
         expect(error.response.data).toEqual({
           status: 'error',
-          error: {
-            memory_heap: { status: 'down', message: expect.any(String) },
-          },
+          error: details,
+          details,
         });
       }
     });

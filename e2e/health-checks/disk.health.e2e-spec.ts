@@ -32,10 +32,12 @@ describe('Disk Health', () => {
       useFactory: getTerminusOptions,
     });
     const response = await Axios.get(`http://0.0.0.0:${port}/health`);
+    const info = { disk: { status: 'up' } };
     expect(response.status).toBe(200);
     expect(response.data).toEqual({
       status: 'ok',
-      info: { disk: { status: 'up' } },
+      info,
+      details: info,
     });
   });
 
@@ -58,10 +60,12 @@ describe('Disk Health', () => {
     try {
       await Axios.get(`http://0.0.0.0:${port}/health`);
     } catch (error) {
+      const details = { disk: { status: 'down', message: expect.any(String) } };
       expect(error.response.status).toBe(503);
       expect(error.response.data).toEqual({
         status: 'error',
-        error: { disk: { status: 'down', message: expect.any(String) } },
+        error: details,
+        details,
       });
     }
   });

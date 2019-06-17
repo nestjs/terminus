@@ -29,11 +29,13 @@ describe('Mongoose Database Health', () => {
       true,
     );
 
+    const info = { mongo: { status: 'up' } };
     const response = await Axios.get(`http://0.0.0.0:${port}/health`);
     expect(response.status).toBe(200);
     expect(response.data).toEqual({
       status: 'ok',
-      info: { mongo: { status: 'up' } },
+      info,
+      details: info,
     });
   });
 
@@ -56,18 +58,20 @@ describe('Mongoose Database Health', () => {
       true,
     );
 
+    const details = {
+      mongo: {
+        status: 'down',
+        message: expect.any(String),
+      },
+    };
     try {
       await Axios.get(`http://0.0.0.0:${port}/health`, {});
     } catch (error) {
       expect(error.response.status).toBe(503);
       expect(error.response.data).toEqual({
         status: 'error',
-        error: {
-          mongo: {
-            status: 'down',
-            message: expect.any(String),
-          },
-        },
+        error: details,
+        details,
       });
     }
   });

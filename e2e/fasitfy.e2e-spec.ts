@@ -25,7 +25,7 @@ describe('Fastify', () => {
     // Workaraound to wait until module is bootsrapped
     setTimeout(async () => {
       const response = await Axios.get(`http://0.0.0.0:${port}/health`);
-      expect(response.data).toEqual({ status: 'ok', info });
+      expect(response.data).toEqual({ status: 'ok', info, details: info });
       done();
     }, 40);
   });

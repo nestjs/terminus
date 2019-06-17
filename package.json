@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@compodoc/compodoc": "1.1.9",
-    "@godaddy/terminus": "4.1.0",
+    "@godaddy/terminus": "4.1.2",
     "@grpc/proto-loader": "0.5.1",
     "@nestjs/common": "6.3.1",
     "@nestjs/core": "6.3.1",

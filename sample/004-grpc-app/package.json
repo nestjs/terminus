@@ -17,7 +17,7 @@
     "e2e:watch": "jest --watch --config=e2e/jest-e2e.json"
   },
   "dependencies": {
-    "@godaddy/terminus": "4.1.0",
+    "@godaddy/terminus": "4.1.2",
     "@grpc/proto-loader": "0.5.1",
     "@nestjs/common": "6.3.1",
     "@nestjs/core": "6.3.1",
