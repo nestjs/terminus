@@ -1,5 +1,6 @@
 FROM node:latest
 
+ENV DISABLE_OPENCOLLECTIVE=true
 WORKDIR /usr/src/app
 
 COPY package*.json ./

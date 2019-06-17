@@ -27,7 +27,7 @@ export type MicroserviceHealthIndicatorOptions = NestJSMicroservices.ClientOptio
  */
 @Injectable({ scope: Scope.TRANSIENT })
 export class MicroserviceHealthIndicator extends HealthIndicator {
-  private nestJsMicroservices: typeof NestJSMicroservices;
+  private nestJsMicroservices!: typeof NestJSMicroservices;
   /**
    * Initializes the health indicator
    */

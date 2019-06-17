@@ -44,19 +44,16 @@ export class DNSHealthIndicator extends HealthIndicator {
     // TODO: Check for `error.isAxiosError`
     // Upgrade axios for that as soon ^0.19.0 is released
     if (error) {
-      let statusCode: number;
-      let statusText: string;
+      const response: { [key: string]: any } = {
+        message: error.message,
+      };
       if (error.response) {
-        statusCode = error.response.status;
-        statusText = error.response.statusText;
+        response.statusCode = error.response.status;
+        response.statusText = error.response.statusText;
       }
       throw new HealthCheckError(
         error.message,
-        this.getStatus(key, false, {
-          message: error.message,
-          statusCode,
-          statusText,
-        }),
+        this.getStatus(key, false, response),
       );
     }
   }
@@ -76,7 +73,7 @@ export class DNSHealthIndicator extends HealthIndicator {
   async pingCheck(
     key: string,
     url: string,
-    options?: AxiosRequestConfig,
+    options: AxiosRequestConfig = {},
   ): Promise<HealthIndicatorResult> {
     let isHealthy = false;
 
