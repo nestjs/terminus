@@ -83,7 +83,7 @@ export type CheckGRPCServiceOptions = Partial<GrpcOptionsOptions> & {
  */
 @Injectable({ scope: Scope.TRANSIENT })
 export class GRPCHealthIndicator extends HealthIndicator {
-  private nestJsMicroservices: typeof NestJSMicroservices;
+  private nestJsMicroservices!: typeof NestJSMicroservices;
 
   /**
    * Initializes the health indicator
@@ -179,7 +179,7 @@ export class GRPCHealthIndicator extends HealthIndicator {
     let healthService: GRPCHealthService;
     try {
       healthService = client.getService<GRPCHealthService | any>(
-        settings.healthServiceName,
+        settings.healthServiceName as string,
       );
     } catch (err) {
       if (err instanceof TypeError) throw err;
@@ -193,13 +193,16 @@ export class GRPCHealthIndicator extends HealthIndicator {
 
     try {
       response = await promiseTimeout(
-        settings.timeout,
-        settings.healthServiceCheck(healthService, service),
+        settings.timeout as number,
+        (settings.healthServiceCheck as HealthServiceCheck)(
+          healthService,
+          service,
+        ),
       );
     } catch (err) {
       if (err instanceof PromiseTimeoutError) {
         throw new TimeoutError(
-          settings.timeout,
+          settings.timeout as number,
           this.getStatus(key, false, {
             message: `timeout of ${settings.timeout}ms exceeded`,
           }),

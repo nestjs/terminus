@@ -23,7 +23,7 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
   /**
    * The http server of NestJS
    */
-  private httpServer: Server;
+  private httpServer!: Server;
   /**
    * The NestJS logger
    */

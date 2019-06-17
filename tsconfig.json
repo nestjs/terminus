@@ -3,6 +3,7 @@
     "baseUrl": ".",
     "paths": { "*": ["types/*"] },
     "module": "commonjs",
+    "strict": true,
     "declaration": true,
     "noImplicitAny": true,
     "removeComments": false,

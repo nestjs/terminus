@@ -75,7 +75,7 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
    * @param timeout The timeout how long the ping should maximum take
    *
    */
-  private async pingDb(connection?: Connection, timeout?: number) {
+  private async pingDb(connection: Connection, timeout: number) {
     return await promiseTimeout(timeout, connection.query('SELECT 1'));
   }
 
@@ -95,7 +95,7 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
     let isHealthy = false;
     this.checkDependantPackages();
 
-    const connection: Connection =
+    const connection: Connection | null =
       options.connection || this.getContextConnection();
     const timeout = options.timeout || 1000;
 

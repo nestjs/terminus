@@ -4,6 +4,7 @@ import {
   Module,
   Provider,
   HttpModule,
+  Type,
 } from '@nestjs/common';
 import {
   TerminusModuleOptions,
@@ -31,7 +32,7 @@ export class TerminusCoreModule {
    * synchronously and sets the correct providers
    * @param options The options to bootstrap the module synchronously
    */
-  static forRoot(options: TerminusModuleOptions): DynamicModule {
+  static forRoot(options?: TerminusModuleOptions): DynamicModule {
     const terminusModuleOptions = {
       provide: TERMINUS_MODULE_OPTIONS,
       useValue: options,
@@ -83,11 +84,12 @@ export class TerminusCoreModule {
     if (options.useFactory || options.useExisting) {
       return [this.createAsyncOptionsProvider(options)];
     }
+    const useClass = options.useClass as Type<TerminusOptionsFactory>;
     return [
       this.createAsyncOptionsProvider(options),
       {
-        provide: options.useClass,
-        useClass: options.useClass,
+        provide: useClass,
+        useClass,
         inject: [...(options.inject || [])],
       },
     ];
@@ -108,11 +110,22 @@ export class TerminusCoreModule {
         inject: options.inject || [],
       };
     }
-    return {
-      provide: TERMINUS_MODULE_OPTIONS,
-      useFactory: async (optionsFactory: TerminusOptionsFactory) =>
-        await optionsFactory.createTerminusOptions(),
-      inject: [options.useClass || options.useExisting],
-    };
+
+    if (options.useClass || options.useExisting) {
+      // Bug with TypeScript 3.5.2: https://github.com/microsoft/TypeScript/issues/31937
+      const inject = [
+        (options.useClass || options.useExisting) as Type<
+          TerminusOptionsFactory
+        >,
+      ];
+      return {
+        provide: TERMINUS_MODULE_OPTIONS,
+        useFactory: async (optionsFactory: TerminusOptionsFactory) =>
+          await optionsFactory.createTerminusOptions(),
+        inject,
+      };
+    }
+
+    throw new Error();
   }
 }
