@@ -14,6 +14,7 @@ node_js:
 env:
   global:
     - "GH_REF=github.com/BrunnerLivio/nest-terminus.git"
+    - "DISABLE_OPENCOLLECTIVE=true"
 
 before_install:
   - npm i -g npm@latest
