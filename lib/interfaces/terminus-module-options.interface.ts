@@ -9,7 +9,7 @@ import { HealthCheckError } from '@godaddy/terminus';
  */
 export type TerminusLogger = (
   message: any,
-  error?: HealthCheckError | Error,
+  error: HealthCheckError | Error | any,
 ) => any;
 
 /**
