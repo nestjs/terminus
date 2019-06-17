@@ -29,9 +29,17 @@ This module contains integrated healthchecks for [Nest](https://github.com/nestj
 
 ## Installation
 
+In order to install `@nestjs/terminus` you must install `@godaddy/terminus` - the library which will be used
+to execute the healthchecks.
+
+`@nestjs/terminus` integrates with a lot of cool technologies, such as `typeorm`, `grpc`, `mongodb`, and many more!
+In most cases you do not want to install all the optional dependencies which would be needed for these integrations.
+Therefore we highly recommend to use the `--no-optional` option. In case you have missed a dependency, `@nestjs/terminus`
+will throw an error and prompt you to install the required dependency. So you will only install what is actually required!
+
 ```bash
 
-npm install --save @nestjs/terminus @godaddy/terminus
+npm install --save @nestjs/terminus @godaddy/terminus --no-optional
 
 ```
 
