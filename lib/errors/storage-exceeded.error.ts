@@ -4,6 +4,7 @@ import { STORAGE_EXCEEDED } from './messages.constant';
 /**
  * Error which gets thrown when the given storage threshold
  * has exceeded.
+ * @publicApi
  */
 export class StorageExceededError extends HealthCheckError {
   /**

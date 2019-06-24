@@ -3,6 +3,7 @@ import { TIMEOUT_EXCEEDED } from './messages.constant';
 
 /**
  * Gets thrown when the timeout of the health check exceeds
+ * @publicApi
  */
 export class TimeoutError extends HealthCheckError {
   /**

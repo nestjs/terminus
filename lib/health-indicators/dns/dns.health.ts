@@ -8,14 +8,15 @@ import { HealthCheckError } from '@godaddy/terminus';
  * The DNSHealthIndicator contains health indicators
  * which are used for health checks related to HTTP requests
  * and DNS
+ * 
+ * @publicApi
+ * @module TerminusModule
  */
 @Injectable()
 export class DNSHealthIndicator extends HealthIndicator {
   /**
    * Initializes the health indicator
    * @param httpService The HttpService provided by Nest
-   *
-   * @public
    */
   constructor(private readonly httpService: HttpService) {
     super();

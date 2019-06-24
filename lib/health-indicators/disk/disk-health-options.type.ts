@@ -42,6 +42,7 @@ export type DiskOptionsWithThresholdPercent = DiskOptionsBase &
 
 /**
  * The options of the disk health indicator
+ * @publicApi
  */
 export type DiskHealthIndicatorOptions = XOR<
   DiskOptionsWithThreshold,

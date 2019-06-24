@@ -8,8 +8,12 @@ import { DiskusageLibProvider } from './health-indicators/disk/diskusage-lib.pro
 import { HEALTH_INDICATORS } from './health-indicators.provider';
 
 /**
+ *
  * Terminus Module which represents the integration of the
- * @godaddy/terminus module with the Nest ecosystem.
+ * `@godaddy/terminus` module with the Nest ecosystem.
+ *
+ *
+ * @publicApi
  */
 @Module({
   imports: [HttpModule],

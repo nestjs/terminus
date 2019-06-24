@@ -23,7 +23,8 @@ export type MicroserviceHealthIndicatorOptions = NestJSMicroservices.ClientOptio
  * The MicroserviceHealthIndicator is a health indicators
  * which is used for health checks related to microservices
  *
- * @public
+ * @publicApi
+ * @module TerminusModule
  */
 @Injectable({ scope: Scope.TRANSIENT })
 export class MicroserviceHealthIndicator extends HealthIndicator {

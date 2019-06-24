@@ -1,0 +1,1 @@
+This module contains integrated healthchecks for [Nest](https://github.com/nestjs/nest). These healthchecks run in an internal execution manager based on the [Terminus](https://github.com/godaddy/terminus)-package.

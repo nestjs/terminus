@@ -4,6 +4,9 @@
 import { Connection as MongooseConnection } from 'mongoose';
 import { Connection } from 'typeorm';
 
+/**
+ * @publicApi
+ */
 export interface DatabasePingCheckSettings {
   /**
    * The connection which the ping check should get executed
