@@ -25,7 +25,6 @@ const terminus = ts.createProject(join(__dirname, 'tsconfig.json'));
 /**
  * UTIL
  */
-
 function getFolders(dir) {
   return fs
     .readdirSync(dir)
