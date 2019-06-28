@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { isNil } from '@nestjs/common/utils/shared.utils';
-import * as checkdiskspace from 'check-disk-space';
+import * as checkDiskSpace from 'check-disk-space';
 
 import { HealthIndicatorResult } from '../../interfaces';
 import { HealthIndicator } from '../health-indicator';
@@ -12,12 +12,7 @@ import {
   DiskOptionsWithThresholdPercent,
 } from './disk-health-options.type';
 
-/**
- * The type of the check-disk-space library
- *
- * @internal
- */
-type CheckDiskSpace = typeof checkdiskspace;
+type CheckDiskSpace = typeof checkDiskSpace;
 
 /**
  * The DiskHealthIndicator contains checks which are related
