@@ -1,7 +1,9 @@
 import { TerminusBootstrapService } from './terminus-bootstrap.service';
-import { HttpAdapterHost } from '@nestjs/core';
+import { HttpAdapterHost, ApplicationConfig } from '@nestjs/core';
 import { TerminusEndpoint, TerminusModuleOptions } from './interfaces';
-import { HealthCheckError } from '@godaddy/terminus';
+import { HealthCheckError, Terminus } from '@godaddy/terminus';
+import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
+import { TERMINUS_MODULE_OPTIONS, TERMINUS_LIB } from './terminus.constants';
 
 const httpServer = jest.fn();
 
@@ -11,7 +13,11 @@ const refhostMock = {
   },
 };
 
-const terminus = jest.fn();
+const applicationConfigMock = {
+  getGlobalPrefix: jest.fn().mockImplementation(() => '/health'),
+};
+
+const terminusMock = jest.fn();
 
 const upHealthIndicator = jest
   .fn()
@@ -34,14 +40,45 @@ const endpoints: TerminusEndpoint[] = [
 const options: TerminusModuleOptions = { endpoints };
 
 describe('TerminusBootstrapService', () => {
+  let bootstrapService: TerminusBootstrapService;
+  let terminus: Terminus;
+  let module: TestingModuleBuilder;
+  let context: TestingModule;
+  // let applicationConfig: ApplicationConfig;
+  // let httpAdapterHost: HttpAdapterHost;
+
+  beforeEach(async () => {
+    module = Test.createTestingModule({
+      providers: [
+        TerminusBootstrapService,
+        {
+          provide: TERMINUS_MODULE_OPTIONS,
+          useValue: options,
+        },
+        {
+          provide: TERMINUS_LIB,
+          useValue: terminusMock,
+        },
+        {
+          provide: HttpAdapterHost,
+          useValue: refhostMock,
+        },
+        {
+          provide: ApplicationConfig,
+          useValue: applicationConfigMock,
+        },
+      ],
+    });
+
+    context = await module.compile();
+
+    bootstrapService = context.get(TerminusBootstrapService);
+    terminus = context.get(TERMINUS_LIB);
+    // applicationConfig = module.get(ApplicationConfig);
+    // httpAdapterHost = module.get(HttpAdapterHost);
+  });
   describe('onApplicationBootstrap', () => {
     it('should call the terminus correctly on application bootstrap', () => {
-      const bootstrapService = new TerminusBootstrapService(
-        options,
-        terminus,
-        refhostMock as HttpAdapterHost<any>,
-      );
-
       expect(terminus).not.toHaveBeenCalled();
 
       bootstrapService.onApplicationBootstrap();
@@ -55,14 +92,18 @@ describe('TerminusBootstrapService', () => {
       });
     });
 
-    it('should use the custom logger', () => {
+    it('should use the custom logger', async () => {
       const logger = jest.fn();
 
-      const bootstrapService = new TerminusBootstrapService(
-        { ...options, logger },
-        terminus,
-        refhostMock as HttpAdapterHost<any>,
-      );
+      const options = context.get(TERMINUS_MODULE_OPTIONS);
+
+      context = await module
+        .overrideProvider(TERMINUS_MODULE_OPTIONS)
+        .useValue({ logger, ...options })
+        .compile();
+
+      bootstrapService = context.get(TerminusBootstrapService);
+      terminus = context.get(TERMINUS_LIB);
 
       bootstrapService.onApplicationBootstrap();
 
@@ -73,16 +114,6 @@ describe('TerminusBootstrapService', () => {
     });
   });
   describe('prepareHealthChecksMap', () => {
-    let bootstrapService: TerminusBootstrapService;
-
-    beforeEach(() => {
-      bootstrapService = new TerminusBootstrapService(
-        options,
-        terminus,
-        refhostMock as HttpAdapterHost<any>,
-      );
-    });
-
     it('should prepare a correct map', () => {
       const map = bootstrapService.getHealthChecksMap();
       expect(map['/up']).not.toBe(undefined);
@@ -105,6 +136,53 @@ describe('TerminusBootstrapService', () => {
         });
         done();
       });
+    });
+
+    it('should prepend the global prefix when using useGlobalPrefix on TerminusOptions', async () => {
+      const options = context.get(TERMINUS_MODULE_OPTIONS);
+
+      context = await module
+        .overrideProvider(TERMINUS_MODULE_OPTIONS)
+        .useValue({ ...options, useGlobalPrefix: true })
+        .compile();
+
+      bootstrapService = context.get(TerminusBootstrapService);
+
+      const map = bootstrapService.getHealthChecksMap();
+      expect(map['/health/down']).toBeDefined();
+      expect(map['/health/up']).toBeDefined();
+      expect(map['/up']).toBeUndefined();
+      expect(map['/down']).toBeUndefined();
+    });
+
+    it('should prepend the global prefix when using useGlobalPrefix on TerminusEndpoint', async () => {
+      const options: TerminusModuleOptions = {
+        useGlobalPrefix: false,
+        endpoints: [
+          {
+            useGlobalPrefix: true,
+            healthIndicators: [],
+            url: '/up',
+          },
+          {
+            useGlobalPrefix: false,
+            healthIndicators: [],
+            url: 'down',
+          },
+        ],
+      };
+      context = await module
+        .overrideProvider(TERMINUS_MODULE_OPTIONS)
+        .useValue(options)
+        .compile();
+
+      bootstrapService = context.get(TerminusBootstrapService);
+
+      const map = bootstrapService.getHealthChecksMap();
+      expect(map['/health/up']).toBeDefined();
+      expect(map['/down']).toBeDefined();
+      expect(map['/up']).toBeUndefined();
+      expect(map['down']).toBeUndefined();
     });
   });
 });

@@ -10,9 +10,10 @@ import {
   HealthIndicatorFunction,
   TerminusEndpoint,
 } from './interfaces';
-import { HttpAdapterHost } from '@nestjs/core';
+import { HttpAdapterHost, ApplicationConfig } from '@nestjs/core';
 import { Server } from 'http';
 import { HealthCheckError, Terminus, HealthCheckMap } from '@godaddy/terminus';
+import { validatePath } from '@nestjs/common/utils/shared.utils';
 
 /**
  * Bootstraps the third party Terminus library with the
@@ -29,18 +30,13 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
    */
   private readonly logger = new Logger(TerminusBootstrapService.name, true);
 
-  /**
-   * Initializes the service
-   * @param options The terminus module options
-   * @param refHost The application reference host of NestJS which contains the http server instance
-   * @param terminus The terminus instance
-   */
   constructor(
     @Inject(TERMINUS_MODULE_OPTIONS)
     private readonly options: TerminusModuleOptions,
     @Inject(TERMINUS_LIB)
     private readonly terminus: Terminus,
     private readonly refHost: HttpAdapterHost<any>,
+    private readonly applicationConfig: ApplicationConfig,
   ) {}
 
   /**
@@ -123,6 +119,25 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
     };
   }
 
+  private validateEndpointUrl(endpoint: TerminusEndpoint): string {
+    const prefix = this.applicationConfig.getGlobalPrefix();
+
+    const shouldUseGlobalPrefix =
+      prefix &&
+      (endpoint.useGlobalPrefix
+        ? endpoint.useGlobalPrefix
+        : this.options.useGlobalPrefix &&
+          endpoint.useGlobalPrefix === undefined);
+
+    let url = validatePath(endpoint.url);
+
+    if (shouldUseGlobalPrefix) {
+      url = validatePath(prefix) + url;
+    }
+
+    return url;
+  }
+
   /**
    * Returns the health check map using the configured health
    * indicators
@@ -130,7 +145,8 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
   public getHealthChecksMap(): HealthCheckMap {
     return this.options.endpoints.reduce(
       (healthChecks, endpoint) => {
-        healthChecks[endpoint.url] = this.getHealthCheckExecutor(endpoint);
+        const url = this.validateEndpointUrl(endpoint);
+        healthChecks[url] = this.getHealthCheckExecutor(endpoint);
         return healthChecks;
       },
       {} as HealthCheckMap,

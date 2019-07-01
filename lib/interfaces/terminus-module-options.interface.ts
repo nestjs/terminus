@@ -24,6 +24,12 @@ export interface TerminusEndpoint {
    * The health checks which should get executed.
    */
   healthIndicators: HealthIndicatorFunction[];
+  /**
+   * Prepends the global prefix to the health url
+   *
+   * @see [faq/global-prefix](Global Prefix)
+   */
+  useGlobalPrefix?: boolean;
 }
 
 /**
@@ -36,6 +42,13 @@ export interface TerminusModuleOptions {
   endpoints: TerminusEndpoint[];
 
   logger?: TerminusLogger;
+
+  /**
+   * Prepends the global prefix to the health url
+   *
+   * @see [faq/global-prefix](Global Prefix)
+   */
+  useGlobalPrefix?: boolean;
 }
 
 /**
