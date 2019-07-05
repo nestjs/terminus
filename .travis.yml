@@ -26,12 +26,15 @@ jobs:
   include:
 
     - stage: "Testing"
+      name: "e2e Testing"
       script: sudo service mysql stop && docker-compose build && docker-compose run lib
 
     - stage: "Testing"
+      name: "Unit Testing"
       script: npm run test:ut
 
     - state : "Build samples"
+      name: "Build samples"
       script: npm run build:all
 
 deploy:
