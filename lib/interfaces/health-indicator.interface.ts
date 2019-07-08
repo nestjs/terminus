@@ -1,5 +1,6 @@
 /**
  * The result object of a health indicator
+ * @publicApi
  */
 export type HealthIndicatorResult = {
   /**

@@ -1,12 +1,14 @@
 import { HealthIndicatorResult } from '..';
 
 /**
+ *
  * Represents an abstract health indicator
  * with common functionalities
  *
- * @public
+ * A custom HealthIndicator should inherit the `HealthIndicator` class.
+ * 
+ * ```typescript
  *
- * @example
  * class MyHealthIndicator extends HealthIndicator {
  *   public check(key: string) {
  *     // Replace with the actual check
@@ -15,6 +17,9 @@ import { HealthIndicatorResult } from '..';
  *     return super.getStatus(key, isHealthy, { message: 'Up and running' });
  *   }
  * }
+ * ```
+ * 
+ * @publicApi
  */
 export abstract class HealthIndicator {
   /**

@@ -9,7 +9,8 @@ import { StorageExceededError } from '../../errors';
  * The MemoryHealthIndicator contains checks which are related
  * to the memory storage of the current running machine
  *
- * @public
+ * @publicApi
+ * @module TerminusModule
  */
 @Injectable()
 export class MemoryHealthIndicator extends HealthIndicator {
@@ -21,7 +22,6 @@ export class MemoryHealthIndicator extends HealthIndicator {
    *
    * @throws {StorageExceededError} In case the heap has exceeded the given threshold
    *
-   * @public
    *
    * @returns {Promise<HealthIndicatorResult>} The result of the health indicator check
    *
@@ -54,8 +54,6 @@ export class MemoryHealthIndicator extends HealthIndicator {
    * @param options The options of the `MemoryHealthIndicator`
    *
    * @throws {StorageExceededError} In case the rss has exceeded the given threshold
-   *
-   * @public
    *
    * @returns {Promise<HealthIndicatorResult>} The result of the health indicator check
    *

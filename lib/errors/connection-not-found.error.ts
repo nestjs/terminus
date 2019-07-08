@@ -4,6 +4,7 @@ import { CONNECTION_NOT_FOUND } from './messages.constant';
 /**
  * Error which gets thrown when the connection
  * instance was not found in the application context
+ * @publicApi
  */
 export class ConnectionNotFoundError extends HealthCheckError {
   /**

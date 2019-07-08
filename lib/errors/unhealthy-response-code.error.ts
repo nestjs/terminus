@@ -4,6 +4,7 @@ import { UNHEALTHY_RESPONSE_CODE } from './messages.constant';
 /**
  * Error which gets thrown when the terminus client receives
  * an unhealthy response code from the server.
+ * @publicApi
  */
 export class UnhealthyResponseCodeError extends HealthCheckError {
   /**
