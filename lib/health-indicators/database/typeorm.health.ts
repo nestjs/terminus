@@ -21,7 +21,6 @@ export interface TypeOrmPingCheckSettings {
   connection?: Connection;
   /**
    * The amount of time the check should require in ms
-   * @default 1000
    */
   timeout?: number;
 }
