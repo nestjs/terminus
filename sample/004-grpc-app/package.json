@@ -28,7 +28,7 @@
     "class-transformer": "0.2.2",
     "class-validator": "0.9.1",
     "fastify": "2.6.0",
-    "grpc": "1.22.0",
+    "grpc": "1.22.1",
     "lodash": "4.17.14",
     "redis": "2.8.0",
     "reflect-metadata": "0.1.13",
