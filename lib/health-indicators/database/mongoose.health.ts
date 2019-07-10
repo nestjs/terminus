@@ -24,7 +24,6 @@ export interface MongoosePingCheckSettings {
   connection?: Mongoose.Connection;
   /**
    * The amount of time the check should require in ms
-   * @default 1000
    */
   timeout?: number;
 }
@@ -32,7 +31,7 @@ export interface MongoosePingCheckSettings {
 /**
  * The MongooseHealthIndicator contains health indicators
  * which are used for health checks related to Mongoose
- * 
+ *
  * @publicApi
  * @module TerminusModule
  */

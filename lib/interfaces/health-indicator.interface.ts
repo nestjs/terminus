@@ -20,5 +20,7 @@ export type HealthIndicatorResult = {
 
 /**
  * A health indicator function for a health check
+ *
+ * @publicApi
  */
 export type HealthIndicatorFunction = () => Promise<HealthIndicatorResult>;

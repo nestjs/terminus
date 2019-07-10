@@ -1,12 +1,11 @@
 import { HealthIndicatorResult } from '..';
 
 /**
- *
  * Represents an abstract health indicator
  * with common functionalities
  *
  * A custom HealthIndicator should inherit the `HealthIndicator` class.
- * 
+ *
  * ```typescript
  *
  * class MyHealthIndicator extends HealthIndicator {
@@ -18,7 +17,7 @@ import { HealthIndicatorResult } from '..';
  *   }
  * }
  * ```
- * 
+ *
  * @publicApi
  */
 export abstract class HealthIndicator {

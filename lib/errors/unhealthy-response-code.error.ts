@@ -12,6 +12,8 @@ export class UnhealthyResponseCodeError extends HealthCheckError {
    *
    * @param {string | number} responseCode The response code
    * @param {any} cause The cause of the health check error
+   *
+   * @internal
    */
   constructor(responseCode: string, cause: any) {
     super(UNHEALTHY_RESPONSE_CODE(responseCode), cause);

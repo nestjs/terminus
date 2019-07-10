@@ -14,7 +14,6 @@ export interface DatabasePingCheckSettings {
   connection?: Connection | MongooseConnection;
   /**
    * The amount of time the check should require in ms
-   * @default 1000
    */
   timeout?: number;
 }
