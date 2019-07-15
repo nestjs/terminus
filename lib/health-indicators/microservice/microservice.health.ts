@@ -2,6 +2,14 @@ import { Injectable, Scope } from '@nestjs/common';
 import { HealthCheckError } from '@godaddy/terminus';
 
 import * as NestJSMicroservices from '@nestjs/microservices';
+import {
+  RedisOptions,
+  NatsOptions,
+  MqttOptions,
+  GrpcOptions,
+  RmqOptions,
+  TcpOptions,
+} from '@nestjs/common/interfaces/microservices/microservice-configuration.interface';
 
 import { HealthIndicator } from '../health-indicator';
 import { HealthIndicatorResult } from '../../interfaces';
@@ -12,10 +20,18 @@ import {
 } from '../../utils';
 import { TimeoutError } from '../../errors';
 
+type ClientOptions =
+  | RedisOptions
+  | NatsOptions
+  | MqttOptions
+  | GrpcOptions
+  | TcpOptions
+  | RmqOptions;
+
 /**
  * The options for the `MicroserviceHealthInidcator`
  */
-export type MicroserviceHealthIndicatorOptions = NestJSMicroservices.ClientOptions & {
+export type MicroserviceHealthIndicatorOptions = ClientOptions & {
   timeout?: number;
 };
 
@@ -50,7 +66,9 @@ export class MicroserviceHealthIndicator extends HealthIndicator {
   private async pingMicroservice(
     options: MicroserviceHealthIndicatorOptions,
   ): Promise<any> {
-    const client = this.nestJsMicroservices.ClientProxyFactory.create(options);
+    const client = this.nestJsMicroservices.ClientProxyFactory.create(
+      options as any,
+    );
     return await client.connect();
   }
 

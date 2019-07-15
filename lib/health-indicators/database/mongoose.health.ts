@@ -1,6 +1,5 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import * as Mongoose from 'mongoose';
 import { HealthCheckError } from '@godaddy/terminus';
 
 import * as NestJSMongoose from '@nestjs/mongoose';
@@ -21,7 +20,7 @@ export interface MongoosePingCheckSettings {
   /**
    * The connection which the ping check should get executed
    */
-  connection?: Mongoose.Connection;
+  connection?: any;
   /**
    * The amount of time the check should require in ms
    */
@@ -57,7 +56,7 @@ export class MongooseHealthIndicator extends HealthIndicator {
   /**
    * Returns the connection of the current DI context
    */
-  private getContextConnection(): Mongoose.Connection | null {
+  private getContextConnection(): any | null {
     const {
       getConnectionToken,
     } = require('@nestjs/mongoose') as typeof NestJSMongoose;
@@ -80,7 +79,7 @@ export class MongooseHealthIndicator extends HealthIndicator {
    * @param timeout The timeout how long the ping should maximum take
    *
    */
-  private async pingDb(connection: Mongoose.Connection, timeout: number) {
+  private async pingDb(connection: any, timeout: number) {
     const promise =
       connection.readyState === 1 ? Promise.resolve() : Promise.reject();
     return await promiseTimeout(timeout, promise);
