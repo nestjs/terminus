@@ -20,7 +20,7 @@
     "publish:next": "npm publish --access public --tag next",
     "prepublish:npm": "npm run build",
     "publish:npm": "npm publish --access public",
-    "test": "npm run test:e2e && npm run test:ut",
+    "test": "npm run test:ut",
     "test:e2e": "jest --config=e2e/jest-e2e.json --detectOpenHandles --forceExit",
     "test:ut": "jest --config=jest.json",
     "test:ut:cov": "npm run test:ut -- --coverage"
