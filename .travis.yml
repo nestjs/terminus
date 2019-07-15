@@ -1,15 +1,9 @@
 
 language: node_js
 
-services:
-  - docker
-
 cache:
   directories:
     - "node_modules"
-
-node_js:
-  - "10"
 
 env:
   global:
@@ -21,35 +15,51 @@ before_install:
 
 install:
   - npm install
+  - npm run build
 
 jobs:
   include:
 
-    - stage: "Testing"
-      name: "e2e Testing"
-      script: sudo service mysql stop && docker-compose build && docker-compose run lib
+    - stage: test
+      name: "e2e"
+      before_install: skip
+      install: skip
+      services:
+        - docker
+      before_script:
+        - sudo service mysql stop
+      script: docker-compose build && docker-compose run lib
+      node_js: 12
 
-    - stage: "Testing"
-      name: "Unit Testing"
-      script: npm run test:ut
+    - stage: test
+      name: "Unit Test Node v12"
+      script: npm test
+      node_js: 12
 
-    - state : "Build samples"
+    - stage: test
+      name: "Unit Test Node v10"
+      script: npm test
+      node_js: 10
+    
+    - stage: test
+      name: "Unit Test Node v8"
+      script: npm test
+      node_js: 8
+
+    - stage : test
       name: "Build samples"
+      install:
+        - npm install
       script: npm run build:all
+      node_js: 12
 
-deploy:
-- provider: script
-  # Have to use `&&` because of issue https://github.com/travis-ci/dpl/issues/673
-  script: npm run doc && bash ./bin/deploy-gh-pages.sh
-  skip_cleanup: true
-  on:
-    branch: master
-    node_js: "10"
-- provider: npm
-  email: "$NPM_EMAIL"
-  api_key: "$NPM_TOKEN"
-  on:
-    branch: master
-    node_js: "10"
-    tags: true
-    tag: beta
+    - stage: deploy
+      name: "Deploy API docs to GH pages"
+      script: npm run doc && bash ./bin/deploy-gh-pages.sh
+      skip_cleanup: true
+      node_js: 12
+
+stages:
+  - test
+  - name: deploy
+    if: branch = master
