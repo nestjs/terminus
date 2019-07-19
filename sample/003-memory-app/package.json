@@ -23,7 +23,7 @@
     "class-transformer": "0.2.3",
     "class-validator": "0.9.1",
     "fastify": "2.6.0",
-    "lodash": "4.17.14",
+    "lodash": "4.17.15",
     "reflect-metadata": "0.1.13",
     "typescript": "3.5.3"
   },
