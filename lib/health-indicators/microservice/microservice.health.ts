@@ -69,7 +69,11 @@ export class MicroserviceHealthIndicator extends HealthIndicator {
     const client = this.nestJsMicroservices.ClientProxyFactory.create(
       options as any,
     );
-    return await client.connect();
+    const checkConnection = async () => {
+      await client.connect();
+      await client.close();
+    };
+    return await checkConnection();
   }
 
   /**
