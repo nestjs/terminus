@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@compodoc/compodoc": "1.1.10",
-    "@godaddy/terminus": "4.1.2",
+    "@godaddy/terminus": "4.2.0",
     "@nestjs/common": "6.6.2",
     "@nestjs/core": "6.6.2",
     "@nestjs/testing": "6.6.2",
@@ -70,7 +70,7 @@
     "typescript": "3.5.3"
   },
   "peerDependencies": {
-    "@godaddy/terminus": "4.1.2",
+    "@godaddy/terminus": "4.2.0",
     "@nestjs/common": "6.6.2",
     "@nestjs/core": "6.6.2",
     "reflect-metadata": "0.1.13",

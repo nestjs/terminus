@@ -15,7 +15,7 @@
     "test:watch": "jest --watch --config=jest.json"
   },
   "dependencies": {
-    "@godaddy/terminus": "4.1.2",
+    "@godaddy/terminus": "4.2.0",
     "@nestjs/common": "6.6.2",
     "@nestjs/core": "6.6.2",
     "@nestjs/platform-express": "6.6.2",
