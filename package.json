@@ -70,11 +70,11 @@
     "typescript": "3.5.2"
   },
   "peerDependencies": {
-    "@godaddy/terminus": "4.2.0",
-    "@nestjs/common": "6.6.7",
-    "@nestjs/core": "6.6.7",
-    "reflect-metadata": "0.1.13",
-    "rxjs": "6.5.2"
+    "@godaddy/terminus": "^4.2.0",
+    "@nestjs/common": "^6.0.0",
+    "@nestjs/core": "^6.0.0",
+    "reflect-metadata": "^0.1.12",
+    "rxjs": "^6.0.0"
   },
   "optionalDependencies": {
     "@grpc/proto-loader": "0.5.1",
