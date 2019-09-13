@@ -22,7 +22,7 @@
     "@nestjs/testing": "6.6.7",
     "fastify": "2.8.0",
     "reflect-metadata": "0.1.13",
-    "typescript": "3.6.2"
+    "typescript": "3.6.3"
   },
   "devDependencies": {
     "@types/jest": "24.0.18",
