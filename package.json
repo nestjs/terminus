@@ -59,7 +59,7 @@
     "portfinder": "1.0.24",
     "prettier": "1.18.2",
     "reflect-metadata": "0.1.13",
-    "rxjs": "6.5.2",
+    "rxjs": "6.5.3",
     "rxjs-compat": "6.5.3",
     "sort-package-json": "1.22.1",
     "supertest": "4.0.2",
