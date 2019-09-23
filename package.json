@@ -12,7 +12,6 @@
     "build": "gulp",
     "build:all": "gulp build:all",
     "clean": "gulp clean",
-    "doc": "./node_modules/.bin/compodoc --disableInternal --disableSourceCode --disablePrivate -p tsconfig.json",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "precommit": "lint-staged",
     "prepublish": "npm run build",

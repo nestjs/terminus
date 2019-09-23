@@ -7,7 +7,6 @@ cache:
 
 env:
   global:
-    - "GH_REF=github.com/BrunnerLivio/nest-terminus.git"
     - "DISABLE_OPENCOLLECTIVE=true"
 
 before_install:
@@ -53,13 +52,5 @@ jobs:
       script: npm run build:all
       node_js: 12
 
-    - stage: deploy
-      name: "Deploy API docs to GH pages"
-      script: npm run doc && bash ./bin/deploy-gh-pages.sh
-      skip_cleanup: true
-      node_js: 12
-
 stages:
   - test
-  - name: deploy
-    if: branch = master
