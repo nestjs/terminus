@@ -76,12 +76,18 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
    *
    */
   private async pingDb(connection: Connection, timeout: number) {
-    const check =
-      connection.options.type === 'mongodb'
-        ? connection.isConnected
-          ? Promise.resolve()
-          : Promise.reject()
-        : connection.query('SELECT 1');
+    let check: Promise<any>;
+    switch (connection.options.type) {
+      case 'mongodb':
+        check = connection.isConnected ? Promise.resolve() : Promise.reject();
+        break;
+      case 'oracle':
+        check = connection.query('SELECT 1 FROM DUAL');
+        break;
+      default:
+        check = connection.query('SELECT 1');
+        break;
+    }
     return await promiseTimeout(timeout, check);
   }
 
