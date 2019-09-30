@@ -27,7 +27,7 @@
     "@nestjs/websockets": "6.8.0",
     "class-transformer": "0.2.2",
     "class-validator": "0.10.1",
-    "fastify": "2.8.0",
+    "fastify": "2.9.0",
     "grpc": "1.24.0",
     "lodash": "4.17.15",
     "redis": "2.8.0",
