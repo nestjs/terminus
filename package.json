@@ -44,7 +44,7 @@
     "@nestjs/core": "6.8.0",
     "@nestjs/testing": "6.8.0",
     "@types/jest": "24.0.18",
-    "@types/mongoose": "5.5.18",
+    "@types/mongoose": "5.5.19",
     "@types/node": "12.7.9",
     "fastify": "2.9.0",
     "fastify-formbody": "3.1.0",
