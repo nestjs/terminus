@@ -38,7 +38,7 @@
     "check-disk-space": "2.1.0"
   },
   "devDependencies": {
-    "@compodoc/compodoc": "1.1.10",
+    "@compodoc/compodoc": "1.1.11",
     "@godaddy/terminus": "4.2.0",
     "@nestjs/common": "6.8.3",
     "@nestjs/core": "6.8.3",
