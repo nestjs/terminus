@@ -76,7 +76,7 @@
     "rxjs": "^6.0.0"
   },
   "optionalDependencies": {
-    "@grpc/proto-loader": "0.5.2",
+    "@grpc/proto-loader": "0.5.3",
     "@nestjs/microservices": "6.8.5",
     "@nestjs/mongoose": "6.1.2",
     "@nestjs/platform-express": "6.8.5",
