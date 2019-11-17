@@ -16,10 +16,10 @@
   },
   "dependencies": {
     "@godaddy/terminus": "4.2.1",
-    "@nestjs/common": "6.8.5",
-    "@nestjs/core": "6.8.5",
-    "@nestjs/platform-express": "6.8.5",
-    "@nestjs/testing": "6.8.5",
+    "@nestjs/common": "6.10.1",
+    "@nestjs/core": "6.10.1",
+    "@nestjs/platform-express": "6.10.1",
+    "@nestjs/testing": "6.10.1",
     "fastify": "2.10.0",
     "reflect-metadata": "0.1.13",
     "typescript": "3.7.2"
