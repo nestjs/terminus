@@ -63,7 +63,7 @@
     "sort-package-json": "1.24.0",
     "supertest": "4.0.2",
     "ts-jest": "24.2.0",
-    "ts-node": "8.5.3",
+    "ts-node": "8.5.4",
     "tslint": "5.20.1",
     "tslint-config-prettier": "1.18.0",
     "typescript": "3.7.2"
