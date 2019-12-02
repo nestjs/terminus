@@ -1,4 +1,7 @@
-import { TerminusBootstrapService } from './terminus-bootstrap.service';
+import {
+  SIG_NOT_EXIST,
+  TerminusBootstrapService,
+} from './terminus-bootstrap.service';
 import { HttpAdapterHost, ApplicationConfig } from '@nestjs/core';
 import { TerminusEndpoint, TerminusModuleOptions } from './interfaces';
 import { HealthCheckError, Terminus } from '@godaddy/terminus';
@@ -89,6 +92,7 @@ describe('TerminusBootstrapService', () => {
           '/up': expect.any(Function),
         },
         logger: expect.any(Function),
+        signal: SIG_NOT_EXIST,
       });
     });
 
@@ -110,6 +114,7 @@ describe('TerminusBootstrapService', () => {
       expect(terminus).toHaveBeenCalledWith(expect.any(Function), {
         healthChecks: expect.any(Object),
         logger,
+        signal: SIG_NOT_EXIST,
       });
     });
   });

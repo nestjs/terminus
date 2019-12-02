@@ -15,6 +15,8 @@ import { Server } from 'http';
 import { HealthCheckError, Terminus, HealthCheckMap } from '@godaddy/terminus';
 import { validatePath } from '@nestjs/common/utils/shared.utils';
 
+export const SIG_NOT_EXIST = 'SIG_NOT_EXIST';
+
 /**
  * Bootstraps the third party Terminus library with the
  * configured Module options
@@ -143,14 +145,11 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
    * indicators
    */
   public getHealthChecksMap(): HealthCheckMap {
-    return this.options.endpoints.reduce(
-      (healthChecks, endpoint) => {
-        const url = this.validateEndpointUrl(endpoint);
-        healthChecks[url] = this.getHealthCheckExecutor(endpoint);
-        return healthChecks;
-      },
-      {} as HealthCheckMap,
-    );
+    return this.options.endpoints.reduce((healthChecks, endpoint) => {
+      const url = this.validateEndpointUrl(endpoint);
+      healthChecks[url] = this.getHealthCheckExecutor(endpoint);
+      return healthChecks;
+    }, {} as HealthCheckMap);
   }
 
   /**
@@ -164,6 +163,8 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
       // Use the logger of the user
       // or by the default logger if is not defined
       logger: this.options.logger || this.logError.bind(this),
+      // Without that terminus will use default SIGTERM signal and default handler which stops this.httpServer
+      signal: SIG_NOT_EXIST,
     });
     this.logHealthCheckRegister(healthChecks);
   }
