@@ -81,6 +81,35 @@ describe('TerminusBootstrapService', () => {
     // httpAdapterHost = module.get(HttpAdapterHost);
   });
   describe('onApplicationBootstrap', () => {
+    it('should ignore bootstrap if there is no HTTP Server', async () => {
+      const module = Test.createTestingModule({
+        providers: [
+          TerminusBootstrapService,
+          {
+            provide: TERMINUS_MODULE_OPTIONS,
+            useValue: options,
+          },
+          {
+            provide: TERMINUS_LIB,
+            useValue: terminusMock,
+          },
+          {
+            provide: HttpAdapterHost,
+            useValue: null,
+          },
+          {
+            provide: ApplicationConfig,
+            useValue: applicationConfigMock,
+          },
+        ],
+      });
+      const context = await module.compile();
+      const bootstrapService = context.get(TerminusBootstrapService);
+      const terminus = context.get(TERMINUS_LIB);
+
+      bootstrapService.onApplicationBootstrap();
+      expect(terminus).not.toHaveBeenCalled();
+    });
     it('should call the terminus correctly on application bootstrap', () => {
       expect(terminus).not.toHaveBeenCalled();
 
