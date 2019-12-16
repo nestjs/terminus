@@ -1,6 +1,7 @@
 import { INestApplication, DynamicModule } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { TerminusModule } from '../lib/terminus.module';
+import { SIG_NOT_EXIST } from '../lib/terminus-bootstrap.service';
 import { TerminusLibProvider } from '../lib/terminus-lib.provider';
 import { HttpAdapterHost } from '@nestjs/core';
 import {
@@ -18,6 +19,7 @@ describe('Terminus', () => {
       '/health': expect.any(Function),
     },
     logger: expect.any(Function),
+    signal: SIG_NOT_EXIST,
   };
 
   let terminusModuleOptions: TerminusModuleOptions = {
