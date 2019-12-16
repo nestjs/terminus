@@ -1,6 +1,6 @@
 {
   "name": "@nestjs/terminus",
-  "version": "6.5.4",
+  "version": "6.5.5",
   "description": "Nest - modern, fast, powerful node.js web framework (@terminus)",
   "repository": {
     "url": "https://github.com/nestjs/terminus"
