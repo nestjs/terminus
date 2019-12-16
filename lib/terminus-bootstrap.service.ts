@@ -145,11 +145,14 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
    * indicators
    */
   public getHealthChecksMap(): HealthCheckMap {
-    return this.options.endpoints.reduce((healthChecks, endpoint) => {
-      const url = this.validateEndpointUrl(endpoint);
-      healthChecks[url] = this.getHealthCheckExecutor(endpoint);
-      return healthChecks;
-    }, {} as HealthCheckMap);
+    return this.options.endpoints.reduce(
+      (healthChecks, endpoint) => {
+        const url = this.validateEndpointUrl(endpoint);
+        healthChecks[url] = this.getHealthCheckExecutor(endpoint);
+        return healthChecks;
+      },
+      {} as HealthCheckMap,
+    );
   }
 
   /**
@@ -169,11 +172,20 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
     this.logHealthCheckRegister(healthChecks);
   }
 
+  private hasHttpServer(): boolean {
+    return this.refHost && this.refHost.httpAdapter && this.refHost.httpAdapter;
+  }
+
   /**
    * Gets called when the application gets bootstrapped.
    */
   public onApplicationBootstrap() {
-    this.httpServer = this.refHost.httpAdapter.getHttpServer();
-    this.bootstrapTerminus();
+    // In case the application context has been bootstrapped with
+    // NestFactory.createApplicationContext(), ignore bootstrapping
+    // Terminus
+    if (this.hasHttpServer()) {
+      this.httpServer = this.refHost.httpAdapter.getHttpServer();
+      this.bootstrapTerminus();
+    }
   }
 }
