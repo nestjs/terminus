@@ -17,17 +17,17 @@
   },
   "dependencies": {
     "@godaddy/terminus": "4.3.1",
-    "@nestjs/common": "6.10.11",
-    "@nestjs/core": "6.10.11",
+    "@nestjs/common": "6.10.13",
+    "@nestjs/core": "6.10.13",
     "@nestjs/mongoose": "6.1.2",
-    "@nestjs/platform-express": "6.10.11",
+    "@nestjs/platform-express": "6.10.13",
     "reflect-metadata": "0.1.13",
     "rimraf": "3.0.0",
     "rxjs": "6.5.3",
     "typescript": "3.7.3"
   },
   "devDependencies": {
-    "@nestjs/testing": "6.10.11",
+    "@nestjs/testing": "6.10.13",
     "@types/express": "4.17.2",
     "@types/jest": "24.0.25",
     "@types/node": "12.12.21",
