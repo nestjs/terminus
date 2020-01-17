@@ -78,7 +78,7 @@
   "optionalDependencies": {
     "@grpc/proto-loader": "0.5.3",
     "@nestjs/microservices": "6.10.14",
-    "@nestjs/mongoose": "6.1.2",
+    "@nestjs/mongoose": "6.2.1",
     "@nestjs/platform-express": "6.10.14",
     "@nestjs/platform-fastify": "6.10.14",
     "@nestjs/typeorm": "6.2.0",
