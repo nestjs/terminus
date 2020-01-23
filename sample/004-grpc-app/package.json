@@ -41,7 +41,7 @@
     "concurrently": "5.0.2",
     "jest": "25.1.0",
     "supertest": "4.0.2",
-    "ts-jest": "24.3.0",
+    "ts-jest": "25.0.0",
     "ts-node": "8.6.2",
     "tslint": "5.20.1"
   }
