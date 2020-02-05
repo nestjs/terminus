@@ -1,12 +1,16 @@
 import { Injectable, Scope } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import { Connection, MongoClient } from 'typeorm';
 import { ModuleRef } from '@nestjs/core';
 import { HealthCheckError } from '@godaddy/terminus';
 
 import * as NestJSTypeOrm from '@nestjs/typeorm';
 
 import { HealthIndicatorResult } from '../../interfaces/health-indicator.interface';
-import { TimeoutError, ConnectionNotFoundError } from '../../errors';
+import {
+  TimeoutError,
+  ConnectionNotFoundError,
+  MongoConnectionError,
+} from '../../errors';
 import {
   TimeoutError as PromiseTimeoutError,
   promiseTimeout,
@@ -68,6 +72,21 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
     }
   }
 
+  private async checkMongoDBConnection(connection: any) {
+    return new Promise((resolve, reject) => {
+      const driver = connection.driver as any;
+      // Hacky workaround which uses the native MongoClient
+      driver.mongodb.MongoClient.connect(
+        driver.buildConnectionUrl(),
+        driver.buildConnectionOptions(),
+        (err: Error, client: any) => {
+          if (err) return reject(new MongoConnectionError(err.message));
+          client.close(() => resolve());
+        },
+      );
+    });
+  }
+
   /**
    * Pings a typeorm connection
    *
@@ -79,7 +98,7 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
     let check: Promise<any>;
     switch (connection.options.type) {
       case 'mongodb':
-        check = connection.isConnected ? Promise.resolve() : Promise.reject();
+        check = this.checkMongoDBConnection(connection);
         break;
       case 'oracle':
         check = connection.query('SELECT 1 FROM DUAL');
@@ -128,6 +147,14 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
           timeout,
           this.getStatus(key, isHealthy, {
             message: `timeout of ${timeout}ms exceeded`,
+          }),
+        );
+      }
+      if (err instanceof MongoConnectionError) {
+        throw new HealthCheckError(
+          err.message,
+          this.getStatus(key, isHealthy, {
+            message: err.message,
           }),
         );
       }
