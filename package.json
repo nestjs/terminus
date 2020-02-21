@@ -85,7 +85,7 @@
     "amqp-connection-manager": "3.2.0",
     "amqplib": "0.5.5",
     "grpc": "1.24.2",
-    "mongoose": "5.9.1",
+    "mongoose": "5.9.2",
     "mqtt": "3.0.0",
     "nats": "1.4.0",
     "redis": "3.0.2",
