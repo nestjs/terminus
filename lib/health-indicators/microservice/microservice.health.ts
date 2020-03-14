@@ -1,24 +1,22 @@
-import { Injectable, Scope } from '@nestjs/common';
 import { HealthCheckError } from '@godaddy/terminus';
-
+import { Injectable, Scope } from '@nestjs/common';
 import * as NestJSMicroservices from '@nestjs/microservices';
 import {
-  RedisOptions,
-  NatsOptions,
-  MqttOptions,
   GrpcOptions,
+  MqttOptions,
+  NatsOptions,
+  RedisOptions,
   RmqOptions,
   TcpOptions,
-} from '@nestjs/common/interfaces/microservices/microservice-configuration.interface';
-
-import { HealthIndicator } from '../health-indicator';
+} from '@nestjs/microservices';
+import { TimeoutError } from '../../errors';
 import { HealthIndicatorResult } from '../../interfaces';
 import {
+  checkPackages,
   promiseTimeout,
   TimeoutError as PromiseTimeoutError,
-  checkPackages,
 } from '../../utils';
-import { TimeoutError } from '../../errors';
+import { HealthIndicator } from '../health-indicator';
 
 type ClientOptions =
   | RedisOptions
