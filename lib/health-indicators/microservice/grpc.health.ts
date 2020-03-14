@@ -1,23 +1,21 @@
+import { HealthCheckError } from '@godaddy/terminus';
+import { Injectable, Scope } from '@nestjs/common';
+import * as NestJSMicroservices from '@nestjs/microservices';
+import { GrpcOptions } from '@nestjs/microservices';
 import { join } from 'path';
 import { Observable } from 'rxjs';
-import { Injectable, Scope } from '@nestjs/common';
-import { HealthCheckError } from '@godaddy/terminus';
-import { GrpcOptions } from '@nestjs/common/interfaces/microservices/microservice-configuration.interface';
-
-import * as NestJSMicroservices from '@nestjs/microservices';
-
-import { HealthIndicator } from '../health-indicator';
-import {
-  checkPackages,
-  PropType,
-  promiseTimeout,
-  TimeoutError as PromiseTimeoutError,
-} from '../../utils';
 import {
   HealthIndicatorResult,
-  UnhealthyResponseCodeError,
   TimeoutError,
+  UnhealthyResponseCodeError,
 } from '../../';
+import {
+  checkPackages,
+  promiseTimeout,
+  PropType,
+  TimeoutError as PromiseTimeoutError,
+} from '../../utils';
+import { HealthIndicator } from '../health-indicator';
 
 /**
  * The status of the request service
