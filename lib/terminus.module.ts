@@ -1,4 +1,8 @@
-import { DynamicModule, Module, HttpModule } from '@nestjs/common';
+import {
+  DynamicModule,
+  Module,
+  HttpModule,
+} from '@nestjs/common';
 import {
   TerminusModuleOptions,
   TerminusModuleAsyncOptions,
@@ -6,6 +10,8 @@ import {
 import { TerminusCoreModule } from './terminus-core.module';
 import { DiskusageLibProvider } from './health-indicators/disk/diskusage-lib.provider';
 import { HEALTH_INDICATORS } from './health-indicators.provider';
+import { HealthService } from './health.service';
+import { HealthIndicatorExecutor } from './health-indicator-executor.service';
 
 /**
  *
@@ -17,8 +23,13 @@ import { HEALTH_INDICATORS } from './health-indicators.provider';
  */
 @Module({
   imports: [HttpModule],
-  providers: [DiskusageLibProvider, ...HEALTH_INDICATORS],
-  exports: [...HEALTH_INDICATORS],
+  providers: [
+    DiskusageLibProvider,
+    HealthService,
+    HealthIndicatorExecutor,
+    ...HEALTH_INDICATORS,
+  ],
+  exports: [HealthService, ...HEALTH_INDICATORS],
 })
 export class TerminusModule {
   /**
