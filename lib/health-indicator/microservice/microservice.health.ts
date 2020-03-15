@@ -10,13 +10,12 @@ import {
   TcpOptions,
 } from '@nestjs/microservices';
 import { TimeoutError } from '../../errors';
-import { HealthIndicatorResult } from '../../interfaces';
 import {
   checkPackages,
   promiseTimeout,
   TimeoutError as PromiseTimeoutError,
 } from '../../utils';
-import { HealthIndicator } from '../health-indicator';
+import { HealthIndicator, HealthIndicatorResult } from '../health-indicator';
 
 type ClientOptions =
   | RedisOptions

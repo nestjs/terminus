@@ -35,17 +35,20 @@
     ]
   },
   "dependencies": {
-    "check-disk-space": "2.1.0"
+    "check-disk-space": "2.1.0",
+    "deprecate": "^1.1.1"
   },
   "devDependencies": {
     "@compodoc/compodoc": "1.1.11",
     "@godaddy/terminus": "4.3.1",
-    "@nestjs/common": "7.0.0",
-    "@nestjs/core": "7.0.0",
-    "@nestjs/testing": "7.0.0",
+    "@nestjs/common": "7.0.2",
+    "@nestjs/core": "7.0.2",
+    "@nestjs/swagger": "^4.4.0",
+    "@nestjs/testing": "7.0.2",
+    "@types/deprecate": "^1.1.0",
     "@types/jest": "25.1.4",
     "@types/mongoose": "5.7.6",
-    "@types/node": "12.12.21",
+    "@types/node": "13.9.1",
     "fastify": "2.12.1",
     "fastify-formbody": "3.1.0",
     "gulp": "4.0.2",
@@ -69,25 +72,25 @@
     "typescript": "3.8.3"
   },
   "peerDependencies": {
-    "@godaddy/terminus": "^4.2.0",
-    "@nestjs/common": "^7.0.0",
-    "@nestjs/core": "^7.0.0",
-    "reflect-metadata": "^0.1.12",
-    "rxjs": "^6.0.0"
+    "@godaddy/terminus": "^4.3.1",
+    "@nestjs/common": "^7.0.2",
+    "@nestjs/core": "^7.0.2",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^6.5.4"
   },
   "optionalDependencies": {
     "@grpc/proto-loader": "0.5.3",
-    "@nestjs/microservices": "7.0.0",
+    "@nestjs/microservices": "7.0.2",
     "@nestjs/mongoose": "6.4.0",
-    "@nestjs/platform-express": "7.0.0",
-    "@nestjs/platform-fastify": "7.0.0",
+    "@nestjs/platform-express": "7.0.2",
+    "@nestjs/platform-fastify": "7.0.2",
     "@nestjs/typeorm": "7.0.0",
     "amqp-connection-manager": "3.2.0",
     "amqplib": "0.5.5",
     "grpc": "1.24.2",
     "mongoose": "5.9.4",
     "mqtt": "3.0.0",
-    "nats": "1.4.2",
+    "nats": "1.2.4",
     "redis": "3.0.2",
     "typeorm": "0.2.24"
   }

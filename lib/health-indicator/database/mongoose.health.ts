@@ -13,7 +13,7 @@ import {
   HealthIndicatorResult,
   TimeoutError,
   ConnectionNotFoundError,
-} from '../../';
+} from '../..';
 import { HealthIndicator } from '../health-indicator';
 
 export interface MongoosePingCheckSettings {

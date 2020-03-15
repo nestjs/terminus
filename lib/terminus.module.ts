@@ -1,17 +1,13 @@
-import {
-  DynamicModule,
-  Module,
-  HttpModule,
-} from '@nestjs/common';
+import { DynamicModule, Module, HttpModule } from '@nestjs/common';
 import {
   TerminusModuleOptions,
   TerminusModuleAsyncOptions,
-} from './interfaces/terminus-module-options.interface';
+} from './terminus-module-options.interface';
 import { TerminusCoreModule } from './terminus-core.module';
-import { DiskusageLibProvider } from './health-indicators/disk/diskusage-lib.provider';
-import { HEALTH_INDICATORS } from './health-indicators.provider';
-import { HealthService } from './health.service';
-import { HealthIndicatorExecutor } from './health-indicator-executor.service';
+import { DiskusageLibProvider } from './health-indicator/disk/diskusage-lib.provider';
+import { HEALTH_INDICATORS } from './health-indicator/health-indicators.provider';
+import { HealthCheckService } from './health-check';
+import * as deprecate from 'deprecate';
 
 /**
  *
@@ -23,13 +19,8 @@ import { HealthIndicatorExecutor } from './health-indicator-executor.service';
  */
 @Module({
   imports: [HttpModule],
-  providers: [
-    DiskusageLibProvider,
-    HealthService,
-    HealthIndicatorExecutor,
-    ...HEALTH_INDICATORS,
-  ],
-  exports: [HealthService, ...HEALTH_INDICATORS],
+  providers: [DiskusageLibProvider, HealthCheckService, ...HEALTH_INDICATORS],
+  exports: [HealthCheckService, ...HEALTH_INDICATORS],
 })
 export class TerminusModule {
   /**
@@ -37,6 +28,11 @@ export class TerminusModule {
    * @param options The options for the Terminus Module
    */
   static forRoot(options?: TerminusModuleOptions): DynamicModule {
+    // TODO: Add migration guide
+    deprecate(
+      'TerminusModule.forRoot',
+      'The TerminusModule.forRoot() method has been deprecated and will be removed in the next major release. See the migration guide',
+    );
     return {
       module: TerminusModule,
       imports: [TerminusCoreModule.forRoot(options)],
@@ -48,6 +44,11 @@ export class TerminusModule {
    * @param options The options for the Terminus module
    */
   static forRootAsync(options: TerminusModuleAsyncOptions): DynamicModule {
+    // TODO: Add migration guide
+    deprecate(
+      'TerminusModule.forRootAsync',
+      'The TerminusModule.forRootAsync() method has been deprecated and will be removed in the next major release. See the migration guide',
+    );
     return {
       module: TerminusModule,
       imports: [TerminusCoreModule.forRootAsync(options)],
