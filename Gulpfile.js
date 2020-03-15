@@ -18,7 +18,7 @@ const exec = promisify(childProcess.exec);
  */
 const DIST = join(__dirname, 'dist');
 const LIB = join(__dirname, 'lib');
-const SAMPLE = join(__dirname, 'sample');
+const SAMPLE = join(__dirname, 'sample/deprecated/');
 
 const terminus = ts.createProject(join(__dirname, 'tsconfig.json'));
 
@@ -86,8 +86,6 @@ gulp.task('build:sample', async () => {
 
   return await Promise.all(promises);
 });
-
-gulp.task('clean:sample', async () => {});
 
 /**
  * Aliases
