@@ -9,7 +9,7 @@ import {
   MicroserviceHealthIndicator,
   HealthIndicator,
   GRPCHealthIndicator,
-} from './health-indicators';
+} from '.';
 
 /**
  * All the health indicators terminus provides as array

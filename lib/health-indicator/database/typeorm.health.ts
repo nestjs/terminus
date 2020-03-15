@@ -5,7 +5,6 @@ import { HealthCheckError } from '@godaddy/terminus';
 
 import * as NestJSTypeOrm from '@nestjs/typeorm';
 
-import { HealthIndicatorResult } from '../../interfaces/health-indicator.interface';
 import {
   TimeoutError,
   ConnectionNotFoundError,
@@ -16,7 +15,7 @@ import {
   promiseTimeout,
   checkPackages,
 } from '../../utils';
-import { HealthIndicator } from '../health-indicator';
+import { HealthIndicator, HealthIndicatorResult } from '../health-indicator';
 
 export interface TypeOrmPingCheckSettings {
   /**

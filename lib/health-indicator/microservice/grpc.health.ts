@@ -8,7 +8,7 @@ import {
   HealthIndicatorResult,
   TimeoutError,
   UnhealthyResponseCodeError,
-} from '../../';
+} from '../..';
 import {
   checkPackages,
   promiseTimeout,
