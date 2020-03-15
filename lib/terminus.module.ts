@@ -8,6 +8,7 @@ import { DiskusageLibProvider } from './health-indicator/disk/diskusage-lib.prov
 import { HEALTH_INDICATORS } from './health-indicator/health-indicators.provider';
 import { HealthCheckService } from './health-check';
 import * as deprecate from 'deprecate';
+import { HealthCheckExecutor } from './health-check/health-check-executor.service';
 
 /**
  *
@@ -19,19 +20,25 @@ import * as deprecate from 'deprecate';
  */
 @Module({
   imports: [HttpModule],
-  providers: [DiskusageLibProvider, HealthCheckService, ...HEALTH_INDICATORS],
+  providers: [
+    DiskusageLibProvider,
+    HealthCheckExecutor,
+    HealthCheckService,
+    ...HEALTH_INDICATORS,
+  ],
   exports: [HealthCheckService, ...HEALTH_INDICATORS],
 })
 export class TerminusModule {
   /**
    * Bootstraps the Terminus Module synchronously
    * @param options The options for the Terminus Module
+   * @deprecated
    */
   static forRoot(options?: TerminusModuleOptions): DynamicModule {
     // TODO: Add migration guide
     deprecate(
       'TerminusModule.forRoot',
-      'The TerminusModule.forRoot() method has been deprecated and will be removed in the next major release. See the migration guide',
+      'See the migration guide',
     );
     return {
       module: TerminusModule,
@@ -47,7 +54,7 @@ export class TerminusModule {
     // TODO: Add migration guide
     deprecate(
       'TerminusModule.forRootAsync',
-      'The TerminusModule.forRootAsync() method has been deprecated and will be removed in the next major release. See the migration guide',
+      'See the migration guide',
     );
     return {
       module: TerminusModule,

@@ -19,7 +19,7 @@ export class TerminusOptionsService implements TerminusOptionsFactory {
       url: '/health',
       healthIndicators: [
         async () => this.dogHealthIndicator.isHealthy('dog'),
-        async () => this.dns.pingCheck('google', 'http://localhost:3000'),
+        async () => this.dns.pingCheck('google', 'http://google.com'),
       ],
     };
     return {
