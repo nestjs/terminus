@@ -1,14 +1,13 @@
 import { Injectable, HttpService } from '@nestjs/common';
-import { HealthIndicatorResult } from '../../interfaces';
 import { AxiosResponse, AxiosRequestConfig, AxiosError } from 'axios';
-import { HealthIndicator } from '../health-indicator';
+import { HealthIndicator, HealthIndicatorResult } from '../health-indicator';
 import { HealthCheckError } from '@godaddy/terminus';
 
 /**
  * The DNSHealthIndicator contains health indicators
  * which are used for health checks related to HTTP requests
  * and DNS
- * 
+ *
  * @publicApi
  * @module TerminusModule
  */

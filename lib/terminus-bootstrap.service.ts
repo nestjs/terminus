@@ -5,15 +5,12 @@ import {
   Logger,
 } from '@nestjs/common';
 import { TERMINUS_MODULE_OPTIONS, TERMINUS_LIB } from './terminus.constants';
-import {
-  TerminusModuleOptions,
-  HealthIndicatorFunction,
-  TerminusEndpoint,
-} from './interfaces';
 import { HttpAdapterHost, ApplicationConfig } from '@nestjs/core';
 import { Server } from 'http';
 import { HealthCheckError, Terminus, HealthCheckMap } from '@godaddy/terminus';
 import { validatePath } from '@nestjs/common/utils/shared.utils';
+import { HealthCheckExecutor } from './health-check/health-check-executor.service';
+import { TerminusModuleOptions, TerminusEndpoint } from './terminus-module-options.interface';
 
 export const SIG_NOT_EXIST = 'SIG_NOT_EXIST';
 
@@ -37,39 +34,10 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
     private readonly options: TerminusModuleOptions,
     @Inject(TERMINUS_LIB)
     private readonly terminus: Terminus,
+    private readonly healthCheckExecutor: HealthCheckExecutor,
     private readonly refHost: HttpAdapterHost<any>,
     private readonly applicationConfig: ApplicationConfig,
   ) {}
-
-  /**
-   * Executes the given health indicators and stores the caused
-   * errors and results
-   * @param healthIndicators The health indicators which should get executed
-   */
-  private async executeHealthIndicators(
-    healthIndicators: HealthIndicatorFunction[],
-  ): Promise<{ results: any[]; errors: any[] }> {
-    const results: any[] = [];
-    const errors: any[] = [];
-    await Promise.all(
-      healthIndicators
-        // Register all promises
-        .map(healthIndicator => healthIndicator())
-        .map((p: Promise<any>) =>
-          p.catch((error: any) => {
-            // Is not an expected error. Throw further!
-            if (!error.causes) throw error;
-            // Is a expected health check error
-            errors.push((error as HealthCheckError).causes);
-          }),
-        )
-        .map((p: Promise<any>) =>
-          p.then((result: any) => result && results.push(result)),
-        ),
-    );
-
-    return { results, errors };
-  }
 
   /**
    * Logs an error message of terminus
@@ -97,30 +65,6 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
     );
   }
 
-  private getHealthCheckExecutor(
-    endpoint: TerminusEndpoint,
-  ): () => Promise<any> {
-    return async () => {
-      const { results, errors } = await this.executeHealthIndicators(
-        endpoint.healthIndicators,
-      );
-
-      const info = (results || [])
-        .concat(errors || [])
-        .reduce(
-          (previous: Object, current: Object) =>
-            Object.assign(previous, current),
-          {},
-        );
-
-      if (errors.length) {
-        throw new HealthCheckError('Healthcheck failed', info);
-      } else {
-        return info;
-      }
-    };
-  }
-
   private validateEndpointUrl(endpoint: TerminusEndpoint): string {
     const prefix = this.applicationConfig.getGlobalPrefix();
 
@@ -145,14 +89,12 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
    * indicators
    */
   public getHealthChecksMap(): HealthCheckMap {
-    return this.options.endpoints.reduce(
-      (healthChecks, endpoint) => {
-        const url = this.validateEndpointUrl(endpoint);
-        healthChecks[url] = this.getHealthCheckExecutor(endpoint);
-        return healthChecks;
-      },
-      {} as HealthCheckMap,
-    );
+    return this.options.endpoints.reduce((healthChecks, endpoint) => {
+      const url = this.validateEndpointUrl(endpoint);
+      healthChecks[url] = async () =>
+        this.healthCheckExecutor.execute(endpoint.healthIndicators);
+      return healthChecks;
+    }, {} as HealthCheckMap);
   }
 
   /**
