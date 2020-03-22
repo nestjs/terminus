@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { HealthIndicatorFunction } from '../health-indicator';
 import { HealthCheckExecutor } from './health-check-executor.service';
 import { HealthCheckResult } from './health-check-result.interface';
@@ -27,6 +27,10 @@ export class HealthCheckService {
   async check(
     healthIndicators: HealthIndicatorFunction[],
   ): Promise<HealthCheckResult> {
-    return await this.healthCheckExecutor.execute(healthIndicators);
+    const result = await this.healthCheckExecutor.execute(healthIndicators);
+    if (result.status === 'ok') {
+      return result;
+    }
+    throw new HttpException(result, HttpStatus.SERVICE_UNAVAILABLE);
   }
 }
