@@ -1,7 +1,11 @@
 import { INestApplication } from '@nestjs/common';
 
 import Axios from 'axios';
-import { TerminusEndpoint, TerminusModuleOptions } from '../lib';
+import {
+  TerminusEndpoint,
+  TerminusModuleOptions,
+  HealthIndicatorResult,
+} from '../lib';
 import { bootstrapModule } from './helper/bootstrap-module';
 
 describe('Fastify', () => {
@@ -9,7 +13,7 @@ describe('Fastify', () => {
   let port: number;
 
   it('should run health checks with a fastify adapter', async done => {
-    const info = { test: { status: 'up' } };
+    const info: HealthIndicatorResult = { test: { status: 'up' } };
 
     const endpoints: TerminusEndpoint[] = [
       {

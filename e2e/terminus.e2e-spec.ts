@@ -4,7 +4,7 @@ import { TerminusModule } from '../lib/terminus.module';
 import { SIG_NOT_EXIST } from '../lib/terminus-bootstrap.service';
 import { TerminusLibProvider } from '../lib/terminus-lib.provider';
 import { HttpAdapterHost } from '@nestjs/core';
-import { TerminusOptionsFactory, TerminusModuleOptions } from '../';
+import { TerminusOptionsFactory, TerminusModuleOptions } from '../lib';
 import { TerminusOptions } from '@godaddy/terminus';
 
 describe('Terminus', () => {
