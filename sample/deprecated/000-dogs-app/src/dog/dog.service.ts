@@ -8,7 +8,7 @@ export class DogService {
     { name: 'Fido', state: DogState.GOOD_BOY },
     { name: 'Jazz', state: DogState.GOOD_BOY },
     { name: 'Sweetheart', state: DogState.GOOD_BOY },
-    { name: 'Buttercup II', state: DogState.BAD_BOY },
+    { name: 'Buttercup II', state: DogState.GOOD_BOY },
   ];
 
   public async getDogs(): Promise<Dog[]> {

@@ -1,6 +1,6 @@
 import { Injectable, HttpService } from '@nestjs/common';
 import { AxiosResponse, AxiosRequestConfig, AxiosError } from 'axios';
-import { HealthIndicator, HealthIndicatorResult } from '../health-indicator';
+import { HealthIndicator, HealthIndicatorResult } from '../';
 import { HealthCheckError } from '@godaddy/terminus';
 
 /**
