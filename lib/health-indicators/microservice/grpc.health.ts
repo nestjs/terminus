@@ -2,7 +2,7 @@ import { join } from 'path';
 import { Observable } from 'rxjs';
 import { Injectable, Scope } from '@nestjs/common';
 import { HealthCheckError } from '@godaddy/terminus';
-import { GrpcOptions } from '@nestjs/common/interfaces/microservices/microservice-configuration.interface';
+import { GrpcOptions } from '@nestjs/microservices/interfaces/microservice-configuration.interface';
 
 import * as NestJSMicroservices from '@nestjs/microservices';
 

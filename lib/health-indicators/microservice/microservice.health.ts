@@ -9,7 +9,7 @@ import {
   GrpcOptions,
   RmqOptions,
   TcpOptions,
-} from '@nestjs/common/interfaces/microservices/microservice-configuration.interface';
+} from '@nestjs/microservices/interfaces/microservice-configuration.interface';
 
 import { HealthIndicator } from '../health-indicator';
 import { HealthIndicatorResult } from '../../interfaces';
