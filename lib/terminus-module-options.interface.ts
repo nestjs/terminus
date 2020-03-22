@@ -1,7 +1,7 @@
 import { Type } from '@nestjs/common';
 import { ModuleMetadata, Abstract } from '@nestjs/common/interfaces';
 import { HealthIndicatorFunction } from './health-indicator';
-import { HealthCheckError } from './';
+import { HealthCheckError } from './health-check/health-check.error';
 
 /**
  * The logger which will be used inside the terminus application
