@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  BeforeApplicationShutdown,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
+import { Injectable, BeforeApplicationShutdown } from '@nestjs/common';
 import {
   HealthIndicatorFunction,
   HealthIndicatorResult,
@@ -121,12 +116,7 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
       healthIndicators,
     );
 
-    const result = this.getResult(results, errors);
-
-    if (result.status === 'ok') {
-      return result;
-    }
-    throw new HttpException(result, HttpStatus.SERVICE_UNAVAILABLE);
+    return this.getResult(results, errors);
   }
 
   /**
