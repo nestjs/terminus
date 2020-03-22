@@ -1,7 +1,7 @@
 import { HealthCheckError } from '../../health-check/health-check.error';
 import { Injectable, Scope } from '@nestjs/common';
-import * as NestJSMicroservices from '@nestjs/microservices';
-import { GrpcOptions } from '@nestjs/microservices';
+import type * as NestJSMicroservices from '@nestjs/microservices';
+import type { GrpcOptions } from '@nestjs/microservices';
 import { join } from 'path';
 import { Observable } from 'rxjs';
 import {

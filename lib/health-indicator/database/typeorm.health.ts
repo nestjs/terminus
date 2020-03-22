@@ -1,5 +1,5 @@
 import { Injectable, Scope } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import type { Connection } from 'typeorm';
 import { ModuleRef } from '@nestjs/core';
 import { HealthCheckError } from '../../health-check/health-check.error';
 
