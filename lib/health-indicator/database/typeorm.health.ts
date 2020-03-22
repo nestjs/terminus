@@ -1,7 +1,7 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { Connection } from 'typeorm';
 import { ModuleRef } from '@nestjs/core';
-import { HealthCheckError } from '../../';
+import { HealthCheckError } from '../../health-check/health-check.error';
 
 import * as NestJSTypeOrm from '@nestjs/typeorm';
 
