@@ -3,10 +3,11 @@ import {
   TerminusBootstrapService,
 } from './terminus-bootstrap.service';
 import { HttpAdapterHost, ApplicationConfig } from '@nestjs/core';
-import { TerminusEndpoint, TerminusModuleOptions } from './interfaces';
+import { TerminusEndpoint, TerminusModuleOptions } from './';
 import { HealthCheckError, Terminus } from '@godaddy/terminus';
 import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
 import { TERMINUS_MODULE_OPTIONS, TERMINUS_LIB } from './terminus.constants';
+import { HealthCheckExecutor } from './health-check/health-check-executor.service';
 
 const httpServer = jest.fn();
 
@@ -18,6 +19,10 @@ const refhostMock = {
 
 const applicationConfigMock = {
   getGlobalPrefix: jest.fn().mockImplementation(() => '/health'),
+};
+
+const healthCheckExecutorMock = {
+  execute: jest.fn().mockImplementation(() => Promise.resolve({})),
 };
 
 const terminusMock = jest.fn();
@@ -47,8 +52,6 @@ describe('TerminusBootstrapService', () => {
   let terminus: Terminus;
   let module: TestingModuleBuilder;
   let context: TestingModule;
-  // let applicationConfig: ApplicationConfig;
-  // let httpAdapterHost: HttpAdapterHost;
 
   beforeEach(async () => {
     module = Test.createTestingModule({
@@ -70,6 +73,10 @@ describe('TerminusBootstrapService', () => {
           provide: ApplicationConfig,
           useValue: applicationConfigMock,
         },
+        {
+          provide: HealthCheckExecutor,
+          useValue: healthCheckExecutorMock,
+        },
       ],
     });
 
@@ -77,8 +84,6 @@ describe('TerminusBootstrapService', () => {
 
     bootstrapService = context.get(TerminusBootstrapService);
     terminus = context.get(TERMINUS_LIB);
-    // applicationConfig = module.get(ApplicationConfig);
-    // httpAdapterHost = module.get(HttpAdapterHost);
   });
   describe('onApplicationBootstrap', () => {
     it('should ignore bootstrap if there is no HTTP Server', async () => {
@@ -100,6 +105,10 @@ describe('TerminusBootstrapService', () => {
           {
             provide: ApplicationConfig,
             useValue: applicationConfigMock,
+          },
+          {
+            provide: HealthCheckExecutor,
+            useValue: null,
           },
         ],
       });
@@ -150,26 +159,6 @@ describe('TerminusBootstrapService', () => {
   describe('prepareHealthChecksMap', () => {
     it('should prepare a correct map', () => {
       const map = bootstrapService.getHealthChecksMap();
-      expect(map['/up']).not.toBe(undefined);
-      expect(map['/test']).toBe(undefined);
-    });
-
-    it('should call the given test indicator', () => {
-      const map = bootstrapService.getHealthChecksMap();
-      expect(upHealthIndicator).not.toHaveBeenCalled();
-      map['/up']();
-      expect(upHealthIndicator).toHaveBeenCalled();
-      expect(downHealthIndicator).not.toHaveBeenCalled();
-    });
-
-    it('should throw an error with causes summary when a health indicator fails', done => {
-      const map = bootstrapService.getHealthChecksMap();
-      map['/down']().catch((err: HealthCheckError) => {
-        expect(err.causes).toEqual({
-          down: { status: 'down' },
-        });
-        done();
-      });
     });
 
     it('should prepend the global prefix when using useGlobalPrefix on TerminusOptions', async () => {

@@ -15,7 +15,7 @@ import {
   promiseTimeout,
   TimeoutError as PromiseTimeoutError,
 } from '../../utils';
-import { HealthIndicator, HealthIndicatorResult } from '../health-indicator';
+import { HealthIndicator, HealthIndicatorResult } from '../';
 
 type ClientOptions =
   | RedisOptions

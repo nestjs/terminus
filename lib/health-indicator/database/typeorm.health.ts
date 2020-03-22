@@ -15,7 +15,7 @@ import {
   promiseTimeout,
   checkPackages,
 } from '../../utils';
-import { HealthIndicator, HealthIndicatorResult } from '../health-indicator';
+import { HealthIndicator, HealthIndicatorResult } from '../';
 
 export interface TypeOrmPingCheckSettings {
   /**

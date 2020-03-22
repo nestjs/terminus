@@ -39,7 +39,7 @@ export class HealthCheckExecutor {
         ),
     );
 
-    const info = (results || [])
+    const info: HealthCheckResult = (results || [])
       .concat(errors || [])
       .reduce(
         (previous: Object, current: Object) => Object.assign(previous, current),
