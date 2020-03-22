@@ -8,7 +8,7 @@ import {
   HealthIndicatorFunction,
   HealthIndicatorResult,
 } from '../health-indicator';
-import { HealthCheckError } from '../';
+import { HealthCheckError } from '../health-check/health-check.error';
 import {
   HealthCheckResult,
   HealthCheckStatus,

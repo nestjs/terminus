@@ -1,7 +1,7 @@
 import { Injectable, HttpService } from '@nestjs/common';
 import { AxiosResponse, AxiosRequestConfig, AxiosError } from 'axios';
 import { HealthIndicator, HealthIndicatorResult } from '../';
-import { HealthCheckError } from '../../';
+import { HealthCheckError } from '../../health-check/health-check.error';
 
 /**
  * The DNSHealthIndicator contains health indicators
