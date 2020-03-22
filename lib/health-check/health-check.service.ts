@@ -1,4 +1,7 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Injectable,
+  ServiceUnavailableException,
+} from '@nestjs/common';
 import { HealthIndicatorFunction } from '../health-indicator';
 import { HealthCheckExecutor } from './health-check-executor.service';
 import { HealthCheckResult } from './health-check-result.interface';
@@ -31,6 +34,6 @@ export class HealthCheckService {
     if (result.status === 'ok') {
       return result;
     }
-    throw new HttpException(result, HttpStatus.SERVICE_UNAVAILABLE);
+    throw new ServiceUnavailableException(result);
   }
 }
