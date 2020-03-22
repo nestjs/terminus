@@ -1,4 +1,4 @@
-import { HealthCheckError } from '@godaddy/terminus';
+import { HealthCheckError } from '../';
 import { CONNECTION_NOT_FOUND } from './messages.constant';
 
 /**

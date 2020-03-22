@@ -1,6 +1,6 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import { HealthCheckError } from '@godaddy/terminus';
+import { HealthCheckError } from '../../';
 
 import * as NestJSMongoose from '@nestjs/mongoose';
 

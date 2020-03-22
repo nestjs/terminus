@@ -1,7 +1,7 @@
 import { Injectable, Scope } from '@nestjs/common';
-import { Connection, MongoClient } from 'typeorm';
+import { Connection } from 'typeorm';
 import { ModuleRef } from '@nestjs/core';
-import { HealthCheckError } from '@godaddy/terminus';
+import { HealthCheckError } from '../../';
 
 import * as NestJSTypeOrm from '@nestjs/typeorm';
 

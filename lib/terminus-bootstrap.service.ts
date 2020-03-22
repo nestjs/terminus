@@ -7,7 +7,11 @@ import {
 import { TERMINUS_MODULE_OPTIONS, TERMINUS_LIB } from './terminus.constants';
 import { HttpAdapterHost, ApplicationConfig } from '@nestjs/core';
 import { Server } from 'http';
-import { HealthCheckError, Terminus, HealthCheckMap } from '@godaddy/terminus';
+import type {
+  HealthCheckError,
+  Terminus,
+  HealthCheckMap,
+} from '@godaddy/terminus';
 import { validatePath } from '@nestjs/common/utils/shared.utils';
 import { HealthCheckExecutor } from './health-check/health-check-executor.service';
 import {
@@ -60,7 +64,7 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
    * @param healthChecks The health check map to log
    */
   private logHealthCheckRegister(healthChecks: HealthCheckMap) {
-    Object.keys(healthChecks).forEach(endpoint =>
+    Object.keys(healthChecks).forEach((endpoint) =>
       this.logger.log(
         `Mapped {${endpoint}, GET} healthcheck route`,
         'TerminusExplorer',
