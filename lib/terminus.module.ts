@@ -11,10 +11,8 @@ import * as deprecate from 'deprecate';
 import { HealthCheckExecutor } from './health-check/health-check-executor.service';
 
 /**
- *
- * Terminus Module which represents the integration of the
- * `@godaddy/terminus` module with the Nest ecosystem.
- *
+ * The Terminus module integrates health checks
+ * and graceful shutdowns in your Nest application
  *
  * @publicApi
  */

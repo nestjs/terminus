@@ -8,7 +8,7 @@ import {
   HealthIndicatorFunction,
   HealthIndicatorResult,
 } from '../health-indicator';
-import { HealthCheckError } from '@godaddy/terminus';
+import { HealthCheckError } from '../';
 import {
   HealthCheckResult,
   HealthCheckStatus,

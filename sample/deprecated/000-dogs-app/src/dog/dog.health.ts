@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { DogService } from './dog.service';
 import { DogState } from './dog.interface';
-import { HealthCheckError } from '@godaddy/terminus';
-import { HealthIndicatorResult, HealthIndicator } from '@nestjs/terminus';
+import {
+  HealthIndicatorResult,
+  HealthIndicator,
+  HealthCheckError,
+} from '@nestjs/terminus';
 
 @Injectable()
 export class DogHealthIndicator extends HealthIndicator {

@@ -1,4 +1,4 @@
-import { HealthCheckError } from '@godaddy/terminus';
+import { HealthCheckError } from '../../';
 import { Injectable, Scope } from '@nestjs/common';
 import * as NestJSMicroservices from '@nestjs/microservices';
 import {
