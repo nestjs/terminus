@@ -2,11 +2,6 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
 </p>
 
-[travis-image]: https://api.travis-ci.org/nestjs/nest.svg?branch=master
-[travis-url]: https://travis-ci.org/nestjs/nest
-[linux-image]: https://img.shields.io/travis/nestjs/nest/master.svg?label=linux
-[linux-url]: https://travis-ci.org/nestjs/nest
-
   <p align="center">A progressive <a href="http://nodejs.org" target="blank">Node.js</a> framework for building efficient and scalable server-side applications, heavily inspired by <a href="https://angular.io" target="blank">Angular</a>.</p>
     <p align="center">
 <a href="https://www.npmjs.com/package/@nestjs/terminus"><img src="https://img.shields.io/npm/v/@nestjs/terminus.svg" alt="NPM Version" /></a>
@@ -25,58 +20,60 @@
 
 ## Description
 
-This module contains integrated healthchecks for [Nest](https://github.com/nestjs/nest). These healthchecks run in an internal execution manager based on the [Terminus](https://github.com/godaddy/terminus)-package.
+This module contains integrated healthchecks for [Nest](https://github.com/nestjs/nest).
 
 ## Installation
 
-In order to install `@nestjs/terminus` you must install `@godaddy/terminus` - the library which will be used
-to execute the healthchecks.
-
 `@nestjs/terminus` integrates with a lot of cool technologies, such as `typeorm`, `grpc`, `mongodb`, and many more!
-In most cases you do not want to install all the optional dependencies which would be needed for these integrations.
-Therefore we highly recommend to use the `--no-optional` option. In case you have missed a dependency, `@nestjs/terminus`
-will throw an error and prompt you to install the required dependency. So you will only install what is actually required!
+In case you have missed a dependency, `@nestjs/terminus` will throw an error and prompt you to install the required dependency.
+So you will only install what is actually required!
 
 ```bash
 
-npm install --save @nestjs/terminus @godaddy/terminus --no-optional
+npm install @nestjs/terminus
 
 ```
 
 ## Usage
 
-Import the Terminus module with the following options for a healthcheck with a **database** health inidcator.
+1. Import the Terminus module
+2. Make sure the addtionally needed modules are available to (e.g. `TypeOrmModule`), in case you want to do Database Health Checks.
 
 ```typescript
-
-const getTerminusOptions = (
-  db: TypeOrmHealthIndicator,
-): TerminusModuleOptions => ({
-  endpoints: [
-    {
-      // The health check will be available with /health
-      url: '/health',
-      // All the indicator which will be checked when requesting /health
-      healthIndicators: [
-        // Set the timeout for a response to 300ms
-        async () => db.pingCheck('database', { timeout: 300 })
-      ],
-    },
-  ],
-});
+// app.module.ts
 
 @Module({
+  controllers: [HealthController],
   imports:[
     // Make sure TypeOrmModule is available in the module context
     TypeOrmModule.forRoot({ ... }),
-    TerminusModule.forRootAsync({
-      // Inject the TypeOrmHealthIndicator provided by nestjs/terminus
-      inject: [TypeOrmHealthIndicator],
-      useFactory: db => getTerminusOptions(db),
-    }),
+    TerminusModule
   ],
 })
 export class HealthModule { }
+
+```
+
+3. Setup your `HealthController` which executes your Health Check.
+
+```typescript
+// health.controller.ts
+
+@Controller('health')
+export class HealthController {
+  constructor(
+    private health: HealthCheckService,
+    private db: TypeOrmHealthIndicator,
+  ) {}
+
+  @Get()
+  @HealthCheck()
+  readiness() {
+    return this.health.check([
+      () => async () => this.db.pingCheck('database', { timeout: 300 }),
+    ]);
+  }
+}
 
 ```
 
@@ -90,12 +87,18 @@ If everything is set up correctly, you can access the healthcheck on `http://loc
     "database": {
       "status": "up"
     }
+  },
+  "details": {
+    "database": {
+      "status": "up"
+    }
   }
 }
     
 ```
 
-For more information, [see docs](https://docs.nestjs.com/recipes/terminus) or [internal documentation](https://nestjs.github.io/terminus/). You can find further samples in the [samples/](https://github.com/nestjs/terminus/tree/master/sample) folder of this repository.
+For more information, [see docs](https://docs.nestjs.com/recipes/terminus).
+You can find more samples in the [samples/](https://github.com/nestjs/terminus/tree/master/sample) folder of this repository.
 
 ## Support
 

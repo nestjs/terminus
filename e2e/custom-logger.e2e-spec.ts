@@ -1,8 +1,11 @@
 import { INestApplication } from '@nestjs/common';
-import { TerminusModuleOptions, TerminusEndpoint } from '../lib';
+import {
+  TerminusModuleOptions,
+  TerminusEndpoint,
+  HealthCheckError,
+} from '../lib';
 
 import Axios from 'axios';
-import { HealthCheckError } from '@godaddy/terminus';
 import { bootstrapModule } from './helper/bootstrap-module';
 
 describe('Custom Logger', () => {

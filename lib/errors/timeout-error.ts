@@ -1,4 +1,4 @@
-import { HealthCheckError } from '@godaddy/terminus';
+import { HealthCheckError } from '../';
 import { TIMEOUT_EXCEEDED } from './messages.constant';
 
 /**
