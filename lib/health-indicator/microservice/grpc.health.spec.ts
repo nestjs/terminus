@@ -3,16 +3,14 @@ import { checkPackages } from '../../utils/checkPackage.util';
 import { Transport } from '@nestjs/microservices';
 import { UnhealthyResponseCodeError, TimeoutError } from '../../errors';
 import { Error } from 'mongoose';
-import { HealthCheckError } from '@godaddy/terminus';
+import { HealthCheckError } from '../../health-check/health-check.error';
 jest.mock('../../utils/checkPackage.util');
 
 // == MOCKS ==
 const healthServiceMock = {
-  check: jest.fn().mockImplementation(
-    (): any => ({
-      toPromise: () => Promise.resolve({ status: 1 }),
-    }),
-  ),
+  check: jest.fn().mockImplementation((): any => ({
+    toPromise: () => Promise.resolve({ status: 1 }),
+  })),
 };
 
 const grpcClientMock = {
@@ -31,9 +29,9 @@ let grpc: GRPCHealthIndicator;
 
 describe('GRPCHealthIndicator', () => {
   beforeEach(async () => {
-    (checkPackages as jest.Mock).mockImplementation(
-      (): any => [nestJSMicroservicesMock],
-    );
+    (checkPackages as jest.Mock).mockImplementation((): any => [
+      nestJSMicroservicesMock,
+    ]);
     grpc = new GRPCHealthIndicator();
   });
 
@@ -69,9 +67,9 @@ describe('GRPCHealthIndicator', () => {
       });
     });
     it('should throw an error in case the health service returns a faulty response code', async () => {
-      healthServiceMock.check.mockImplementationOnce(
-        (): any => ({ toPromise: (): any => Promise.resolve({ status: 0 }) }),
-      );
+      healthServiceMock.check.mockImplementationOnce((): any => ({
+        toPromise: (): any => Promise.resolve({ status: 0 }),
+      }));
       try {
         await grpc.checkService('grpc', 'test');
       } catch (err) {
@@ -100,11 +98,9 @@ describe('GRPCHealthIndicator', () => {
     });
     it('should throw TypeError further in client.getService', async () => {
       const error = new TypeError('test');
-      grpcClientMock.getService.mockImplementationOnce(
-        (): any => {
-          throw error;
-        },
-      );
+      grpcClientMock.getService.mockImplementationOnce((): any => {
+        throw error;
+      });
       try {
         await grpc.checkService('grpc', 'test');
       } catch (err) {
@@ -113,11 +109,9 @@ describe('GRPCHealthIndicator', () => {
     });
     it('should throw HealthCheckError in client.getService', async () => {
       const error = new Error('test');
-      grpcClientMock.getService.mockImplementationOnce(
-        (): any => {
-          throw error;
-        },
-      );
+      grpcClientMock.getService.mockImplementationOnce((): any => {
+        throw error;
+      });
       try {
         await grpc.checkService('grpc', 'test');
       } catch (err) {
