@@ -10,7 +10,10 @@ import { Server } from 'http';
 import { HealthCheckError, Terminus, HealthCheckMap } from '@godaddy/terminus';
 import { validatePath } from '@nestjs/common/utils/shared.utils';
 import { HealthCheckExecutor } from './health-check/health-check-executor.service';
-import { TerminusModuleOptions, TerminusEndpoint } from './terminus-module-options.interface';
+import {
+  TerminusModuleOptions,
+  TerminusEndpoint,
+} from './terminus-module-options.interface';
 
 export const SIG_NOT_EXIST = 'SIG_NOT_EXIST';
 
@@ -92,7 +95,7 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
     return this.options.endpoints.reduce((healthChecks, endpoint) => {
       const url = this.validateEndpointUrl(endpoint);
       healthChecks[url] = async () =>
-        this.healthCheckExecutor.execute(endpoint.healthIndicators);
+        this.healthCheckExecutor.executeDeprecated(endpoint.healthIndicators);
       return healthChecks;
     }, {} as HealthCheckMap);
   }

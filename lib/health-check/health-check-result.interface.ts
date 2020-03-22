@@ -23,7 +23,7 @@ export interface HealthCheckResult {
    * The error object contains information of each health indicator
    * which is of status "down"
    */
-  errors?: HealthIndicatorResult;
+  error?: HealthIndicatorResult;
   /**
    * The details object contains information of every health indicator.
    */
