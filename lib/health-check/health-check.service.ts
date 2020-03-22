@@ -10,14 +10,14 @@ export class HealthCheckService implements BeforeApplicationShutdown {
   public async check(healthIndicators: HealthIndicatorFunction[]) {
     const status = await this.healthCheckExecutor.execute(healthIndicators);
     if (this.isShuttingDown) {
-      // TODO: Omit "status" and then prepend the new status so JSON order does not change
-      return { ...status, status: 'shutting_down' };
+      delete status.status;
+      return { status: 'shutting_down', ...status };
     }
     return status;
   }
 
   beforeApplicationShutdown() {
-    // Maybe configurable
     this.isShuttingDown = true;
+    return new Promise(resolve => setTimeout(() => resolve(), 5000));
   }
 }

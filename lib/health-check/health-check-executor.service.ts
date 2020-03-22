@@ -39,12 +39,12 @@ export class HealthCheckExecutor {
         ),
     );
 
-    const info: HealthCheckResult = (results || [])
-      .concat(errors || [])
-      .reduce(
-        (previous: Object, current: Object) => Object.assign(previous, current),
-        {},
-      );
+    const allResponses = (results || []).concat(errors || []);
+
+    const info: HealthCheckResult = allResponses.reduce(
+      (previous: Object, current: Object) => Object.assign(previous, current),
+      {},
+    );
 
     if (errors.length) {
       throw new HealthCheckError('Healthcheck failed', info);
