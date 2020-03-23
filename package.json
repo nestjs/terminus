@@ -56,7 +56,7 @@
     "lint-staged": "10.0.8",
     "mysql": "2.18.1",
     "portfinder": "1.0.25",
-    "prettier": "2.0.1",
+    "prettier": "2.0.2",
     "reflect-metadata": "0.1.13",
     "rxjs": "6.5.4",
     "rxjs-compat": "6.5.4",
