@@ -45,7 +45,7 @@
     "@nestjs/testing": "6.11.8",
     "@types/jest": "25.1.4",
     "@types/mongoose": "5.7.6",
-    "@types/node": "12.12.21",
+    "@types/node": "12.12.31",
     "fastify": "2.12.1",
     "fastify-formbody": "3.1.0",
     "gulp": "4.0.2",
