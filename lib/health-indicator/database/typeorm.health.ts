@@ -1,8 +1,8 @@
 import { Injectable, Scope } from '@nestjs/common';
-import type { Connection } from 'typeorm';
 import { ModuleRef } from '@nestjs/core';
 import { HealthCheckError } from '../../health-check/health-check.error';
 
+import * as TypeOrm from 'typeorm';
 import * as NestJSTypeOrm from '@nestjs/typeorm';
 
 import {
@@ -22,7 +22,7 @@ export interface TypeOrmPingCheckSettings {
    * The connection which the ping check should get executed
    */
   // `any` type in case of typeorm version mismatch
-  connection?: Connection | any;
+  connection?: TypeOrm.Connection | any;
   /**
    * The amount of time the check should require in ms
    */
@@ -58,7 +58,7 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
   /**
    * Returns the connection of the current DI context
    */
-  private getContextConnection(): Connection | null {
+  private getContextConnection(): TypeOrm.Connection | null {
     const {
       getConnectionToken,
     } = require('@nestjs/typeorm/dist/common/typeorm.utils') as typeof NestJSTypeOrm;
@@ -94,7 +94,7 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
    * @param timeout The timeout how long the ping should maximum take
    *
    */
-  private async pingDb(connection: Connection, timeout: number) {
+  private async pingDb(connection: TypeOrm.Connection, timeout: number) {
     let check: Promise<any>;
     switch (connection.options.type) {
       case 'mongodb':
@@ -126,7 +126,7 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
     let isHealthy = false;
     this.checkDependantPackages();
 
-    const connection: Connection | null =
+    const connection: TypeOrm.Connection | null =
       options.connection || this.getContextConnection();
     const timeout = options.timeout || 1000;
 

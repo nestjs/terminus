@@ -1,7 +1,6 @@
 import { HealthCheckError } from '../../health-check/health-check.error';
 import { Injectable, Scope } from '@nestjs/common';
 import type * as NestJSMicroservices from '@nestjs/microservices';
-import type { GrpcOptions } from '@nestjs/microservices';
 import { join } from 'path';
 import { Observable } from 'rxjs';
 import {
@@ -54,7 +53,7 @@ interface GRPCHealthService {
 /**
  * @internal
  */
-type GrpcOptionsOptions = PropType<GrpcOptions, 'options'>;
+type GrpcOptionsOptions = PropType<NestJSMicroservices.GrpcOptions, 'options'>;
 
 /**
  * The function to check whether the service is up or down
