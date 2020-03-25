@@ -7,17 +7,13 @@ import {
 import { TERMINUS_MODULE_OPTIONS, TERMINUS_LIB } from './terminus.constants';
 import { HttpAdapterHost, ApplicationConfig } from '@nestjs/core';
 import { Server } from 'http';
-import type {
-  HealthCheckError,
-  Terminus,
-  HealthCheckMap,
-} from '@godaddy/terminus';
 import { validatePath } from '@nestjs/common/utils/shared.utils';
 import { HealthCheckExecutor } from './health-check/health-check-executor.service';
 import {
   TerminusModuleOptions,
   TerminusEndpoint,
 } from './terminus-module-options.interface';
+import { HealthCheckError } from './health-check';
 
 export const SIG_NOT_EXIST = 'SIG_NOT_EXIST';
 
@@ -40,7 +36,7 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
     @Inject(TERMINUS_MODULE_OPTIONS)
     private readonly options: TerminusModuleOptions,
     @Inject(TERMINUS_LIB)
-    private readonly terminus: Terminus,
+    private readonly terminus: any,
     private readonly healthCheckExecutor: HealthCheckExecutor,
     private readonly refHost: HttpAdapterHost<any>,
     private readonly applicationConfig: ApplicationConfig,
@@ -63,7 +59,7 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
    * Logs the health check registration to the logger
    * @param healthChecks The health check map to log
    */
-  private logHealthCheckRegister(healthChecks: HealthCheckMap) {
+  private logHealthCheckRegister(healthChecks: any) {
     Object.keys(healthChecks).forEach((endpoint) =>
       this.logger.log(
         `Mapped {${endpoint}, GET} healthcheck route`,
@@ -95,13 +91,13 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
    * Returns the health check map using the configured health
    * indicators
    */
-  public getHealthChecksMap(): HealthCheckMap {
+  public getHealthChecksMap(): any {
     return this.options.endpoints.reduce((healthChecks, endpoint) => {
       const url = this.validateEndpointUrl(endpoint);
       healthChecks[url] = async () =>
         this.healthCheckExecutor.executeDeprecated(endpoint.healthIndicators);
       return healthChecks;
-    }, {} as HealthCheckMap);
+    }, {} as any);
   }
 
   /**
