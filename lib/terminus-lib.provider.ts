@@ -7,7 +7,7 @@ import { checkPackages } from './utils';
  *
  * @internal
  */
-export const TerminusLibProvider: Provider = {
+export const TerminusLibProvider = {
   provide: TERMINUS_LIB,
   useFactory: () => {
     const [terminus] = checkPackages(
