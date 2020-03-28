@@ -22,7 +22,7 @@ export interface TypeOrmPingCheckSettings {
    * The connection which the ping check should get executed
    */
   // `any` type in case of typeorm version mismatch
-  connection?: TypeOrm.Connection | any;
+  connection?: any;
   /**
    * The amount of time the check should require in ms
    */

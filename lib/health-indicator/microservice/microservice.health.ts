@@ -1,6 +1,7 @@
 import { HealthCheckError } from '../../health-check/health-check.error';
 import { Injectable, Scope } from '@nestjs/common';
 import * as NestJSMicroservices from '@nestjs/microservices';
+import { MicroserviceOptions } from './external/microservice-options.interface';
 import { TimeoutError } from '../../errors';
 import {
   checkPackages,
@@ -9,18 +10,10 @@ import {
 } from '../../utils';
 import { HealthIndicator, HealthIndicatorResult } from '../';
 
-type ClientOptions =
-  | NestJSMicroservices.RedisOptions
-  | NestJSMicroservices.NatsOptions
-  | NestJSMicroservices.MqttOptions
-  | NestJSMicroservices.GrpcOptions
-  | NestJSMicroservices.TcpOptions
-  | NestJSMicroservices.RmqOptions;
-
 /**
  * The options for the `MicroserviceHealthInidcator`
  */
-export type MicroserviceHealthIndicatorOptions = ClientOptions & {
+export type MicroserviceHealthIndicatorOptions = MicroserviceOptions & {
   timeout?: number;
 };
 
