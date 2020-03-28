@@ -14,6 +14,7 @@ import {
   TerminusEndpoint,
 } from './terminus-module-options.interface';
 import { HealthCheckError } from './health-check';
+import * as deprecate from 'deprecate';
 
 export const SIG_NOT_EXIST = 'SIG_NOT_EXIST';
 
@@ -40,7 +41,13 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
     private readonly healthCheckExecutor: HealthCheckExecutor,
     private readonly refHost: HttpAdapterHost<any>,
     private readonly applicationConfig: ApplicationConfig,
-  ) {}
+  ) {
+    options?.disableDeprecationWarnings !== true &&
+      deprecate(
+        'TerminusModule.forRoot and TerminusModule.forRootAsync',
+        'In order to migrate, checkout the Migration Guide on https://docs.nestjs.com/migration-guide#terminus',
+      );
+  }
 
   /**
    * Logs an error message of terminus

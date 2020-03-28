@@ -55,6 +55,7 @@ export interface TerminusModuleOptions {
    * @see [faq/global-prefix](Global Prefix)
    */
   useGlobalPrefix?: boolean;
+  disableDeprecationWarnings?: boolean;
 }
 
 /**
