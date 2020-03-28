@@ -15,6 +15,7 @@ import {
   TimeoutError as PromiseTimeoutError,
 } from '../../utils';
 import { HealthIndicator } from '../health-indicator';
+import { GrpcOptions } from './external/microservice-options.interface';
 
 /**
  * The status of the request service
@@ -53,7 +54,7 @@ interface GRPCHealthService {
 /**
  * @internal
  */
-type GrpcOptionsOptions = PropType<NestJSMicroservices.GrpcOptions, 'options'>;
+type GrpcOptionsOptions = PropType<GrpcOptions, 'options'>;
 
 /**
  * The function to check whether the service is up or down
