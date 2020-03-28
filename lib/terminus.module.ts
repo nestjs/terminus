@@ -7,11 +7,7 @@ import { TerminusCoreModule } from './terminus-core.module';
 import { DiskusageLibProvider } from './health-indicator/disk/diskusage-lib.provider';
 import { HEALTH_INDICATORS } from './health-indicator/health-indicators.provider';
 import { HealthCheckService } from './health-check';
-import * as deprecate from 'deprecate';
 import { HealthCheckExecutor } from './health-check/health-check-executor.service';
-
-const isTruthy = (value?: string): boolean =>
-  value?.toLowerCase() === 'true' || value?.toLowerCase() === '1';
 
 /**
  * The Terminus module integrates health checks
@@ -36,8 +32,6 @@ export class TerminusModule {
    * @deprecated
    */
   static forRoot(options?: TerminusModuleOptions): DynamicModule {
-    !isTruthy(process.env.TERMINUS_IGNORE_DEPRECATED) &&
-      deprecate('TerminusModule.forRoot', 'See the migration guide');
     return {
       module: TerminusModule,
       imports: [TerminusCoreModule.forRoot(options)],
@@ -49,8 +43,6 @@ export class TerminusModule {
    * @param options The options for the Terminus module
    */
   static forRootAsync(options: TerminusModuleAsyncOptions): DynamicModule {
-    !isTruthy(process.env.TERMINUS_IGNORE_DEPRECATED) &&
-      deprecate('TerminusModule.forRootAsync', 'See the migration guide');
     return {
       module: TerminusModule,
       imports: [TerminusCoreModule.forRootAsync(options)],
