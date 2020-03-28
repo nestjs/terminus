@@ -1,6 +1,7 @@
 import {
   Injectable,
   ServiceUnavailableException,
+  Logger,
 } from '@nestjs/common';
 import { HealthIndicatorFunction } from '../health-indicator';
 import { HealthCheckExecutor } from './health-check-executor.service';
@@ -13,6 +14,18 @@ import { HealthCheckResult } from './health-check-result.interface';
 @Injectable()
 export class HealthCheckService {
   constructor(private healthCheckExecutor: HealthCheckExecutor) {}
+
+  private readonly logger = new Logger(HealthCheckService.name, true);
+
+  /**
+   * Logs an error message of terminus
+   * @param message The log message
+   * @param error The error which was thrown
+   */
+  private logError(message: string, causes: any) {
+    message = `${message} ${JSON.stringify(causes)}`;
+    this.logger.error(message);
+  }
 
   /**
    * Checks the given health indicators
@@ -34,6 +47,7 @@ export class HealthCheckService {
     if (result.status === 'ok') {
       return result;
     }
+    this.logError('Health Check has failed!', result.error);
     throw new ServiceUnavailableException(result);
   }
 }
