@@ -1,9 +1,10 @@
-import type * as Swagger from '@nestjs/swagger';
 import { getHealthCheckSchema } from './health-check.schema';
+
+type Swagger = typeof import('@nestjs/swagger');
 
 const noop = () => {};
 
-function getSwaggerDefinitions(swagger: typeof Swagger) {
+function getSwaggerDefinitions(swagger: Swagger) {
   const { ApiOkResponse, ApiServiceUnavailableResponse } = swagger;
 
   // Possible HTTP Status
@@ -25,7 +26,7 @@ function getSwaggerDefinitions(swagger: typeof Swagger) {
 }
 
 export const HealthCheck = () => {
-  let swagger: typeof Swagger | null = null;
+  let swagger: Swagger | null = null;
   try {
     // Dynamically load swagger, in case it is not installed
     swagger = require('@nestjs/swagger');

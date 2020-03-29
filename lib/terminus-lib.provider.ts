@@ -14,9 +14,6 @@ export const TerminusLibProvider = {
       ['@godaddy/terminus'],
       'the legacy Terminus API',
     );
-    if (!terminus) {
-      process.exit(1);
-    }
-    return terminus.createTerminus;
+    return terminus?.createTerminus;
   },
 };

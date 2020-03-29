@@ -27,52 +27,6 @@ import {
 export class HealthCheckExecutor implements BeforeApplicationShutdown {
   private isShuttingDown = false;
 
-  private async executeHealthIndicators(
-    healthIndicators: HealthIndicatorFunction[],
-  ) {
-    const results: any[] = [];
-    const errors: any[] = [];
-    for (const healthIndicator of healthIndicators) {
-      try {
-        const result = await healthIndicator();
-        result && results.push(result);
-      } catch (error) {
-        // Is not an expected error. Throw further!
-        if (!error.causes) throw error;
-        // Is a expected health check error
-        errors.push((error as HealthCheckError).causes);
-      }
-    }
-
-    return { results, errors };
-  }
-
-  private getSummary(results: any[]): HealthIndicatorResult {
-    return results.reduce(
-      (previous: any, current: any) => Object.assign(previous, current),
-      {},
-    );
-  }
-
-  private getResult(results: any[], errors: any[]): HealthCheckResult {
-    const infoErrorCombined = (results || []).concat(errors || []);
-
-    const info = this.getSummary(results);
-    const error = this.getSummary(errors);
-    const details = this.getSummary(infoErrorCombined);
-
-    let status: HealthCheckStatus = 'ok';
-    status = errors.length > 0 ? 'error' : status;
-    status = this.isShuttingDown ? 'shutting_down' : status;
-
-    return {
-      status,
-      info,
-      error,
-      details,
-    };
-  }
-
   /**
    * Executes the given health indicators.
    * Implementation for v6 compatibility.
@@ -89,7 +43,7 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
     const { results, errors } = await this.executeHealthIndicators(
       healthIndicators,
     );
-    const infoErrorCombined = (results || []).concat(errors || []);
+    const infoErrorCombined = results.concat(errors);
 
     const details = this.getSummary(infoErrorCombined);
 
@@ -124,5 +78,51 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
    */
   beforeApplicationShutdown() {
     this.isShuttingDown = true;
+  }
+
+  private async executeHealthIndicators(
+    healthIndicators: HealthIndicatorFunction[],
+  ) {
+    const results: any[] = [];
+    const errors: any[] = [];
+    for (const healthIndicator of healthIndicators) {
+      try {
+        const result = await healthIndicator();
+        result && results.push(result);
+      } catch (error) {
+        // Is not an expected error. Throw further!
+        if (!error.causes) throw error;
+        // Is a expected health check error
+        errors.push((error as HealthCheckError).causes);
+      }
+    }
+
+    return { results, errors };
+  }
+
+  private getSummary(results: any[]): HealthIndicatorResult {
+    return results.reduce(
+      (previous: any, current: any) => Object.assign(previous, current),
+      {},
+    );
+  }
+
+  private getResult(results: any[], errors: any[]): HealthCheckResult {
+    const infoErrorCombined = results.concat(errors);
+
+    const info = this.getSummary(results);
+    const error = this.getSummary(errors);
+    const details = this.getSummary(infoErrorCombined);
+
+    let status: HealthCheckStatus = 'ok';
+    status = errors.length > 0 ? 'error' : status;
+    status = this.isShuttingDown ? 'shutting_down' : status;
+
+    return {
+      status,
+      info,
+      error,
+      details,
+    };
   }
 }
