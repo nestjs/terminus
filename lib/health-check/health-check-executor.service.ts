@@ -32,7 +32,7 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
   ) {
     const results: any[] = [];
     const errors: any[] = [];
-    for (let healthIndicator of healthIndicators) {
+    for (const healthIndicator of healthIndicators) {
       try {
         const result = await healthIndicator();
         result && results.push(result);
