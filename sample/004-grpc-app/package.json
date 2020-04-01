@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@godaddy/terminus": "4.3.1",
-    "@grpc/proto-loader": "0.5.3",
+    "@grpc/proto-loader": "0.5.4",
     "@nestjs/common": "6.11.8",
     "@nestjs/core": "6.11.8",
     "@nestjs/microservices": "6.11.8",
