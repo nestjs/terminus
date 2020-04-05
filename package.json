@@ -53,7 +53,7 @@
     "gulp-typescript": "5.0.1",
     "husky": "4.2.3",
     "jest": "25.2.4",
-    "lint-staged": "10.1.0",
+    "lint-staged": "10.1.2",
     "mysql": "2.18.1",
     "portfinder": "1.0.25",
     "prettier": "2.0.2",
