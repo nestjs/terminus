@@ -94,14 +94,13 @@ gulp.task('build:sample', async () => {
 /**
  * Aliases
  */
-gulp.task('default', gulp.series(['clean', 'build']));
+gulp.task('default', gulp.series(['clean', 'build', 'move:protos']));
 gulp.task('build:app', gulp.series(['default']));
 gulp.task(
   'build:all',
   gulp.series([
     'build:app',
     'install:sample',
-    'move:protos',
     'move',
     'build:sample',
   ]),
