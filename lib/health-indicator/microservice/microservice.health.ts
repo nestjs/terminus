@@ -27,12 +27,12 @@ interface MicrserviceOptionsLike {
  */
 export type MicroserviceHealthIndicatorOptions<
   T extends MicrserviceOptionsLike = MicrserviceOptionsLike
-> = T & {
+> = {
   // The transport option is in the `MicroserviceOptionsLike` (e.g. RedisOptions)
   // optional. We need to use this information, therefore it is required
   transport: Required<PropType<MicrserviceOptionsLike, 'transport'>>;
   timeout?: number;
-};
+} & Partial<T>;
 
 /**
  * The MicroserviceHealthIndicator is a health indicators

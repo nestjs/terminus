@@ -9,6 +9,7 @@ const gulp = require('gulp');
 const clean = require('gulp-clean');
 
 const { join } = require('path');
+const debug = require('gulp-debug');
 const { promisify } = require('util');
 
 const exec = promisify(childProcess.exec);
@@ -28,10 +29,10 @@ const terminus = ts.createProject(join(__dirname, 'tsconfig.json'));
 function getFolders(dir) {
   return fs
     .readdirSync(dir)
-    .filter(file => fs.statSync(path.join(dir, file)).isDirectory());
+    .filter((file) => fs.statSync(path.join(dir, file)).isDirectory());
 }
 
-const getDirs = base => getFolders(base).map(path => `${base}/${path}`);
+const getDirs = (base) => getFolders(base).map((path) => `${base}/${path}`);
 
 /**
  * TASK
@@ -39,23 +40,24 @@ const getDirs = base => getFolders(base).map(path => `${base}/${path}`);
 
 gulp.task('clean', () => {
   return gulp
-    .src([DIST, SAMPLE + '/*/node_modules/@nestjs/terminus', SAMPLE + '/*/dist'], {
-      allowEmpty: true,
-    })
+    .src(
+      [DIST, SAMPLE + '/*/node_modules/@nestjs/terminus', SAMPLE + '/*/dist'],
+      {
+        allowEmpty: true,
+      },
+    )
     .pipe(clean());
 });
 
-gulp.task('move', () => {
+gulp.task('move:protos', () => {
   return gulp
     .src(join(LIB, './**/*.proto'), { base: LIB })
+    .pipe(debug({ title: 'move:protos' }))
     .pipe(gulp.dest(join(DIST)));
 });
 
 gulp.task('build', () => {
-  return terminus
-    .src()
-    .pipe(terminus())
-    .pipe(gulp.dest(DIST));
+  return terminus.src().pipe(terminus()).pipe(gulp.dest(DIST));
 });
 
 gulp.task('move', () => {
@@ -63,7 +65,7 @@ gulp.task('move', () => {
 
   let stream = gulp.src(['dist/**/*']);
 
-  directories.forEach(dir => {
+  directories.forEach((dir) => {
     stream = stream.pipe(gulp.dest(dir + '/node_modules/@nestjs/terminus'));
   });
   return stream;
@@ -72,7 +74,9 @@ gulp.task('move', () => {
 gulp.task('install:sample', async () => {
   const directories = getDirs(SAMPLE);
 
-  const promises = directories.map(dir => exec(`npm install --prefix ${dir}`));
+  const promises = directories.map((dir) =>
+    exec(`npm install --prefix ${dir}`),
+  );
 
   return await Promise.all(promises);
 });
@@ -80,7 +84,7 @@ gulp.task('install:sample', async () => {
 gulp.task('build:sample', async () => {
   const directories = getDirs(SAMPLE);
 
-  const promises = directories.map(dir =>
+  const promises = directories.map((dir) =>
     exec(`npm run build --prefix ${dir}`),
   );
 
@@ -94,5 +98,11 @@ gulp.task('default', gulp.series(['clean', 'build']));
 gulp.task('build:app', gulp.series(['default']));
 gulp.task(
   'build:all',
-  gulp.series(['build:app', 'install:sample', 'move', 'build:sample']),
+  gulp.series([
+    'build:app',
+    'install:sample',
+    'move:protos',
+    'move',
+    'build:sample',
+  ]),
 );
