@@ -1,6 +1,6 @@
 {
   "name": "@nestjs/terminus",
-  "version": "6.5.6",
+  "version": "7.0.0",
   "description": "Nest - modern, fast, powerful node.js web framework (@terminus)",
   "repository": {
     "url": "https://github.com/nestjs/terminus"
@@ -35,28 +35,44 @@
     ]
   },
   "dependencies": {
-    "check-disk-space": "2.1.0"
+    "check-disk-space": "2.1.0",
+    "deprecate": "^1.1.1"
   },
   "devDependencies": {
     "@compodoc/compodoc": "1.1.11",
     "@godaddy/terminus": "4.3.1",
-    "@nestjs/common": "6.11.8",
-    "@nestjs/core": "6.11.8",
-    "@nestjs/testing": "6.11.8",
-    "@types/jest": "25.2.1",
-    "@types/mongoose": "5.7.6",
-    "@types/node": "12.12.21",
-    "fastify": "2.12.1",
+    "@grpc/proto-loader": "^0.5.3",
+    "@nestjs/common": "7.0.6",
+    "@nestjs/core": "7.0.6",
+    "@nestjs/microservices": "^7.0.6",
+    "@nestjs/mongoose": "^6.4.0",
+    "@nestjs/platform-express": "^7.0.6",
+    "@nestjs/platform-fastify": "^7.0.6",
+    "@nestjs/swagger": "^4.5.1",
+    "@nestjs/testing": "7.0.6",
+    "@nestjs/typeorm": "7.0.0",
+    "@types/deprecate": "^1.1.0",
+    "@types/jest": "25.1.4",
+    "@types/mongoose": "5.7.8",
+    "@types/node": "13.9.5",
+    "amqp-connection-manager": "^3.2.0",
+    "amqplib": "^0.5.5",
+    "fastify": "^2.13.0",
     "fastify-formbody": "3.1.0",
+    "grpc": "^1.24.2",
     "gulp": "4.0.2",
     "gulp-clean": "0.4.0",
+    "gulp-debug": "^4.0.0",
     "gulp-typescript": "5.0.1",
     "husky": "4.2.3",
     "jest": "25.2.7",
     "lint-staged": "10.1.2",
+    "mongoose": "^5.9.7",
     "mysql": "2.18.1",
+    "nats": "^1.4.8",
     "portfinder": "1.0.25",
     "prettier": "2.0.2",
+    "redis": "^3.0.2",
     "reflect-metadata": "0.1.13",
     "rxjs": "6.5.4",
     "rxjs-compat": "6.5.4",
@@ -66,29 +82,13 @@
     "ts-node": "8.8.2",
     "tslint": "6.1.1",
     "tslint-config-prettier": "1.18.0",
+    "typeorm": "^0.2.24",
     "typescript": "3.8.3"
   },
   "peerDependencies": {
-    "@godaddy/terminus": "^4.2.0",
-    "@nestjs/common": "^6.0.0",
-    "@nestjs/core": "^6.0.0",
-    "reflect-metadata": "^0.1.12",
-    "rxjs": "^6.0.0"
-  },
-  "optionalDependencies": {
-    "@grpc/proto-loader": "0.5.3",
-    "@nestjs/microservices": "6.11.8",
-    "@nestjs/mongoose": "6.4.0",
-    "@nestjs/platform-express": "6.11.8",
-    "@nestjs/platform-fastify": "6.11.8",
-    "@nestjs/typeorm": "7.0.0",
-    "amqp-connection-manager": "3.2.0",
-    "amqplib": "0.5.5",
-    "grpc": "1.24.2",
-    "mongoose": "5.9.4",
-    "mqtt": "3.0.0",
-    "nats": "1.4.2",
-    "redis": "3.0.2",
-    "typeorm": "0.2.24"
+    "@nestjs/common": "^7.0.0",
+    "@nestjs/core": "^7.0.0",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^6.5.4"
   }
 }

@@ -1,4 +1,4 @@
-import { HealthCheckError } from '@godaddy/terminus';
+import { HealthCheckError } from '../health-check/health-check.error';
 import { STORAGE_EXCEEDED } from './messages.constant';
 
 /**

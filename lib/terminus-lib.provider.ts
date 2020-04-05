@@ -1,5 +1,6 @@
 import { TERMINUS_LIB } from './terminus.constants';
-import { createTerminus } from '@godaddy/terminus';
+import { Provider } from '@nestjs/common';
+import { checkPackages } from './utils';
 
 /**
  * Create a wrapper so it is injectable & easier to test
@@ -8,5 +9,11 @@ import { createTerminus } from '@godaddy/terminus';
  */
 export const TerminusLibProvider = {
   provide: TERMINUS_LIB,
-  useValue: createTerminus,
+  useFactory: () => {
+    const [terminus] = checkPackages(
+      ['@godaddy/terminus'],
+      'the legacy Terminus API',
+    );
+    return terminus?.createTerminus;
+  },
 };

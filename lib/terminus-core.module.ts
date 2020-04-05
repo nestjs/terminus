@@ -10,13 +10,14 @@ import {
   TerminusModuleOptions,
   TerminusModuleAsyncOptions,
   TerminusOptionsFactory,
-} from './interfaces';
+} from './terminus-module-options.interface';
 import { TERMINUS_MODULE_OPTIONS } from './terminus.constants';
 import { TerminusBootstrapService } from './terminus-bootstrap.service';
 import { TerminusLibProvider } from './terminus-lib.provider';
 import { TerminusModule } from './terminus.module';
-import { DiskusageLibProvider } from './health-indicators/disk/diskusage-lib.provider';
-import { HEALTH_INDICATORS } from './health-indicators.provider';
+import { DiskusageLibProvider } from './health-indicator/disk/diskusage-lib.provider';
+import { HEALTH_INDICATORS } from './health-indicator/health-indicators.provider';
+import { HealthCheckExecutor } from './health-check/health-check-executor.service';
 
 /**
  * The internal Terminus Module which handles the integration
@@ -65,6 +66,7 @@ export class TerminusCoreModule {
       providers: [
         ...asyncProviders,
         TerminusBootstrapService,
+        HealthCheckExecutor,
         TerminusLibProvider,
         DiskusageLibProvider,
         ...HEALTH_INDICATORS,

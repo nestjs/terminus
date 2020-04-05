@@ -1,0 +1,52 @@
+{
+  "name": "nest-typescript-starter",
+  "version": "1.0.0",
+  "description": "Nest TypeScript starter repository",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/main.ts",
+    "prestart:prod": "tsc",
+    "start:prod": "node dist/main.js",
+    "build": "rm -rf dist && tsc -p tsconfig.json",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config ./test/jest-e2e.json"
+  },
+  "dependencies": {
+    "@godaddy/terminus": "4.3.1",
+    "@nestjs/common": "7.0.0",
+    "@nestjs/core": "7.0.0",
+    "@nestjs/platform-express": "7.0.0",
+    "@nestjs/testing": "7.0.0",
+    "fastify": "2.12.1",
+    "reflect-metadata": "0.1.13",
+    "typescript": "3.8.3"
+  },
+  "devDependencies": {
+    "@types/jest": "25.2.1",
+    "@types/node": "12.12.21",
+    "jest": "25.2.7",
+    "supertest": "4.0.2",
+    "ts-jest": "25.3.1",
+    "ts-node": "8.8.2"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".spec.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  }
+}

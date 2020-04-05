@@ -2,28 +2,34 @@ import { DynamicModule, Module, HttpModule } from '@nestjs/common';
 import {
   TerminusModuleOptions,
   TerminusModuleAsyncOptions,
-} from './interfaces/terminus-module-options.interface';
+} from './terminus-module-options.interface';
 import { TerminusCoreModule } from './terminus-core.module';
-import { DiskusageLibProvider } from './health-indicators/disk/diskusage-lib.provider';
-import { HEALTH_INDICATORS } from './health-indicators.provider';
+import { DiskusageLibProvider } from './health-indicator/disk/diskusage-lib.provider';
+import { HEALTH_INDICATORS } from './health-indicator/health-indicators.provider';
+import { HealthCheckService } from './health-check';
+import { HealthCheckExecutor } from './health-check/health-check-executor.service';
 
 /**
- *
- * Terminus Module which represents the integration of the
- * `@godaddy/terminus` module with the Nest ecosystem.
- *
+ * The Terminus module integrates health checks
+ * and graceful shutdowns in your Nest application
  *
  * @publicApi
  */
 @Module({
   imports: [HttpModule],
-  providers: [DiskusageLibProvider, ...HEALTH_INDICATORS],
-  exports: [...HEALTH_INDICATORS],
+  providers: [
+    DiskusageLibProvider,
+    HealthCheckExecutor,
+    HealthCheckService,
+    ...HEALTH_INDICATORS,
+  ],
+  exports: [HealthCheckService, ...HEALTH_INDICATORS],
 })
 export class TerminusModule {
   /**
    * Bootstraps the Terminus Module synchronously
    * @param options The options for the Terminus Module
+   * @deprecated
    */
   static forRoot(options?: TerminusModuleOptions): DynamicModule {
     return {

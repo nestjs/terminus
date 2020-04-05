@@ -1,4 +1,4 @@
-import { HealthCheckError } from '@godaddy/terminus';
+import { HealthCheckError } from '../health-check/health-check.error';
 import { UNHEALTHY_RESPONSE_CODE } from './messages.constant';
 
 /**
