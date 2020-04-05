@@ -71,7 +71,7 @@
     "mysql": "2.18.1",
     "nats": "1.4.8",
     "portfinder": "1.0.25",
-    "prettier": "2.0.2",
+    "prettier": "2.0.3",
     "redis": "3.0.2",
     "reflect-metadata": "0.1.13",
     "rxjs": "6.5.4",
