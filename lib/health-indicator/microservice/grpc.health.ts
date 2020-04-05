@@ -15,7 +15,6 @@ import {
   TimeoutError as PromiseTimeoutError,
 } from '../../utils';
 import { HealthIndicator } from '../health-indicator';
-import { GrpcOptions } from './external/microservice-options.interface';
 
 /**
  * The status of the request service
@@ -52,11 +51,6 @@ interface GRPCHealthService {
 }
 
 /**
- * @internal
- */
-type GrpcOptionsOptions = PropType<GrpcOptions, 'options'>;
-
-/**
  * The function to check whether the service is up or down
  */
 export type HealthServiceCheck = (
@@ -64,10 +58,28 @@ export type HealthServiceCheck = (
   service: string,
 ) => Promise<any>;
 
+// Since @nestjs/microservices is lazyily loaded we are not able to use
+// its types. It would end up in the d.ts file if we would use the types.
+// In case the user does not use this HealthIndicator and therefore has not
+// @nestjs/microservices installed, TS would complain.
+// To workaround this, we try to be as type-secure as possible, without
+// duplicating the interfaces.
+// That is why the user has to pass the options as Type Param
+interface GrpcClientOptionsLike {
+  transport?: number;
+  options?: any;
+}
+
+type GrpcOptionsLike<
+  GrpcClientOptions extends GrpcClientOptionsLike = GrpcClientOptionsLike
+> = PropType<GrpcClientOptions, 'options'>;
+
 /**
  * The options for the `grpc.checkService` health indicator function
  */
-export type CheckGRPCServiceOptions = Partial<GrpcOptionsOptions> & {
+export type CheckGRPCServiceOptions<
+  GrpcOptions extends GrpcClientOptionsLike = GrpcClientOptionsLike
+> = Partial<GrpcOptionsLike<GrpcOptions>> & {
   timeout?: number;
   healthServiceName?: string;
   healthServiceCheck?: HealthServiceCheck;
@@ -106,8 +118,8 @@ export class GRPCHealthIndicator extends HealthIndicator {
    * Creates a GRPC client from the given options
    * @private
    */
-  private createClient(
-    options: CheckGRPCServiceOptions,
+  private createClient<GrpcOptions extends GrpcClientOptionsLike>(
+    options: CheckGRPCServiceOptions<GrpcOptions>,
   ): NestJSMicroservices.ClientGrpc {
     const {
       timeout,
@@ -117,7 +129,7 @@ export class GRPCHealthIndicator extends HealthIndicator {
     } = options;
     return this.nestJsMicroservices.ClientProxyFactory.create({
       transport: 4,
-      options: grpcOptions as GrpcOptionsOptions,
+      options: grpcOptions as any,
     });
   }
 
@@ -157,12 +169,14 @@ export class GRPCHealthIndicator extends HealthIndicator {
    * @throws {TimeoutError} Gets thrown in case a health check exceeded the given timeout
    * @throws {UnhealthyResponseCodeError} Gets thrown in case the received response is unhealthy
    */
-  async checkService(
+  async checkService<
+    GrpcOptions extends GrpcClientOptionsLike = GrpcClientOptionsLike
+  >(
     key: string,
     service: string,
-    options: CheckGRPCServiceOptions = {},
+    options: CheckGRPCServiceOptions<GrpcOptions> = {},
   ): Promise<HealthIndicatorResult> {
-    const defaultOptions: CheckGRPCServiceOptions = {
+    const defaultOptions: CheckGRPCServiceOptions<GrpcOptions> = {
       package: 'grpc.health.v1',
       protoPath: join(__dirname, './protos/health.proto'),
       healthServiceCheck: (healthService: GRPCHealthService, service: string) =>
@@ -173,7 +187,7 @@ export class GRPCHealthIndicator extends HealthIndicator {
 
     const settings = { ...defaultOptions, ...options };
 
-    const client = this.createClient(settings);
+    const client = this.createClient<GrpcOptions>(settings);
 
     let healthService: GRPCHealthService;
     try {

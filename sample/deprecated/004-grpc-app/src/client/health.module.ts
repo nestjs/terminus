@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
+import { GrpcOptions } from '@nestjs/microservices';
 import {
   TerminusModule,
   TerminusModuleOptions,
-  MicroserviceHealthIndicator,
   GRPCHealthIndicator,
 } from '@nestjs/terminus';
 
@@ -14,7 +14,7 @@ const getTerminusOptions = (
       url: '/health',
       healthIndicators: [
         async () =>
-          grpc.checkService('hero_service', 'hero.health.v1', {
+          grpc.checkService<GrpcOptions>('hero_service', 'hero.health.v1', {
             timeout: 2000,
           }),
       ],

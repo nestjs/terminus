@@ -4,7 +4,7 @@ import {
   TerminusModuleOptions,
   MicroserviceHealthIndicator,
 } from '@nestjs/terminus';
-import { Transport } from '@nestjs/microservices';
+import { Transport, RedisOptions } from '@nestjs/microservices';
 
 const getTerminusOptions = (
   microservice: MicroserviceHealthIndicator,
@@ -19,7 +19,7 @@ const getTerminusOptions = (
             options: { host: 'localhost', port: 8889 },
           }),
         async () =>
-          microservice.pingCheck('redis', {
+          microservice.pingCheck<RedisOptions>('redis', {
             transport: Transport.REDIS,
             options: {
               url: 'redis://localhost:6379',

@@ -1,19 +1,36 @@
 import { HealthCheckError } from '../../health-check/health-check.error';
 import { Injectable, Scope } from '@nestjs/common';
 import * as NestJSMicroservices from '@nestjs/microservices';
-import { MicroserviceOptions } from './external/microservice-options.interface';
 import { TimeoutError } from '../../errors';
 import {
   checkPackages,
   promiseTimeout,
   TimeoutError as PromiseTimeoutError,
+  PropType,
 } from '../../utils';
 import { HealthIndicator, HealthIndicatorResult } from '../';
+
+// Since @nestjs/microservices is lazyily loaded we are not able to use
+// its types. It would end up in the d.ts file if we would use the types.
+// In case the user does not use this HealthIndicator and therefore has not
+// @nestjs/microservices installed, TS would complain.
+// To workaround this, we try to be as type-secure as possible, without
+// duplicating the interfaces.
+// That is why the user has to pass the options as Type Param.
+interface MicrserviceOptionsLike {
+  transport?: number;
+  options?: object;
+}
 
 /**
  * The options for the `MicroserviceHealthInidcator`
  */
-export type MicroserviceHealthIndicatorOptions = MicroserviceOptions & {
+export type MicroserviceHealthIndicatorOptions<
+  T extends MicrserviceOptionsLike = MicrserviceOptionsLike
+> = T & {
+  // The transport option is in the `MicroserviceOptionsLike` (e.g. RedisOptions)
+  // optional. We need to use this information, therefore it is required
+  transport: Required<PropType<MicrserviceOptionsLike, 'transport'>>;
   timeout?: number;
 };
 
@@ -45,12 +62,10 @@ export class MicroserviceHealthIndicator extends HealthIndicator {
     )[0];
   }
 
-  private async pingMicroservice(
-    options: MicroserviceHealthIndicatorOptions,
-  ): Promise<any> {
-    const client = this.nestJsMicroservices.ClientProxyFactory.create(
-      options as any,
-    );
+  private async pingMicroservice<MicroserviceClientOptions>(
+    options: MicroserviceHealthIndicatorOptions<MicroserviceClientOptions>,
+  ): Promise<void> {
+    const client = this.nestJsMicroservices.ClientProxyFactory.create(options);
     const checkConnection = async () => {
       await client.connect();
       await client.close();
@@ -99,9 +114,9 @@ export class MicroserviceHealthIndicator extends HealthIndicator {
    *   options: { host: 'localhost', port: 3001 },
    * })
    */
-  async pingCheck(
+  async pingCheck<MicroserviceClientOptions extends MicrserviceOptionsLike>(
     key: string,
-    options: MicroserviceHealthIndicatorOptions,
+    options: MicroserviceHealthIndicatorOptions<MicroserviceClientOptions>,
   ): Promise<HealthIndicatorResult> {
     let isHealthy = false;
     const timeout = options.timeout || 1000;
