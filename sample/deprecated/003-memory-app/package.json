@@ -21,7 +21,7 @@
     "@nestjs/platform-express": "7.0.9",
     "@nestjs/testing": "7.0.9",
     "class-transformer": "0.2.3",
-    "class-validator": "0.11.0",
+    "class-validator": "0.12.2",
     "fastify": "2.14.0",
     "lodash": "4.17.15",
     "reflect-metadata": "0.1.13",
