@@ -76,7 +76,7 @@
     "reflect-metadata": "0.1.13",
     "rxjs": "6.5.4",
     "rxjs-compat": "6.5.4",
-    "sort-package-json": "1.42.1",
+    "sort-package-json": "1.42.2",
     "supertest": "4.0.2",
     "ts-jest": "25.4.0",
     "ts-node": "8.10.1",
