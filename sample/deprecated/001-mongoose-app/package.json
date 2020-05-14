@@ -33,7 +33,7 @@
     "@types/node": "12.12.21",
     "@types/supertest": "2.0.9",
     "jest": "25.5.4",
-    "nodemon": "2.0.3",
+    "nodemon": "2.0.4",
     "prettier": "2.0.5",
     "supertest": "4.0.2",
     "ts-jest": "25.5.1",
