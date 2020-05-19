@@ -82,7 +82,7 @@
     "ts-node": "8.10.1",
     "tslint": "6.1.2",
     "tslint-config-prettier": "1.18.0",
-    "typeorm": "0.2.24",
+    "typeorm": "0.2.25",
     "typescript": "3.8.3"
   },
   "peerDependencies": {
