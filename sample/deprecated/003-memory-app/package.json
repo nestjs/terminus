@@ -22,7 +22,7 @@
     "@nestjs/testing": "7.0.9",
     "class-transformer": "0.2.3",
     "class-validator": "0.12.2",
-    "fastify": "2.14.0",
+    "fastify": "2.14.1",
     "lodash": "4.17.15",
     "reflect-metadata": "0.1.13",
     "typescript": "3.8.3"
