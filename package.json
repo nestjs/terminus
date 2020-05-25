@@ -67,7 +67,7 @@
     "husky": "4.2.5",
     "jest": "25.5.4",
     "lint-staged": "10.2.6",
-    "mongoose": "5.9.15",
+    "mongoose": "5.9.16",
     "mysql": "2.18.1",
     "nats": "1.4.9",
     "portfinder": "1.0.26",
