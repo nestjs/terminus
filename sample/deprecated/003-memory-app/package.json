@@ -28,7 +28,7 @@
     "typescript": "3.9.3"
   },
   "devDependencies": {
-    "@types/jest": "25.2.3",
+    "@types/jest": "26.0.0",
     "@types/node": "12.12.21",
     "jest": "25.5.4",
     "supertest": "4.0.2",
