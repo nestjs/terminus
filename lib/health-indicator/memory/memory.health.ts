@@ -26,7 +26,7 @@ export class MemoryHealthIndicator extends HealthIndicator {
    *
    * @example
    * // The process should not use more than 150MB memory
-   * memoryHealthIndicator.checkRSS('memory_heap', 150 * 1024 * 1024);
+   * memoryHealthIndicator.checkHeap('memory_heap', 150 * 1024 * 1024);
    */
   public async checkHeap(
     key: string,
