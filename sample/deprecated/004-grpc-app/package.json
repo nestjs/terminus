@@ -39,7 +39,7 @@
     "@types/jest": "26.0.0",
     "@types/node": "12.12.21",
     "concurrently": "5.2.0",
-    "jest": "26.0.1",
+    "jest": "26.1.0",
     "supertest": "4.0.2",
     "ts-jest": "26.1.1",
     "ts-node": "8.10.2",
