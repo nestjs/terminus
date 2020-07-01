@@ -30,7 +30,7 @@ So you will only install what is actually required!
 
 ```bash
 
-npm install @nestjs/terminus
+npm install --save @nestjs/terminus
 
 ```
 
