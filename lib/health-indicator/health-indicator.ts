@@ -33,8 +33,6 @@ export abstract class HealthIndicator {
    * @param key The key which will be used as key for the result object
    * @param isHealthy Whether the health indicator is healthy
    * @param data Additional data which will get appended to the result object
-   *
-
    */
   protected getStatus(
     key: string,
