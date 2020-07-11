@@ -57,7 +57,7 @@
     "@types/node": "13.13.5",
     "amqp-connection-manager": "3.2.0",
     "amqplib": "0.5.6",
-    "fastify": "2.15.0",
+    "fastify": "3.0.2",
     "fastify-formbody": "3.2.0",
     "grpc": "1.24.3",
     "gulp": "4.0.2",
