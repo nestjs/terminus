@@ -83,7 +83,7 @@
     "tslint": "6.1.2",
     "tslint-config-prettier": "1.18.0",
     "typeorm": "0.2.25",
-    "typescript": "3.9.6"
+    "typescript": "3.9.7"
   },
   "peerDependencies": {
     "@nestjs/common": "^7.0.0",
