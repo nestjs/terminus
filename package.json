@@ -74,7 +74,7 @@
     "prettier": "2.0.5",
     "redis": "3.0.2",
     "reflect-metadata": "0.1.13",
-    "rxjs": "6.5.4",
+    "rxjs": "6.6.0",
     "rxjs-compat": "6.6.0",
     "sort-package-json": "1.44.0",
     "supertest": "4.0.2",
