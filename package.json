@@ -70,7 +70,7 @@
     "mongoose": "5.9.26",
     "mysql": "2.18.1",
     "nats": "1.4.9",
-    "portfinder": "1.0.26",
+    "portfinder": "1.0.27",
     "prettier": "2.0.5",
     "redis": "3.0.2",
     "reflect-metadata": "0.1.13",
