@@ -34,6 +34,6 @@
     "supertest": "4.0.2",
     "ts-jest": "26.1.4",
     "ts-node": "8.10.2",
-    "tslint": "6.1.2"
+    "tslint": "6.1.3"
   }
 }
