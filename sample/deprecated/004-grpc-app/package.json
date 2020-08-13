@@ -29,7 +29,7 @@
     "class-validator": "0.12.2",
     "fastify": "3.1.1",
     "grpc": "1.24.3",
-    "lodash": "4.17.19",
+    "lodash": "4.17.20",
     "redis": "3.0.2",
     "reflect-metadata": "0.1.13",
     "rxjs": "6.6.0",
