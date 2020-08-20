@@ -48,7 +48,7 @@
     "@nestjs/mongoose": "7.0.2",
     "@nestjs/platform-express": "7.3.2",
     "@nestjs/platform-fastify": "7.3.2",
-    "@nestjs/swagger": "4.5.12",
+    "@nestjs/swagger": "4.6.0",
     "@nestjs/testing": "7.3.2",
     "@nestjs/typeorm": "7.1.0",
     "@types/deprecate": "1.1.0",
