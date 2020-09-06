@@ -23,7 +23,7 @@
     "@nestjs/platform-express": "7.3.2",
     "reflect-metadata": "0.1.13",
     "rimraf": "3.0.2",
-    "rxjs": "6.6.0",
+    "rxjs": "6.6.3",
     "typescript": "3.9.7"
   },
   "devDependencies": {
