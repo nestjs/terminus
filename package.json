@@ -75,7 +75,7 @@
     "redis": "3.0.2",
     "reflect-metadata": "0.1.13",
     "rxjs": "6.6.0",
-    "rxjs-compat": "6.6.0",
+    "rxjs-compat": "6.6.3",
     "sort-package-json": "1.44.0",
     "supertest": "4.0.2",
     "ts-jest": "26.2.0",
