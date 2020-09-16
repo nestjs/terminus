@@ -52,7 +52,7 @@
     "@nestjs/testing": "7.3.2",
     "@nestjs/typeorm": "7.1.0",
     "@types/deprecate": "1.1.0",
-    "@types/jest": "26.0.7",
+    "@types/jest": "26.0.14",
     "@types/mongoose": "5.7.36",
     "@types/node": "13.13.5",
     "amqp-connection-manager": "3.2.0",
