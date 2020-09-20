@@ -19,7 +19,7 @@ describe('Disk Health', () => {
           url: '/health',
           healthIndicators: [
             async () =>
-              disk.checkStorage('disk', { path: '/', threshold: free + 1 }),
+              disk.checkStorage('disk', { path: '/', threshold: free + 100 }),
           ],
         },
       ],
