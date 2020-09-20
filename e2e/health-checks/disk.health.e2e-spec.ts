@@ -11,7 +11,6 @@ describe('Disk Health', () => {
   let getTerminusOptions: (disk: DiskHealthIndicator) => TerminusModuleOptions;
   beforeEach(async () => {
     const { free } = await checkDiskSpace('/');
-    console.log(free);
     getTerminusOptions = (
       disk: DiskHealthIndicator,
     ): TerminusModuleOptions => ({
@@ -20,7 +19,7 @@ describe('Disk Health', () => {
           url: '/health',
           healthIndicators: [
             async () =>
-              disk.checkStorage('disk', { path: '/', threshold: free + 100 }),
+              disk.checkStorage('disk', { path: '/', threshold: free + 90000 }),
           ],
         },
       ],
