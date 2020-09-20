@@ -1,4 +1,4 @@
-name: Node.js CI
+name: e2e tests
 
 on: [push]
 
@@ -9,6 +9,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - run:  docker-compose build && docker-compose run lib
+    - run: docker-compose build
+    - run: docker-compose run lib
       env:
         CI: true
