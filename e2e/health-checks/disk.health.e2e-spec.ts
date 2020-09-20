@@ -26,20 +26,20 @@ describe('Disk Health', () => {
     });
   });
 
-  it('should check if the disk threshold is not exceeded', async () => {
-    [app, port] = await bootstrapModule({
-      inject: [DiskHealthIndicator],
-      useFactory: getTerminusOptions,
-    });
-    const response = await Axios.get(`http://0.0.0.0:${port}/health`);
-    const info = { disk: { status: 'up' } };
-    expect(response.status).toBe(200);
-    expect(response.data).toEqual({
-      status: 'ok',
-      info,
-      details: info,
-    });
-  });
+  // it('should check if the disk threshold is not exceeded', async () => {
+  //   [app, port] = await bootstrapModule({
+  //     inject: [DiskHealthIndicator],
+  //     useFactory: getTerminusOptions,
+  //   });
+  //   const response = await Axios.get(`http://0.0.0.0:${port}/health`);
+  //   const info = { disk: { status: 'up' } };
+  //   expect(response.status).toBe(200);
+  //   expect(response.data).toEqual({
+  //     status: 'ok',
+  //     info,
+  //     details: info,
+  //   });
+  // });
 
   it('should check if correctly displays a threshold exceeded error', async () => {
     [app, port] = await bootstrapModule({
