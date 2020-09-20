@@ -16,28 +16,28 @@
   },
   "dependencies": {
     "@godaddy/terminus": "4.4.1",
-    "@nestjs/common": "7.3.2",
-    "@nestjs/core": "7.3.2",
-    "@nestjs/microservices": "7.3.2",
-    "@nestjs/platform-express": "7.3.2",
-    "@nestjs/testing": "7.3.2",
-    "@nestjs/websockets": "7.3.2",
+    "@nestjs/common": "7.4.4",
+    "@nestjs/core": "7.4.4",
+    "@nestjs/microservices": "7.4.4",
+    "@nestjs/platform-express": "7.4.4",
+    "@nestjs/testing": "7.4.4",
+    "@nestjs/websockets": "7.4.4",
     "class-transformer": "0.3.1",
     "class-validator": "0.12.2",
-    "fastify": "3.1.1",
+    "fastify": "3.4.1",
     "lodash": "4.17.20",
     "redis": "3.0.2",
     "reflect-metadata": "0.1.13",
-    "rxjs": "6.6.0",
-    "typescript": "3.9.7"
+    "rxjs": "6.6.3",
+    "typescript": "4.0.3"
   },
   "devDependencies": {
-    "@types/jest": "26.0.7",
-    "@types/node": "12.12.21",
-    "jest": "26.1.0",
+    "@types/jest": "26.0.14",
+    "@types/node": "14.11.1",
+    "jest": "26.4.2",
     "supertest": "4.0.2",
-    "ts-jest": "26.2.0",
-    "ts-node": "8.10.2",
-    "tslint": "6.1.2"
+    "ts-jest": "26.4.0",
+    "ts-node": "9.0.0",
+    "tslint": "6.1.3"
   }
 }

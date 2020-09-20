@@ -19,7 +19,7 @@ const exec = promisify(childProcess.exec);
  */
 const DIST = join(__dirname, 'dist');
 const LIB = join(__dirname, 'lib');
-const SAMPLE = join(__dirname, 'sample/deprecated/');
+const SAMPLE = join(__dirname, 'sample');
 
 const terminus = ts.createProject(join(__dirname, 'tsconfig.json'));
 
@@ -32,7 +32,7 @@ function getFolders(dir) {
     .filter((file) => fs.statSync(path.join(dir, file)).isDirectory());
 }
 
-const getDirs = (base) => getFolders(base).map((path) => `${base}/${path}`);
+const getDirs = (base) => getFolders(base).map((path) => `${base}/${path}`).filter(p => !p.includes('deprecated'));
 
 /**
  * TASK
