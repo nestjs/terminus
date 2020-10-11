@@ -34,7 +34,7 @@
   "devDependencies": {
     "@types/jest": "26.0.14",
     "@types/node": "14.11.8",
-    "jest": "26.5.2",
+    "jest": "26.5.3",
     "supertest": "5.0.0",
     "ts-jest": "26.4.1",
     "ts-node": "9.0.0",
