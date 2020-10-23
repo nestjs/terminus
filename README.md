@@ -35,7 +35,7 @@ npm install --save @nestjs/terminus
 ## Usage
 
 1. Import the Terminus module
-2. Make sure the addtionally needed modules are available to (e.g. `TypeOrmModule`), in case you want to do Database Health Checks.
+2. Make sure the additionally needed modules are available to (e.g. `TypeOrmModule`), in case you want to do Database Health Checks.
 
 ```typescript
 // app.module.ts
