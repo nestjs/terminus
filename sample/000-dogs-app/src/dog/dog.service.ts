@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DogState, Dog } from './dog.interface';
+import { DogState, Dog } from './interfaces/dog.interface';
 
 @Injectable()
 export class DogService {
