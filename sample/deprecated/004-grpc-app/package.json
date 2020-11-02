@@ -40,7 +40,7 @@
     "@types/node": "14.14.6",
     "concurrently": "5.3.0",
     "jest": "26.6.2",
-    "supertest": "5.0.0",
+    "supertest": "6.0.0",
     "ts-jest": "26.4.3",
     "ts-node": "9.0.0",
     "tslint": "6.1.3"

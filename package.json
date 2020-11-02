@@ -77,7 +77,7 @@
     "rxjs": "6.6.3",
     "rxjs-compat": "6.6.3",
     "sort-package-json": "1.46.1",
-    "supertest": "5.0.0",
+    "supertest": "6.0.0",
     "ts-jest": "26.4.3",
     "ts-node": "9.0.0",
     "tslint": "6.1.3",
