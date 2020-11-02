@@ -12,7 +12,7 @@ export class HealthController {
   @HealthCheck()
   check() {
     return this.health.check([
-      () => this.mongoose.pingCheck('mongoose')
+      async () => this.mongoose.pingCheck('mongoose')
     ]);
   }
 }
