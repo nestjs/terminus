@@ -2,7 +2,6 @@
   "name": "001-mongoose-app",
   "version": "1.0.0",
   "description": "Mongoose Health Check sample app",
-  "author": "",
   "license": "MIT",
   "scripts": {
     "start": "ts-node src/main.ts",
