@@ -23,7 +23,7 @@
     "test": "npm run test:ut",
     "test:e2e": "jest --config=e2e/jest-e2e.json --detectOpenHandles --forceExit",
     "test:ut": "jest --config=jest.json",
-    "test:ut:cov": "npm run test:ut -- --coverage"
+    "release": "release-it"
   },
   "lint-staged": {
     "*.ts": [
@@ -75,6 +75,7 @@
     "prettier": "2.2.1",
     "redis": "3.0.2",
     "reflect-metadata": "0.1.13",
+    "release-it": "^14.2.1",
     "rxjs": "6.6.3",
     "rxjs-compat": "6.6.3",
     "sort-package-json": "1.48.1",
