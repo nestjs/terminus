@@ -3,6 +3,7 @@
   "version": "7.0.1",
   "description": "Nest - modern, fast, powerful node.js web framework (@terminus)",
   "repository": {
+    "type": "git",
     "url": "https://github.com/nestjs/terminus"
   },
   "license": "MIT",
