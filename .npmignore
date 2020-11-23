@@ -2,7 +2,7 @@
 lib
 index.ts
 package-lock.json
-tslint.json
+.eslintrc.js
 tsconfig.json
 .prettierrc
 documentation
