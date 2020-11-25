@@ -54,7 +54,7 @@
     "@types/deprecate": "1.1.0",
     "@types/jest": "26.0.15",
     "@types/mongoose": "5.7.36",
-    "@types/node": "14.14.9",
+    "@types/node": "14.14.10",
     "amqp-connection-manager": "3.2.1",
     "amqplib": "0.6.0",
     "fastify": "3.7.0",
