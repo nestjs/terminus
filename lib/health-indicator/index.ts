@@ -9,3 +9,4 @@ export * from './microservice/microservice.health';
 export * from './microservice/grpc.health';
 export * from './disk';
 export * from './memory';
+export * from './http';
