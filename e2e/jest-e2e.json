@@ -8,7 +8,7 @@
     "transform": {
         "^.+\\.tsx?$": "ts-jest"
     },
-    "testRegex": "/e2e/health-checks/http-response.health.e2e-spec.ts$",
+    "testRegex": "/e2e/.*\\.(e2e-test|e2e-spec).(ts|tsx|js)$",
     "collectCoverageFrom": [
         "src/**/*.{js,jsx,tsx,ts}",
         "!**/node_modules/**",
