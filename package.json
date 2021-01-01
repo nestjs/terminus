@@ -26,12 +26,7 @@
   },
   "lint-staged": {
     "*.ts": [
-      "prettier --write",
-      "git add"
-    ],
-    "package.json": [
-      "sort-package-json ./package.json",
-      "git add"
+      "prettier --write"
     ]
   },
   "dependencies": {
@@ -39,6 +34,8 @@
     "deprecate": "^1.1.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-angular": "^11.0.0",
     "@compodoc/compodoc": "1.1.11",
     "@godaddy/terminus": "4.4.1",
     "@grpc/proto-loader": "0.5.5",
@@ -54,7 +51,7 @@
     "@types/deprecate": "1.1.0",
     "@types/jest": "26.0.19",
     "@types/mongoose": "5.7.36",
-    "@types/node": "14.14.17",
+    "@types/node": "14.14.19",
     "amqp-connection-manager": "3.2.1",
     "amqplib": "0.6.0",
     "fastify": "3.7.0",
@@ -90,5 +87,11 @@
     "@nestjs/core": "^7.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.5.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -c .commitlintrc.json -E HUSKY_GIT_PARAMS"
+    }
   }
 }
