@@ -21,7 +21,7 @@
     "@nestjs/terminus": "7.0.1",
     "@nestjs/typeorm": "7.1.4",
     "mysql": "2.18.1",
-    "typeorm": "0.2.28",
+    "typeorm": "0.2.29",
     "reflect-metadata": "0.1.13",
     "rimraf": "3.0.2",
     "rxjs": "6.6.3",
