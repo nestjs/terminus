@@ -22,16 +22,11 @@
     "test": "npm run test:ut",
     "test:e2e": "jest --config=e2e/jest-e2e.json --detectOpenHandles --forceExit",
     "test:ut": "jest --config=jest.json",
-    "test:ut:cov": "npm run test:ut -- --coverage"
+    "release": "release-it"
   },
   "lint-staged": {
     "*.ts": [
-      "prettier --write",
-      "git add"
-    ],
-    "package.json": [
-      "sort-package-json ./package.json",
-      "git add"
+      "prettier --write"
     ]
   },
   "dependencies": {
@@ -39,6 +34,8 @@
     "deprecate": "^1.1.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-angular": "^11.0.0",
     "@compodoc/compodoc": "1.1.11",
     "@godaddy/terminus": "4.4.1",
     "@grpc/proto-loader": "0.5.5",
@@ -48,15 +45,15 @@
     "@nestjs/mongoose": "7.0.2",
     "@nestjs/platform-express": "7.5.4",
     "@nestjs/platform-fastify": "7.5.4",
-    "@nestjs/swagger": "4.7.5",
+    "@nestjs/swagger": "4.7.9",
     "@nestjs/testing": "7.5.4",
     "@nestjs/typeorm": "7.1.4",
     "@types/deprecate": "1.1.0",
     "@types/jest": "26.0.19",
     "@types/mongoose": "5.7.36",
-    "@types/node": "14.14.13",
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",
+    "@types/node": "14.14.19",
     "amqp-connection-manager": "3.2.1",
     "amqplib": "0.6.0",
     "eslint": "^7.14.0",
@@ -79,6 +76,7 @@
     "prettier": "2.2.1",
     "redis": "3.0.2",
     "reflect-metadata": "0.1.13",
+    "release-it": "^14.2.1",
     "rxjs": "6.6.3",
     "rxjs-compat": "6.6.3",
     "sort-package-json": "1.48.0",
@@ -95,5 +93,11 @@
     "@nestjs/core": "^7.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.5.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -c .commitlintrc.json -E HUSKY_GIT_PARAMS"
+    }
   }
 }
