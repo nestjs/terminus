@@ -59,7 +59,7 @@ export class SequelizeHealthIndicator extends HealthIndicator {
   private getContextConnection(): any | null {
     const {
       getConnectionToken,
-    } = require('@nestjs/sequelize') as typeof NestJSSequelize;
+    } = require('@nestjs/sequelize/dist/common/sequelize.utils') as typeof NestJSSequelize;
 
     try {
       return this.moduleRef.get(
@@ -101,7 +101,7 @@ export class SequelizeHealthIndicator extends HealthIndicator {
     let isHealthy = false;
     this.checkDependantPackages();
 
-    const connection = options.connection || this.getContextConnection();
+    const connection =  options.connection || this.getContextConnection();
     const timeout = options.timeout || 1000;
 
     if (!connection) {
