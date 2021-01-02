@@ -186,7 +186,7 @@ Samples: (even more [samples](https://github.com/nestjs/nest/commits/master))
 docs(changelog) update change log to beta.5
 ```
 ```
-bugfix(@nestjs/core) need to depend on latest rxjs and zone.js
+fix(@nestjs/core) need to depend on latest rxjs and zone.js
 
 The version in our package.json gets copied to the one we publish, and users need the latest of these.
 ```
@@ -202,7 +202,7 @@ Must be one of the following:
 * **ci**: Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
 * **docs**: Documentation only changes
 * **feat**: A new feature
-* **bugfix**: A bug fix
+* **fix**: A bug fix
 * **perf**: A code change that improves performance
 * **refactor**: A code change that neither fixes a bug nor adds a feature
 * **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
