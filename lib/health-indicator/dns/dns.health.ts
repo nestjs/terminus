@@ -96,7 +96,7 @@ export class DNSHealthIndicator extends HealthIndicator {
     try {
       const response = await this.httpService.request({ url: url.toString(), ...options }).toPromise();
 
-      const isHealthy = await callback(response)
+      const isHealthy = await callback(response);
 
       if (!isHealthy) {
         throw new HealthCheckError(
@@ -111,7 +111,7 @@ export class DNSHealthIndicator extends HealthIndicator {
       }
 
       if (err instanceof HealthCheckError) {
-        throw err
+        throw err;
       }
 
       throw new HealthCheckError(err.message, this.getStatus(key, false));
