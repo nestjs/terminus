@@ -1,18 +1,18 @@
 import { Test } from '@nestjs/testing';
-import { HttpResponseHealthIndicator } from './http-response.health';
+import { DNSHealthIndicator } from './dns.health';
 import { HealthCheckError } from '../../health-check/health-check.error';
 import { HttpService } from '@nestjs/common';
 import { of, throwError } from 'rxjs';
 import { AxiosResponse, AxiosRequestConfig, AxiosError } from 'axios';
 
 describe('Http Response Health Indicator', () => {
-  let httpResponseHealthIndicator: HttpResponseHealthIndicator;
+  let dnsHealthIndicator: DNSHealthIndicator;
   let httpService: HttpService;
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
-        HttpResponseHealthIndicator,
+        DNSHealthIndicator,
         {
           provide:    HttpService,
           useFactory: () => ({
@@ -22,7 +22,7 @@ describe('Http Response Health Indicator', () => {
       ],
     }).compile();
 
-    httpResponseHealthIndicator = await moduleRef.resolve<HttpResponseHealthIndicator>(HttpResponseHealthIndicator);
+    dnsHealthIndicator = await moduleRef.resolve<DNSHealthIndicator>(DNSHealthIndicator);
     httpService = moduleRef.get<HttpService>(HttpService);
   });
 
@@ -62,7 +62,7 @@ describe('Http Response Health Indicator', () => {
           return true;
         }
   
-        const indicatorResponse = await httpResponseHealthIndicator.checkResponse(key, url, f);
+        const indicatorResponse = await dnsHealthIndicator.responseCheck(key, url, f);
   
         expect(indicatorResponse).toStrictEqual({
           [key]: {
@@ -110,7 +110,7 @@ describe('Http Response Health Indicator', () => {
         }
   
         try {
-          await httpResponseHealthIndicator.checkResponse(key, url, callback);
+          await dnsHealthIndicator.responseCheck(key, url, callback);
           fail('a HealthCheckError should have been thrown')
         } catch (err) {
           expect(err instanceof HealthCheckError).toBeTruthy();
@@ -157,7 +157,7 @@ describe('Http Response Health Indicator', () => {
           return true;
         }
 
-        const indicatorResponse = await httpResponseHealthIndicator.checkResponse(key, url, callback);
+        const indicatorResponse = await dnsHealthIndicator.responseCheck(key, url, callback);
 
         expect(indicatorResponse).toStrictEqual({
           [key]: {
@@ -206,7 +206,7 @@ describe('Http Response Health Indicator', () => {
         }
 
         try {
-          await httpResponseHealthIndicator.checkResponse(key, url, callback);
+          await dnsHealthIndicator.responseCheck(key, url, callback);
           fail('a HealthCheckError should have been thrown')
         } catch (err) {
           expect(err instanceof HealthCheckError).toBeTruthy();
@@ -258,7 +258,7 @@ describe('Http Response Health Indicator', () => {
         return true;
       }
 
-      const indicatorResponse = await httpResponseHealthIndicator.checkResponse(key, url, callback);
+      const indicatorResponse = await dnsHealthIndicator.responseCheck(key, url, callback);
 
       expect(indicatorResponse).toStrictEqual({
         [key]: {
@@ -311,7 +311,7 @@ describe('Http Response Health Indicator', () => {
         }
       }
 
-      const indicatorResponse = await httpResponseHealthIndicator.checkResponse(key, url, callback, options);
+      const indicatorResponse = await dnsHealthIndicator.responseCheck(key, url, callback, options);
 
       expect(indicatorResponse).toStrictEqual({
         [key]: {
@@ -366,7 +366,7 @@ describe('Http Response Health Indicator', () => {
       const callback = fail.bind(null, 'callback should not have been called')
 
       try {
-        await httpResponseHealthIndicator.checkResponse(key, url, callback);
+        await dnsHealthIndicator.responseCheck(key, url, callback);
       } catch (err) {
         expect(err instanceof HealthCheckError).toBeTruthy();
         expect(err.message).toEqual('axios.request threw an error for some reason');
@@ -405,7 +405,7 @@ describe('Http Response Health Indicator', () => {
       const callback = fail.bind(null, 'callback should not have been called')
   
       try {
-        await httpResponseHealthIndicator.checkResponse(key, url, callback);
+        await dnsHealthIndicator.responseCheck(key, url, callback);
       } catch (err) {
         expect(err instanceof HealthCheckError).toBeTruthy();
         expect(err.message).toEqual('axios.request threw an error for some reason');
@@ -458,7 +458,7 @@ describe('Http Response Health Indicator', () => {
       }
 
       try {
-        await httpResponseHealthIndicator.checkResponse(key, url, callback);
+        await dnsHealthIndicator.responseCheck(key, url, callback);
       } catch (err) {
         expect(err instanceof HealthCheckError).toBeTruthy();
         expect(err.message).toEqual('callback threw an error for some reason');
