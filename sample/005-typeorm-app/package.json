@@ -24,7 +24,7 @@
     "mysql": "2.18.1",
     "rimraf": "3.0.2",
     "rxjs": "6.6.3",
-    "typeorm": "0.2.29",
+    "typeorm": "0.2.30",
     "typescript": "4.0.3"
   },
   "devDependencies": {
