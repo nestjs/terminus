@@ -6,9 +6,9 @@ import { Connection } from 'typeorm';
 @Controller('health')
 export class HealthController {
   constructor(
-    @InjectConnection()
+    @InjectConnection('db1Connection')
     private db1Connection: Connection,
-    @InjectConnection()
+    @InjectConnection('db2Connection')
     private db2Connection: Connection,
     private health: HealthCheckService,
     private db: TypeOrmHealthIndicator,
