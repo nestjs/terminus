@@ -8,4 +8,4 @@ import { DogModule } from './dog/dog.module';
     DogModule,
   ],
 })
-export class ApplicationModule {}
+export class AppModule {}
