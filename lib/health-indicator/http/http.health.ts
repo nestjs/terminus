@@ -1,30 +1,23 @@
-import { Injectable, HttpService, Scope } from '@nestjs/common';
+import { Injectable, HttpService } from '@nestjs/common';
 import { AxiosResponse, AxiosRequestConfig, AxiosError } from 'axios';
-import { HealthIndicator, HealthIndicatorResult } from '../';
+import { HealthIndicator, HealthIndicatorResult } from '..';
 import { HealthCheckError } from '../../health-check/health-check.error';
-import * as deprecate from 'deprecate';
 
 /**
- * The DNSHealthIndicator contains health indicators
+ * The HTTPHealthIndicator contains health indicators
  * which are used for health checks related to HTTP requests
- * and DNS
  *
  * @publicApi
  * @module TerminusModule
- * @deprecated
  */
-@Injectable({ scope: Scope.TRANSIENT })
-export class DNSHealthIndicator extends HealthIndicator {
+@Injectable()
+export class HttpHealthIndicator extends HealthIndicator {
   /**
    * Initializes the health indicator
    * @param httpService The HttpService provided by Nest
    */
   constructor(private readonly httpService: HttpService) {
     super();
-    deprecate(
-      'DNSHealthIndicator',
-      'Simply search and replace "DNSHealthIndicator" with "HttpHealthIndicator" in order to ugprade. DNSHealthIndicator will be removed in version 8.x.x',
-    );
   }
 
   /**
@@ -74,7 +67,7 @@ export class DNSHealthIndicator extends HealthIndicator {
    * @throws {HealthCheckError} In case the health indicator failed
    *
    * @example
-   * dnsHealthIndicator.pingCheck('google', 'https://google.com', { timeout: 800 })
+   * httpHealthIndicator.pingCheck('google', 'https://google.com', { timeout: 800 })
    */
   async pingCheck(
     key: string,

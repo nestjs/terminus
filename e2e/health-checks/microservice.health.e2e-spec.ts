@@ -40,6 +40,7 @@ describe('Microservice Health', () => {
       false,
       false,
       false,
+      false,
       8890,
     );
 
@@ -78,6 +79,7 @@ describe('Microservice Health', () => {
           ],
         }),
       },
+      false,
       false,
       false,
       false,

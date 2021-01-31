@@ -4,6 +4,7 @@ import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MongooseModule } from '@nestjs/mongoose';
+import { SequelizeModule } from '@nestjs/sequelize';
 import * as portfinder from 'portfinder';
 import { TerminusModule, TerminusModuleAsyncOptions } from '../../lib';
 import { Transport } from '@nestjs/microservices';
@@ -20,6 +21,17 @@ const DbModule = TypeOrmModule.forRoot({
   retryDelay: 1000,
 });
 
+const DbSequelizeModule = SequelizeModule.forRoot({
+  dialect: 'mysql',
+  host: 'mysql',
+  port: 3306,
+  username: 'root',
+  password: 'root',
+  database: 'test',
+  retryAttempts: 2,
+  retryDelay: 1000,
+});
+
 const MongoModule = MongooseModule.forRoot('mongodb://mongodb:27017/test');
 
 class ApplicationModule {
@@ -27,6 +39,7 @@ class ApplicationModule {
     options: TerminusModuleAsyncOptions,
     useDb: boolean,
     useMongoose: boolean,
+    useSequelize: boolean,
   ): DynamicModule {
     const imports = [TerminusModule.forRootAsync(options)];
 
@@ -36,6 +49,10 @@ class ApplicationModule {
 
     if (useMongoose) {
       imports.push(MongoModule);
+    }
+
+    if (useSequelize) {
+      imports.push(DbSequelizeModule);
     }
 
     return {
@@ -61,11 +78,12 @@ export async function bootstrapModule(
   options: TerminusModuleAsyncOptions,
   useDb: boolean = false,
   useMongoose: boolean = false,
+  useDbSequelize: boolean = false,
   useFastify?: boolean,
   tcpPort?: number,
 ): Promise<[INestApplication, number]> {
   const app = await NestFactory.create(
-    ApplicationModule.forRoot(options, useDb, useMongoose),
+    ApplicationModule.forRoot(options, useDb, useMongoose, useDbSequelize),
     useFastify ? new FastifyAdapter() : new ExpressAdapter(),
   );
 

@@ -33,7 +33,7 @@ export class HealthCheckService {
    * ```typescript
    *
    * healthCheckService.check([
-   *   () => this.dns.pingCheck('google', 'https://google.com'),
+   *   () => this.http.pingCheck('google', 'https://google.com'),
    * ]);
    *
    *
