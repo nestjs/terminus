@@ -6,8 +6,8 @@ import { HealthController } from './health.controller';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
+      name: 'db1Connection',
       useFactory: () => ({
-        name: 'db1Connection',
         type: 'mysql',
         host: 'localhost',
         port: 3306, 
@@ -18,8 +18,8 @@ import { HealthController } from './health.controller';
       }),
     }),
     TypeOrmModule.forRootAsync({
+      name: 'db2Connection',
       useFactory: () => ({
-        name: 'db2Connection',
         type: 'mysql',
         host: 'localhost',
         port: 3307, 
