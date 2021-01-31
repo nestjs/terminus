@@ -16,18 +16,17 @@ import {
 import { HealthIndicator } from '../health-indicator';
 
 export interface SequelizePingCheckSettings {
-    /**
-     * The connection which the ping check should get executed
-     */
-    connection?: any;
-    /**
-     * The amount of time the check should require in ms
-     */
-    timeout?: number;
- }
-
-
   /**
+   * The connection which the ping check should get executed
+   */
+  connection?: any;
+  /**
+   * The amount of time the check should require in ms
+   */
+  timeout?: number;
+}
+
+/**
  * The SequelizeHealthIndicator contains health indicators
  * which are used for health checks related to Sequelize
  *
@@ -62,12 +61,9 @@ export class SequelizeHealthIndicator extends HealthIndicator {
     } = require('@nestjs/sequelize/dist/common/sequelize.utils') as typeof NestJSSequelize;
 
     try {
-      return this.moduleRef.get(
-        getConnectionToken('DatabaseConnection') as string,
-        {
-          strict: false,
-        },
-      );
+      return this.moduleRef.get(getConnectionToken() as string, {
+        strict: false,
+      });
     } catch (err) {
       return null;
     }
@@ -80,9 +76,8 @@ export class SequelizeHealthIndicator extends HealthIndicator {
    *
    */
   private async pingDb(connection: any, timeout: number) {
-    const promise =
-      connection.readyState === 1 ? Promise.resolve() : Promise.reject();
-    return await promiseTimeout(timeout, promise);
+    const check: Promise<any> = connection.query('SELECT 1');
+    return await promiseTimeout(timeout, check);
   }
 
   /**
@@ -101,7 +96,7 @@ export class SequelizeHealthIndicator extends HealthIndicator {
     let isHealthy = false;
     this.checkDependantPackages();
 
-    const connection =  options.connection || this.getContextConnection();
+    const connection = options.connection || this.getContextConnection();
     const timeout = options.timeout || 1000;
 
     if (!connection) {

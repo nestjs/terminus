@@ -23,7 +23,7 @@ const DbModule = TypeOrmModule.forRoot({
 
 const DbSequelizeModule = SequelizeModule.forRoot({
   dialect: 'mysql',
-  host: 'localhost',
+  host: 'mysql',
   port: 3306,
   username: 'root',
   password: 'root',
