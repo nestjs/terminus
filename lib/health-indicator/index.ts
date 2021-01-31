@@ -3,6 +3,7 @@ export * from './health-indicator';
 
 /** Health Indicators */
 export * from './dns/dns.health';
+export * from './http/http.health';
 export * from './database/mongoose.health';
 export * from './database/typeorm.health';
 export * from './database/sequelize.health';

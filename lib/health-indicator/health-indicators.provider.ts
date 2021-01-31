@@ -1,8 +1,8 @@
-import { Type } from '@nestjs/common';
+import { Type, Provider } from '@nestjs/common';
 
 import {
   TypeOrmHealthIndicator,
-  DNSHealthIndicator,
+  HttpHealthIndicator,
   MongooseHealthIndicator,
   SequelizeHealthIndicator,
   DiskHealthIndicator,
@@ -11,17 +11,19 @@ import {
   HealthIndicator,
   GRPCHealthIndicator,
 } from '.';
+import { DNSHealthIndicator } from './dns';
 
 /**
  * All the health indicators terminus provides as array
  */
 export const HEALTH_INDICATORS: Type<HealthIndicator>[] = [
   TypeOrmHealthIndicator,
-  DNSHealthIndicator,
+  HttpHealthIndicator,
   MongooseHealthIndicator,
   SequelizeHealthIndicator,
   DiskHealthIndicator,
   MemoryHealthIndicator,
   MicroserviceHealthIndicator,
   GRPCHealthIndicator,
+  DNSHealthIndicator,
 ];
