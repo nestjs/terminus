@@ -20,7 +20,7 @@
     "@nestjs/platform-express": "7.5.4",
     "@nestjs/terminus": "7.0.1",
     "class-transformer": "0.3.2",
-    "class-validator": "0.12.2",
+    "class-validator": "0.13.1",
     "fastify": "3.11.0",
     "lodash": "4.17.20",
     "reflect-metadata": "0.1.13",
