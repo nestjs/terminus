@@ -1,3 +1,5 @@
+# [7.1.0-next.1](https://github.com/nestjs/terminus/compare/7.1.0-next.0...7.1.0-next.1) (2021-01-31)
+
 # [7.1.0-next.0](https://github.com/nestjs/terminus/compare/7.0.1...7.1.0-next.0) (2021-01-31)
 
 
