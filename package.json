@@ -50,7 +50,7 @@
     "@nestjs/sequelize": "0.2.0",
     "@nestjs/swagger": "4.7.12",
     "@nestjs/testing": "7.5.4",
-    "@nestjs/typeorm": "7.1.4",
+    "@nestjs/typeorm": "7.1.5",
     "@release-it/conventional-changelog": "2.0.0",
     "@types/deprecate": "1.1.0",
     "@types/express": "4.17.9",
