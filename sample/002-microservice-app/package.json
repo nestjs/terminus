@@ -15,12 +15,12 @@
     "e2e:watch": "jest --watch --config=e2e/jest-e2e.json"
   },
   "dependencies": {
-    "@nestjs/common": "7.6.7",
-    "@nestjs/core": "7.6.7",
-    "@nestjs/microservices": "7.6.7",
-    "@nestjs/platform-express": "7.6.7",
+    "@nestjs/common": "7.6.12",
+    "@nestjs/core": "7.6.12",
+    "@nestjs/microservices": "7.6.12",
+    "@nestjs/platform-express": "7.6.12",
     "@nestjs/terminus": "7.1.0",
-    "@nestjs/websockets": "7.6.7",
+    "@nestjs/websockets": "7.6.12",
     "class-transformer": "0.4.0",
     "class-validator": "0.13.1",
     "fastify": "3.11.0",
