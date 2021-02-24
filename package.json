@@ -36,8 +36,8 @@
     "deprecate": "^1.1.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "11.0.0",
-    "@commitlint/config-angular": "11.0.0",
+    "@commitlint/cli": "12.0.0",
+    "@commitlint/config-angular": "12.0.0",
     "@compodoc/compodoc": "1.1.11",
     "@godaddy/terminus": "4.6.0",
     "@grpc/proto-loader": "0.5.6",
