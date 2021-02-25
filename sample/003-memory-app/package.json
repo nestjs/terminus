@@ -24,7 +24,7 @@
     "fastify": "3.11.0",
     "lodash": "4.17.21",
     "reflect-metadata": "0.1.13",
-    "rxjs": "6.6.3"
+    "rxjs": "6.6.6"
   },
   "devDependencies": {
     "@types/jest": "26.0.20",
