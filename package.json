@@ -62,7 +62,7 @@
     "@typescript-eslint/parser": "4.15.2",
     "amqp-connection-manager": "3.2.2",
     "amqplib": "0.7.0",
-    "eslint": "7.20.0",
+    "eslint": "7.21.0",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-import": "2.22.1",
     "fastify": "3.11.0",
