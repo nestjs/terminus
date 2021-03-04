@@ -84,7 +84,7 @@
     "redis": "3.0.2",
     "reflect-metadata": "0.1.13",
     "release-it": "14.4.1",
-    "rxjs": "6.6.3",
+    "rxjs": "6.6.6",
     "rxjs-compat": "6.6.6",
     "sequelize": "5.22.3",
     "sequelize-typescript": "1.1.0",
