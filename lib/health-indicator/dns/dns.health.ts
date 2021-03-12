@@ -23,7 +23,7 @@ export class DNSHealthIndicator extends HealthIndicator {
     super();
     deprecate(
       'DNSHealthIndicator',
-      'Simply search and replace "DNSHealthIndicator" with "HttpHealthIndicator" in order to ugprade. DNSHealthIndicator will be removed in version 8.x.x',
+      'Simply search and replace "DNSHealthIndicator" with "HttpHealthIndicator" in order to upgrade. DNSHealthIndicator will be removed in version 8.x.x',
     );
   }
 
