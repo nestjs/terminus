@@ -54,7 +54,7 @@
     "@release-it/conventional-changelog": "2.0.1",
     "@types/deprecate": "1.1.0",
     "@types/express": "4.17.9",
-    "@types/jest": "26.0.20",
+    "@types/jest": "26.0.21",
     "@types/mongoose": "5.7.36",
     "@types/node": "14.14.34",
     "@types/sequelize": "4.28.9",
