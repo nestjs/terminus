@@ -8,10 +8,10 @@
     "prestart:prod": "tsc",
     "start:prod": "node dist/main.js",
     "build": "rm -rf dist && tsc -p tsconfig.json",
-    "test": "jest --config=jest.json",
+    "test": "jest",
     "test:watch": "jest --watch --config=jest.json",
     "test:coverage": "jest --config=jest.json --coverage --coverageDirectory=coverage",
-    "e2e": "jest --config=e2e/jest-e2e.json --forceExit",
+    "test:e2e": "echo 'No e2e tests implemented yet.'",
     "e2e:watch": "jest --watch --config=e2e/jest-e2e.json"
   },
   "dependencies": {
