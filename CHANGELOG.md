@@ -1,3 +1,20 @@
+## [7.1.1](https://github.com/nestjs/terminus/compare/7.1.0...7.1.1) (2021-03-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @nestjs/sequelize to v0.2.0 ([6e16abc](https://github.com/nestjs/terminus/commit/6e16abce549d4661816e796c8e4014ac6056a3d3))
+* **deps:** update dependency class-transformer to v0.4.0 ([4a0f17a](https://github.com/nestjs/terminus/commit/4a0f17ab4d426daecb9914b91f49132fa93ab758))
+* **deps:** update dependency class-validator to v0.13.1 ([79df750](https://github.com/nestjs/terminus/commit/79df750137ccaefd3507d9a00db8e5694322f524))
+* **deps:** update dependency fastify to v3.13.0 ([b3d5425](https://github.com/nestjs/terminus/commit/b3d5425fd026cb311c340052d55574acd8dde161))
+* **deps:** update dependency grpc to v1.24.5 ([1b968f2](https://github.com/nestjs/terminus/commit/1b968f202b9ba09218f44868f88242e6d06af97f))
+* **deps:** update dependency lodash to v4.17.21 ([94df5e4](https://github.com/nestjs/terminus/commit/94df5e4b3ec298b2388633452096283c604c75c9))
+* **deps:** update dependency rxjs to v6.6.6 ([dee27f0](https://github.com/nestjs/terminus/commit/dee27f0b4a48d76f99e54fe8de22fe5592a1a868))
+* **deps:** update dependency sequelize to v5.22.3 ([157ee24](https://github.com/nestjs/terminus/commit/157ee245d8fcb0196557002b3c83c7664e19fa12))
+* **deps:** update dependency typeorm to v0.2.31 ([ad1db55](https://github.com/nestjs/terminus/commit/ad1db5520f5c11bf749568d6aaa344eb79ce1622))
+* **deps:** update nest monorepo to v7.6.12 ([9c77d92](https://github.com/nestjs/terminus/commit/9c77d928daddf8cdddadde363e7422b0f342ea0e))
+* **deps:** update nest monorepo to v7.6.13 ([2af6a93](https://github.com/nestjs/terminus/commit/2af6a938321dac8c28248dc7cb0c5a3b54b0a48d))
+
 # [7.1.0](https://github.com/nestjs/terminus/compare/7.1.0-next.1...7.1.0) (2021-01-31)
 
 # [7.1.0-next.1](https://github.com/nestjs/terminus/compare/7.1.0-next.0...7.1.0-next.1) (2021-01-31)
