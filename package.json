@@ -85,7 +85,7 @@
     "reflect-metadata": "0.1.13",
     "release-it": "14.5.0",
     "rxjs": "6.6.6",
-    "rxjs-compat": "6.6.6",
+    "rxjs-compat": "6.6.7",
     "sequelize": "5.22.3",
     "sequelize-typescript": "1.1.0",
     "sort-package-json": "1.49.0",
