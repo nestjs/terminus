@@ -10,8 +10,9 @@
     "start": "ts-node src/main.ts",
     "prestart:prod": "tsc",
     "start:prod": "node dist/main.js",
-    "test": "jest --config=jest.json",
+    "test": "jest",
     "test:coverage": "jest --config=jest.json --coverage --coverageDirectory=coverage",
+    "test:e2e": "echo 'No e2e tests implemented yet.'",
     "test:watch": "jest --watch --config=jest.json"
   },
   "dependencies": {

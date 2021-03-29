@@ -18,12 +18,12 @@ describe('HealthModule (e2e)', () => {
   it('/health (GET)', () => {
     return request(app.getHttpServer())
       .get('/health')
-      .expect(503)
+      .expect(200)
       .expect({
-        status: 'error',
-        error: {
-          dog: { status: 'down', badboys: 1 },
-        },
+        status: 'ok',
+        info: { dog: { status: 'up', badboys: 0 } },
+        error: {},
+        details: { dog: { status: 'up', badboys: 0 } }
       });
   });
 });
