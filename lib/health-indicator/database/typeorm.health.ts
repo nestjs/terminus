@@ -103,6 +103,9 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
       case 'oracle':
         check = connection.query('SELECT 1 FROM DUAL');
         break;
+      case 'sap':
+        check = connection.query('SELECT now() FROM dummy');
+        break;
       default:
         check = connection.query('SELECT 1');
         break;
