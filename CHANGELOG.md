@@ -1,3 +1,15 @@
+## [7.1.2](https://github.com/nestjs/terminus/compare/7.1.1...7.1.2) (2021-04-04)
+
+
+### Bug Fixes
+
+* TypeORM Health Check for SAP HANA ([dc32733](https://github.com/nestjs/terminus/commit/dc32733399a8cd1e902b675e1a273ba31eb88a85))
+* **deps:** update dependency @godaddy/terminus to v4.7.1 ([88751c4](https://github.com/nestjs/terminus/commit/88751c46b7b15f230ba11e3caee5d9efbb11107f))
+* **deps:** update dependency @nestjs/terminus to v7.1.1 ([58d337f](https://github.com/nestjs/terminus/commit/58d337fd71551a648dc5d84e5f53a5cd8cae0192))
+* **deps:** update dependency sequelize to v5.22.4 ([560aaca](https://github.com/nestjs/terminus/commit/560aaca4e9eb54de75effa3dca365eab100e0370))
+* **deps:** update dependency typeorm to v0.2.32 ([eb55a75](https://github.com/nestjs/terminus/commit/eb55a752aa7557f2aa81fe2658b8e209cceb7a00))
+* **deps:** update nest monorepo to v7.6.15 ([c6e8464](https://github.com/nestjs/terminus/commit/c6e8464a07d557f8239e575039dd42e8d911827c))
+
 ## [7.1.1](https://github.com/nestjs/terminus/compare/7.1.0...7.1.1) (2021-03-27)
 
 
