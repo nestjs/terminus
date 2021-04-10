@@ -20,7 +20,7 @@
     "@nestjs/platform-express": "7.6.15",
     "@nestjs/terminus": "7.1.1",
     "@nestjs/testing": "7.6.15",
-    "fastify": "3.13.0",
+    "fastify": "3.14.2",
     "reflect-metadata": "0.1.13",
     "rxjs": "6.6.7"
   },
