@@ -45,7 +45,7 @@
     "@nestjs/common": "7.6.15",
     "@nestjs/core": "7.6.15",
     "@nestjs/microservices": "7.6.15",
-    "@nestjs/mongoose": "7.0.2",
+    "@nestjs/mongoose": "7.2.4",
     "@nestjs/platform-express": "7.6.15",
     "@nestjs/platform-fastify": "7.6.15",
     "@nestjs/sequelize": "0.2.0",
