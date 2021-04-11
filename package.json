@@ -10,7 +10,7 @@
   "author": "Livio Brunner",
   "main": "dist/index.js",
   "scripts": {
-    "build": "gulp build",
+    "build": "gulp build && gulp move:protos",
     "build:all": "gulp build:all",
     "build:samples": "gulp install:samples && npm run build && gulp build:samples && gulp test:samples && gulp test:e2e:samples",
     "clean": "gulp clean",
