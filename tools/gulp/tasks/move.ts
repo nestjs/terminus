@@ -9,7 +9,7 @@ import { debug } from 'gulp-debug';
  */
 function move() {
   const samplesDirs = getDirs(samplePath);
-  const distFiles = src(['node_modules/@nestjs/**/*']);
+  const distFiles = src(['./dist/**/*']);
 
   return samplesDirs.reduce(
     (distFile, dir) => distFile.pipe(dest(join(dir, '/node_modules/@nestjs/terminus'))),
