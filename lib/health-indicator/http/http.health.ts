@@ -21,18 +21,6 @@ export class HttpHealthIndicator extends HealthIndicator {
   }
 
   /**
-   * Executes a request with the given parameters
-   * @param url The url of the health check
-   * @param options The optional axios options of the request
-   */
-  private async pingDNS(
-    url: string,
-    options: AxiosRequestConfig,
-  ): Promise<AxiosResponse<any> | any> {
-    return await this.httpService.request({ url, ...options }).toPromise();
-  }
-
-  /**
    * Prepares and throw a HealthCheckError
    * @param key The key which will be used for the result object
    * @param error The thrown error
@@ -72,12 +60,20 @@ export class HttpHealthIndicator extends HealthIndicator {
   async pingCheck(
     key: string,
     url: string,
-    options: AxiosRequestConfig = {},
+    {
+      httpClient,
+      ...options
+    }: AxiosRequestConfig & { httpClient?: HttpService } = {},
   ): Promise<HealthIndicatorResult> {
     let isHealthy = false;
+    // In case the user has a preconfigured HttpService (see `HttpModule.register`)
+    // we just let him/her pass in this HttpService so that he/she does not need to
+    // reconfigure it.
+    // https://github.com/nestjs/terminus/issues/1151
+    const httpService = httpClient || this.httpService;
 
     try {
-      await this.pingDNS(url, options);
+      await httpService.request({ url, ...options }).toPromise();
       isHealthy = true;
     } catch (err) {
       this.generateHttpError(key, err);
@@ -90,10 +86,15 @@ export class HttpHealthIndicator extends HealthIndicator {
     key: string,
     url: URL | string,
     callback: (response: AxiosResponse<T>) => boolean | Promise<boolean>,
-    options: AxiosRequestConfig = {},
+    {
+      httpClient,
+      ...options
+    }: AxiosRequestConfig & { httpClient?: HttpService } = {},
   ): Promise<HealthIndicatorResult> {
+    const httpService = httpClient || this.httpService;
+
     try {
-      const response = await this.httpService
+      const response = await httpService
         .request({ url: url.toString(), ...options })
         .toPromise();
 

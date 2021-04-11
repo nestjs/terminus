@@ -41,7 +41,10 @@ class ApplicationModule {
     useMongoose: boolean,
     useSequelize: boolean,
   ): DynamicModule {
-    const imports = [TerminusModule.forRootAsync(options)];
+    const imports = [
+      TerminusModule.forRootAsync(options),
+      ...(options.imports || []),
+    ];
 
     if (useDb) {
       imports.push(DbModule);
