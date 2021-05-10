@@ -81,7 +81,7 @@
     "mongoose": "5.10.9",
     "mysql": "2.18.1",
     "mysql2": "2.2.5",
-    "nats": "2.0.2",
+    "nats": "2.0.4",
     "portfinder": "1.0.28",
     "prettier": "2.3.0",
     "redis": "3.1.2",
