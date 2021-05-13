@@ -1,6 +1,6 @@
 {
   "name": "@nestjs/terminus",
-  "version": "7.1.2",
+  "version": "7.2.0-next.0",
   "description": "Nest - modern, fast, powerful node.js web framework (@terminus)",
   "repository": {
     "type": "git",
@@ -10,7 +10,7 @@
   "author": "Livio Brunner",
   "main": "dist/index.js",
   "scripts": {
-    "build": "gulp",
+    "build": "gulp build && gulp move:protos",
     "build:all": "gulp build:all",
     "build:samples": "gulp install:samples && npm run build && gulp build:samples && gulp test:samples && gulp test:e2e:samples",
     "clean": "gulp clean",
@@ -56,8 +56,8 @@
     "@types/deprecate": "1.1.0",
     "@types/express": "4.17.11",
     "@types/jest": "26.0.23",
-    "@types/mongoose": "5.7.36",
-    "@types/node": "14.14.45",
+    "@types/mongoose": "5.10.5",
+    "@types/node": "15.0.3",
     "@types/sequelize": "4.28.9",
     "@typescript-eslint/eslint-plugin": "4.23.0",
     "@typescript-eslint/parser": "4.23.0",
@@ -78,7 +78,7 @@
     "husky": "6.0.0",
     "jest": "26.6.3",
     "lint-staged": "11.0.0",
-    "mongoose": "5.10.9",
+    "mongoose": "5.12.8",
     "mysql": "2.18.1",
     "mysql2": "2.2.5",
     "nats": "2.0.4",

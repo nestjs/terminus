@@ -1,15 +1,10 @@
-import { dest, src, task, series } from 'gulp';
-import { join } from 'path';
-import { distPath } from '../config';
+import { dest, task, series } from 'gulp';
+import { distPath, tsconfig } from '../config';
 import * as ts from 'gulp-typescript';
 
-/**
- * Moves the compiled nest files into the `samples/*` dirs.
- */
 function build() {
-  const terminus = ts.createProject(join(__dirname, 'tsconfig.json'));
-
-  return src().pipe(terminus()).pipe(dest(distPath));
+  const terminus = ts.createProject(tsconfig);
+  return terminus.src().pipe(terminus()).pipe(dest(distPath));
 }
 
 task('build', build);
