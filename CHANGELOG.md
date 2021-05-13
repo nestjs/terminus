@@ -1,3 +1,23 @@
+# [7.2.0](https://github.com/nestjs/terminus/compare/7.1.2...7.2.0) (2021-05-13)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @grpc/proto-loader to v0.6.0 ([e00f738](https://github.com/nestjs/terminus/commit/e00f73887e48300f6d4c0f7b6ebb4f94160bbcf5))
+* **deps:** update dependency @grpc/proto-loader to v0.6.1 ([19165b9](https://github.com/nestjs/terminus/commit/19165b9db2e7a6b76c4f0774477f26a13c43b22a))
+* **deps:** update dependency @nestjs/mongoose to v7.2.4 ([1d0d26e](https://github.com/nestjs/terminus/commit/1d0d26e6cc0a8dc24466ffcf799158b65a7f049e))
+* **deps:** update dependency @nestjs/terminus to v7.1.2 ([9d0c98e](https://github.com/nestjs/terminus/commit/9d0c98e47eef066a55a1a35c6c1fda60a359364f))
+* **deps:** update dependency fastify to v3.14.2 ([710055b](https://github.com/nestjs/terminus/commit/710055bbc40e996dce9fe9cf34523b6186184239))
+* **deps:** update dependency fastify to v3.15.0 ([61940eb](https://github.com/nestjs/terminus/commit/61940eb72be4d14ff34b023cd2c2084b5b098243))
+* **deps:** update dependency redis to v3.1.0 ([7e83581](https://github.com/nestjs/terminus/commit/7e835818edcbebb3f5813ee110d0ecdb776906d5))
+* **deps:** update dependency redis to v3.1.2 ([7ca9ed9](https://github.com/nestjs/terminus/commit/7ca9ed94c2b1ef9551e10ea882f09683ba1f3c2a))
+* **deps:** update dependency rxjs to v6.6.7 ([de4da85](https://github.com/nestjs/terminus/commit/de4da85b31f152eb198e7933772a8829984b3bb3))
+
+
+### Features
+
+* **health:** add `httpClient` as option ([74d98db](https://github.com/nestjs/terminus/commit/74d98dbda5fc098e4a5d9d695257bcd71a9bab6d)), closes [#1151](https://github.com/nestjs/terminus/issues/1151)
+
 # [7.2.0-next.0](https://github.com/nestjs/terminus/compare/7.1.2...7.2.0-next.0) (2021-04-11)
 
 
