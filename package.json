@@ -40,7 +40,7 @@
     "@commitlint/cli": "12.1.4",
     "@commitlint/config-angular": "12.1.4",
     "@compodoc/compodoc": "1.1.11",
-    "@godaddy/terminus": "4.7.2",
+    "@godaddy/terminus": "4.8.0",
     "@grpc/proto-loader": "0.6.2",
     "@nestjs/common": "7.6.15",
     "@nestjs/core": "7.6.15",
