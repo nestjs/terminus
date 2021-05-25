@@ -54,7 +54,7 @@
     "@nestjs/typeorm": "7.1.5",
     "@release-it/conventional-changelog": "2.0.1",
     "@types/deprecate": "1.1.0",
-    "@types/express": "4.17.11",
+    "@types/express": "4.17.12",
     "@types/jest": "26.0.23",
     "@types/mongoose": "5.10.5",
     "@types/node": "15.3.1",
