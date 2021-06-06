@@ -15,7 +15,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@godaddy/terminus": "4.8.0",
+    "@godaddy/terminus": "4.9.0",
     "@nestjs/common": "7.6.17",
     "@nestjs/core": "7.6.17",
     "@nestjs/platform-express": "7.6.17",
