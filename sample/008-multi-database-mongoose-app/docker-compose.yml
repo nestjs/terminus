@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  db1:
+    image: mongo:latest
+    environment:
+      - MONGODB_DATABASE="test1"
+    ports:
+      - 27017:27017
+  db2:
+    image: mongo:latest
+    environment:
+      - MONGODB_DATABASE="test2"
+    ports:
+      - 27018:27017
