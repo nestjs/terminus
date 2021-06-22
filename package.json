@@ -33,7 +33,7 @@
     ]
   },
   "dependencies": {
-    "check-disk-space": "2.1.0",
+    "check-disk-space": "3.0.1",
     "deprecate": "^1.1.1"
   },
   "devDependencies": {
