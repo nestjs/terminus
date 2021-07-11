@@ -31,7 +31,7 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
   /**
    * The NestJS logger
    */
-  private readonly logger = new Logger(TerminusBootstrapService.name, true);
+  private readonly logger = new Logger(TerminusBootstrapService.name);
 
   constructor(
     @Inject(TERMINUS_MODULE_OPTIONS)

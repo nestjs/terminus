@@ -3,9 +3,9 @@ import {
   Global,
   Module,
   Provider,
-  HttpModule,
   Type,
 } from '@nestjs/common';
+import { HttpModule } from '@nestjs/axios';
 import {
   TerminusModuleOptions,
   TerminusModuleAsyncOptions,

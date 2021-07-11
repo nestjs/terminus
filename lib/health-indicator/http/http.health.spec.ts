@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { HealthCheckError } from '../../health-check/health-check.error';
-import { HttpService } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
 import { EMPTY, of, throwError } from 'rxjs';
 import { AxiosResponse, AxiosRequestConfig, AxiosError } from 'axios';
 import { HttpHealthIndicator } from './http.health';
