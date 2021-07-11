@@ -102,7 +102,7 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
     return this.options.endpoints.reduce((healthChecks, endpoint) => {
       const url = this.validateEndpointUrl(endpoint);
       healthChecks[url] = async () =>
-        this.healthCheckExecutor.execute(endpoint.healthIndicators);
+        this.healthCheckExecutor. executeDeprecated(endpoint.healthIndicators);
       return healthChecks;
     }, {} as any);
   }
