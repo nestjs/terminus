@@ -7,7 +7,7 @@ import {
 import { TERMINUS_MODULE_OPTIONS, TERMINUS_LIB } from './terminus.constants';
 import { HttpAdapterHost, ApplicationConfig } from '@nestjs/core';
 import { Server } from 'http';
-import { validatePath } from '@nestjs/common/utils/shared.utils';
+import { addLeadingSlash } from '@nestjs/common/utils/shared.utils';
 import { HealthCheckExecutor } from './health-check/health-check-executor.service';
 import {
   TerminusModuleOptions,
@@ -85,10 +85,10 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
         : this.options.useGlobalPrefix &&
           endpoint.useGlobalPrefix === undefined);
 
-    let url = validatePath(endpoint.url);
+    let url = addLeadingSlash(endpoint.url);
 
     if (shouldUseGlobalPrefix) {
-      url = validatePath(prefix) + url;
+      url = addLeadingSlash(prefix) + url;
     }
 
     return url;
@@ -102,7 +102,7 @@ export class TerminusBootstrapService implements OnApplicationBootstrap {
     return this.options.endpoints.reduce((healthChecks, endpoint) => {
       const url = this.validateEndpointUrl(endpoint);
       healthChecks[url] = async () =>
-        this.healthCheckExecutor.executeDeprecated(endpoint.healthIndicators);
+        this.healthCheckExecutor.execute(endpoint.healthIndicators);
       return healthChecks;
     }, {} as any);
   }

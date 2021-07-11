@@ -4,7 +4,8 @@ import {
 } from './terminus-bootstrap.service';
 import { HttpAdapterHost, ApplicationConfig } from '@nestjs/core';
 import { TerminusEndpoint, TerminusModuleOptions } from './';
-import { HealthCheckError, Terminus } from '@godaddy/terminus';
+import { HealthCheckError } from './health-check';
+import { Terminus } from '@godaddy/terminus';
 import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
 import { TERMINUS_MODULE_OPTIONS, TERMINUS_LIB } from './terminus.constants';
 import { HealthCheckExecutor } from './health-check/health-check-executor.service';

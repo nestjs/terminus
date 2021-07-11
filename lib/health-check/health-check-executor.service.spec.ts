@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing';
 import { HealthCheckExecutor } from './health-check-executor.service';
 import { HealthIndicatorResult } from '../health-indicator';
 import { HealthCheckResult } from './health-check-result.interface';
-import { HealthCheckError } from '@godaddy/terminus';
+import { HealthCheckError } from './health-check.error';
 
 const healthyCheck = async (): Promise<HealthIndicatorResult> => {
   return {
@@ -101,7 +101,7 @@ describe('HealthCheckExecutorService', () => {
 
   describe('executeDeprecated', () => {
     it('should return a result object without errors', async () => {
-      const result = await healthCheckExecutor.executeDeprecated([
+      const result = await healthCheckExecutor.execute([
         () => healthyCheck(),
       ]);
       expect(result).toEqual<HealthIndicatorResult>({
@@ -113,7 +113,7 @@ describe('HealthCheckExecutorService', () => {
 
     it('should return a result object with errors', async () => {
       try {
-        await healthCheckExecutor.executeDeprecated([() => unhealthyCheck()]);
+        await healthCheckExecutor.execute([() => unhealthyCheck()]);
       } catch (error) {
         expect(error.causes).toEqual<HealthIndicatorResult>({
           unhealthy: {
@@ -125,7 +125,7 @@ describe('HealthCheckExecutorService', () => {
 
     it('should return a result object with mixed errors', async () => {
       try {
-        await healthCheckExecutor.executeDeprecated([
+        await healthCheckExecutor.execute([
           () => healthyCheck(),
           () => unhealthyCheck(),
         ]);

@@ -75,7 +75,7 @@ export class HttpHealthIndicator extends HealthIndicator {
     const httpService = httpClient || this.httpService;
 
     try {
-      await httpService.request({ url, ...options }).toPromise();
+      await lastValueFrom(httpService.request({ url, ...options }));
       isHealthy = true;
     } catch (err) {
       this.generateHttpError(key, err);
