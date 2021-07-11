@@ -2,8 +2,7 @@ import { Test } from '@nestjs/testing';
 import { HealthCheckExecutor } from './health-check-executor.service';
 import { HealthIndicatorResult } from '../health-indicator';
 import { HealthCheckResult } from './health-check-result.interface';
-import { HealthCheckError } from './health-check.error'gs
-;
+import { HealthCheckError } from './health-check.error';
 
 const healthyCheck = async (): Promise<HealthIndicatorResult> => {
   return {
