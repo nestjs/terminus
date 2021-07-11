@@ -2,7 +2,8 @@ import { Test } from '@nestjs/testing';
 import { HealthCheckExecutor } from './health-check-executor.service';
 import { HealthIndicatorResult } from '../health-indicator';
 import { HealthCheckResult } from './health-check-result.interface';
-import { HealthCheckError } from './health-check.error';
+import { HealthCheckError } from './health-check.error'gs
+;
 
 const healthyCheck = async (): Promise<HealthIndicatorResult> => {
   return {
@@ -33,7 +34,7 @@ describe('HealthCheckExecutorService', () => {
 
   describe('execute', () => {
     it('should return a result object without errors', async () => {
-      const result = await healthCheckExecutor.execute([() => healthyCheck()]);
+      const result = await healthCheckExecutor.executeDeprecated([() => healthyCheck()]);
       expect(result).toEqual<HealthCheckResult>({
         status: 'ok',
         info: {
@@ -51,7 +52,7 @@ describe('HealthCheckExecutorService', () => {
     });
 
     it('should return a result object with errors', async () => {
-      const result = await healthCheckExecutor.execute([
+      const result = await healthCheckExecutor.executeDeprecated([
         () => unhealthyCheck(),
       ]);
       expect(result).toEqual<HealthCheckResult>({
@@ -71,7 +72,7 @@ describe('HealthCheckExecutorService', () => {
     });
 
     it('should return a result object without errors and with errors', async () => {
-      const result = await healthCheckExecutor.execute([
+      const result = await healthCheckExecutor.executeDeprecated([
         () => unhealthyCheck(),
         () => healthyCheck(),
       ]);
@@ -101,7 +102,7 @@ describe('HealthCheckExecutorService', () => {
 
   describe('executeDeprecated', () => {
     it('should return a result object without errors', async () => {
-      const result = await healthCheckExecutor.execute([
+      const result = await healthCheckExecutor.executeDeprecated([
         () => healthyCheck(),
       ]);
       expect(result).toEqual<HealthIndicatorResult>({
@@ -113,7 +114,7 @@ describe('HealthCheckExecutorService', () => {
 
     it('should return a result object with errors', async () => {
       try {
-        await healthCheckExecutor.execute([() => unhealthyCheck()]);
+        await healthCheckExecutor.executeDeprecated([() => unhealthyCheck()]);
       } catch (error) {
         expect(error.causes).toEqual<HealthIndicatorResult>({
           unhealthy: {
@@ -125,7 +126,7 @@ describe('HealthCheckExecutorService', () => {
 
     it('should return a result object with mixed errors', async () => {
       try {
-        await healthCheckExecutor.execute([
+        await healthCheckExecutor.executeDeprecated([
           () => healthyCheck(),
           () => unhealthyCheck(),
         ]);
