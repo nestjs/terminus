@@ -1,4 +1,5 @@
-import { DynamicModule, Module, HttpModule } from '@nestjs/common';
+import { DynamicModule, Module } from '@nestjs/common';
+import { HttpModule } from '@nestjs/axios';
 import {
   TerminusModuleOptions,
   TerminusModuleAsyncOptions,
