@@ -1,7 +1,9 @@
-import { Injectable, HttpService } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
 import { AxiosResponse, AxiosRequestConfig, AxiosError } from 'axios';
 import { HealthIndicator, HealthIndicatorResult } from '..';
 import { HealthCheckError } from '../../health-check/health-check.error';
+import { lastValueFrom } from 'rxjs';
 
 /**
  * The HTTPHealthIndicator contains health indicators
@@ -94,11 +96,11 @@ export class HttpHealthIndicator extends HealthIndicator {
     const httpService = httpClient || this.httpService;
 
     try {
-      const response = await httpService
+      const response = lastValueFrom(httpService
         .request({ url: url.toString(), ...options })
-        .toPromise();
+      );
 
-      const isHealthy = await callback(response);
+      const isHealthy = await callback(await response);
 
       if (!isHealthy) {
         throw new HealthCheckError(

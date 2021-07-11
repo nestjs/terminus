@@ -1,8 +1,10 @@
-import { Injectable, HttpService, Scope } from '@nestjs/common';
+import { Injectable, Scope } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
 import { AxiosResponse, AxiosRequestConfig, AxiosError } from 'axios';
 import { HealthIndicator, HealthIndicatorResult } from '../';
 import { HealthCheckError } from '../../health-check/health-check.error';
 import * as deprecate from 'deprecate';
+import { lastValueFrom } from 'rxjs';
 
 /**
  * The DNSHealthIndicator contains health indicators
@@ -100,11 +102,12 @@ export class DNSHealthIndicator extends HealthIndicator {
     options: AxiosRequestConfig = {},
   ): Promise<HealthIndicatorResult> {
     try {
-      const response = await this.httpService
-        .request({ url: url.toString(), ...options })
-        .toPromise();
+      const response = lastValueFrom(
+        this.httpService
+            .request({ url: url.toString(), ...options }),
+      );
 
-      const isHealthy = await callback(response);
+      const isHealthy = await callback(await response);
 
       if (!isHealthy) {
         throw new HealthCheckError(
