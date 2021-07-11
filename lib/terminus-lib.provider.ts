@@ -1,5 +1,4 @@
 import { TERMINUS_LIB } from './terminus.constants';
-import { Provider } from '@nestjs/common';
 import { checkPackages } from './utils';
 
 /**
