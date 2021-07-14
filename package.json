@@ -39,7 +39,7 @@
   "devDependencies": {
     "@commitlint/cli": "12.1.4",
     "@commitlint/config-angular": "12.1.4",
-    "@compodoc/compodoc": "1.1.13",
+    "@compodoc/compodoc": "1.1.14",
     "@godaddy/terminus": "4.9.0",
     "@grpc/proto-loader": "0.6.2",
     "@nestjs/common": "7.6.17",
