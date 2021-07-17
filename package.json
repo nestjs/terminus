@@ -65,7 +65,7 @@
     "amqplib": "0.8.0",
     "cli-color": "2.0.0",
     "delete-empty": "3.0.0",
-    "eslint": "7.30.0",
+    "eslint": "7.31.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-import": "2.23.4",
     "fastify": "3.17.0",
