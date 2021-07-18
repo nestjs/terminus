@@ -82,7 +82,7 @@ export class DiskHealthIndicator extends HealthIndicator {
     if (this.isOptionThresholdPercent(options)) {
       isHealthy = options.thresholdPercent >= used / size;
     } else {
-      isHealthy = options.threshold >= size - free;
+      isHealthy = options.threshold >= used;
     }
 
     if (!isHealthy) {
