@@ -1,6 +1,6 @@
 import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
-import * as checkDiskSpace from 'check-disk-space';
+import checkDiskSpace from 'check-disk-space';
 
 import { bootstrapTestingModule, DynamicHealthEndpointFn } from '../helper';
 
