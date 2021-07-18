@@ -1,12 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { HttpService } from '@nestjs/axios';
-import { AxiosResponse, AxiosRequestConfig, AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { HealthIndicator, HealthIndicatorResult } from '..';
 import { HealthCheckError } from '../../health-check/health-check.error';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 import { ModuleRef } from '@nestjs/core';
 import { checkPackages } from '../../utils';
 import type * as NestJSAxios from '@nestjs/axios';
+import { AxiosRequestConfig, AxiosResponse } from './axios.interfaces';
+
+
+interface HttpClientLike {
+  request<T = any>(config: any): Observable<AxiosResponse<T>>;
+}
 
 /**
  * The HTTPHealthIndicator contains health indicators
@@ -81,7 +86,7 @@ export class HttpHealthIndicator extends HealthIndicator {
     {
       httpClient,
       ...options
-    }: AxiosRequestConfig & { httpClient?: NestJSAxios.HttpService } = {},
+    }: AxiosRequestConfig & { httpClient?: HttpClientLike } = {},
   ): Promise<HealthIndicatorResult> {
     let isHealthy = false;
     // In case the user has a preconfigured HttpService (see `HttpModule.register`)
@@ -91,7 +96,7 @@ export class HttpHealthIndicator extends HealthIndicator {
     const httpService = httpClient || this.httpService;
 
     try {
-      await httpService.request({ url, ...options }).toPromise();
+      await lastValueFrom(httpService.request({ url, ...options }));
       isHealthy = true;
     } catch (err) {
       this.generateHttpError(key, err);
@@ -107,16 +112,16 @@ export class HttpHealthIndicator extends HealthIndicator {
     {
       httpClient,
       ...options
-    }: AxiosRequestConfig & { httpClient?: NestJSAxios.HttpService } = {},
+    }: AxiosRequestConfig & { httpClient?: HttpClientLike } = {},
   ): Promise<HealthIndicatorResult> {
     const httpService = httpClient || this.httpService;
 
     try {
-      const response = lastValueFrom(
+      const response = await lastValueFrom(
         httpService.request({ url: url.toString(), ...options }),
       );
 
-      const isHealthy = await callback(await response);
+      const isHealthy = await callback(response);
 
       if (!isHealthy) {
         throw new HealthCheckError(
