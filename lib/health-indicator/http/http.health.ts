@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Scope } from '@nestjs/common';
 import { AxiosError } from 'axios';
 import { HealthIndicator, HealthIndicatorResult } from '..';
 import { HealthCheckError } from '../../health-check/health-check.error';
@@ -7,7 +7,6 @@ import { ModuleRef } from '@nestjs/core';
 import { checkPackages } from '../../utils';
 import type * as NestJSAxios from '@nestjs/axios';
 import { AxiosRequestConfig, AxiosResponse } from './axios.interfaces';
-
 
 interface HttpClientLike {
   request<T = any>(config: any): Observable<AxiosResponse<T>>;
@@ -20,7 +19,9 @@ interface HttpClientLike {
  * @publicApi
  * @module TerminusModule
  */
-@Injectable()
+@Injectable({
+  scope: Scope.TRANSIENT,
+})
 export class HttpHealthIndicator extends HealthIndicator {
   private httpService!: NestJSAxios.HttpService;
   /**
