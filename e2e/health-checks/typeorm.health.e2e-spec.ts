@@ -1,79 +1,52 @@
+import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
-import { TypeOrmHealthIndicator, TerminusModuleOptions } from '../../lib';
+import { bootstrapTestingModule, DynamicHealthEndpointFn } from '../helper';
 
-import Axios from 'axios';
-import { bootstrapModule } from '../helper/bootstrap-module';
-
-describe('TypeOrm Database Health', () => {
+describe('TypeOrmHealthIndicator', () => {
   let app: INestApplication;
-  let port: number;
+  let setHealthEndpoint: DynamicHealthEndpointFn;
 
-  const getTerminusOptions = (
-    db: TypeOrmHealthIndicator,
-  ): TerminusModuleOptions => ({
-    endpoints: [
-      {
-        url: '/health',
-        healthIndicators: [async () => db.pingCheck('typeorm')],
-      },
-    ],
-  });
+  beforeEach(
+    () =>
+      (setHealthEndpoint =
+        bootstrapTestingModule().withTypeOrm().setHealthEndpoint),
+  );
 
-  it('should check if the typeorm is available', async () => {
-    [app, port] = await bootstrapModule(
-      {
-        inject: [TypeOrmHealthIndicator],
-        useFactory: getTerminusOptions,
-      },
-      true,
-      false,
-    );
-
-    const info = { typeorm: { status: 'up' } };
-    const response = await Axios.get(`http://0.0.0.0:${port}/health`);
-    expect(response.status).toBe(200);
-    expect(response.data).toEqual({
-      status: 'ok',
-      info,
-      details: info,
+  describe('#pingCheck', () => {
+    it('should check if the typeorm is available', async () => {
+      app = await setHealthEndpoint(({ healthCheck, typeorm }) =>
+        healthCheck.check([async () => typeorm.pingCheck('typeorm')]),
+      ).start();
+      const details = { typeorm: { status: 'up' } };
+      return request(app.getHttpServer()).get('/health').expect(200).expect({
+        status: 'ok',
+        info: details,
+        error: {},
+        details,
+      });
     });
-  });
 
-  it('should throw an error if runs into timeout error', async () => {
-    [app, port] = await bootstrapModule(
-      {
-        inject: [TypeOrmHealthIndicator],
-        useFactory: (db: TypeOrmHealthIndicator): TerminusModuleOptions => ({
-          endpoints: [
-            {
-              url: '/health',
-              healthIndicators: [
-                async () => db.pingCheck('typeorm', { timeout: 1 }),
-              ],
-            },
-          ],
-        }),
-      },
-      true,
-      false,
-    );
+    it('should throw an error if runs into timeout error', async () => {
+      app = await setHealthEndpoint(({ healthCheck, typeorm }) =>
+        healthCheck.check([
+          async () => typeorm.pingCheck('typeorm', { timeout: 1 }),
+        ]),
+      ).start();
 
-    const details = {
-      typeorm: {
-        status: 'down',
-        message: expect.any(String),
-      },
-    };
-    try {
-      await Axios.get(`http://0.0.0.0:${port}/health`, {});
-    } catch (error) {
-      expect(error.response.status).toBe(503);
-      expect(error.response.data).toEqual({
+      const details = {
+        typeorm: {
+          status: 'down',
+          message: 'timeout of 1ms exceeded',
+        },
+      };
+
+      return request(app.getHttpServer()).get('/health').expect(503).expect({
         status: 'error',
+        info: {},
         error: details,
         details,
       });
-    }
+    });
   });
 
   afterEach(async () => await app.close());

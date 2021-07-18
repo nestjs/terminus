@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { isNil } from '@nestjs/common/utils/shared.utils';
-import * as checkDiskSpace from 'check-disk-space';
+import checkDiskSpace from 'check-disk-space';
 
 import { HealthIndicator, HealthIndicatorResult } from '../';
 import { CHECKDISKSPACE_LIB } from '../../terminus.constants';
@@ -82,7 +82,7 @@ export class DiskHealthIndicator extends HealthIndicator {
     if (this.isOptionThresholdPercent(options)) {
       isHealthy = options.thresholdPercent >= used / size;
     } else {
-      isHealthy = options.threshold >= size - free;
+      isHealthy = options.threshold >= used;
     }
 
     if (!isHealthy) {

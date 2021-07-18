@@ -9,3 +9,13 @@ documentation
 sample
 .github
 e2e
+tools
+jest.json
+renovate.json
+LICENSE
+Gulpfile.js
+Dockerfile
+CONTRIBUTING.md
+.release-it.json
+.commitlintrc.json
+.eslintignore

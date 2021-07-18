@@ -1,79 +1,30 @@
+import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
+import { bootstrapTestingModule, DynamicHealthEndpointFn } from '../helper';
 
-import Axios from 'axios';
-import { MongooseHealthIndicator, TerminusModuleOptions } from '../../lib';
-import { bootstrapModule } from '../helper/bootstrap-module';
-
-describe('Mongoose Database Health', () => {
+describe('MongooseHealthIndicator', () => {
   let app: INestApplication;
-  let port: number;
+  let setHealthEndpoint: DynamicHealthEndpointFn;
 
-  const getTerminusOptions = (
-    db: MongooseHealthIndicator,
-  ): TerminusModuleOptions => ({
-    endpoints: [
-      {
-        url: '/health',
-        healthIndicators: [async () => db.pingCheck('mongo')],
-      },
-    ],
-  });
+  beforeEach(
+    () =>
+      (setHealthEndpoint =
+        bootstrapTestingModule().withMongoose().setHealthEndpoint),
+  );
 
-  it('should check if the mongoose is available', async () => {
-    [app, port] = await bootstrapModule(
-      {
-        inject: [MongooseHealthIndicator],
-        useFactory: getTerminusOptions,
-      },
-      false,
-      true,
-    );
-
-    const info = { mongo: { status: 'up' } };
-    const response = await Axios.get(`http://0.0.0.0:${port}/health`);
-    expect(response.status).toBe(200);
-    expect(response.data).toEqual({
-      status: 'ok',
-      info,
-      details: info,
-    });
-  });
-
-  it('should throw an error if runs into timeout error', async () => {
-    [app, port] = await bootstrapModule(
-      {
-        inject: [MongooseHealthIndicator],
-        useFactory: (db: MongooseHealthIndicator): TerminusModuleOptions => ({
-          endpoints: [
-            {
-              url: '/health',
-              healthIndicators: [
-                async () => db.pingCheck('mongo', { timeout: 1 }),
-              ],
-            },
-          ],
-        }),
-      },
-      false,
-      true,
-    );
-
-    const details = {
-      mongo: {
-        status: 'down',
-        message: expect.any(String),
-      },
-    };
-    try {
-      await Axios.get(`http://0.0.0.0:${port}/health`, {});
-    } catch (error) {
-      expect(error.response.status).toBe(503);
-      expect(error.response.data).toEqual({
-        status: 'error',
-        error: details,
+  describe('#pingCheck', () => {
+    it('should check if the mongodb is available', async () => {
+      app = await setHealthEndpoint(({ healthCheck, mongoose }) =>
+        healthCheck.check([async () => mongoose.pingCheck('mongo')]),
+      ).start();
+      const details = { mongo: { status: 'up' } };
+      return request(app.getHttpServer()).get('/health').expect(200).expect({
+        status: 'ok',
+        info: details,
+        error: {},
         details,
       });
-    }
+    });
   });
 
   afterEach(async () => await app.close());

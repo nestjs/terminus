@@ -1,7 +1,16 @@
-import { Injectable, HttpService } from '@nestjs/common';
-import { AxiosResponse, AxiosRequestConfig, AxiosError } from 'axios';
+import { Injectable, Scope } from '@nestjs/common';
+import { AxiosError } from 'axios';
 import { HealthIndicator, HealthIndicatorResult } from '..';
 import { HealthCheckError } from '../../health-check/health-check.error';
+import { lastValueFrom, Observable } from 'rxjs';
+import { ModuleRef } from '@nestjs/core';
+import { checkPackages } from '../../utils';
+import type * as NestJSAxios from '@nestjs/axios';
+import { AxiosRequestConfig, AxiosResponse } from './axios.interfaces';
+
+interface HttpClientLike {
+  request<T = any>(config: any): Observable<AxiosResponse<T>>;
+}
 
 /**
  * The HTTPHealthIndicator contains health indicators
@@ -10,14 +19,29 @@ import { HealthCheckError } from '../../health-check/health-check.error';
  * @publicApi
  * @module TerminusModule
  */
-@Injectable()
+@Injectable({
+  scope: Scope.TRANSIENT,
+})
 export class HttpHealthIndicator extends HealthIndicator {
+  private httpService!: NestJSAxios.HttpService;
   /**
    * Initializes the health indicator
    * @param httpService The HttpService provided by Nest
    */
-  constructor(private readonly httpService: HttpService) {
+  constructor(private readonly moduleRef: ModuleRef) {
     super();
+    this.checkDependantPackages();
+  }
+
+  /**
+   * Checks if the dependant packages are present
+   */
+  private checkDependantPackages() {
+    const [nestJsAxios] = checkPackages(
+      ['@nestjs/axios'],
+      this.constructor.name,
+    )[0];
+    this.httpService = this.moduleRef.get(nestJsAxios.HttpService);
   }
 
   /**
@@ -63,7 +87,7 @@ export class HttpHealthIndicator extends HealthIndicator {
     {
       httpClient,
       ...options
-    }: AxiosRequestConfig & { httpClient?: HttpService } = {},
+    }: AxiosRequestConfig & { httpClient?: HttpClientLike } = {},
   ): Promise<HealthIndicatorResult> {
     let isHealthy = false;
     // In case the user has a preconfigured HttpService (see `HttpModule.register`)
@@ -73,7 +97,7 @@ export class HttpHealthIndicator extends HealthIndicator {
     const httpService = httpClient || this.httpService;
 
     try {
-      await httpService.request({ url, ...options }).toPromise();
+      await lastValueFrom(httpService.request({ url, ...options }));
       isHealthy = true;
     } catch (err) {
       this.generateHttpError(key, err);
@@ -89,14 +113,14 @@ export class HttpHealthIndicator extends HealthIndicator {
     {
       httpClient,
       ...options
-    }: AxiosRequestConfig & { httpClient?: HttpService } = {},
+    }: AxiosRequestConfig & { httpClient?: HttpClientLike } = {},
   ): Promise<HealthIndicatorResult> {
     const httpService = httpClient || this.httpService;
 
     try {
-      const response = await httpService
-        .request({ url: url.toString(), ...options })
-        .toPromise();
+      const response = await lastValueFrom(
+        httpService.request({ url: url.toString(), ...options }),
+      );
 
       const isHealthy = await callback(response);
 

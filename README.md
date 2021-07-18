@@ -72,13 +72,11 @@ export class HealthController {
     ]);
   }
 }
-
 ```
 
 If everything is set up correctly, you can access the healthcheck on `http://localhost:3000/health`.
 
 ```json
-
 {
   "status": "ok",
   "info": {
@@ -92,11 +90,43 @@ If everything is set up correctly, you can access the healthcheck on `http://loc
     }
   }
 }
-    
 ```
 
 For more information, [see docs](https://docs.nestjs.com/recipes/terminus).
 You can find more samples in the [samples/](https://github.com/nestjs/terminus/tree/master/sample) folder of this repository.
+
+## Contribute
+
+In order to get started, first read through our [Contributing guidelines](https://github.com/nestjs/terminus/blob/master/CONTRIBUTING.md).
+
+### Setup
+
+Setup the development environment by following these instructions:
+
+1. Fork & Clone the repository
+2. Install the dependencies
+
+```bash
+npm install
+
+# To rebuild the project, run
+npm run build
+```
+
+### Test
+
+For unit testing run the following command:
+
+```bash
+npm run test
+```
+
+For e2e testing, make sure you have docker installed
+
+```bash
+docker-compose up -d
+npm run test:e2e
+```
 
 ## Support
 
@@ -104,9 +134,9 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## Stay in touch
 
-* Author - [Kamil Myśliwiec](https://kamilmysliwiec.com) and [Livio Brunner](https://brunnerliv.io)
-* Website - [https://nestjs.com](https://nestjs.com/)
-* Twitter - [@nestframework](https://twitter.com/nestframework)
+- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com) and [Livio Brunner](https://brunnerliv.io)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
 
 ## License
 

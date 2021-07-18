@@ -1,108 +1,76 @@
-import { INestApplication } from '@nestjs/common';
+import * as request from 'supertest';
+import { INestApplication, INestMicroservice } from '@nestjs/common';
 
-import Axios from 'axios';
-import { TerminusModuleOptions, MicroserviceHealthIndicator } from '../../lib';
-import { bootstrapModule } from '../helper/bootstrap-module';
+import {
+  bootstrapMicroservice,
+  bootstrapTestingModule,
+  DynamicHealthEndpointFn,
+} from '../helper';
 import { Transport } from '@nestjs/microservices';
 
-describe('Microservice Health', () => {
+describe('MicroserviceHealthIndicator', () => {
   let app: INestApplication;
-  let port: number;
+  let microservice: INestMicroservice;
+  let setHealthEndpoint: DynamicHealthEndpointFn;
 
-  const getTerminusOptions = (
-    microservice: MicroserviceHealthIndicator,
-  ): TerminusModuleOptions => {
-    const tcpCheck = async () =>
-      microservice.pingCheck('tcp', {
-        transport: Transport.TCP,
-        options: {
-          host: '0.0.0.0',
-          port: 8890,
-        },
-      });
+  beforeEach(
+    () => (setHealthEndpoint = bootstrapTestingModule().setHealthEndpoint),
+  );
 
-    return {
-      endpoints: [
-        {
-          url: '/health',
-          healthIndicators: [tcpCheck],
-        },
-      ],
-    };
-  };
+  beforeEach(async () => {
+    microservice = await bootstrapMicroservice();
+  });
 
   it('should check if the microservice is available', async () => {
-    [app, port] = await bootstrapModule(
-      {
-        inject: [MicroserviceHealthIndicator],
-        useFactory: getTerminusOptions,
-      },
-      false,
-      false,
-      false,
-      false,
-      8890,
-    );
+    app = await setHealthEndpoint(({ healthCheck, microservice }) =>
+      healthCheck.check([
+        async () =>
+          microservice.pingCheck('tcp', {
+            transport: Transport.TCP,
+            options: {
+              host: '0.0.0.0',
+              port: 8889,
+            },
+          }),
+      ]),
+    ).start();
 
-    const info = { tcp: { status: 'up' } };
-    const response = await Axios.get(`http://0.0.0.0:${port}/health`);
-    expect(response.status).toBe(200);
-    expect(response.data).toEqual({
+    const details = { tcp: { status: 'up' } };
+    return request(app.getHttpServer()).get('/health').expect(200).expect({
       status: 'ok',
-      info,
-      details: info,
+      info: details,
+      error: {},
+      details,
     });
   });
 
-  it('should throw an error if runs into timeout error', async () => {
-    [app, port] = await bootstrapModule(
-      {
-        inject: [MicroserviceHealthIndicator],
-        useFactory: (
-          microservice: MicroserviceHealthIndicator,
-        ): TerminusModuleOptions => ({
-          endpoints: [
-            {
-              url: '/health',
-              healthIndicators: [
-                async () =>
-                  microservice.pingCheck('tcp', {
-                    timeout: 1,
-                    transport: Transport.TCP,
-                    options: {
-                      host: '0.0.0.0',
-                      port: 8889,
-                    },
-                  }),
-              ],
+  it('should throw an error if the service is not reachable', async () => {
+    app = await setHealthEndpoint(({ healthCheck, microservice }) =>
+      healthCheck.check([
+        async () =>
+          microservice.pingCheck('tcp', {
+            transport: Transport.TCP,
+            options: {
+              host: '0.0.0.0',
+              port: 8889,
             },
-          ],
-        }),
-      },
-      false,
-      false,
-      false,
-      false,
-      8889,
-    );
+          }),
+      ]),
+    ).start();
 
-    try {
-      await Axios.get(`http://0.0.0.0:${port}/health`, {});
-    } catch (error) {
-      const details = {
-        tcp: {
-          status: 'down',
-          message: expect.any(String),
-        },
-      };
-      expect(error.response.status).toBe(503);
-      expect(error.response.data).toEqual({
-        status: 'error',
-        error: details,
-        details,
-      });
-    }
+    await microservice.close();
+
+    const details = {
+      tcp: { status: 'down', message: 'connect ECONNREFUSED 0.0.0.0:8889' },
+    };
+    return request(app.getHttpServer()).get('/health').expect(503).expect({
+      status: 'error',
+      info: {},
+      error: details,
+      details,
+    });
   });
 
   afterEach(async () => await app.close());
+  afterEach(async () => await microservice.close());
 });

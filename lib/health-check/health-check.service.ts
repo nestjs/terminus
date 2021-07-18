@@ -15,7 +15,7 @@ import { HealthCheckResult } from './health-check-result.interface';
 export class HealthCheckService {
   constructor(private healthCheckExecutor: HealthCheckExecutor) {}
 
-  private readonly logger = new Logger(HealthCheckService.name, true);
+  private readonly logger = new Logger(HealthCheckService.name);
 
   /**
    * Logs an error message of terminus

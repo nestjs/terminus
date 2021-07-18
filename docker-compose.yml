@@ -29,16 +29,5 @@ services:
     ports:
       - 6379:6379
 
-  lib:
-    build:
-      context: .
-    depends_on:
-      - mysql
-      - mongodb
-    networks:
-      - overlay
-    environment:
-      WAIT_HOSTS: mysql:3306, mongodb:27017
-
 networks:
   overlay:
