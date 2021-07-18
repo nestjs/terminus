@@ -33,33 +33,6 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
    *
    * @throws {Error} All errors which are not inherited by the `HealthCheckError`-class
    *
-   * @deprecated
-   * @returns the result of given health indicators
-   * @param healthIndicators The health indicators which should get executed
-   */
-  async executeDeprecated(
-    healthIndicators: HealthIndicatorFunction[],
-  ): Promise<HealthIndicatorResult> {
-    const { results, errors } = await this.executeHealthIndicators(
-      healthIndicators,
-    );
-    const infoErrorCombined = results.concat(errors);
-
-    const details = this.getSummary(infoErrorCombined);
-
-    if (errors.length) {
-      throw new HealthCheckError('Healthcheck failed', details);
-    } else {
-      return details;
-    }
-  }
-
-  /**
-   * Executes the given health indicators.
-   * Implementation for v6 compatibility.
-   *
-   * @throws {Error} All errors which are not inherited by the `HealthCheckError`-class
-   *
    * @returns the result of given health indicators
    * @param healthIndicators The health indicators which should get executed
    */
