@@ -69,7 +69,7 @@
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-import": "2.23.4",
     "fastify": "3.17.0",
-    "fastify-formbody": "5.0.0",
+    "fastify-formbody": "5.1.0",
     "grpc": "1.24.10",
     "gulp": "4.0.2",
     "gulp-clean": "0.4.0",
