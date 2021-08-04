@@ -7,6 +7,9 @@ import { ModuleRef } from '@nestjs/core';
 import { checkPackages } from '../../utils';
 import type * as NestJSAxios from '@nestjs/axios';
 import { AxiosRequestConfig, AxiosResponse } from './axios.interfaces';
+import { Logger } from '@nestjs/common/services/logger.service';
+
+const logger = new Logger('HttpHealthIndicator');
 
 interface HttpClientLike {
   request<T = any>(config: any): Observable<AxiosResponse<T>>;
@@ -42,6 +45,12 @@ export class HttpHealthIndicator extends HealthIndicator {
       this.constructor.name,
     )[0];
     this.httpService = this.moduleRef.get(nestJsAxios.HttpService);
+    if (!this.httpService) {
+      logger.error(
+        'It seems like "HttpService" is not available in the current context. Are you sure you imported the HttpModule?',
+      );
+      process.exit(1);
+    }
   }
 
   /**

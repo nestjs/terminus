@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { HealthCheckError } from '../../health-check/health-check.error';
-import { HttpService } from '@nestjs/axios';
+import { HttpModule, HttpService } from '@nestjs/axios';
 import { EMPTY, of, throwError } from 'rxjs';
 import { AxiosResponse, AxiosRequestConfig, AxiosError } from 'axios';
 import { HttpHealthIndicator } from './http.health';
@@ -11,6 +11,7 @@ describe('Http Response Health Indicator', () => {
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
+      imports: [HttpModule],
       providers: [
         HttpHealthIndicator,
         {
@@ -30,9 +31,9 @@ describe('Http Response Health Indicator', () => {
 
   describe('#pingCheck', () => {
     it('should make use of a custom httpClient', async () => {
-      const httpServiceMock = ({
+      const httpServiceMock = {
         request: jest.fn().mockReturnValue(EMPTY),
-      } as any) as HttpService;
+      } as any as HttpService;
       await httpHealthIndicator.pingCheck('key', 'url', {
         httpClient: httpServiceMock,
       });
