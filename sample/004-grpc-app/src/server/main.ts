@@ -11,6 +11,7 @@ async function bootstrap() {
       protoPath: join(__dirname, '../protos/health.proto'),
     },
   });
-  app.listen(() => console.log('Microservice is listening'));
+  app.listen();
+  console.log('Microservice is listening');
 }
 bootstrap();
