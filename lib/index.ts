@@ -7,4 +7,3 @@ export {
   HealthCheckError,
   HealthCheckResult
 } from './health-check';
-export * from './terminus-module-options.interface';

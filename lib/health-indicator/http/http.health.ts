@@ -40,16 +40,20 @@ export class HttpHealthIndicator extends HealthIndicator {
    * Checks if the dependant packages are present
    */
   private checkDependantPackages() {
-    const [nestJsAxios] = checkPackages(
+    const nestJsAxios = checkPackages(
       ['@nestjs/axios'],
       this.constructor.name,
     )[0];
-    this.httpService = this.moduleRef.get(nestJsAxios.HttpService);
-    if (!this.httpService) {
-      logger.error(
-        'It seems like "HttpService" is not available in the current context. Are you sure you imported the HttpModule?',
-      );
-      process.exit(1);
+
+    try {
+      this.httpService = this.moduleRef.get(nestJsAxios.HttpService);
+    } catch (err) {
+      if (!this.httpService) {
+        logger.error(
+          'It seems like "HttpService" is not available in the current context. Are you sure you imported the HttpModule?',
+        );
+        process.exit(1);
+      }
     }
   }
 
