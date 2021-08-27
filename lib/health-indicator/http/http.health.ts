@@ -60,7 +60,9 @@ export class HttpHealthIndicator extends HealthIndicator {
       logger.error(
         'It seems like "HttpService" is not available in the current context. Are you sure you imported the HttpModule from the @nestjs/axios package?',
       );
-      process.exit(1);
+      throw new Error(
+        'It seems like "HttpService" is not available in the current context. Are you sure you imported the HttpModule from the @nestjs/axios package?',
+      );
     }
   }
 
