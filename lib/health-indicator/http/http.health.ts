@@ -26,7 +26,7 @@ interface HttpClientLike {
   scope: Scope.TRANSIENT,
 })
 export class HttpHealthIndicator extends HealthIndicator {
-  private httpService!: NestJSAxios.HttpService;
+  private nestJsAxios!: typeof NestJSAxios;
   /**
    * Initializes the health indicator
    * @param httpService The HttpService provided by Nest
@@ -40,20 +40,22 @@ export class HttpHealthIndicator extends HealthIndicator {
    * Checks if the dependant packages are present
    */
   private checkDependantPackages() {
-    const nestJsAxios = checkPackages(
+    this.nestJsAxios = checkPackages(
       ['@nestjs/axios'],
       this.constructor.name,
     )[0];
+  }
 
+  private getHttpService() {
     try {
-      this.httpService = this.moduleRef.get(nestJsAxios.HttpService);
+      return this.moduleRef.get(this.nestJsAxios.HttpService, {
+        strict: false,
+      });
     } catch (err) {
-      if (!this.httpService) {
-        logger.error(
-          'It seems like "HttpService" is not available in the current context. Are you sure you imported the HttpModule?',
-        );
-        process.exit(1);
-      }
+      logger.error(
+        'It seems like "HttpService" is not available in the current context. Are you sure you imported the HttpModule from the @nestjs/axios package?',
+      );
+      process.exit(1);
     }
   }
 
@@ -107,7 +109,7 @@ export class HttpHealthIndicator extends HealthIndicator {
     // we just let him/her pass in this HttpService so that he/she does not need to
     // reconfigure it.
     // https://github.com/nestjs/terminus/issues/1151
-    const httpService = httpClient || this.httpService;
+    const httpService = httpClient || this.getHttpService();
 
     try {
       await lastValueFrom(httpService.request({ url, ...options }));
@@ -128,7 +130,7 @@ export class HttpHealthIndicator extends HealthIndicator {
       ...options
     }: AxiosRequestConfig & { httpClient?: HttpClientLike } = {},
   ): Promise<HealthIndicatorResult> {
-    const httpService = httpClient || this.httpService;
+    const httpService = httpClient || this.getHttpService();
 
     try {
       const response = await lastValueFrom(

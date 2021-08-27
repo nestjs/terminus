@@ -23,6 +23,7 @@ import {
 } from '../../lib';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { MongooseModule } from '@nestjs/mongoose';
+import { HttpModule } from '@nestjs/axios';
 
 type TestingHealthFunc = (props: {
   healthCheck: HealthCheckService;
@@ -139,10 +140,16 @@ export function bootstrapTestingModule() {
     return { setHealthEndpoint };
   }
 
+  function withHttp() {
+    imports.push(HttpModule);
+    return { setHealthEndpoint };
+  }
+
   return {
     withMongoose,
     withTypeOrm,
     withSequelize,
+    withHttp,
     setHealthEndpoint,
   };
 }
