@@ -1,4 +1,4 @@
-FROM node:12
+FROM node:16
 
 ENV DISABLE_OPENCOLLECTIVE=true
 WORKDIR /usr/src/app
