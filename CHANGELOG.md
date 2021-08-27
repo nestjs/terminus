@@ -1,3 +1,38 @@
+# [8.0.0](https://github.com/nestjs/terminus/compare/7.2.0...8.0.0) (2021-08-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @godaddy/terminus to v4.7.2 ([ba7c3a1](https://github.com/nestjs/terminus/commit/ba7c3a1320ff64a8de25340a768a97141cb65bf2))
+* **deps:** update dependency @godaddy/terminus to v4.8.0 ([878939b](https://github.com/nestjs/terminus/commit/878939bfd0a9b62ea165a039ede88f9e419947be))
+* **deps:** update dependency @godaddy/terminus to v4.9.0 ([66867f8](https://github.com/nestjs/terminus/commit/66867f8a4dadee439eb9375016ff41b9576faad9))
+* **deps:** update dependency @grpc/proto-loader to v0.6.2 ([821fb9e](https://github.com/nestjs/terminus/commit/821fb9e3398b782c90405e87579ba58444713ee0))
+* **deps:** update dependency @nestjs/terminus to v7.2.0 ([65f6cf7](https://github.com/nestjs/terminus/commit/65f6cf74d16c23a8f23a81baec36c4807bc6061f))
+* **deps:** update dependency fastify to v3.15.1 ([e5dea7a](https://github.com/nestjs/terminus/commit/e5dea7af982a425378d3d98b5b2b3af3fe8b625f))
+* **deps:** update dependency fastify to v3.17.0 ([1a744b1](https://github.com/nestjs/terminus/commit/1a744b1763ee9c9745737e4dd1a7849398d019ac))
+* **deps:** update dependency grpc to v1.24.10 ([83a39fc](https://github.com/nestjs/terminus/commit/83a39fcc6006e37ffca1ac4fc4e2a324cdf56202))
+* **deps:** update dependency grpc to v1.24.9 ([044b47c](https://github.com/nestjs/terminus/commit/044b47c3b14ee5b9e17df03dc7e79756fc61ea8c))
+* **deps:** update dependency typeorm to v0.2.34 ([99b1e44](https://github.com/nestjs/terminus/commit/99b1e449f8316e5781408f33b937bad945f0e3d7))
+* **deps:** update nest monorepo to v7.6.17 ([85c28c4](https://github.com/nestjs/terminus/commit/85c28c4eae62d1d638fbd81d9ba4ecd2fa348906))
+
+
+### Code Refactoring
+
+* remove deprecated Terminus API ([70e36ed](https://github.com/nestjs/terminus/commit/70e36edd61e23e3511d280fb73346b7348213d72))
+
+
+### Features
+
+* upgrade to v8 ([ba6eee0](https://github.com/nestjs/terminus/commit/ba6eee07b5878cf652aaf2a0d975dc2d73a63af6))
+
+
+### BREAKING CHANGES
+
+* TerminusModule.forRoot{Async) has been removed
+
+In order to migrate, check out: https://docs.nestjs.com/migration-guide#terminus
+* Upgrade to NestJS v8.x.x
+
 # [7.2.0](https://github.com/nestjs/terminus/compare/7.1.2...7.2.0) (2021-05-13)
 
 
