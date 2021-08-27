@@ -22,7 +22,7 @@
     "@nestjs/testing": "7.6.17",
     "fastify": "3.17.0",
     "reflect-metadata": "0.1.13",
-    "rxjs": "6.6.7"
+    "rxjs": "7.3.0"
   },
   "devDependencies": {
     "@types/jest": "26.0.24",
