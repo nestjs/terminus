@@ -7,6 +7,7 @@ import {
   promiseTimeout,
   TimeoutError as PromiseTimeoutError,
   PropType,
+  isError,
 } from '../../utils';
 import { HealthIndicator, HealthIndicatorResult } from '../';
 
@@ -26,7 +27,7 @@ interface MicrserviceOptionsLike {
  * The options for the `MicroserviceHealthInidcator`
  */
 export type MicroserviceHealthIndicatorOptions<
-  T extends MicrserviceOptionsLike = MicrserviceOptionsLike
+  T extends MicrserviceOptionsLike = MicrserviceOptionsLike,
 > = {
   // The transport option is in the `MicroserviceOptionsLike` (e.g. RedisOptions)
   // optional. We need to use this information, therefore it is required
@@ -125,7 +126,9 @@ export class MicroserviceHealthIndicator extends HealthIndicator {
       await promiseTimeout(timeout, this.pingMicroservice(options));
       isHealthy = true;
     } catch (err) {
-      this.generateError(key, err, timeout);
+      if (isError(err)) {
+        this.generateError(key, err, timeout);
+      }
     }
 
     return this.getStatus(key, isHealthy);

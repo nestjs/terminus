@@ -10,6 +10,7 @@ import {
 } from '../..';
 import {
   checkPackages,
+  isError,
   promiseTimeout,
   PropType,
   TimeoutError as PromiseTimeoutError,
@@ -71,14 +72,14 @@ interface GrpcClientOptionsLike {
 }
 
 type GrpcOptionsLike<
-  GrpcClientOptions extends GrpcClientOptionsLike = GrpcClientOptionsLike
+  GrpcClientOptions extends GrpcClientOptionsLike = GrpcClientOptionsLike,
 > = PropType<GrpcClientOptions, 'options'>;
 
 /**
  * The options for the `grpc.checkService` health indicator function
  */
 export type CheckGRPCServiceOptions<
-  GrpcOptions extends GrpcClientOptionsLike = GrpcClientOptionsLike
+  GrpcOptions extends GrpcClientOptionsLike = GrpcClientOptionsLike,
 > = Partial<GrpcOptionsLike<GrpcOptions>> & {
   timeout?: number;
   healthServiceName?: string;
@@ -121,12 +122,8 @@ export class GRPCHealthIndicator extends HealthIndicator {
   private createClient<GrpcOptions extends GrpcClientOptionsLike>(
     options: CheckGRPCServiceOptions<GrpcOptions>,
   ): NestJSMicroservices.ClientGrpc {
-    const {
-      timeout,
-      healthServiceName,
-      healthServiceCheck,
-      ...grpcOptions
-    } = options;
+    const { timeout, healthServiceName, healthServiceCheck, ...grpcOptions } =
+      options;
     return this.nestJsMicroservices.ClientProxyFactory.create({
       transport: 4,
       options: grpcOptions as any,
@@ -170,7 +167,7 @@ export class GRPCHealthIndicator extends HealthIndicator {
    * @throws {UnhealthyResponseCodeError} Gets thrown in case the received response is unhealthy
    */
   async checkService<
-    GrpcOptions extends GrpcClientOptionsLike = GrpcClientOptionsLike
+    GrpcOptions extends GrpcClientOptionsLike = GrpcClientOptionsLike,
   >(
     key: string,
     service: string,
@@ -196,9 +193,15 @@ export class GRPCHealthIndicator extends HealthIndicator {
       );
     } catch (err) {
       if (err instanceof TypeError) throw err;
+      if (isError(err)) {
+        throw new HealthCheckError(
+          err.message,
+          this.getStatus(key, false, { message: err.message }),
+        );
+      }
       throw new HealthCheckError(
-        err.message,
-        this.getStatus(key, false, { message: err.message }),
+        err as any,
+        this.getStatus(key, false, { message: err as any }),
       );
     }
 
@@ -221,9 +224,15 @@ export class GRPCHealthIndicator extends HealthIndicator {
           }),
         );
       }
+      if (isError(err)) {
+        throw new HealthCheckError(
+          err.message,
+          this.getStatus(key, false, { message: err.message }),
+        );
+      }
       throw new HealthCheckError(
-        err.message,
-        this.getStatus(key, false, { message: err.message }),
+        err as any,
+        this.getStatus(key, false, { message: err as any }),
       );
     }
 

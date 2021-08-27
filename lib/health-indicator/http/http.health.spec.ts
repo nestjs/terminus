@@ -83,7 +83,7 @@ describe('Http Response Health Indicator', () => {
         );
       } catch (err) {
         expect(err).toBeDefined();
-        expect(err.constructor.name).toEqual('HealthCheckError');
+        expect((err as any).constructor.name).toEqual('HealthCheckError');
       }
 
       expect(httpServiceMock.request).toHaveBeenCalledWith({ url: 'url' });

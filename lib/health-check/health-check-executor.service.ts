@@ -8,6 +8,7 @@ import {
   HealthCheckResult,
   HealthCheckStatus,
 } from './health-check-result.interface';
+import { isHealthCheckError } from '../utils';
 
 /**
  * Takes care of the execution of health indicators.
@@ -64,7 +65,7 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
         result && results.push(result);
       } catch (error) {
         // Is not an expected error. Throw further!
-        if (!error.causes) throw error;
+        if (!isHealthCheckError(error)) throw error;
         // Is a expected health check error
         errors.push((error as HealthCheckError).causes);
       }

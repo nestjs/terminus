@@ -4,7 +4,12 @@ import { HealthIndicator, HealthIndicatorResult } from '..';
 import { HealthCheckError } from '../../health-check/health-check.error';
 import { lastValueFrom, Observable } from 'rxjs';
 import { ModuleRef } from '@nestjs/core';
-import { checkPackages } from '../../utils';
+import {
+  checkPackages,
+  isAxiosError,
+  isError,
+  isHealthCheckError,
+} from '../../utils';
 import type * as NestJSAxios from '@nestjs/axios';
 import { AxiosRequestConfig, AxiosResponse } from './axios.interfaces';
 import { Logger } from '@nestjs/common/services/logger.service';
@@ -66,10 +71,8 @@ export class HttpHealthIndicator extends HealthIndicator {
    *
    * @throws {HealthCheckError}
    */
-  private generateHttpError(key: string, error: AxiosError) {
-    // TODO: Check for `error.isAxiosError`
-    // Upgrade axios for that as soon ^0.19.0 is released
-    if (error) {
+  private generateHttpError(key: string, error: AxiosError | any) {
+    if (isAxiosError(error)) {
       const response: { [key: string]: any } = {
         message: error.message,
       };
@@ -148,15 +151,19 @@ export class HttpHealthIndicator extends HealthIndicator {
 
       return this.getStatus(key, isHealthy);
     } catch (err) {
-      if (err.isAxiosError) {
+      if (isAxiosError(err)) {
         throw this.generateHttpError(key, err);
       }
 
-      if (err instanceof HealthCheckError) {
+      if (isHealthCheckError(HealthCheckError)) {
         throw err;
       }
 
-      throw new HealthCheckError(err.message, this.getStatus(key, false));
+      if (isError(err)) {
+        throw new HealthCheckError(err.message, this.getStatus(key, false));
+      }
+
+      throw new HealthCheckError(err as any, this.getStatus(key, false));
     }
   }
 }
