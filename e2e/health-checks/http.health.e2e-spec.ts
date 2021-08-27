@@ -1,310 +1,211 @@
+import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
 
-import Axios from 'axios';
-import { HttpHealthIndicator, TerminusModuleOptions } from '../../lib';
-import { bootstrapModule } from '../helper/bootstrap-module';
-import { AxiosResponse, AxiosError } from 'axios';
-import * as express from 'express';
-import * as portfinder from 'portfinder';
+import {
+  bootstrapRemoteServer,
+  bootstrapTestingModule,
+  DynamicHealthEndpointFn,
+  DynamicRemoteServerFn,
+} from '../helper';
 
-describe('HTTP Health', () => {
-  describe('pingCheck', () => {
-    let app: INestApplication;
-    let port: number;
+describe(`HttpHealthIndicator`, () => {
+  let app: INestApplication;
+  let remoteServer: DynamicRemoteServerFn;
+  let setHealthEndpoint: DynamicHealthEndpointFn;
 
-    const getTerminusOptions = (
-      http: HttpHealthIndicator,
-    ): TerminusModuleOptions => ({
-      endpoints: [
-        {
-          url: '/health',
-          healthIndicators: [
-            async () => http.pingCheck('http', 'https://google.com'),
-          ],
-        },
-      ],
-    });
+  beforeEach(async () => (remoteServer = await bootstrapRemoteServer()));
+  beforeEach(
+    () =>
+      (setHealthEndpoint =
+        bootstrapTestingModule().withHttp().setHealthEndpoint),
+  );
 
-    it('should check if google is available', async () => {
-      [app, port] = await bootstrapModule({
-        inject: [HttpHealthIndicator],
-        useFactory: getTerminusOptions,
-      });
-      const info = { http: { status: 'up' } };
-      const response = await Axios.get(`http://0.0.0.0:${port}/health`);
-      expect(response.status).toBe(200);
-      expect(response.data).toEqual({
-        status: 'ok',
-        info,
-        details: info,
-      });
+  describe('#pingCheck', () => {
+    it('should return a healthy response if the remote server sends 200 status code', async () => {
+      await remoteServer.get('/', (_, res) => res.sendStatus(200)).start();
+      app = await setHealthEndpoint(({ healthCheck, http }) =>
+        healthCheck.check([() => http.pingCheck('http', remoteServer.url)]),
+      ).start();
+
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(200)
+        .expect({
+          status: 'ok',
+          info: { http: { status: 'up' } },
+          error: {},
+          details: { http: { status: 'up' } },
+        });
     });
 
     it('should check if correctly display a timeout error', async () => {
-      [app, port] = await bootstrapModule({
-        inject: [HttpHealthIndicator],
-        useFactory: (http: HttpHealthIndicator): TerminusModuleOptions => ({
-          endpoints: [
-            {
-              url: '/health',
-              healthIndicators: [
-                async () =>
-                  http.pingCheck('http', 'https://google.com', { timeout: 1 }),
-              ],
-            },
-          ],
-        }),
-      });
+      remoteServer
+        .get('/', (_, res) =>
+          setTimeout(() => {
+            res.sendStatus(200);
+          }, 200),
+        )
+        .start();
 
-      const details = { http: { status: 'down', message: expect.any(String) } };
-      try {
-        await Axios.get(`http://0.0.0.0:${port}/health`);
-      } catch (error) {
-        expect(error.response.status).toBe(503);
-        expect(error.response.data).toEqual({
-          status: 'error',
-          error: details,
-          details,
-        });
-      }
+      app = await setHealthEndpoint(({ healthCheck, http }) =>
+        healthCheck.check([
+          () => http.pingCheck('google', remoteServer.url, { timeout: 1 }),
+        ]),
+      ).start();
+
+      const details = {
+        google: { status: 'down', message: 'timeout of 1ms exceeded' },
+      };
+
+      return request(app.getHttpServer()).get('/health').expect(503).expect({
+        status: 'error',
+        info: {},
+        error: details,
+        details,
+      });
     });
 
-    it('should check if correctly display not found error', async () => {
-      [app, port] = await bootstrapModule({
-        inject: [HttpHealthIndicator],
-        useFactory: (http: HttpHealthIndicator): TerminusModuleOptions => ({
-          endpoints: [
-            {
-              url: '/health',
-              healthIndicators: [
-                async () =>
-                  http.pingCheck(
-                    'http',
-                    'https://asdfn-not-an-actual-address.com',
-                  ),
-              ],
-            },
-          ],
-        }),
-      });
-
-      const details = { http: { status: 'down', message: expect.any(String) } };
-
-      try {
-        await Axios.get(`http://0.0.0.0:${port}/health`);
-      } catch (error) {
-        expect(error.response.status).toBe(503);
-        expect(error.response.data).toEqual({
-          status: 'error',
-          error: details,
-          details,
-        });
-      }
-    });
-
-    it('should check if correctly display not found error', async () => {
-      [app, port] = await bootstrapModule({
-        inject: [HttpHealthIndicator],
-        useFactory: (http: HttpHealthIndicator): TerminusModuleOptions => ({
-          endpoints: [
-            {
-              url: '/health',
-              healthIndicators: [
-                async () =>
-                  http.pingCheck(
-                    'http',
-                    'https://pokeapi.co/api/v2/pokemon/134125',
-                  ),
-              ],
-            },
-          ],
-        }),
-      });
+    it('should display an error message when the address does not exist', async () => {
+      app = await setHealthEndpoint(({ healthCheck, http }) =>
+        healthCheck.check([
+          () =>
+            http.pingCheck('http', 'https://asdfn-not-an-actual-address.com'),
+        ]),
+      ).start();
 
       const details = {
         http: {
           status: 'down',
-          message: expect.any(String),
+          message: 'getaddrinfo ENOTFOUND asdfn-not-an-actual-address.com',
+        },
+      };
+
+      return request(app.getHttpServer()).get('/health').expect(503).expect({
+        status: 'error',
+        info: {},
+        error: details,
+        details,
+      });
+    });
+
+    it('should return an error if the address return 404', async () => {
+      await remoteServer.get('/', (_, res) => res.sendStatus(404)).start();
+      app = await setHealthEndpoint(({ healthCheck, http }) =>
+        healthCheck.check([() => http.pingCheck('http', remoteServer.url)]),
+      ).start();
+
+      const details = {
+        http: {
+          status: 'down',
+          message: 'Request failed with status code 404',
           statusCode: 404,
           statusText: 'Not Found',
         },
       };
-      try {
-        await Axios.get(`http://0.0.0.0:${port}/health`);
-      } catch (error) {
-        expect(error.response.status).toBe(503);
-        expect(error.response.data).toEqual({
-          status: 'error',
-          error: details,
-          details,
-        });
-      }
-    });
 
-    afterEach(async () => await app.close());
+      return request(app.getHttpServer()).get('/health').expect(503).expect({
+        status: 'error',
+        info: {},
+        error: details,
+        details,
+      });
+    });
   });
 
-  describe('responseCheck', () => {
-    let remoteServer: any;
-    let remoteServiceUrl: string;
+  describe('#responseCheck', () => {
+    it('should be healthy if remote server returns 200 and status code 200 is expected', async () => {
+      await remoteServer.get('/', (_, res) => res.sendStatus(200)).start();
+      app = await setHealthEndpoint(({ healthCheck, http }) =>
+        healthCheck.check([
+          () =>
+            http.responseCheck(
+              'http',
+              remoteServer.url,
+              (res) => res.status === 200,
+            ),
+        ]),
+      ).start();
 
-    let nestApp: INestApplication;
-    let nestPort: number;
-
-    const getTerminusOptions = (
-      remoteServiceUrl: string,
-      callback: (response: AxiosResponse) => boolean | Promise<boolean>,
-    ) => (
-      httpResponseHealthIndicator: HttpHealthIndicator,
-    ): TerminusModuleOptions => ({
-      endpoints: [
-        {
-          url: '/health',
-          healthIndicators: [
-            async () =>
-              httpResponseHealthIndicator.responseCheck(
-                'http',
-                remoteServiceUrl,
-                callback,
-              ),
-          ],
-        },
-      ],
-    });
-
-    beforeAll(async () => {
-      const remoteServicePort = await portfinder.getPortPromise();
-
-      remoteServer = express();
-
-      remoteServer.get('/', (_req: express.Request, res: express.Response) => {
-        res.send({});
-      });
-
-      remoteServer.listen(remoteServicePort);
-
-      remoteServiceUrl = `http://0.0.0.0:${remoteServicePort}/`;
-    });
-
-    afterAll(async () => {
-      remoteServer.close();
-    });
-
-    afterEach(async () => {
-      await nestApp.close();
-    });
-
-    it('callback returning true should return 200 w/response', async () => {
-      expect.assertions(2);
-
-      const callback = () => true;
-
-      [nestApp, nestPort] = await bootstrapModule({
-        inject: [HttpHealthIndicator],
-        useFactory: getTerminusOptions(remoteServiceUrl, callback),
-      });
-
-      const nestAppUrl = await nestApp.getUrl();
-
-      const response = await Axios.get(
-        new URL('/health', nestAppUrl).toString(),
-      );
-
-      expect(response.status).toBe(200);
-      expect(response.data).toEqual({
-        status: 'ok',
-        info: {
-          http: {
-            status: 'up',
-          },
-        },
-        details: {
-          http: {
-            status: 'up',
-          },
-        },
-      });
-    });
-
-    it('callback returning false should return 503 w/response', async () => {
-      expect.assertions(2);
-
-      const callback = () => false;
-
-      [nestApp, nestPort] = await bootstrapModule({
-        inject: [HttpHealthIndicator],
-        useFactory: getTerminusOptions(remoteServiceUrl, callback),
-      });
-
-      const nestAppUrl = await nestApp.getUrl();
-
-      try {
-        await Axios.get(new URL('/health', nestAppUrl).toString());
-        fail('an error should have been thrown');
-      } catch (err) {
-        expect(err.response.status).toBe(503);
-        expect(err.response.data).toEqual({
-          status: 'error',
-          error: {
-            http: {
-              status: 'down',
-            },
-          },
-          details: {
-            http: {
-              status: 'down',
-            },
-          },
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(200)
+        .expect({
+          status: 'ok',
+          info: { http: { status: 'up' } },
+          error: {},
+          details: { http: { status: 'up' } },
         });
-      }
     });
 
-    it('callback throwing error should return 503 w/response', async () => {
-      expect.assertions(2);
+    it('should not be healthy if remote server returns 400 and status code 200 is expected', async () => {
+      await remoteServer.get('/', (_, res) => res.sendStatus(400)).start();
+      app = await setHealthEndpoint(({ healthCheck, http }) =>
+        healthCheck.check([
+          () =>
+            http.responseCheck(
+              'http',
+              remoteServer.url,
+              (res) => res.status === 200,
+            ),
+        ]),
+      ).start();
 
-      const err = {
-        name: 'error name value',
-        message: 'axios.request threw an error for some reason',
-        config: {},
-        code: 'status code value',
-        request: {},
-        response: {},
-        isAxiosError: true,
-        toJSON: () => ({}),
-      } as AxiosError;
-
-      const callback = () => {
-        throw err;
+      const details = {
+        http: {
+          status: 'down',
+          message: 'Request failed with status code 400',
+          statusCode: 400,
+          statusText: 'Bad Request',
+        },
       };
 
-      [nestApp, nestPort] = await bootstrapModule({
-        inject: [HttpHealthIndicator],
-        useFactory: getTerminusOptions(remoteServiceUrl, callback),
+      return request(app.getHttpServer()).get('/health').expect(503).expect({
+        status: 'error',
+        info: {},
+        error: details,
+        details,
       });
+    });
 
-      const nestAppUrl = await nestApp.getUrl();
+    it('should be healthy if remote server returns a text which is expected', async () => {
+      await remoteServer
+        .get('/', (_, res) => res.send('response data'))
+        .start();
 
-      try {
-        await Axios.get(new URL('/health', nestAppUrl).toString());
-        fail('an error should have been thrown');
-      } catch (err) {
-        expect(err.response.status).toBe(503);
-        expect(err.response.data).toEqual({
-          status: 'error',
-          error: {
-            http: {
-              status: 'down',
-              message: 'axios.request threw an error for some reason',
-            },
-          },
-          details: {
-            http: {
-              status: 'down',
-              message: 'axios.request threw an error for some reason',
-            },
-          },
-        });
-      }
+      app = await setHealthEndpoint(({ healthCheck, http }) =>
+        healthCheck.check([
+          () =>
+            http.responseCheck(
+              'http',
+              remoteServer.url,
+              (res) => res.data === 'response data',
+            ),
+        ]),
+      ).start();
+
+      return request(app.getHttpServer()).get('/health').expect(200);
+    });
+
+    it('should not be healthy if remote server returns a text which is not expected', async () => {
+      await remoteServer
+        .get('/', (_, res) => res.send('not response data'))
+        .start();
+
+      app = await setHealthEndpoint(({ healthCheck, http }) =>
+        healthCheck.check([
+          () =>
+            http.responseCheck(
+              'http',
+              remoteServer.url,
+              (res) => res.data === 'response data',
+            ),
+        ]),
+      ).start();
+
+      return request(app.getHttpServer()).get('/health').expect(503);
     });
   });
+
+  afterEach(async () => await app.close());
+  afterEach(() => remoteServer.close());
 });

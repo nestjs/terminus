@@ -8,6 +8,7 @@ import {
   HealthCheckResult,
   HealthCheckStatus,
 } from './health-check-result.interface';
+import { isHealthCheckError } from '../utils';
 
 /**
  * Takes care of the execution of health indicators.
@@ -26,33 +27,6 @@ import {
 @Injectable()
 export class HealthCheckExecutor implements BeforeApplicationShutdown {
   private isShuttingDown = false;
-
-  /**
-   * Executes the given health indicators.
-   * Implementation for v6 compatibility.
-   *
-   * @throws {Error} All errors which are not inherited by the `HealthCheckError`-class
-   *
-   * @deprecated
-   * @returns the result of given health indicators
-   * @param healthIndicators The health indicators which should get executed
-   */
-  async executeDeprecated(
-    healthIndicators: HealthIndicatorFunction[],
-  ): Promise<HealthIndicatorResult> {
-    const { results, errors } = await this.executeHealthIndicators(
-      healthIndicators,
-    );
-    const infoErrorCombined = results.concat(errors);
-
-    const details = this.getSummary(infoErrorCombined);
-
-    if (errors.length) {
-      throw new HealthCheckError('Healthcheck failed', details);
-    } else {
-      return details;
-    }
-  }
 
   /**
    * Executes the given health indicators.
@@ -91,7 +65,7 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
         result && results.push(result);
       } catch (error) {
         // Is not an expected error. Throw further!
-        if (!error.causes) throw error;
+        if (!isHealthCheckError(error)) throw error;
         // Is a expected health check error
         errors.push((error as HealthCheckError).causes);
       }

@@ -41,8 +41,8 @@ describe('HealthCheckService', () => {
     try {
       await healthCheckService.check([() => Promise.resolve({})]);
     } catch (error) {
-      expect(error.response).toEqual({ status: 'error' });
-      expect(error.status).toBe(503);
+      expect((error as any).response).toEqual({ status: 'error' });
+      expect((error as any).status).toBe(503);
     }
   });
 });

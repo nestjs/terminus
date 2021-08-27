@@ -1,5 +1,6 @@
 export class HealthCheckError extends Error {
   causes: any;
+  isHealthCheckError = true;
   constructor(message: string, causes: any) {
     super(message);
 

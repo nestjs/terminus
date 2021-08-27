@@ -1,91 +1,112 @@
+import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
+import checkDiskSpace from 'check-disk-space';
 
-import Axios from 'axios';
-import { DiskHealthIndicator, TerminusModuleOptions } from '../../lib';
-import { bootstrapModule } from '../helper/bootstrap-module';
-import * as checkDiskSpace from 'check-disk-space';
+import { bootstrapTestingModule, DynamicHealthEndpointFn } from '../helper';
 
-describe('Disk Health', () => {
+describe('DiskHealthIndicator', () => {
   let app: INestApplication;
-  let port: number;
-  let getTerminusOptions: (disk: DiskHealthIndicator) => TerminusModuleOptions;
-  beforeEach(async () => {
-    const { free } = await checkDiskSpace('/');
-    getTerminusOptions = (
-      disk: DiskHealthIndicator,
-    ): TerminusModuleOptions => ({
-      endpoints: [
-        {
-          url: '/health',
-          healthIndicators: [
-            async () =>
-              disk.checkStorage('disk', { path: '/', threshold: free + 90000 }),
-          ],
+  let setHealthEndpoint: DynamicHealthEndpointFn;
+
+  beforeEach(
+    () => (setHealthEndpoint = bootstrapTestingModule().setHealthEndpoint),
+  );
+
+  describe('#checkStorage', () => {
+    it('should check if the disk threshold has not exceeded', async () => {
+      const { free, size } = await checkDiskSpace('/');
+      app = await setHealthEndpoint(({ healthCheck, disk }) =>
+        healthCheck.check([
+          () =>
+            disk.checkStorage('disk', {
+              path: '/',
+              threshold: size - free + 90000,
+            }),
+        ]),
+      ).start();
+
+      const details = { disk: { status: 'up' } };
+
+      return request(app.getHttpServer()).get('/health').expect(200).expect({
+        status: 'ok',
+        info: details,
+        error: {},
+        details,
+      });
+    });
+
+    it('should check if correctly displays a threshold exceeded error', async () => {
+      app = await setHealthEndpoint(({ healthCheck, disk }) =>
+        healthCheck.check([
+          () => disk.checkStorage('disk', { path: '/', threshold: 0 }),
+        ]),
+      ).start();
+
+      const details = {
+        disk: {
+          status: 'down',
+          message: 'Used disk storage exceeded the set threshold',
         },
-      ],
-    });
-  });
+      };
 
-  // it('should check if the disk threshold is not exceeded', async () => {
-  //   [app, port] = await bootstrapModule({
-  //     inject: [DiskHealthIndicator],
-  //     useFactory: getTerminusOptions,
-  //   });
-  //   const response = await Axios.get(`http://0.0.0.0:${port}/health`);
-  //   const info = { disk: { status: 'up' } };
-  //   expect(response.status).toBe(200);
-  //   expect(response.data).toEqual({
-  //     status: 'ok',
-  //     info,
-  //     details: info,
-  //   });
-  // });
-
-  it('should check if correctly displays a threshold exceeded error', async () => {
-    [app, port] = await bootstrapModule({
-      inject: [DiskHealthIndicator],
-      useFactory: (disk: DiskHealthIndicator): TerminusModuleOptions => ({
-        endpoints: [
-          {
-            url: '/health',
-            healthIndicators: [
-              async () =>
-                disk.checkStorage('disk', { path: '/', threshold: 0 }),
-            ],
-          },
-        ],
-      }),
-    });
-
-    try {
-      await Axios.get(`http://0.0.0.0:${port}/health`);
-    } catch (error) {
-      const details = { disk: { status: 'down', message: expect.any(String) } };
-      expect(error.response.status).toBe(503);
-      expect(error.response.data).toEqual({
+      return request(app.getHttpServer()).get('/health').expect(503).expect({
         status: 'error',
+        info: {},
         error: details,
         details,
       });
-    }
-  });
+    });
 
-  it('should check if the disk threshold is not exceeded using thresholdPercent', async () => {
-    const { free, size } = await checkDiskSpace('/');
-    const thresholdPercent = (size - free) / size;
-    [app, port] = await bootstrapModule({
-      inject: [DiskHealthIndicator],
-      useFactory: (disk: DiskHealthIndicator): TerminusModuleOptions => ({
-        endpoints: [
-          {
-            url: '/health',
-            healthIndicators: [
-              async () =>
-                disk.checkStorage('disk', { path: '/', thresholdPercent }),
-            ],
-          },
-        ],
-      }),
+    it('should check if the disk thresholdPercent has not exceeded', async () => {
+      const { free, size } = await checkDiskSpace('/');
+      const thresholdPercent = (size - free) / size;
+      app = await setHealthEndpoint(({ healthCheck, disk }) =>
+        healthCheck.check([
+          async () =>
+            disk.checkStorage('disk', {
+              path: '/',
+              thresholdPercent: thresholdPercent + 0.2,
+            }),
+        ]),
+      ).start();
+
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(200)
+        .expect({
+          status: 'ok',
+          info: { disk: { status: 'up' } },
+          error: {},
+          details: { disk: { status: 'up' } },
+        });
+    });
+
+    it('should check if correctly displays a thresholdPercent exceeded error', async () => {
+      const { free, size } = await checkDiskSpace('/');
+      const thresholdPercent = (size - free) / size;
+      app = await setHealthEndpoint(({ healthCheck, disk }) =>
+        healthCheck.check([
+          async () =>
+            disk.checkStorage('disk', {
+              path: '/',
+              thresholdPercent: thresholdPercent - 0.2,
+            }),
+        ]),
+      ).start();
+
+      const details = {
+        disk: {
+          status: 'down',
+          message: 'Used disk storage exceeded the set threshold',
+        },
+      };
+
+      return request(app.getHttpServer()).get('/health').expect(503).expect({
+        status: 'error',
+        info: {},
+        error: details,
+        details,
+      });
     });
   });
 

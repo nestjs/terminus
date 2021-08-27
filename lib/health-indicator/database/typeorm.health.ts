@@ -73,7 +73,7 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
   }
 
   private async checkMongoDBConnection(connection: any) {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       const driver = connection.driver as any;
       // Hacky workaround which uses the native MongoClient
       driver.mongodb.MongoClient.connect(
