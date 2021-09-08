@@ -39,7 +39,7 @@
     "eslint": "7.32.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-import": "2.24.2",
-    "jest": "27.1.0",
+    "jest": "27.1.1",
     "nodemon": "2.0.12",
     "prettier": "2.3.2",
     "supertest": "6.1.6",
