@@ -74,7 +74,7 @@
     "gulp-debug": "4.0.0",
     "gulp-typescript": "5.0.1",
     "husky": "7.0.2",
-    "jest": "27.1.1",
+    "jest": "27.2.0",
     "lint-staged": "11.1.2",
     "mongoose": "5.13.9",
     "mysql": "2.18.1",
