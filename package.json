@@ -81,7 +81,7 @@
     "mysql2": "2.3.0",
     "nats": "2.2.0",
     "portfinder": "1.0.28",
-    "prettier": "2.4.0",
+    "prettier": "2.4.1",
     "redis": "3.1.2",
     "reflect-metadata": "0.1.13",
     "release-it": "14.11.5",
