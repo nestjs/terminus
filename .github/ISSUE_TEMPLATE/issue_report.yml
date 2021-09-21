@@ -1,0 +1,75 @@
+name: "General Issue"
+description: "Use this for bug/feature issue or documentation issues or request."
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        > PLEASE HELP US PROCESS GITHUB ISSUES FASTER BY PROVIDING THE FOLLOWING INFORMATION.
+
+        > ISSUES MISSING IMPORTANT INFORMATION MAY BE CLOSED WITHOUT INVESTIGATION.
+
+        :warning: **Do not submit support request** here, instead post your question on [StackOverflow](https://stackoverflow.com/questions/tagged/nestjs) or [Discord](https://discord.gg/NestJS).
+
+        ---
+
+  - type: checkboxes
+    attributes:
+      label: "I am submitting a..."
+      options:
+        - label: "Regression (a behavior that used to work and stopped working in a new release)"
+        - label: "Bug report"
+        - label: "Feature request"
+        - label: "Documentation issue or request"
+
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: "Current behavior"
+      description: "Describe how the issue manifests."
+
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: "Expected behavior"
+      description: "Describe what the desired behavior would be."
+
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: "Minimal reproduction of the problem"
+      description: "Please share a git repo, a gist, or step-by-step instructions."
+      placeholder: |
+        ```ts
+
+        ```
+
+  - type: input
+    validations:
+      required: true
+    attributes:
+      label: "Terminus version"
+      description: "Which version of `@nestjs/terminus` are you using?"
+      placeholder: "8.0.0"
+
+  - type: input
+    validations:
+      required: false
+    attributes:
+      label: "NestJS version"
+      description: "Which version of `@nestjs/core` are you using?"
+      placeholder: "8.1.3"
+
+  - type: textarea
+    attributes:
+      label: "Other"
+      description: |
+        Anything else relevant? eg: Logs, OS version, IDE, package manager, etc.
+
+        **Tip:** You can attach images, videos or log files by clicking this area to highlight it and then dragging files in.
+      placeholder: |
+        nodejs v14
+        linux
