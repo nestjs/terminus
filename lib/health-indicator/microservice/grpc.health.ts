@@ -110,7 +110,7 @@ export class GRPCHealthIndicator extends HealthIndicator {
    */
   private checkDependantPackages() {
     this.nestJsMicroservices = checkPackages(
-      ['@nestjs/microservices', 'grpc', '@grpc/proto-loader'],
+      ['@nestjs/microservices', '@grpc/grpc-js', '@grpc/proto-loader'],
       this.constructor.name,
     )[0];
   }
