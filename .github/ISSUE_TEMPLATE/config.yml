@@ -1,5 +1,7 @@
-blank_issues_enabled: true
+## To encourage contributors to use issue templates, we don't allow blank issues
+blank_issues_enabled: false
+
 contact_links:
-  - name: NestJS Discord Community
-    url: https://discord.gg/NestJS
-    about: Please ask support questions here, under `nestjs-terminus` channel.
+  - name: "\u2753 Discord Community of NestJS"
+    url: "https://discord.gg/NestJS"
+    about: "Please ask support questions here, under nestjs-terminus channel."
