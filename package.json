@@ -76,7 +76,7 @@
     "husky": "7.0.2",
     "jest": "27.2.4",
     "lint-staged": "11.2.0",
-    "mongoose": "5.13.9",
+    "mongoose": "5.13.10",
     "mysql": "2.18.1",
     "mysql2": "2.3.0",
     "nats": "2.2.0",
