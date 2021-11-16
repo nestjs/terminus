@@ -2,7 +2,7 @@ version: "3"
 
 services:
   mysql:
-    image: mysql:5.7.35
+    image: mysql:5.7.36
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: test
