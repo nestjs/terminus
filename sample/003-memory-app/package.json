@@ -16,9 +16,9 @@
     "test:watch": "jest --watch --config=jest.json"
   },
   "dependencies": {
-    "@nestjs/common": "8.2.1",
-    "@nestjs/core": "8.2.1",
-    "@nestjs/platform-express": "8.2.1",
+    "@nestjs/common": "8.2.2",
+    "@nestjs/core": "8.2.2",
+    "@nestjs/platform-express": "8.2.2",
     "@nestjs/terminus": "8.0.1",
     "class-transformer": "0.4.1",
     "class-validator": "0.13.1",
