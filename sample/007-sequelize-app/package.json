@@ -15,9 +15,9 @@
     "e2e:watch": "jest --watch --config=e2e/jest-e2e.json"
   },
   "dependencies": {
-    "@nestjs/common": "8.2.2",
-    "@nestjs/core": "8.2.2",
-    "@nestjs/platform-express": "8.2.2",
+    "@nestjs/common": "8.2.3",
+    "@nestjs/core": "8.2.3",
+    "@nestjs/platform-express": "8.2.3",
     "@nestjs/sequelize": "8.0.0",
     "@nestjs/terminus": "8.0.1",
     "mysql2": "2.3.3",
@@ -28,7 +28,7 @@
     "sequelize-typescript": "2.1.1"
   },
   "devDependencies": {
-    "@nestjs/testing": "8.2.2",
+    "@nestjs/testing": "8.2.3",
     "@types/express": "4.17.13",
     "@types/jest": "27.0.3",
     "@types/node": "16.11.9",
