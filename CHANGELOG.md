@@ -1,3 +1,25 @@
+## [8.0.2](https://github.com/nestjs/terminus/compare/8.0.1...8.0.2) (2021-11-26)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @grpc/grpc-js to v1.4.4 ([da75499](https://github.com/nestjs/terminus/commit/da75499dda29896ab710f05d84bdf0acc1ff572d))
+* **deps:** update dependency @nestjs/axios to v0.0.3 ([ac84369](https://github.com/nestjs/terminus/commit/ac843699ba109f940ff86a4d3af7de127a7b0176))
+* **deps:** update dependency @nestjs/mongoose to v9 ([99f01b5](https://github.com/nestjs/terminus/commit/99f01b50f34d6d9fb79865a8462ccd4d4bf30be8))
+* **deps:** update dependency @nestjs/terminus to v8.0.1 ([6795db7](https://github.com/nestjs/terminus/commit/6795db72a9abf0e778b76480f1613170a732b6ed))
+* **deps:** update dependency class-transformer to v0.4.1 ([91451e5](https://github.com/nestjs/terminus/commit/91451e521f6d4811e77aaa31652117f561e2a6ca))
+* **deps:** update dependency mysql2 to v2.3.3 ([7c07a8a](https://github.com/nestjs/terminus/commit/7c07a8a156e29af0aa187903c8c2cb4ced8f61f4))
+* **deps:** update dependency rxjs to v7.4.0 ([29662ef](https://github.com/nestjs/terminus/commit/29662efebcc085c2960e4e9faa646b43891b6766))
+* **deps:** update dependency sequelize-typescript to v2.1.1 ([e2a8ab6](https://github.com/nestjs/terminus/commit/e2a8ab6fd92dfd5e60036536f0463c61b9d7e48c))
+* **deps:** update dependency typeorm to v0.2.40 ([6f22672](https://github.com/nestjs/terminus/commit/6f22672560861f42b5c150e8c50da8f112ec001d))
+* **deps:** update dependency typeorm to v0.2.41 ([8298293](https://github.com/nestjs/terminus/commit/8298293d333fa951d9bfca79d3780df1989cd077))
+* **deps:** update nest monorepo to v8.0.7 ([655c763](https://github.com/nestjs/terminus/commit/655c763c70ed1a17efafe84fc7645dcd3f5da80a))
+* **deps:** update nest monorepo to v8.0.8 ([7a51ff4](https://github.com/nestjs/terminus/commit/7a51ff46fbc397fd2b42913ad3c84897c9cab5aa))
+* **deps:** update nest monorepo to v8.0.9 ([b4df97c](https://github.com/nestjs/terminus/commit/b4df97c97aaa05bce550fcbdef8ef6e55000bd23))
+* **deps:** update nest monorepo to v8.2.1 ([b4a1dc7](https://github.com/nestjs/terminus/commit/b4a1dc7057630ac0e66418cd4c21554d6640679e))
+* **deps:** update nest monorepo to v8.2.2 ([b174e32](https://github.com/nestjs/terminus/commit/b174e3269aa0edbb4a5a0ca9bf6a22169a9cdefe))
+* **health:** open handle when using `pingCheck` in jest environment ([0d7b48e](https://github.com/nestjs/terminus/commit/0d7b48e454bd3d2623bc9167305915dcbaa7cbcd)), closes [#1466](https://github.com/nestjs/terminus/issues/1466)
+
 ## [8.0.1](https://github.com/nestjs/terminus/compare/8.0.0...8.0.1) (2021-09-22)
 
 
