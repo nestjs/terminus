@@ -1,3 +1,12 @@
+## [8.0.3](https://github.com/nestjs/terminus/compare/8.0.2...8.0.3) (2021-12-03)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @grpc/proto-loader to v0.6.7 ([4fb84b3](https://github.com/nestjs/terminus/commit/4fb84b335d1a6a33497e0d8ac89820056baf535d))
+* **deps:** update dependency sequelize to v6.11.0 ([f3bf368](https://github.com/nestjs/terminus/commit/f3bf368b44b47482548a2a19d5e983db48a32e7e))
+* **deps:** update nest monorepo to v8.2.3 ([fc2d73f](https://github.com/nestjs/terminus/commit/fc2d73ff9ee4c201d34869206cec0c6ce5b8bf5e))
+
 ## [8.0.2](https://github.com/nestjs/terminus/compare/8.0.1...8.0.2) (2021-11-26)
 
 
