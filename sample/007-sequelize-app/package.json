@@ -25,7 +25,7 @@
     "rimraf": "3.0.2",
     "rxjs": "7.4.0",
     "sequelize": "6.12.5",
-    "sequelize-typescript": "2.1.1"
+    "sequelize-typescript": "2.1.2"
   },
   "devDependencies": {
     "@nestjs/testing": "8.2.4",
