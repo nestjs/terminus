@@ -20,7 +20,7 @@
     "@nestjs/microservices": "8.2.4",
     "@nestjs/platform-express": "8.2.4",
     "@nestjs/terminus": "8.0.3",
-    "class-transformer": "0.4.1",
+    "class-transformer": "0.5.1",
     "class-validator": "0.13.2",
     "lodash": "4.17.21",
     "redis": "3.1.2",
