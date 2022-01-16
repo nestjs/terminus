@@ -1,3 +1,18 @@
+## [8.0.4](https://github.com/nestjs/terminus/compare/8.0.3...8.0.4) (2022-01-16)
+
+### Bug Fixes
+* **deps:** update dependency @grpc/grpc-js to v1.5.0 ([95e99fe](https://github.com/nestjs/terminus/commit/95e99fedfa03847b2b98da5725e266c83db5074a))
+* **deps:** update dependency @grpc/proto-loader to v0.6.9 ([861f27d](https://github.com/nestjs/terminus/commit/861f27d66d4fcf8aa09c9dd7f52baf0ddcb5dc3b))
+* **deps:** update dependency @nestjs/terminus to v8.0.3 ([ac5c53c](https://github.com/nestjs/terminus/commit/ac5c53c7dab2537344469666d7c42254734ab761))
+* **deps:** update dependency check-disk-space to v3.1.0 ([7c01f58](https://github.com/nestjs/terminus/commit/7c01f583df5d59e5823588d6ac607f158921bbab))
+* **deps:** update dependency class-transformer to v0.5.1 ([103d9d9](https://github.com/nestjs/terminus/commit/103d9d97e6d5815a1868b09270b45720dc7b7cb6))
+* **deps:** update dependency class-validator to v0.13.2 ([2f2dd2a](https://github.com/nestjs/terminus/commit/2f2dd2ab448ff4f9348424c217f1996944403cbf))
+* **deps:** update dependency redis to v4 ([7e0bea8](https://github.com/nestjs/terminus/commit/7e0bea89f1b20ae0c8710ccadb27fb558548e036))
+* **deps:** update dependency sequelize to v6.12.5 ([a98ac07](https://github.com/nestjs/terminus/commit/a98ac070379d012f5f9fcb3e909f1e50348956fc))
+* **deps:** update dependency sequelize-typescript to v2.1.2 ([912d3ba](https://github.com/nestjs/terminus/commit/912d3ba7f45be793749ba059431086d63c61740c))
+* **deps:** update nest monorepo to v8.2.4 ([619033c](https://github.com/nestjs/terminus/commit/619033ce857a32249a79da3f48aafded6868fdb6))
+* **http:** URL interface gets imported ([ac1f3a3](https://github.com/nestjs/terminus/commit/ac1f3a39c2b53f22d45b195a2e5b09914e4dcf1b)), closes [#1623](https://github.com/nestjs/terminus/issues/1623)
+
 ## [8.0.3](https://github.com/nestjs/terminus/compare/8.0.2...8.0.3) (2021-12-03)
 
 
