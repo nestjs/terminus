@@ -38,7 +38,7 @@
     "@typescript-eslint/parser": "5.7.0",
     "eslint": "8.7.0",
     "eslint-config-prettier": "8.3.0",
-    "eslint-plugin-import": "2.25.3",
+    "eslint-plugin-import": "2.25.4",
     "jest": "27.4.5",
     "nodemon": "2.0.15",
     "prettier": "2.5.1",
