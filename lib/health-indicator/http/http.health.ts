@@ -13,6 +13,7 @@ import {
 import type * as NestJSAxios from '@nestjs/axios';
 import { AxiosRequestConfig, AxiosResponse } from './axios.interfaces';
 import { Logger } from '@nestjs/common/services/logger.service';
+import { URL } from 'url';
 
 const logger = new Logger('HttpHealthIndicator');
 
