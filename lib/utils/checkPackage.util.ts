@@ -58,12 +58,12 @@ export function checkPackages(packageNames: string[], reason: string): any[] {
   }));
 
   const missingDependenciesNames = packages
-    .filter(pkg => pkg.pkg === null)
-    .map(pkg => packageNames[pkg.index]);
+    .filter((pkg) => pkg.pkg === null)
+    .map((pkg) => packageNames[pkg.index]);
 
   if (missingDependenciesNames.length) {
     logger.error(MISSING_REQUIRED_DEPENDENCY(missingDependenciesNames, reason));
     process.exit(1);
   }
-  return packages.map(pkg => pkg.pkg);
+  return packages.map((pkg) => pkg.pkg);
 }

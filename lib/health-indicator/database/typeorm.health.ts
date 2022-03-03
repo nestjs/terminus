@@ -77,7 +77,9 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
       const driver = connection.driver as any;
       // Hacky workaround which uses the native MongoClient
       driver.mongodb.MongoClient.connect(
-        connection.options.url ? connection.options.url : driver.buildConnectionUrl(connection.options),
+        connection.options.url
+          ? connection.options.url
+          : driver.buildConnectionUrl(connection.options),
         driver.buildConnectionOptions(connection.options),
         (err: Error, client: any) => {
           if (err) return reject(new MongoConnectionError(err.message));

@@ -14,6 +14,7 @@
     "build:all": "gulp build:all",
     "build:samples": "gulp install:samples && npm run build && gulp build:samples && gulp test:samples && gulp test:e2e:samples",
     "clean": "gulp clean",
+    "format": "prettier --write \"{lib,e2e}/**/*.ts\"",
     "lint": "eslint \"lib/**/*.ts\" --fix",
     "precommit": "lint-staged",
     "prepublish": "npm run build",
