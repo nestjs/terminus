@@ -59,9 +59,9 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
    * Returns the connection of the current DI context
    */
   private getContextConnection(): TypeOrm.Connection | null {
-    const {
-      getConnectionToken,
-    } = require('@nestjs/typeorm/dist/common/typeorm.utils') as typeof NestJSTypeOrm;
+    const { getConnectionToken } =
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      require('@nestjs/typeorm/dist/common/typeorm.utils') as typeof NestJSTypeOrm;
 
     try {
       return this.moduleRef.get(getConnectionToken() as string, {

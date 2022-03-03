@@ -56,9 +56,9 @@ export class SequelizeHealthIndicator extends HealthIndicator {
    * Returns the connection of the current DI context
    */
   private getContextConnection(): any | null {
-    const {
-      getConnectionToken,
-    } = require('@nestjs/sequelize/dist/common/sequelize.utils') as typeof NestJSSequelize;
+    const { getConnectionToken } =
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      require('@nestjs/sequelize/dist/common/sequelize.utils') as typeof NestJSSequelize;
 
     try {
       return this.moduleRef.get(getConnectionToken() as string, {

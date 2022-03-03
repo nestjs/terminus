@@ -2,6 +2,7 @@ import { getHealthCheckSchema } from './health-check.schema';
 
 type Swagger = typeof import('@nestjs/swagger');
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};
 
 function getSwaggerDefinitions(swagger: Swagger) {
