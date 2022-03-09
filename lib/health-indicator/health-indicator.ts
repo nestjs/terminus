@@ -5,7 +5,9 @@ import { HealthIndicatorResult } from './';
  *
  * @publicApi
  */
-export type HealthIndicatorFunction = () => Promise<HealthIndicatorResult>;
+export type HealthIndicatorFunction = () =>
+  | PromiseLike<HealthIndicatorResult>
+  | HealthIndicatorResult;
 
 /**
  * Represents an abstract health indicator
