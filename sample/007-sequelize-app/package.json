@@ -30,7 +30,7 @@
   "devDependencies": {
     "@nestjs/testing": "8.2.6",
     "@types/express": "4.17.13",
-    "@types/jest": "27.4.0",
+    "@types/jest": "27.4.1",
     "@types/node": "16.11.22",
     "@types/sequelize": "4.28.11",
     "@types/supertest": "2.0.11",
@@ -39,7 +39,7 @@
     "eslint": "8.8.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-import": "2.25.4",
-    "jest": "27.4.7",
+    "jest": "27.5.1",
     "nodemon": "2.0.15",
     "prettier": "2.5.1",
     "supertest": "6.2.2",
