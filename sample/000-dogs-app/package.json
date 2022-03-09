@@ -21,7 +21,7 @@
     "@nestjs/terminus": "8.0.3",
     "@nestjs/testing": "8.2.6",
     "reflect-metadata": "0.1.13",
-    "rxjs": "7.4.0"
+    "rxjs": "7.5.5"
   },
   "devDependencies": {
     "@types/jest": "27.4.0",
