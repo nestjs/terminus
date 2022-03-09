@@ -18,7 +18,7 @@
     "@nestjs/common": "8.2.6",
     "@nestjs/core": "8.2.6",
     "@nestjs/platform-express": "8.2.6",
-    "@nestjs/terminus": "8.0.3",
+    "@nestjs/terminus": "8.0.4",
     "@nestjs/typeorm": "8.0.3",
     "mysql": "2.18.1",
     "reflect-metadata": "0.1.13",
