@@ -34,7 +34,7 @@
     ]
   },
   "dependencies": {
-    "check-disk-space": "3.1.0"
+    "check-disk-space": "3.3.0"
   },
   "devDependencies": {
     "@commitlint/cli": "15.0.0",
