@@ -57,9 +57,9 @@ export class MongooseHealthIndicator extends HealthIndicator {
    * Returns the connection of the current DI context
    */
   private getContextConnection(): any | null {
-    const {
-      getConnectionToken,
-    } = require('@nestjs/mongoose') as typeof NestJSMongoose;
+    const { getConnectionToken } =
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      require('@nestjs/mongoose') as typeof NestJSMongoose;
 
     try {
       return this.moduleRef.get(

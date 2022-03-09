@@ -5,5 +5,5 @@ export {
   HealthCheck,
   HealthCheckService,
   HealthCheckError,
-  HealthCheckResult
+  HealthCheckResult,
 } from './health-check';
