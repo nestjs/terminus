@@ -66,7 +66,7 @@
     "cli-color": "2.0.1",
     "delete-empty": "3.0.0",
     "eslint": "8.10.0",
-    "eslint-config-prettier": "8.3.0",
+    "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "2.25.4",
     "fastify": "3.27.4",
     "fastify-formbody": "5.2.0",
