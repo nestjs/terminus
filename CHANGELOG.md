@@ -1,3 +1,5 @@
+## [8.0.6](https://github.com/nestjs/terminus/compare/8.0.5...8.0.6) (2022-03-16)
+
 ## [8.0.4](https://github.com/nestjs/terminus/compare/8.0.3...8.0.4) (2022-01-16)
 
 ### Bug Fixes
