@@ -49,7 +49,7 @@
     "@nestjs/platform-express": "8.4.3",
     "@nestjs/platform-fastify": "8.4.3",
     "@nestjs/sequelize": "8.0.0",
-    "@nestjs/swagger": "5.2.0",
+    "@nestjs/swagger": "5.2.1",
     "@nestjs/testing": "8.4.3",
     "@nestjs/typeorm": "8.0.3",
     "@release-it/conventional-changelog": "3.3.0",
