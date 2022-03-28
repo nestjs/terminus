@@ -37,8 +37,8 @@
     "check-disk-space": "3.3.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "15.0.0",
-    "@commitlint/config-angular": "15.0.0",
+    "@commitlint/cli": "16.2.3",
+    "@commitlint/config-angular": "16.2.3",
     "@grpc/grpc-js": "1.5.10",
     "@grpc/proto-loader": "0.6.9",
     "@nestjs/axios": "0.0.7",
