@@ -83,7 +83,7 @@
     "nats": "2.6.1",
     "portfinder": "1.0.28",
     "prettier": "2.6.2",
-    "redis": "4.0.4",
+    "redis": "4.0.6",
     "reflect-metadata": "0.1.13",
     "release-it": "14.14.0",
     "rxjs-compat": "6.6.7",
