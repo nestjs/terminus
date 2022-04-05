@@ -93,7 +93,7 @@
     "supertest": "6.2.2",
     "ts-jest": "27.1.4",
     "ts-node": "10.7.0",
-    "typeorm": "0.2.45",
+    "typeorm": "0.3.5",
     "typescript": "4.6.3",
     "wait-port": "0.2.9"
   },
