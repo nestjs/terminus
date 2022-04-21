@@ -2,7 +2,6 @@ import { GRPCHealthIndicator } from './grpc.health';
 import { checkPackages } from '../../utils/checkPackage.util';
 import { Transport } from '@nestjs/microservices';
 import { UnhealthyResponseCodeError, TimeoutError } from '../../errors';
-import { Error } from 'mongoose';
 import { HealthCheckError } from '../../health-check/health-check.error';
 jest.mock('../../utils/checkPackage.util');
 
