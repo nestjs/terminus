@@ -60,7 +60,7 @@
     "@typescript-eslint/eslint-plugin": "5.23.0",
     "@typescript-eslint/parser": "5.23.0",
     "amqp-connection-manager": "4.1.3",
-    "amqplib": "0.8.0",
+    "amqplib": "0.9.0",
     "cli-color": "2.0.2",
     "delete-empty": "3.0.0",
     "eslint": "8.15.0",
