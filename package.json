@@ -26,7 +26,8 @@
     "test:e2e": "jest --config=e2e/jest-e2e.json --detectOpenHandles --forceExit",
     "test:ut": "jest --config=jest.json --detectOpenHandles",
     "test:ut:cov": "npm run test:ut -- --coverage",
-    "release": "release-it"
+    "release": "release-it",
+    "prepare": "husky install"
   },
   "lint-staged": {
     "*.ts": [
@@ -99,11 +100,5 @@
     "@nestjs/core": "8.x",
     "reflect-metadata": "0.1.x",
     "rxjs": "7.x"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -c .commitlintrc.json -E HUSKY_GIT_PARAMS"
-    }
   }
 }
