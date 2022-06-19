@@ -1,3 +1,7 @@
+
+
+## [8.0.8](https://github.com/nestjs/terminus/compare/8.0.7...8.0.8) (2022-06-19)
+
 ## [8.0.6](https://github.com/nestjs/terminus/compare/8.0.5...8.0.6) (2022-03-16)
 
 ## [8.0.4](https://github.com/nestjs/terminus/compare/8.0.3...8.0.4) (2022-01-16)
@@ -614,4 +618,3 @@ In order to migrate, check out: https://docs.nestjs.com/migration-guide#terminus
 
 
 # [5.3.0](https://github.com/nestjs/terminus/compare/7.0.1...7.1.0-next.0) (2018-09-03)
-
