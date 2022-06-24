@@ -1,7 +1,7 @@
 ## PR Checklist
 Please check if your PR fulfills the following requirements:
 
-- [ ] The commit message follows our guidelines: https://github.com/nestjs/nest/blob/master/CONTRIBUTING.md
+- [ ] The commit message follows our guidelines: https://github.com/nestjs/terminus/blob/master/CONTRIBUTING.md
 - [ ] Tests for the changes have been added (for bug fixes / features)
 - [ ] Docs have been added / updated (for bug fixes / features)
 
