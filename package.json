@@ -1,6 +1,6 @@
 {
   "name": "@nestjs/terminus",
-  "version": "8.0.8",
+  "version": "8.1.0-beta.1",
   "description": "Nest - modern, fast, powerful node.js web framework (@terminus)",
   "repository": {
     "type": "git",
@@ -42,6 +42,9 @@
     "@commitlint/config-angular": "17.0.0",
     "@grpc/grpc-js": "1.6.7",
     "@grpc/proto-loader": "0.6.12",
+    "@mikro-orm/core": "^5.2.1",
+    "@mikro-orm/mysql": "^5.2.1",
+    "@mikro-orm/nestjs": "^5.0.2",
     "@nestjs/axios": "0.0.7",
     "@nestjs/common": "8.4.5",
     "@nestjs/core": "8.4.5",

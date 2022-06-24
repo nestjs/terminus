@@ -1,5 +1,14 @@
 
 
+# [8.1.0-beta.1](https://github.com/nestjs/terminus/compare/8.1.0-beta.0...8.1.0-beta.1) (2022-06-26)
+
+# [8.1.0-beta.0](https://github.com/nestjs/terminus/compare/8.0.8...8.1.0-beta.0) (2022-06-26)
+
+
+### Features
+
+* **health-indicator:** add mikro-orm health indicator ([aecbe4b](https://github.com/nestjs/terminus/commit/aecbe4b66881b74542279b1ed7a9864db1e0831e))
+
 ## [8.0.8](https://github.com/nestjs/terminus/compare/8.0.7...8.0.8) (2022-06-19)
 
 ## [8.0.6](https://github.com/nestjs/terminus/compare/8.0.5...8.0.6) (2022-03-16)
