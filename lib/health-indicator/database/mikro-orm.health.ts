@@ -107,7 +107,6 @@ export class MikroOrmHealthIndicator extends HealthIndicator {
   private getContextConnection(): Connection | null {
     const mikro = this.moduleRef.get(MikroORM, { strict: false });
 
-    console.log(mikro);
     const connection: Connection = mikro.em.getConnection();
 
     if (!connection) {
