@@ -3,11 +3,7 @@ import { ModuleRef } from '@nestjs/core';
 import { HealthCheckError } from '../../health-check/health-check.error';
 
 import { Connection, MikroORM } from '@mikro-orm/core';
-import { MikroOrmModule } from '@mikro-orm/nestjs';
-import {
-  TimeoutError,
-  //ConnectionNotFoundError,
-} from '../../errors';
+import { TimeoutError } from '../../errors';
 import {
   TimeoutError as PromiseTimeoutError,
   promiseTimeout,
