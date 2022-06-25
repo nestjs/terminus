@@ -125,6 +125,8 @@ export class MikroOrmHealthIndicator extends HealthIndicator {
     switch (type) {
       case 'postgresql':
       case 'mysql':
+      case 'mariadb':
+      case 'sqlite':
         check = connection.execute('SELECT 1');
         break;
       default:
