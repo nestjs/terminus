@@ -2,7 +2,7 @@ import { Injectable, NotImplementedException, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { HealthCheckError } from '../../health-check/health-check.error';
 
-import { Connection, MikroORM } from '@mikro-orm/core';
+import type { Connection } from '@mikro-orm/core';
 import { TimeoutError } from '../../errors';
 import {
   TimeoutError as PromiseTimeoutError,
@@ -101,7 +101,7 @@ export class MikroOrmHealthIndicator extends HealthIndicator {
    * Returns the connection of the current DI context
    */
   private getContextConnection(): Connection | null {
-    const mikro = this.moduleRef.get(MikroORM, { strict: false });
+    const mikro = this.moduleRef.get('MikroORM', { strict: false });
 
     const connection: Connection = mikro.em.getConnection();
 
