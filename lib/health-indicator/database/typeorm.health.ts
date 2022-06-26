@@ -58,13 +58,13 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
   /**
    * Returns the connection of the current DI context
    */
-  private getContextConnection(): TypeOrm.Connection | null {
-    const { getConnectionToken } =
+  private getContextConnection(): TypeOrm.DataSource | null {
+    const { getDataSourceToken } =
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('@nestjs/typeorm/dist/common/typeorm.utils') as typeof NestJSTypeOrm;
 
     try {
-      return this.moduleRef.get(getConnectionToken() as string, {
+      return this.moduleRef.get(getDataSourceToken(), {
         strict: false,
       });
     } catch (err) {
@@ -75,7 +75,7 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
   private async checkMongoDBConnection(connection: any) {
     return new Promise<void>((resolve, reject) => {
       const driver = connection.driver as any;
-      // Hacky workaround which uses the native MongoClient
+      // FIXME: Hacky workaround which uses the native MongoClient
       driver.mongodb.MongoClient.connect(
         connection.options.url
           ? connection.options.url
@@ -131,7 +131,7 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
     let isHealthy = false;
     this.checkDependantPackages();
 
-    const connection: TypeOrm.Connection | null =
+    const connection: TypeOrm.DataSource | null =
       options.connection || this.getContextConnection();
     const timeout = options.timeout || 1000;
 
