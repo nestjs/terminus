@@ -1,5 +1,7 @@
 
 
+# [8.1.0-beta.1](https://github.com/nestjs/terminus/compare/8.1.0-beta.0...8.1.0-beta.1) (2022-06-26)
+
 # [8.1.0-beta.0](https://github.com/nestjs/terminus/compare/8.0.8...8.1.0-beta.0) (2022-06-26)
 
 
