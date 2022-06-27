@@ -11,6 +11,7 @@ import {
   HealthIndicator,
   GRPCHealthIndicator,
 } from '.';
+import { MikroOrmHealthIndicator } from './database/mikro-orm.health';
 
 /**
  * All the health indicators terminus provides as array
@@ -24,4 +25,5 @@ export const HEALTH_INDICATORS: Type<HealthIndicator>[] = [
   MemoryHealthIndicator,
   MicroserviceHealthIndicator,
   GRPCHealthIndicator,
+  MikroOrmHealthIndicator,
 ];
