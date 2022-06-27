@@ -2,7 +2,7 @@ import { Injectable, NotImplementedException, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { HealthCheckError } from '../../health-check/health-check.error';
 
-import * as MikroOrmNestJS from '@mikro-orm/core';
+import * as MikroOrm from '@mikro-orm/core';
 import { TimeoutError } from '../../errors';
 import {
   TimeoutError as PromiseTimeoutError,
@@ -100,12 +100,12 @@ export class MikroOrmHealthIndicator extends HealthIndicator {
   /**
    * Returns the connection of the current DI context
    */
-  private getContextConnection(): MikroOrmNestJS.Connection | null {
+  private getContextConnection(): MikroOrm.Connection | null {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { MikroORM } = require('@mikro-orm/core') as typeof MikroOrmNestJS;
+    const { MikroORM } = require('@mikro-orm/core') as typeof MikroOrm;
     const mikro = this.moduleRef.get(MikroORM, { strict: false });
 
-    const connection: MikroOrmNestJS.Connection = mikro.em.getConnection();
+    const connection: MikroOrm.Connection = mikro.em.getConnection();
 
     if (!connection) {
       return null;
@@ -120,7 +120,7 @@ export class MikroOrmHealthIndicator extends HealthIndicator {
    * @param timeout The timeout how long the ping should maximum take
    *
    */
-  private async pingDb(connection: MikroOrmNestJS.Connection, timeout: number) {
+  private async pingDb(connection: MikroOrm.Connection, timeout: number) {
     let check: Promise<any>;
     const type = connection.getPlatform().getConfig().get('type');
 
@@ -130,6 +130,9 @@ export class MikroOrmHealthIndicator extends HealthIndicator {
       case 'mariadb':
       case 'sqlite':
         check = connection.execute('SELECT 1');
+        break;
+      case 'mongo':
+        check = connection.isConnected();
         break;
       default:
         throw new NotImplementedException(

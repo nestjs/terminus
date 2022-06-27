@@ -146,20 +146,37 @@ export function bootstrapTestingModule() {
   }
 
   function withMikroOrm() {
-    imports.push(
-      MikroOrmModule.forRoot({
-        type: 'mysql',
-        host: '0.0.0.0',
-        port: 3306,
-        user: 'root',
-        password: 'root',
-        dbName: 'test',
-        discovery: { warnWhenNoEntities: false },
-        strict: true,
-      }),
-    );
-
-    return { setHealthEndpoint };
+    return {
+      andMongo: () => {
+        imports.push(
+          MikroOrmModule.forRoot({
+            type: 'mongo',
+            dbName: 'test',
+            discovery: { warnWhenNoEntities: false },
+            strict: true,
+            clientUrl: 'mongodb://0.0.0.0:27017'
+          }),
+        );
+    
+        return { setHealthEndpoint };
+      },
+      andMysql: () => {
+        imports.push(
+          MikroOrmModule.forRoot({
+            type: 'mysql',
+            host: '0.0.0.0',
+            port: 3306,
+            user: 'root',
+            password: 'root',
+            dbName: 'test',
+            discovery: { warnWhenNoEntities: false },
+            strict: true,
+          }),
+        );
+    
+        return { setHealthEndpoint };
+      }
+    }
   }
 
   function withHttp() {

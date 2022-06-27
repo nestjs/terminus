@@ -43,6 +43,7 @@
     "@grpc/grpc-js": "1.6.7",
     "@grpc/proto-loader": "0.6.12",
     "@mikro-orm/core": "^5.2.1",
+    "@mikro-orm/mongodb": "^5.2.1",
     "@mikro-orm/mysql": "^5.2.1",
     "@mikro-orm/nestjs": "^5.0.2",
     "@nestjs/axios": "0.0.7",
