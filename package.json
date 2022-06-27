@@ -79,7 +79,7 @@
     "husky": "8.0.1",
     "jest": "27.5.1",
     "lint-staged": "12.4.2",
-    "mongoose": "6.3.0",
+    "mongoose": "6.4.1",
     "mysql2": "2.3.3",
     "nats": "2.7.1",
     "portfinder": "1.0.28",
