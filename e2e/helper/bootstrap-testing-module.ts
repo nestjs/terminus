@@ -24,6 +24,8 @@ import {
 import { SequelizeModule } from '@nestjs/sequelize';
 import { MongooseModule } from '@nestjs/mongoose';
 import { HttpModule } from '@nestjs/axios';
+import { MikroOrmHealthIndicator } from '../../lib/health-indicator/database/mikro-orm.health';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
 
 type TestingHealthFunc = (props: {
   healthCheck: HealthCheckService;
@@ -34,6 +36,7 @@ type TestingHealthFunc = (props: {
   mongoose: MongooseHealthIndicator;
   sequelize: SequelizeHealthIndicator;
   typeorm: TypeOrmHealthIndicator;
+  mikroOrm: MikroOrmHealthIndicator;
 }) => Promise<HealthCheckResult>;
 
 function createHealthController(func: TestingHealthFunc) {
@@ -48,6 +51,7 @@ function createHealthController(func: TestingHealthFunc) {
       private readonly mongoose: MongooseHealthIndicator,
       private readonly sequelize: SequelizeHealthIndicator,
       private readonly typeorm: TypeOrmHealthIndicator,
+      private readonly mikroOrm: MikroOrmHealthIndicator,
     ) {}
     // @ts-ignore
     @Get('health')
@@ -61,6 +65,7 @@ function createHealthController(func: TestingHealthFunc) {
         mongoose: this.mongoose,
         sequelize: this.sequelize,
         typeorm: this.typeorm,
+        mikroOrm: this.mikroOrm,
       });
     }
   }
@@ -140,6 +145,40 @@ export function bootstrapTestingModule() {
     return { setHealthEndpoint };
   }
 
+  function withMikroOrm() {
+    return {
+      andMongo: () => {
+        imports.push(
+          MikroOrmModule.forRoot({
+            type: 'mongo',
+            dbName: 'test',
+            discovery: { warnWhenNoEntities: false },
+            strict: true,
+            clientUrl: 'mongodb://0.0.0.0:27017'
+          }),
+        );
+    
+        return { setHealthEndpoint };
+      },
+      andMysql: () => {
+        imports.push(
+          MikroOrmModule.forRoot({
+            type: 'mysql',
+            host: '0.0.0.0',
+            port: 3306,
+            user: 'root',
+            password: 'root',
+            dbName: 'test',
+            discovery: { warnWhenNoEntities: false },
+            strict: true,
+          }),
+        );
+    
+        return { setHealthEndpoint };
+      }
+    }
+  }
+
   function withHttp() {
     imports.push(HttpModule);
     return { setHealthEndpoint };
@@ -150,6 +189,7 @@ export function bootstrapTestingModule() {
     withTypeOrm,
     withSequelize,
     withHttp,
+    withMikroOrm,
     setHealthEndpoint,
   };
 }
