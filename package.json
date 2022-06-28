@@ -86,7 +86,7 @@
     "prettier": "2.6.2",
     "redis": "4.1.0",
     "reflect-metadata": "0.1.13",
-    "release-it": "15.1.0",
+    "release-it": "15.1.1",
     "rxjs-compat": "6.6.7",
     "sequelize": "6.21.0",
     "sequelize-typescript": "2.1.3",
