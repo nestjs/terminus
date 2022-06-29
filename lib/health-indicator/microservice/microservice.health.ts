@@ -11,27 +11,27 @@ import {
 } from '../../utils';
 import { HealthIndicator, HealthIndicatorResult } from '../';
 
-// Since @nestjs/microservices is lazyily loaded we are not able to use
+// Since @nestjs/microservices is lazily loaded we are not able to use
 // its types. It would end up in the d.ts file if we would use the types.
 // In case the user does not use this HealthIndicator and therefore has not
 // @nestjs/microservices installed, TS would complain.
 // To workaround this, we try to be as type-secure as possible, without
 // duplicating the interfaces.
 // That is why the user has to pass the options as Type Param.
-interface MicrserviceOptionsLike {
+interface MicroserviceOptionsLike {
   transport?: number;
   options?: object;
 }
 
 /**
- * The options for the `MicroserviceHealthInidcator`
+ * The options for the `MicroserviceHealthIndicator`
  */
 export type MicroserviceHealthIndicatorOptions<
-  T extends MicrserviceOptionsLike = MicrserviceOptionsLike,
+  T extends MicroserviceOptionsLike = MicroserviceOptionsLike,
 > = {
   // The transport option is in the `MicroserviceOptionsLike` (e.g. RedisOptions)
   // optional. We need to use this information, therefore it is required
-  transport: Required<PropType<MicrserviceOptionsLike, 'transport'>>;
+  transport: Required<PropType<MicroserviceOptionsLike, 'transport'>>;
   timeout?: number;
 } & Partial<T>;
 
@@ -115,7 +115,7 @@ export class MicroserviceHealthIndicator extends HealthIndicator {
    *   options: { host: 'localhost', port: 3001 },
    * })
    */
-  async pingCheck<MicroserviceClientOptions extends MicrserviceOptionsLike>(
+  async pingCheck<MicroserviceClientOptions extends MicroserviceOptionsLike>(
     key: string,
     options: MicroserviceHealthIndicatorOptions<MicroserviceClientOptions>,
   ): Promise<HealthIndicatorResult> {

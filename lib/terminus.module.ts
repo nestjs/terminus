@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { DiskusageLibProvider } from './health-indicator/disk/diskusage-lib.provider';
+import { DiskUsageLibProvider } from './health-indicator/disk/disk-usage-lib.provider';
 import { HEALTH_INDICATORS } from './health-indicator/health-indicators.provider';
 import { HealthCheckService } from './health-check';
 import { HealthCheckExecutor } from './health-check/health-check-executor.service';
@@ -12,7 +12,7 @@ import { HealthCheckExecutor } from './health-check/health-check-executor.servic
  */
 @Module({
   providers: [
-    DiskusageLibProvider,
+    DiskUsageLibProvider,
     HealthCheckExecutor,
     HealthCheckService,
     ...HEALTH_INDICATORS,

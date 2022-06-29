@@ -3,7 +3,7 @@ import { isNil } from '@nestjs/common/utils/shared.utils';
 import checkDiskSpace from 'check-disk-space';
 
 import { HealthIndicator, HealthIndicatorResult } from '../';
-import { CHECKDISKSPACE_LIB } from '../../terminus.constants';
+import { CHECK_DIST_SPACE_LIB } from '../../terminus.constants';
 import { StorageExceededError } from '../../errors';
 import { STORAGE_EXCEEDED } from '../../errors/messages.constant';
 import {
@@ -30,7 +30,7 @@ export class DiskHealthIndicator extends HealthIndicator {
    * @internal
    */
   constructor(
-    @Inject(CHECKDISKSPACE_LIB)
+    @Inject(CHECK_DIST_SPACE_LIB)
     private checkDiskSpace: CheckDiskSpace,
   ) {
     super();

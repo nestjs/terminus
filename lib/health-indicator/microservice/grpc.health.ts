@@ -59,7 +59,7 @@ export type HealthServiceCheck = (
   service: string,
 ) => Promise<any>;
 
-// Since @nestjs/microservices is lazyily loaded we are not able to use
+// Since @nestjs/microservices is lazily loaded we are not able to use
 // its types. It would end up in the d.ts file if we would use the types.
 // In case the user does not use this HealthIndicator and therefore has not
 // @nestjs/microservices installed, TS would complain.
@@ -132,7 +132,7 @@ export class GRPCHealthIndicator extends HealthIndicator {
   }
 
   /**
-   * Checks if the given service is up using the standart health check
+   * Checks if the given service is up using the standard health check
    * specification of GRPC.
    *
    * https://github.com/grpc/grpc/blob/master/doc/health-checking.md

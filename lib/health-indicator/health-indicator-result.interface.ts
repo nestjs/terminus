@@ -9,7 +9,7 @@ export type HealthIndicatorStatus = 'up' | 'down';
  */
 export type HealthIndicatorResult = {
   /**
-   * The key of the health indicator which should be uniqe
+   * The key of the health indicator which should be unique
    */
   [key: string]: {
     /**
