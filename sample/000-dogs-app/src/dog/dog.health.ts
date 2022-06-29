@@ -23,6 +23,6 @@ export class DogHealthIndicator extends HealthIndicator {
     if (isHealthy) {
       return result;
     }
-    throw new HealthCheckError('Dogcheck failed', result);
+    throw new HealthCheckError('Dog check failed', result);
   }
 }
