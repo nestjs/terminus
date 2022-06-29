@@ -91,7 +91,7 @@ export class HttpHealthIndicator extends HealthIndicator {
   }
 
   /**
-   * Checks if the given url response in the given timeout
+   * Checks if the given url responses in the given timeout
    * and returns a result object corresponding to the result
    * @param key The key which will be used for the result object
    * @param url The url which should be request
