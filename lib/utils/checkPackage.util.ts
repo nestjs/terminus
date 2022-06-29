@@ -12,7 +12,7 @@ import { Logger } from '@nestjs/common/services/logger.service';
 const MISSING_REQUIRED_DEPENDENCY = (names: string[], reason: string): string =>
   `The "${names.join('", "')}" package${
     names.length > 1 ? 's are' : ' is'
-  } missing. Please, make sure to install the library${
+  } missing. Please, make sure to install the librar${
     names.length > 1 ? 'ies' : 'y'
   } ($ npm install ${names.join(' ')}) to take advantage of ${reason}.`;
 
