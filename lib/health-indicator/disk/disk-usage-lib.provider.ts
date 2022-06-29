@@ -1,6 +1,6 @@
-import { CHECK_DIST_SPACE_LIB } from '../../terminus.constants';
+import { CHECK_DISK_SPACE_LIB } from '../../terminus.constants';
 
-import checkDistSpace from 'check-disk-space';
+import checkDiskSpace from 'check-disk-space';
 
 /**
  * Wrapper of the check-disk-space library.
@@ -8,6 +8,6 @@ import checkDistSpace from 'check-disk-space';
  * @internal
  */
 export const DiskUsageLibProvider = {
-  provide: CHECK_DIST_SPACE_LIB,
-  useValue: checkDistSpace,
+  provide: CHECK_DISK_SPACE_LIB,
+  useValue: checkDiskSpace,
 };
