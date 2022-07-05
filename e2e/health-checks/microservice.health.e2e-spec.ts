@@ -1,6 +1,5 @@
 import * as request from 'supertest';
 import { INestApplication, INestMicroservice } from '@nestjs/common';
-
 import {
   bootstrapMicroservice,
   bootstrapTestingModule,
@@ -62,6 +61,33 @@ describe('MicroserviceHealthIndicator', () => {
 
     const details = {
       tcp: { status: 'down', message: 'connect ECONNREFUSED 0.0.0.0:8889' },
+    };
+    return request(app.getHttpServer()).get('/health').expect(503).expect({
+      status: 'error',
+      info: {},
+      error: details,
+      details,
+    });
+  });
+
+  it('should throw an error if an RMQ microservice is not reachable', async () => {
+    app = await setHealthEndpoint(({ healthCheck, microservice }) =>
+      healthCheck.check([
+        async () =>
+          microservice.pingCheck('rmq', {
+            transport: Transport.RMQ,
+            options: {
+              host: '0.0.0.0',
+              port: 8889,
+            },
+          }),
+      ]),
+    ).start();
+
+    await microservice.close();
+
+    const details = {
+      rmq: { status: 'down', message: 'rmq is not available' },
     };
     return request(app.getHttpServer()).get('/health').expect(503).expect({
       status: 'error',
