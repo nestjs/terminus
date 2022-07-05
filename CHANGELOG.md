@@ -1,5 +1,19 @@
 
 
+## [8.1.1](https://github.com/nestjs/terminus/compare/8.1.0...8.1.1) (2022-07-05)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @grpc/proto-loader to v0.6.13 ([b8e4254](https://github.com/nestjs/terminus/commit/b8e425465023bacad9e8511bc56fa3f53ec072de))
+* **deps:** update dependency @nestjs/axios to v0.0.8 ([370a265](https://github.com/nestjs/terminus/commit/370a26575512856508b19488bda51b14aa3363a2))
+* **deps:** update dependency @nestjs/sequelize to v8.0.1 ([7cdabbc](https://github.com/nestjs/terminus/commit/7cdabbca07277e4a69612ae5ce090983b3fe77fb))
+* **deps:** update dependency mongoose to v6.4.1 ([8b3cefd](https://github.com/nestjs/terminus/commit/8b3cefdd6b8bc15c42fe25d758d0e268b92b127e))
+* **deps:** update nest monorepo to v8.4.7 ([2b92488](https://github.com/nestjs/terminus/commit/2b92488e8fbfa8f1281ce68b03c30d1b7d21ad97))
+* **microservice:** RMQ health check always healthy even when down ([da3f6c0](https://github.com/nestjs/terminus/commit/da3f6c0164f07d2e1e65ddd1937ce425f6d5bd0f)), closes [#1891](https://github.com/nestjs/terminus/issues/1891)
+* **typo:** fix another typo ([c3fc5f3](https://github.com/nestjs/terminus/commit/c3fc5f386f24149a490277b7ff79113a6b66b9d6))
+* **typo:** fix bunch of typos ([139ca49](https://github.com/nestjs/terminus/commit/139ca49aa289671809aaefc3e4ef5542dd798c53))
+
 # [8.1.0](https://github.com/nestjs/terminus/compare/8.0.8...8.1.0) (2022-06-27)
 
 
