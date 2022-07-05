@@ -129,6 +129,13 @@ export class MicroserviceHealthIndicator extends HealthIndicator {
       if (isError(err)) {
         this.generateError(key, err, timeout);
       }
+
+      const errorMsg = `${key} is not available`;
+
+      throw new HealthCheckError(
+        errorMsg,
+        this.getStatus(key, false, { message: errorMsg }),
+      );
     }
 
     return this.getStatus(key, isHealthy);
