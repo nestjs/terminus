@@ -1,5 +1,27 @@
 
 
+# [9.0.0](https://github.com/nestjs/terminus/compare/8.1.1...9.0.0) (2022-07-10)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @nestjs/mongoose to v9.2.0 ([41774ea](https://github.com/nestjs/terminus/commit/41774ea8d74aa0ea221b41f5a501725c81bd1c3d))
+* **deps:** update dependency mongoose to v6.4.4 ([2ade1c3](https://github.com/nestjs/terminus/commit/2ade1c39d2aa1074ab7d14fd2f81f1d861f5ec33))
+* **deps:** update dependency sequelize to v6.21.2 ([9502239](https://github.com/nestjs/terminus/commit/950223903fe6761c6b1e4a0d45e57c19650fdb0d))
+* **deps:** update dependency typeorm to v0.3.7 ([819f0ad](https://github.com/nestjs/terminus/commit/819f0adf96aa080a7188c004f730277e41931eee))
+
+
+### Features
+
+* upgrade to NestJS v9 ([2809388](https://github.com/nestjs/terminus/commit/28093885a68ec04fc89c636428fff7e736c558a9))
+
+
+### BREAKING CHANGES
+
+* - Upgrade to NestJS v9
+- Replace `redis` with `ioredis` package
+- Drop Node v10 support
+
 ## [8.1.1](https://github.com/nestjs/terminus/compare/8.1.0...8.1.1) (2022-07-05)
 
 
