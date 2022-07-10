@@ -13,5 +13,24 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: 14.x
+
+    - name: Cache node modules
+      id: cache-npm
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-node-modules
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+
+    - if: ${{ steps.cache-npm.outputs.cache-hit == 'false' }}
+      name: List the state of node modules
+      continue-on-error: true
+      run: npm list
+
     - run: npm ci
     - run: npm run format:check
