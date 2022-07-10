@@ -78,7 +78,7 @@
     "gulp-debug": "4.0.0",
     "gulp-typescript": "5.0.1",
     "husky": "8.0.1",
-    "ioredis": "^5.1.0",
+    "ioredis": "5.1.0",
     "jest": "27.5.1",
     "lint-staged": "12.4.2",
     "mongoose": "6.4.4",
