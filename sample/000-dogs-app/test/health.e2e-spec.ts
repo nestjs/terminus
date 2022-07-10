@@ -23,7 +23,7 @@ describe('HealthModule (e2e)', () => {
         status: 'ok',
         info: { dog: { status: 'up', badboys: 0 } },
         error: {},
-        details: { dog: { status: 'up', badboys: 0 } }
+        details: { dog: { status: 'up', badboys: 0 } },
       });
   });
 });

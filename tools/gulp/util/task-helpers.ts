@@ -6,9 +6,11 @@ function isDirectory(path: string) {
 }
 
 export function getFolders(dir: string) {
-  return readdirSync(dir).filter(file => isDirectory(join(dir, file)));
+  return readdirSync(dir).filter((file) => isDirectory(join(dir, file)));
 }
 
 export function getDirs(base: string) {
-  return getFolders(base).map((path) => `${base}/${path}`).filter(p => !p.includes('deprecated'));
+  return getFolders(base)
+    .map((path) => `${base}/${path}`)
+    .filter((p) => !p.includes('deprecated'));
 }

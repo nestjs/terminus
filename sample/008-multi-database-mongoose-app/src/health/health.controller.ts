@@ -1,6 +1,10 @@
 import { Controller, Get } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
-import { HealthCheck, HealthCheckService, MongooseHealthIndicator } from '@nestjs/terminus';
+import {
+  HealthCheck,
+  HealthCheckService,
+  MongooseHealthIndicator,
+} from '@nestjs/terminus';
 import { Connection } from 'mongoose';
 
 @Controller('health')
@@ -14,13 +18,14 @@ export class HealthController {
     private mongoose: MongooseHealthIndicator,
   ) {}
 
-  
   @Get()
   @HealthCheck()
   check() {
     return this.health.check([
-      async () => this.mongoose.pingCheck('mongodb1', { connection: this.mongodb1 }),
-      async () => this.mongoose.pingCheck('mongodb2', { connection: this.mongodb2 }),
+      async () =>
+        this.mongoose.pingCheck('mongodb1', { connection: this.mongodb1 }),
+      async () =>
+        this.mongoose.pingCheck('mongodb2', { connection: this.mongodb2 }),
     ]);
   }
 }

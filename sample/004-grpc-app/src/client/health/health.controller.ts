@@ -1,7 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
 import { GrpcOptions } from '@nestjs/microservices';
-import { HealthCheck, HealthCheckService, GRPCHealthIndicator } from '@nestjs/terminus';
-  
+import {
+  HealthCheck,
+  HealthCheckService,
+  GRPCHealthIndicator,
+} from '@nestjs/terminus';
+
 @Controller('health')
 export class HealthController {
   constructor(
@@ -13,10 +17,10 @@ export class HealthController {
   @HealthCheck()
   check() {
     return this.health.check([
-        async () =>
-          this.grpc.checkService<GrpcOptions>('hero_service', 'hero.health.v1', {
-            timeout: 2000,
-          }),
+      async () =>
+        this.grpc.checkService<GrpcOptions>('hero_service', 'hero.health.v1', {
+          timeout: 2000,
+        }),
     ]);
   }
 }

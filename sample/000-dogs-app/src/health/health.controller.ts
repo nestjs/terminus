@@ -13,7 +13,7 @@ export class HealthController {
   @HealthCheck()
   check() {
     return this.health.check([
-      async () => this.dogHealthIndicator.isHealthy('dog')
+      async () => this.dogHealthIndicator.isHealthy('dog'),
     ]);
   }
 }

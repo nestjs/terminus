@@ -62,10 +62,5 @@ task('test:e2e:samples', async () =>
 
 task(
   'build:all',
-  series([
-    'build:app',
-    'install:samples',
-    'move',
-    'build:samples',
-  ]),
+  series(['build:app', 'install:samples', 'move', 'build:samples']),
 );

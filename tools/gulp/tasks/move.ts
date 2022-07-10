@@ -11,13 +11,15 @@ function move() {
   const distFiles = src(['./dist/**/*']);
 
   return samplesDirs.reduce(
-    (distFile, dir) => distFile.pipe(dest(join(dir, '/node_modules/@nestjs/terminus'))),
+    (distFile, dir) =>
+      distFile.pipe(dest(join(dir, '/node_modules/@nestjs/terminus'))),
     distFiles,
   );
 }
 
 task('move', move);
 task('move:protos', () => {
-  return src(join(libPath, './**/*.proto'), { base: libPath })
-    .pipe(dest(join(distPath)));
+  return src(join(libPath, './**/*.proto'), { base: libPath }).pipe(
+    dest(join(distPath)),
+  );
 });

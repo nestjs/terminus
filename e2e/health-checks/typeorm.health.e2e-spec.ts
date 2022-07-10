@@ -26,29 +26,29 @@ describe('TypeOrmHealthIndicator', () => {
       });
     });
 
-  // FIXME: Find a better way to test timeout errors
-  // This test has been disabled because it is flaky
-  //   it('should throw an error if runs into timeout error', async () => {
-  //     app = await setHealthEndpoint(({ healthCheck, typeorm }) =>
-  //       healthCheck.check([
-  //         async () => typeorm.pingCheck('typeorm', { timeout: 1 }),
-  //       ]),
-  //     ).start();
+    // FIXME: Find a better way to test timeout errors
+    // This test has been disabled because it is flaky
+    //   it('should throw an error if runs into timeout error', async () => {
+    //     app = await setHealthEndpoint(({ healthCheck, typeorm }) =>
+    //       healthCheck.check([
+    //         async () => typeorm.pingCheck('typeorm', { timeout: 1 }),
+    //       ]),
+    //     ).start();
 
-  //     const details = {
-  //       typeorm: {
-  //         status: 'down',
-  //         message: 'timeout of 1ms exceeded',
-  //       },
-  //     };
+    //     const details = {
+    //       typeorm: {
+    //         status: 'down',
+    //         message: 'timeout of 1ms exceeded',
+    //       },
+    //     };
 
-  //     return request(app.getHttpServer()).get('/health').expect(503).expect({
-  //       status: 'error',
-  //       info: {},
-  //       error: details,
-  //       details,
-  //     });
-  //   });
+    //     return request(app.getHttpServer()).get('/health').expect(503).expect({
+    //       status: 'error',
+    //       info: {},
+    //       error: details,
+    //       details,
+    //     });
+    //   });
   });
 
   afterEach(async () => await app.close());

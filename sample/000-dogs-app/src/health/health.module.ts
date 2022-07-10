@@ -5,6 +5,6 @@ import { HealthController } from './health.controller';
 
 @Module({
   imports: [TerminusModule, DogModule],
-  controllers: [HealthController]
+  controllers: [HealthController],
 })
 export class HealthModule {}

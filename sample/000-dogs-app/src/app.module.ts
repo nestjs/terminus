@@ -3,9 +3,6 @@ import { HealthModule } from './health/health.module';
 import { DogModule } from './dog/dog.module';
 
 @Module({
-  imports: [
-    HealthModule,
-    DogModule,
-  ],
+  imports: [HealthModule, DogModule],
 })
 export class AppModule {}

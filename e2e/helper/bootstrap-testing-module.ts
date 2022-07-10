@@ -154,10 +154,10 @@ export function bootstrapTestingModule() {
             dbName: 'test',
             discovery: { warnWhenNoEntities: false },
             strict: true,
-            clientUrl: 'mongodb://0.0.0.0:27017'
+            clientUrl: 'mongodb://0.0.0.0:27017',
           }),
         );
-    
+
         return { setHealthEndpoint };
       },
       andMysql: () => {
@@ -173,10 +173,10 @@ export function bootstrapTestingModule() {
             strict: true,
           }),
         );
-    
+
         return { setHealthEndpoint };
-      }
-    }
+      },
+    };
   }
 
   function withHttp() {

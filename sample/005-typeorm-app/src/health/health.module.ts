@@ -8,9 +8,9 @@ import { HealthController } from './health.controller';
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
-      port: 3306, 
-      username: 'root', 
-      password: 'root', 
+      port: 3306,
+      username: 'root',
+      password: 'root',
       database: 'test',
       autoLoadEntities: true,
       synchronize: true,
