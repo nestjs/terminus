@@ -24,7 +24,7 @@
     "class-validator": "0.13.2",
     "lodash": "4.17.21",
     "reflect-metadata": "0.1.13",
-    "rxjs": "7.5.5"
+    "rxjs": "7.5.6"
   },
   "devDependencies": {
     "@types/jest": "28.1.4",
