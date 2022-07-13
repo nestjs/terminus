@@ -79,7 +79,7 @@
     "gulp-typescript": "5.0.1",
     "husky": "8.0.1",
     "ioredis": "5.2.0",
-    "jest": "28.1.2",
+    "jest": "28.1.3",
     "lint-staged": "13.0.3",
     "mongoose": "6.4.4",
     "mysql2": "2.3.3",
