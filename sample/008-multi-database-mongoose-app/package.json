@@ -40,7 +40,7 @@
     "nodemon": "2.0.19",
     "prettier": "2.7.1",
     "supertest": "6.2.4",
-    "ts-jest": "28.0.5",
+    "ts-jest": "28.0.6",
     "ts-loader": "9.3.1",
     "ts-node": "10.9.1",
     "tsconfig-paths": "4.0.0",
