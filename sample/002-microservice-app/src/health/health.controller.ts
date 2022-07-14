@@ -5,7 +5,6 @@ import {
   HealthCheckService,
   MicroserviceHealthIndicator,
 } from '@nestjs/terminus';
-import { parseURL } from 'ioredis/built/utils'
 
 @Controller('health')
 export class HealthController {
@@ -24,13 +23,11 @@ export class HealthController {
           options: { host: 'localhost', port: 8889 },
         }),
       async () =>
-        this.microservice.pingCheck<RedisOptions>('redis', {
+        this.microservice.pingCheck('redis', {
           transport: Transport.REDIS,
           options: {
-            ...parseURL('redis://localhost:6379'),
-            // or use the ioreids options directly
-            // host: 'localhost',
-            // port: 16379,
+            host: 'localhost',
+            port: 16379,
           },
         }),
     ]);
