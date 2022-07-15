@@ -76,7 +76,7 @@ body:
       description: |
         Which version of `@nestjs/terminus` are you using?
         **Tip**: Make sure that all of yours `@nestjs/*` dependencies are in sync!
-      placeholder: "8.0.1"
+      placeholder: "9.0.0"
 
   - type: input
     attributes:
