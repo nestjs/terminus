@@ -27,7 +27,7 @@ export class HealthController {
           transport: Transport.REDIS,
           options: {
             host: 'localhost',
-            port: 16379,
+            port: 6379,
           },
         }),
     ]);
