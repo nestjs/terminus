@@ -1,5 +1,40 @@
 
 
+# [9.1.0](https://github.com/nestjs/terminus/compare/9.0.0...9.1.0) (2022-07-30)
+
+
+### Bug Fixes
+
+* **deps:** pin dependency ioredis to 5.2.0 ([#1940](https://github.com/nestjs/terminus/issues/1940)) ([0947d43](https://github.com/nestjs/terminus/commit/0947d439723181da285fea3d524349a332bce4ac))
+* **deps:** update dependency @grpc/grpc-js to v1.6.8 ([#1959](https://github.com/nestjs/terminus/issues/1959)) ([9dc1530](https://github.com/nestjs/terminus/commit/9dc15309ae1d580e72a88a3e49ad18a2dd9a5e03))
+* **deps:** update dependency @grpc/proto-loader to v0.7.0 ([#1943](https://github.com/nestjs/terminus/issues/1943)) ([0371fd0](https://github.com/nestjs/terminus/commit/0371fd06d9bc57f5bb9a45fbb531495a028eb4e4))
+* **deps:** update dependency @nestjs/axios to v0.1.0 ([8df8a6f](https://github.com/nestjs/terminus/commit/8df8a6fe47280a7a4ce89a36087d6c2df2ec0c5f))
+* **deps:** update dependency @nestjs/sequelize to v9 ([a77d589](https://github.com/nestjs/terminus/commit/a77d5895cc9f97cdf0bc83e71d75341be4b89e0b))
+* **deps:** update dependency @nestjs/terminus to v8.1.1 ([7f27da6](https://github.com/nestjs/terminus/commit/7f27da6c35e5e018b4f67391061bcf09db9c4b33))
+* **deps:** update dependency @nestjs/terminus to v9 ([1d4dfbd](https://github.com/nestjs/terminus/commit/1d4dfbd290174a69624cd0d44609cb777467548d))
+* **deps:** update dependency @nestjs/typeorm to v9 ([eb6a75c](https://github.com/nestjs/terminus/commit/eb6a75c62c3df9f5a1b8b37891df685490c742ed))
+* **deps:** update dependency check-disk-space to v3.3.1 ([701f9ed](https://github.com/nestjs/terminus/commit/701f9ed523dbb3f6566b0ef069b582e3b9bf8da6))
+* **deps:** update dependency ioredis to v5.2.2 ([a821e5c](https://github.com/nestjs/terminus/commit/a821e5c82ca5fc3403bbc12df472f6183137c5e7))
+* **deps:** update dependency mongoose to v6.5.0 ([#1953](https://github.com/nestjs/terminus/issues/1953)) ([c5fb4b3](https://github.com/nestjs/terminus/commit/c5fb4b3cd3e0e56741fc592cbdf3ebaf0c917408))
+* **deps:** update dependency redis to v4.2.0 ([041e81f](https://github.com/nestjs/terminus/commit/041e81f3c37d12f0fa550c4eaa2c19983db572bc))
+* **deps:** update dependency rxjs to v7.5.6 ([74d7953](https://github.com/nestjs/terminus/commit/74d79535370145148092920029bf48e51c70b60b))
+* **deps:** update dependency sequelize to v6.21.3 ([1539e8a](https://github.com/nestjs/terminus/commit/1539e8acb5aa828fcb6791720fa13dcc327a9ee5))
+* **deps:** update nest monorepo to v9 ([b0e7db0](https://github.com/nestjs/terminus/commit/b0e7db0e31789355b0198e3db9173603662b3e41))
+* **deps:** update nest monorepo to v9.0.3 ([0051eff](https://github.com/nestjs/terminus/commit/0051eff20efb02cb3bb85d5c3affb94791c19ba6))
+* **deps:** update nest monorepo to v9.0.5 ([9d7adc2](https://github.com/nestjs/terminus/commit/9d7adc24f27a24455ff1e095fe186683e20c9250))
+* **deps:** update nest monorepo to v9.0.7 ([4574960](https://github.com/nestjs/terminus/commit/45749601cd63b8b04f1a9f4bc5927361f9e3731d))
+* **http:** responseCheck callback does not get executed on unhealthy http res ([d9147d8](https://github.com/nestjs/terminus/commit/d9147d8af1048506bb907e71976790a55c75c482)), closes [#1944](https://github.com/nestjs/terminus/issues/1944)
+
+
+### Features
+
+* add pretty error print log ([818504e](https://github.com/nestjs/terminus/commit/818504e6ec93f8bfaf67a5714cd1cbf9d2ff2a56)), closes [#1925](https://github.com/nestjs/terminus/issues/1925)
+
+
+### Performance Improvements
+
+* run health indicators in parallel ([b791916](https://github.com/nestjs/terminus/commit/b79191616c22795fa5b308688f6ae24b29cb63da)), closes [#1965](https://github.com/nestjs/terminus/issues/1965)
+
 # [9.0.0](https://github.com/nestjs/terminus/compare/8.1.1...9.0.0) (2022-07-10)
 
 
