@@ -18,7 +18,7 @@
     "@nestjs/common": "9.0.7",
     "@nestjs/core": "9.0.7",
     "@nestjs/platform-express": "9.0.7",
-    "@nestjs/terminus": "9.0.0",
+    "@nestjs/terminus": "9.1.0",
     "@nestjs/testing": "9.0.7",
     "reflect-metadata": "0.1.13",
     "rxjs": "7.5.6"
