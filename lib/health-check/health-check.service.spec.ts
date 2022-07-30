@@ -1,9 +1,15 @@
 import { Test } from '@nestjs/testing';
 import { HealthCheckService } from './health-check.service';
 import { HealthCheckExecutor } from './health-check-executor.service';
+import { ERROR_LOGGER } from './error-logger/error-logger.provider';
+import { ErrorLogger } from './error-logger/error-logger.interface';
 
 const healthCheckExecutorMock: Partial<HealthCheckExecutor> = {
   execute: jest.fn(),
+};
+
+const errorLoggerMock: ErrorLogger = {
+  getErrorMessage: jest.fn(),
 };
 
 describe('HealthCheckService', () => {
@@ -17,6 +23,10 @@ describe('HealthCheckService', () => {
         {
           provide: HealthCheckExecutor,
           useValue: healthCheckExecutorMock,
+        },
+        {
+          provide: ERROR_LOGGER,
+          useValue: errorLoggerMock,
         },
       ],
     });

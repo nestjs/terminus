@@ -2,8 +2,11 @@ import {
   Injectable,
   ServiceUnavailableException,
   Logger,
+  Inject,
 } from '@nestjs/common';
 import { HealthIndicatorFunction } from '../health-indicator';
+import { ErrorLogger } from './error-logger/error-logger.interface';
+import { ERROR_LOGGER } from './error-logger/error-logger.provider';
 import { HealthCheckExecutor } from './health-check-executor.service';
 import { HealthCheckResult } from './health-check-result.interface';
 
@@ -13,19 +16,13 @@ import { HealthCheckResult } from './health-check-result.interface';
  */
 @Injectable()
 export class HealthCheckService {
-  constructor(private healthCheckExecutor: HealthCheckExecutor) {}
+  constructor(
+    private readonly healthCheckExecutor: HealthCheckExecutor,
+    @Inject(ERROR_LOGGER)
+    private readonly errorLogger: ErrorLogger,
+  ) {}
 
   private readonly logger = new Logger(HealthCheckService.name);
-
-  /**
-   * Logs an error message of terminus
-   * @param message The log message
-   * @param error The error which was thrown
-   */
-  private logError(message: string, causes: any) {
-    message = `${message} ${JSON.stringify(causes)}`;
-    this.logger.error(message);
-  }
 
   /**
    * Checks the given health indicators
@@ -47,7 +44,15 @@ export class HealthCheckService {
     if (result.status === 'ok') {
       return result;
     }
-    this.logError('Health Check has failed!', result.error);
+
+    if (result.error) {
+      const msg = this.errorLogger.getErrorMessage(
+        'Health Check has failed!',
+        result.details,
+      );
+      this.logger.error(msg);
+    }
+
     throw new ServiceUnavailableException(result);
   }
 }

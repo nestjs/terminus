@@ -50,38 +50,44 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
   /**
    * @internal
    */
-  beforeApplicationShutdown() {
+  beforeApplicationShutdown(): void {
     this.isShuttingDown = true;
   }
 
   private async executeHealthIndicators(
     healthIndicators: HealthIndicatorFunction[],
   ) {
-    const results: any[] = [];
-    const errors: any[] = [];
-    for (const healthIndicator of healthIndicators) {
-      try {
-        const result = await healthIndicator();
-        result && results.push(result);
-      } catch (error) {
+    const results: HealthIndicatorResult[] = [];
+    const errors: HealthIndicatorResult[] = [];
+
+    const result = await Promise.allSettled(healthIndicators.map((h) => h()));
+
+    result.forEach((res) => {
+      if (res.status === 'fulfilled') {
+        results.push(res.value);
+      } else {
+        const error = res.reason;
         // Is not an expected error. Throw further!
         if (!isHealthCheckError(error)) throw error;
         // Is a expected health check error
         errors.push((error as HealthCheckError).causes);
       }
-    }
+    });
 
     return { results, errors };
   }
 
-  private getSummary(results: any[]): HealthIndicatorResult {
+  private getSummary(results: HealthIndicatorResult[]): HealthIndicatorResult {
     return results.reduce(
       (previous: any, current: any) => Object.assign(previous, current),
       {},
     );
   }
 
-  private getResult(results: any[], errors: any[]): HealthCheckResult {
+  private getResult(
+    results: HealthIndicatorResult[],
+    errors: HealthIndicatorResult[],
+  ): HealthCheckResult {
     const infoErrorCombined = results.concat(errors);
 
     const info = this.getSummary(results);

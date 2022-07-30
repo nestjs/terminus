@@ -204,6 +204,30 @@ describe(`HttpHealthIndicator`, () => {
 
       return request(app.getHttpServer()).get('/health').expect(503);
     });
+
+    it('should be healthy if remote server returns 400 and status code 400 is expected', async () => {
+      await remoteServer.get('/', (_, res) => res.sendStatus(400)).start();
+      app = await setHealthEndpoint(({ healthCheck, http }) =>
+        healthCheck.check([
+          () =>
+            http.responseCheck(
+              'http',
+              remoteServer.url,
+              (res) => res.status === 400,
+            ),
+        ]),
+      ).start();
+
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(200)
+        .expect({
+          status: 'ok',
+          info: { http: { status: 'up' } },
+          error: {},
+          details: { http: { status: 'up' } },
+        });
+    });
   });
 
   afterEach(async () => await app.close());
