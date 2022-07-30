@@ -4,12 +4,7 @@ import { HealthIndicator, HealthIndicatorResult } from '..';
 import { HealthCheckError } from '../../health-check/health-check.error';
 import { lastValueFrom, Observable } from 'rxjs';
 import { ModuleRef } from '@nestjs/core';
-import {
-  checkPackages,
-  isAxiosError,
-  isError,
-  isHealthCheckError,
-} from '../../utils';
+import { checkPackages, isAxiosError } from '../../utils';
 import type * as NestJSAxios from '@nestjs/axios';
 import { AxiosRequestConfig, AxiosResponse } from './axios.interfaces';
 import { Logger } from '@nestjs/common/services/logger.service';
@@ -138,35 +133,35 @@ export class HttpHealthIndicator extends HealthIndicator {
   ): Promise<HealthIndicatorResult> {
     const httpService = httpClient || this.getHttpService();
 
+    let response: AxiosResponse;
+    let axiosError: AxiosError | null = null;
+
     try {
-      const response = await lastValueFrom(
+      response = await lastValueFrom(
         httpService.request({ url: url.toString(), ...options }),
       );
-
-      const isHealthy = await callback(response);
-
-      if (!isHealthy) {
-        throw new HealthCheckError(
-          `${key} is not available`,
-          this.getStatus(key, false),
-        );
+    } catch (error) {
+      if (isAxiosError(error) && error.response) {
+        response = error.response;
+        axiosError = error;
+      } else {
+        throw error;
       }
-
-      return this.getStatus(key, isHealthy);
-    } catch (err) {
-      if (isAxiosError(err)) {
-        throw this.generateHttpError(key, err);
-      }
-
-      if (isHealthCheckError(HealthCheckError)) {
-        throw err;
-      }
-
-      if (isError(err)) {
-        throw new HealthCheckError(err.message, this.getStatus(key, false));
-      }
-
-      throw new HealthCheckError(err as any, this.getStatus(key, false));
     }
+
+    const isHealthy = await callback(response);
+
+    if (!isHealthy) {
+      if (axiosError) {
+        throw this.generateHttpError(key, axiosError);
+      }
+
+      throw new HealthCheckError(
+        `${key} is not available`,
+        this.getStatus(key, false),
+      );
+    }
+
+    return this.getStatus(key, true);
   }
 }
