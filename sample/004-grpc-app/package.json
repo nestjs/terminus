@@ -18,7 +18,7 @@
     "test:watch": "jest --watch --config=jest.json"
   },
   "dependencies": {
-    "@grpc/grpc-js": "1.6.8",
+    "@grpc/grpc-js": "1.6.9",
     "@grpc/proto-loader": "0.7.0",
     "@nestjs/common": "9.0.7",
     "@nestjs/core": "9.0.7",
