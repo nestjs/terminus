@@ -14,9 +14,7 @@
     "outDir": "./dist",
     "rootDir": "./lib",
     "alwaysStrict": true,
-    "skipLibCheck": true,
-    "declarationDir": "dist/dts",
-    "emitDeclarationOnly": true
+    "skipLibCheck": true
   },
   "include": ["lib/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts", "sample/**/*.ts", "e2e_old"]
