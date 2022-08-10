@@ -1,5 +1,16 @@
 
 
+## [9.1.1](https://github.com/nestjs/terminus/compare/9.1.0...9.1.1) (2022-08-10)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @grpc/grpc-js to v1.6.9 ([24d9d45](https://github.com/nestjs/terminus/commit/24d9d45b3da86c7f3ab7f2f0b6ca3f9c489be118))
+* **deps:** update dependency @nestjs/terminus to v9.1.0 ([53b323f](https://github.com/nestjs/terminus/commit/53b323fa530d8d07e6c76d6e8a96b6bca1066a9a))
+* **deps:** update dependency mongoose to v6.5.2 ([33fc690](https://github.com/nestjs/terminus/commit/33fc69091f2e06ce8c0142300643b6d3375ed688))
+* **deps:** update nest monorepo to v9.0.8 ([97ff06c](https://github.com/nestjs/terminus/commit/97ff06cde6f847a36bed4978f7459d28013eec9e))
+* **http:** remove axios reference in type defs ([d449820](https://github.com/nestjs/terminus/commit/d44982076824c80900fcffaa33db383db4e9a36c)), closes [#1991](https://github.com/nestjs/terminus/issues/1991)
+
 # [9.1.0](https://github.com/nestjs/terminus/compare/9.0.0...9.1.0) (2022-07-30)
 
 
