@@ -1,5 +1,4 @@
 import { Injectable, Scope } from '@nestjs/common';
-import { AxiosError } from 'axios';
 import { HealthIndicator, HealthIndicatorResult } from '..';
 import { HealthCheckError } from '../../health-check/health-check.error';
 import { lastValueFrom, Observable } from 'rxjs';
@@ -9,6 +8,7 @@ import type * as NestJSAxios from '@nestjs/axios';
 import { AxiosRequestConfig, AxiosResponse } from './axios.interfaces';
 import { Logger } from '@nestjs/common/services/logger.service';
 import { URL } from 'url';
+import { AxiosError } from '../../errors/axios.error';
 
 const logger = new Logger('HttpHealthIndicator');
 

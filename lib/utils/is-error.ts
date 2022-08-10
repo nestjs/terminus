@@ -1,5 +1,6 @@
+import { AxiosError } from '../errors/axios.error';
 import { HealthCheckError } from '../';
-import { AxiosError } from 'axios';
+
 
 export function isHealthCheckError(err: any): err is HealthCheckError {
   return err?.isHealthCheckError;
