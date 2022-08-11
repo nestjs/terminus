@@ -91,7 +91,7 @@
     "reflect-metadata": "0.1.13",
     "release-it": "15.3.0",
     "rollup": "2.77.3",
-    "rollup-plugin-dts": "^4.2.2",
+    "rollup-plugin-dts": "4.2.2",
     "rxjs-compat": "6.6.7",
     "sequelize": "6.21.3",
     "sequelize-typescript": "2.1.3",
