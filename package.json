@@ -86,7 +86,7 @@
     "mongoose": "6.5.2",
     "mysql2": "2.3.3",
     "nats": "2.7.1",
-    "portfinder": "1.0.29",
+    "portfinder": "1.0.32",
     "prettier": "2.7.1",
     "reflect-metadata": "0.1.13",
     "release-it": "15.3.0",
