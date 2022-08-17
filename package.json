@@ -60,7 +60,7 @@
     "@nestjs/swagger": "6.0.5",
     "@nestjs/testing": "9.0.9",
     "@nestjs/typeorm": "9.0.0",
-    "@release-it/conventional-changelog": "5.0.0",
+    "@release-it/conventional-changelog": "5.1.0",
     "@types/express": "4.17.13",
     "@types/jest": "28.1.7",
     "@types/node": "16.11.30",
