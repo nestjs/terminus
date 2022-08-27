@@ -41,8 +41,8 @@
     "check-disk-space": "3.3.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "17.0.3",
-    "@commitlint/config-angular": "17.0.3",
+    "@commitlint/cli": "17.1.1",
+    "@commitlint/config-angular": "17.1.0",
     "@grpc/grpc-js": "1.6.10",
     "@grpc/proto-loader": "0.7.2",
     "@mikro-orm/core": "5.3.1",
