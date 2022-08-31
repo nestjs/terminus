@@ -90,7 +90,7 @@
     "prettier": "2.7.1",
     "reflect-metadata": "0.1.13",
     "release-it": "15.4.1",
-    "rollup": "2.78.1",
+    "rollup": "2.79.0",
     "rollup-plugin-dts": "4.2.2",
     "rxjs-compat": "6.6.7",
     "sequelize": "6.21.4",
