@@ -63,6 +63,7 @@ export function checkPackages(packageNames: string[], reason: string): any[] {
 
   if (missingDependenciesNames.length) {
     logger.error(MISSING_REQUIRED_DEPENDENCY(missingDependenciesNames, reason));
+    Logger.flush();
     process.exit(1);
   }
   return packages.map((pkg) => pkg.pkg);
