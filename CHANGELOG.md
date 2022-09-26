@@ -1,5 +1,24 @@
 
 
+## [9.1.2](https://github.com/nestjs/terminus/compare/9.1.1...9.1.2) (2022-09-26)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @grpc/grpc-js to v1.6.10 ([71fdb51](https://github.com/nestjs/terminus/commit/71fdb51ad3b8c394aaf12d879841e90d341f6f6c))
+* **deps:** update dependency @grpc/grpc-js to v1.7.1 ([8bb7c2b](https://github.com/nestjs/terminus/commit/8bb7c2b03314b708000feb8d7b1919d9608a9308))
+* **deps:** update dependency @grpc/proto-loader to v0.7.2 ([331c666](https://github.com/nestjs/terminus/commit/331c66617b5e7c32946be74a7883644f84f2f5c9))
+* **deps:** update dependency @nestjs/typeorm to v9.0.1 ([d7adb5f](https://github.com/nestjs/terminus/commit/d7adb5f0b96ec1b70eb9c62f0fd7c17b7f6191dd))
+* **deps:** update dependency ioredis to v5.2.3 ([1c077ae](https://github.com/nestjs/terminus/commit/1c077aea92d5a6d21aaafa1695d44c08de9f1bda))
+* **deps:** update dependency mongoose to v6.6.1 ([0f5c99f](https://github.com/nestjs/terminus/commit/0f5c99f0e1f3193cc437fbff97317be1d0ae5ddf))
+* **deps:** update dependency redis to v4.3.1 ([8c85460](https://github.com/nestjs/terminus/commit/8c85460a9d77a9aaccc288964724f16b2437c865))
+* **deps:** update dependency sequelize to v6.21.4 ([c494563](https://github.com/nestjs/terminus/commit/c494563f2f4d40e66016813080902417352ce4cc))
+* **deps:** update dependency sequelize to v6.23.1 ([03565c5](https://github.com/nestjs/terminus/commit/03565c545ebe809fe0be9cc8712f06900702e6ad))
+* **deps:** update dependency typeorm to v0.3.10 ([d00b555](https://github.com/nestjs/terminus/commit/d00b555b6025aa9a0c6ac17dc3c691f54e12a12f))
+* **deps:** update nest monorepo ([670d4ce](https://github.com/nestjs/terminus/commit/670d4ce41543ba1c7fce0a6b6af7cc38e6e3a9aa))
+* **deps:** update nest monorepo to v9.0.11 ([b8ed5fe](https://github.com/nestjs/terminus/commit/b8ed5fef044a6abf4eb03c31f28795569d48cb1f))
+* flush logs on package resolution failure ([56cb4b5](https://github.com/nestjs/terminus/commit/56cb4b5f09d53eb8a9b6ad82be7cd28c06479d11))
+
 ## [9.1.1](https://github.com/nestjs/terminus/compare/9.1.0...9.1.1) (2022-08-10)
 
 
