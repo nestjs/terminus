@@ -24,7 +24,7 @@ type Method =
 
 export interface AxiosRequestConfig {
   url?: string;
-  method?: Method;
+  method?: Method | string;
   baseURL?: string;
   transformRequest?: any | any[];
   transformResponse?: any | any[];
