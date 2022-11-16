@@ -107,6 +107,56 @@
     "@nestjs/common": "9.x",
     "@nestjs/core": "9.x",
     "reflect-metadata": "0.1.x",
-    "rxjs": "7.x"
+    "rxjs": "7.x",
+    "@nestjs/microservices": "*",
+    "@grpc/grpc-js": "*",
+    "@grpc/proto-loader": "*",
+    "@nestjs/axios": "*",
+    "@mikro-orm/nestjs": "*",
+    "@mikro-orm/core": "*",
+    "@nestjs/mongoose": "*",
+    "@nestjs/sequelize": "*",
+    "@nestjs/typeorm": "*",
+    "mongoose": "*",
+    "sequelize": "*",
+    "typeorm": "*"
+  },
+  "peerDependenciesMeta": {
+    "@nestjs/microservices": {
+      "optional": true
+    },
+    "@grpc/grpc-js": {
+      "optional": true
+    },
+    "@grpc/proto-loader": {
+      "optional": true
+    },
+    "@nestjs/axios": {
+      "optional": true
+    },
+    "@mikro-orm/nestjs": {
+      "optional": true
+    },
+    "@mikro-orm/core": {
+      "optional": true
+    },
+    "@nestjs/mongoose": {
+      "optional": true
+    },
+    "@nestjs/sequelize": {
+      "optional": true
+    },
+    "@nestjs/typeorm": {
+      "optional": true
+    },
+    "mongoose": {
+      "optional": true
+    },
+    "sequelize": {
+      "optional": true
+    },
+    "typeorm": {
+      "optional": true
+    }
   }
 }
