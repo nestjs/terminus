@@ -1,5 +1,7 @@
 
 
+## [9.1.3](https://github.com/nestjs/terminus/compare/9.1.3-beta.0...9.1.3) (2022-11-17)
+
 ## [9.1.3-beta.0](https://github.com/nestjs/terminus/compare/9.1.2...9.1.3-beta.0) (2022-11-17)
 
 
