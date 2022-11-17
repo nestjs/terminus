@@ -19,3 +19,6 @@ CONTRIBUTING.md
 .release-it.json
 .commitlintrc.json
 .eslintignore
+docker-compose.yml
+.nvmrc
+.husky
