@@ -1,5 +1,13 @@
 
 
+## [9.1.3-beta.0](https://github.com/nestjs/terminus/compare/9.1.2...9.1.3-beta.0) (2022-11-17)
+
+
+### Bug Fixes
+
+* **deps:** update dependency rxjs to v7.5.7 ([a87a096](https://github.com/nestjs/terminus/commit/a87a096fd4e519b085cbc58f31a7edc26f90d241))
+* **deps:** update nest monorepo ([61b272e](https://github.com/nestjs/terminus/commit/61b272eb638815df13beeb43a65842440db8e133))
+
 ## [9.1.2](https://github.com/nestjs/terminus/compare/9.1.1...9.1.2) (2022-09-26)
 
 
