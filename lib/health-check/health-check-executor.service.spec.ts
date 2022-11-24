@@ -20,6 +20,14 @@ const unhealthyCheck = async (): Promise<HealthIndicatorResult> => {
   });
 };
 
+const unhealthyCheckSync = () => {
+  throw new HealthCheckError('error', {
+    unhealthy: {
+      status: 'down',
+    },
+  });
+};
+
 describe('HealthCheckExecutorService', () => {
   let healthCheckExecutor: HealthCheckExecutor;
 
@@ -53,6 +61,26 @@ describe('HealthCheckExecutorService', () => {
     it('should return a result object with errors', async () => {
       const result = await healthCheckExecutor.execute([
         () => unhealthyCheck(),
+      ]);
+      expect(result).toEqual<HealthCheckResult>({
+        status: 'error',
+        info: {},
+        error: {
+          unhealthy: {
+            status: 'down',
+          },
+        },
+        details: {
+          unhealthy: {
+            status: 'down',
+          },
+        },
+      });
+    });
+
+    it('should return a result object with errors with sync indicator function', async () => {
+      const result = await healthCheckExecutor.execute([
+        () => unhealthyCheckSync(),
       ]);
       expect(result).toEqual<HealthCheckResult>({
         status: 'error',
