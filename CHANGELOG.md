@@ -1,5 +1,20 @@
 
 
+## [9.1.4](https://github.com/nestjs/terminus/compare/9.1.3...9.1.4) (2022-11-24)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @grpc/grpc-js to v1.7.3 ([afb87eb](https://github.com/nestjs/terminus/commit/afb87eba0389bb43cc8c4b3c88dfdfea908f024d))
+* **deps:** update dependency @grpc/proto-loader to v0.7.3 ([f52eafb](https://github.com/nestjs/terminus/commit/f52eafb0521cc7fbc28b1e2d29b8f0ac67083ee8))
+* **deps:** update dependency @nestjs/mongoose to v9.2.1 ([a1ca732](https://github.com/nestjs/terminus/commit/a1ca732215a36bb09576bfa3d07f8ffdc0a33320))
+* **deps:** update dependency ioredis to v5.2.4 ([314e647](https://github.com/nestjs/terminus/commit/314e6472556ed0c72ece9183e8c509f718bac898))
+* **deps:** update dependency mongoose to v6.7.3 ([3568a9e](https://github.com/nestjs/terminus/commit/3568a9ea05835f06eda531af5dab281ed9240ba3))
+* **deps:** update dependency redis to v4.5.0 ([4f02bcd](https://github.com/nestjs/terminus/commit/4f02bcd14e90edb3fe33d69896f307f1802fd748))
+* **deps:** update dependency sequelize to v6.25.8 ([49bee09](https://github.com/nestjs/terminus/commit/49bee09c84f8dd8a4b543e428333c5d538b72aab))
+* **deps:** update dependency sequelize-typescript to v2.1.5 ([eadedbe](https://github.com/nestjs/terminus/commit/eadedbef43dbb7568295fd74e199f25c1605abbc))
+* HealthCheckError in sync HealthIndicatorFunction ([ee06275](https://github.com/nestjs/terminus/commit/ee062758e74513fa7b058b6c680c5df592e9ba0f)), closes [#2083](https://github.com/nestjs/terminus/issues/2083)
+
 ## [9.1.3](https://github.com/nestjs/terminus/compare/9.1.3-beta.0...9.1.3) (2022-11-17)
 
 ## [9.1.3-beta.0](https://github.com/nestjs/terminus/compare/9.1.2...9.1.3-beta.0) (2022-11-17)
