@@ -55,7 +55,7 @@
     "@nestjs/microservices": "9.2.0",
     "@nestjs/mongoose": "9.2.1",
     "@nestjs/platform-express": "9.2.0",
-    "@nestjs/platform-fastify": "9.2.0",
+    "@nestjs/platform-fastify": "9.2.1",
     "@nestjs/sequelize": "9.0.0",
     "@nestjs/swagger": "6.1.3",
     "@nestjs/testing": "9.2.0",
