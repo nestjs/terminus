@@ -15,11 +15,11 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@nestjs/common": "9.2.0",
-    "@nestjs/core": "9.2.0",
-    "@nestjs/platform-express": "9.2.0",
+    "@nestjs/common": "9.2.1",
+    "@nestjs/core": "9.2.1",
+    "@nestjs/platform-express": "9.2.1",
     "@nestjs/terminus": "9.1.4",
-    "@nestjs/testing": "9.2.0",
+    "@nestjs/testing": "9.2.1",
     "reflect-metadata": "0.1.13",
     "rxjs": "7.5.7"
   },
