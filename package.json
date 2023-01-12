@@ -96,7 +96,7 @@
     "sequelize": "6.28.0",
     "sequelize-typescript": "2.1.5",
     "sort-package-json": "2.1.0",
-    "supertest": "6.3.1",
+    "supertest": "6.3.3",
     "ts-jest": "28.0.8",
     "ts-node": "10.9.1",
     "typeorm": "0.3.10",
