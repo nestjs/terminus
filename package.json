@@ -57,7 +57,7 @@
     "@nestjs/platform-express": "9.2.1",
     "@nestjs/platform-fastify": "9.2.1",
     "@nestjs/sequelize": "9.0.0",
-    "@nestjs/swagger": "6.1.3",
+    "@nestjs/swagger": "6.1.4",
     "@nestjs/testing": "9.2.1",
     "@nestjs/typeorm": "9.0.1",
     "@release-it/conventional-changelog": "5.1.1",
