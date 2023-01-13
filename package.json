@@ -72,7 +72,7 @@
     "cli-color": "2.0.3",
     "delete-empty": "3.0.0",
     "eslint": "8.31.0",
-    "eslint-config-prettier": "8.5.0",
+    "eslint-config-prettier": "8.6.0",
     "eslint-plugin-import": "2.26.0",
     "fastify": "4.10.2",
     "gulp": "4.0.2",
