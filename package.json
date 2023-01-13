@@ -74,7 +74,7 @@
     "eslint": "8.31.0",
     "eslint-config-prettier": "8.6.0",
     "eslint-plugin-import": "2.27.4",
-    "fastify": "4.10.2",
+    "fastify": "4.11.0",
     "gulp": "4.0.2",
     "gulp-clean": "0.4.0",
     "gulp-debug": "4.0.0",
