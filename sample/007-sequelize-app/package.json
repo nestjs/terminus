@@ -22,7 +22,7 @@
     "@nestjs/terminus": "9.1.4",
     "mysql2": "2.3.3",
     "reflect-metadata": "0.1.13",
-    "rimraf": "3.0.2",
+    "rimraf": "4.1.1",
     "rxjs": "7.8.0",
     "sequelize": "6.28.0",
     "sequelize-typescript": "2.1.5"
