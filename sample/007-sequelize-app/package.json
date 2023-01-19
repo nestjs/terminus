@@ -20,7 +20,7 @@
     "@nestjs/platform-express": "9.2.1",
     "@nestjs/sequelize": "9.0.0",
     "@nestjs/terminus": "9.1.4",
-    "mysql2": "2.3.3",
+    "mysql2": "3.0.1",
     "reflect-metadata": "0.1.13",
     "rimraf": "4.1.1",
     "rxjs": "7.8.0",
