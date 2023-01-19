@@ -83,7 +83,7 @@
     "ioredis": "5.2.5",
     "jest": "28.1.3",
     "lint-staged": "13.1.0",
-    "mongoose": "6.8.3",
+    "mongoose": "6.8.4",
     "mysql2": "2.3.3",
     "nats": "2.10.3",
     "portfinder": "1.0.32",
