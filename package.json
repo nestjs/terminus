@@ -43,7 +43,7 @@
   "devDependencies": {
     "@commitlint/cli": "17.4.2",
     "@commitlint/config-angular": "17.4.2",
-    "@grpc/grpc-js": "1.8.4",
+    "@grpc/grpc-js": "1.8.7",
     "@grpc/proto-loader": "0.7.4",
     "@mikro-orm/core": "5.6.7",
     "@mikro-orm/mongodb": "5.6.7",
