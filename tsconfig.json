@@ -1,21 +1,5 @@
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "module": "commonjs",
-    "strict": true,
-    "declaration": true,
-    "noImplicitAny": true,
-    "removeComments": false,
-    "noLib": false,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "target": "es6",
-    "sourceMap": true,
-    "outDir": "./dist",
-    "rootDir": "./lib",
-    "alwaysStrict": true,
-    "skipLibCheck": true
-  },
-  "include": ["lib/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts", "sample/**/*.ts", "e2e_old"]
+  "extends": "./tsconfig.base.json",
+  "include": ["lib/**/*", "e2e/**/*", "tools/**/*"],
+  "exclude": ["node_modules", "sample/**/*.ts"]
 }

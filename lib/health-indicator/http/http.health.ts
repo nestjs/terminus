@@ -1,4 +1,10 @@
-import { Injectable, Scope } from '@nestjs/common';
+import {
+  ConsoleLogger,
+  Inject,
+  Injectable,
+  Logger,
+  Scope,
+} from '@nestjs/common';
 import { HealthIndicator, HealthIndicatorResult } from '..';
 import { HealthCheckError } from '../../health-check/health-check.error';
 import { lastValueFrom, Observable } from 'rxjs';
@@ -6,11 +12,9 @@ import { ModuleRef } from '@nestjs/core';
 import { checkPackages, isAxiosError } from '../../utils';
 import type * as NestJSAxios from '@nestjs/axios';
 import { AxiosRequestConfig, AxiosResponse } from './axios.interfaces';
-import { Logger } from '@nestjs/common/services/logger.service';
 import { URL } from 'url';
 import { AxiosError } from '../../errors/axios.error';
-
-const logger = new Logger('HttpHealthIndicator');
+import { TERMINUS_LOGGER } from '../../health-check/logger/logger.provider';
 
 interface HttpClientLike {
   request<T = any>(config: any): Observable<AxiosResponse<T>>;
@@ -32,8 +36,13 @@ export class HttpHealthIndicator extends HealthIndicator {
    * Initializes the health indicator
    * @param httpService The HttpService provided by Nest
    */
-  constructor(private readonly moduleRef: ModuleRef) {
+  constructor(
+    private readonly moduleRef: ModuleRef,
+    @Inject(TERMINUS_LOGGER)
+    private readonly logger: ConsoleLogger,
+  ) {
     super();
+    this.logger.setContext(HttpHealthIndicator.name);
     this.checkDependantPackages();
   }
 
@@ -53,7 +62,7 @@ export class HttpHealthIndicator extends HealthIndicator {
         strict: false,
       });
     } catch (err) {
-      logger.error(
+      this.logger.error(
         'It seems like "HttpService" is not available in the current context. Are you sure you imported the HttpModule from the @nestjs/axios package?',
       );
       throw new Error(
