@@ -1,5 +1,32 @@
 
 
+# [9.2.0-beta.0](https://github.com/nestjs/terminus/compare/9.1.4...9.2.0-beta.0) (2023-01-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @grpc/grpc-js to v1.8.4 ([3094665](https://github.com/nestjs/terminus/commit/3094665bda238ee97772e82fd65afd297b55a6d7))
+* **deps:** update dependency @grpc/proto-loader to v0.7.4 ([ab21f60](https://github.com/nestjs/terminus/commit/ab21f60c07a508adc2b9c477b90558290523305c))
+* **deps:** update dependency @nestjs/axios to v1 ([85468a6](https://github.com/nestjs/terminus/commit/85468a6845553f90873321d75cbddf251ebeeb27))
+* **deps:** update dependency @nestjs/axios to v1.0.1 ([d57f7f1](https://github.com/nestjs/terminus/commit/d57f7f1fb2a0c89d39430d0ca68cca60f930958e))
+* **deps:** update dependency @nestjs/terminus to v9.1.4 ([9d12b73](https://github.com/nestjs/terminus/commit/9d12b73dd86398e723607136aae73472d7d71fa1))
+* **deps:** update dependency ioredis to v5.2.5 ([35572d9](https://github.com/nestjs/terminus/commit/35572d9af9609ab014171dfe67ce000a3709d452))
+* **deps:** update dependency mongoose to v6.7.4 ([fedafa5](https://github.com/nestjs/terminus/commit/fedafa50b930b56571eaa34199abd8a3024b4d30))
+* **deps:** update dependency mongoose to v6.8.3 ([8d6b0c4](https://github.com/nestjs/terminus/commit/8d6b0c421d0a1bdde4dcf9d52811f020c3dfcf13))
+* **deps:** update dependency mongoose to v6.8.4 ([a782dd3](https://github.com/nestjs/terminus/commit/a782dd3330e385e47df305c471edfa0716e0b599))
+* **deps:** update dependency mysql2 to v3 ([ba0879a](https://github.com/nestjs/terminus/commit/ba0879ade1e6dedf76833364e62dde34771393bd))
+* **deps:** update dependency redis to v4.5.1 ([f80cb94](https://github.com/nestjs/terminus/commit/f80cb942855a8b4e8f18dacafa6dda315d7bdfcf))
+* **deps:** update dependency rimraf to v4 ([27a7f01](https://github.com/nestjs/terminus/commit/27a7f0170f452b47bbcf46f4a62721b16caa4c0b))
+* **deps:** update dependency rxjs to v7.8.0 ([c3c9bf9](https://github.com/nestjs/terminus/commit/c3c9bf95a2f92f1c6fc3cdb665d5b4ba64c7aa83))
+* **deps:** update dependency sequelize to v6.28.0 ([5e3b96f](https://github.com/nestjs/terminus/commit/5e3b96f24ad49eb9442cecf96b492dcb8c0cb4ab))
+* **deps:** update dependency typeorm to v0.3.11 ([b6cb0d5](https://github.com/nestjs/terminus/commit/b6cb0d5ac494b842917961d2c33c84f22f969e39))
+* **deps:** update nest monorepo to v9.2.1 ([85b8a94](https://github.com/nestjs/terminus/commit/85b8a94481f4c4837e88bc7729b67faedc0fa93d))
+
+
+### Features
+
+* add custom logger ([e88c1e2](https://github.com/nestjs/terminus/commit/e88c1e2e9be0d8c6fb473ba6f814a31e2f84d3be)), closes [#2068](https://github.com/nestjs/terminus/issues/2068)
+
 ## [9.1.4](https://github.com/nestjs/terminus/compare/9.1.3...9.1.4) (2022-11-24)
 
 
