@@ -1,5 +1,13 @@
 
 
+# [9.2.0](https://github.com/nestjs/terminus/compare/9.2.0-beta.0...9.2.0) (2023-02-03)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @grpc/grpc-js to v1.8.7 ([aac1ef4](https://github.com/nestjs/terminus/commit/aac1ef43ba70c9397d4188228ec00aa28315135f))
+* **deps:** update dependency rimraf to v4.1.2 ([682b17d](https://github.com/nestjs/terminus/commit/682b17d4437b1a76fe3d7e577121b628b40b6ab1))
+
 # [9.2.0-beta.0](https://github.com/nestjs/terminus/compare/9.1.4...9.2.0-beta.0) (2023-01-27)
 
 
