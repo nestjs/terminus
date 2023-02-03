@@ -53,7 +53,6 @@ function createHealthController(func: TestingHealthFunc) {
       private readonly typeorm: TypeOrmHealthIndicator,
       private readonly mikroOrm: MikroOrmHealthIndicator,
     ) {}
-    // @ts-ignore
     @Get('health')
     health() {
       return func({

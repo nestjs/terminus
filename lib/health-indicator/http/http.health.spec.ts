@@ -3,6 +3,7 @@ import { HttpModule, HttpService } from '@nestjs/axios';
 import { HttpHealthIndicator } from './http.health';
 import { checkPackages } from '../../utils/checkPackage.util';
 import { of } from 'rxjs';
+import { TERMINUS_LOGGER } from '../../health-check/logger/logger.provider';
 jest.mock('../../utils/checkPackage.util');
 
 // == MOCKS ==
@@ -32,6 +33,13 @@ describe('Http Response Health Indicator', () => {
         {
           provide: nestJSAxiosMock.HttpService as any,
           useValue: httpServiceMock,
+        },
+        {
+          provide: TERMINUS_LOGGER,
+          useValue: {
+            error: jest.fn(),
+            setContext: jest.fn(),
+          },
         },
       ],
     }).compile();

@@ -6,6 +6,7 @@ import { HealthCheckExecutor } from './health-check/health-check-executor.servic
 import { ERROR_LOGGERS } from './health-check/error-logger/error-loggers.provider';
 import { getErrorLoggerProvider } from './health-check/error-logger/error-logger.provider';
 import { TerminusModuleOptions } from './terminus-options.interface';
+import { getLoggerProvider } from './health-check/logger/logger.provider';
 
 const providers = [
   ...ERROR_LOGGERS,
@@ -24,16 +25,20 @@ const exports_ = [HealthCheckService, ...HEALTH_INDICATORS];
  * @publicApi
  */
 @Module({
-  providers: [...providers, getErrorLoggerProvider()],
+  providers: [...providers, getErrorLoggerProvider(), getLoggerProvider()],
   exports: exports_,
 })
 export class TerminusModule {
-  static forRoot(
-    options: TerminusModuleOptions = { errorLogStyle: 'json' },
-  ): DynamicModule {
+  static forRoot(options: TerminusModuleOptions = {}): DynamicModule {
+    const { errorLogStyle = 'json', logger = true } = options;
+
     return {
       module: TerminusModule,
-      providers: [...providers, getErrorLoggerProvider(options.errorLogStyle)],
+      providers: [
+        ...providers,
+        getErrorLoggerProvider(errorLogStyle),
+        getLoggerProvider(logger),
+      ],
       exports: exports_,
     };
   }

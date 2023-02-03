@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "module": "commonjs",
+    "strict": true,
+    "declaration": true,
+    "noImplicitAny": true,
+    "removeComments": false,
+    "noLib": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es6",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./lib",
+    "alwaysStrict": true,
+    "skipLibCheck": true
+  },
+}
