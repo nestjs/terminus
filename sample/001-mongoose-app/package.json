@@ -22,7 +22,7 @@
     "@nestjs/terminus": "9.1.4",
     "mongoose": "6.8.4",
     "reflect-metadata": "0.1.13",
-    "rimraf": "4.1.1",
+    "rimraf": "4.1.2",
     "rxjs": "7.8.0"
   },
   "devDependencies": {
