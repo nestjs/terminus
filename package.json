@@ -95,7 +95,7 @@
     "rxjs-compat": "6.6.7",
     "sequelize": "6.28.0",
     "sequelize-typescript": "2.1.5",
-    "sort-package-json": "2.4.0",
+    "sort-package-json": "2.4.1",
     "supertest": "6.3.3",
     "ts-jest": "28.0.8",
     "ts-node": "10.9.1",
