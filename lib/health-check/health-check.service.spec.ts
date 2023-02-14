@@ -4,7 +4,7 @@ import { HealthCheckExecutor } from './health-check-executor.service';
 import { ERROR_LOGGER } from './error-logger/error-logger.provider';
 import { ErrorLogger } from './error-logger/error-logger.interface';
 import { TERMINUS_LOGGER } from './logger/logger.provider';
-import { ConsoleLogger } from '@nestjs/common';
+import { ConsoleLogger, LoggerService } from '@nestjs/common';
 
 const healthCheckExecutorMock: Partial<HealthCheckExecutor> = {
   execute: jest.fn(),
@@ -14,8 +14,7 @@ const errorLoggerMock: ErrorLogger = {
   getErrorMessage: jest.fn(),
 };
 
-const loggerMock: Partial<ConsoleLogger> = {
-  setContext: jest.fn(),
+const loggerMock: Partial<LoggerService> = {
   log: jest.fn(),
   error: jest.fn(),
   warn: jest.fn(),
@@ -25,7 +24,7 @@ const loggerMock: Partial<ConsoleLogger> = {
 describe('HealthCheckService', () => {
   let healthCheckExecutor: HealthCheckExecutor;
   let healthCheckService: HealthCheckService;
-  let logger: ConsoleLogger;
+  let logger: LoggerService;
   let errorLogger: ErrorLogger;
 
   beforeEach(async () => {

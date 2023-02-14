@@ -3,6 +3,7 @@ import {
   ServiceUnavailableException,
   Inject,
   ConsoleLogger,
+  LoggerService,
 } from '@nestjs/common';
 import { HealthIndicatorFunction } from '../health-indicator';
 import { ErrorLogger } from './error-logger/error-logger.interface';
@@ -22,9 +23,11 @@ export class HealthCheckService {
     @Inject(ERROR_LOGGER)
     private readonly errorLogger: ErrorLogger,
     @Inject(TERMINUS_LOGGER)
-    private readonly logger: ConsoleLogger,
+    private readonly logger: LoggerService,
   ) {
-    this.logger.setContext(HealthCheckService.name);
+    if (this.logger instanceof ConsoleLogger) {
+      this.logger.setContext(HealthCheckService.name);
+    }
   }
 
   /**
