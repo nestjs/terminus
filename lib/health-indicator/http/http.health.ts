@@ -2,7 +2,6 @@ import {
   ConsoleLogger,
   Inject,
   Injectable,
-  Logger,
   Scope,
 } from '@nestjs/common';
 import { HealthIndicator, HealthIndicatorResult } from '..';
