@@ -1,5 +1,16 @@
 
 
+## [9.2.1](https://github.com/nestjs/terminus/compare/9.2.0...9.2.1) (2023-02-15)
+
+
+### Bug Fixes
+
+* **deps:** update dependency ioredis to v5.3.0 ([7969397](https://github.com/nestjs/terminus/commit/7969397059b7305906a8450ea582bc8ee24ce590))
+* **deps:** update dependency mongoose to v6.9.0 ([d3cc5ba](https://github.com/nestjs/terminus/commit/d3cc5baf30388ec425c4231b1dd014f4b62b9822))
+* **deps:** update dependency redis to v4.6.4 ([ef505b9](https://github.com/nestjs/terminus/commit/ef505b908001bc7039735763b21791e15e9717da))
+* **deps:** update nest monorepo ([0ebac8a](https://github.com/nestjs/terminus/commit/0ebac8a92138e7657f108663ec615e5bff2ea20c))
+* Fix crash when setting logger to false ([3d417fd](https://github.com/nestjs/terminus/commit/3d417fdd1c6fcbf789ccb5db49823efe8436a8e2))
+
 # [9.2.0](https://github.com/nestjs/terminus/compare/9.2.0-beta.0...9.2.0) (2023-02-03)
 
 
