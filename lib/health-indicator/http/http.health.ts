@@ -1,9 +1,4 @@
-import {
-  ConsoleLogger,
-  Inject,
-  Injectable,
-  Scope,
-} from '@nestjs/common';
+import { ConsoleLogger, Inject, Injectable, Scope } from '@nestjs/common';
 import { HealthIndicator, HealthIndicatorResult } from '..';
 import { HealthCheckError } from '../../health-check/health-check.error';
 import { lastValueFrom, Observable } from 'rxjs';
@@ -31,7 +26,7 @@ interface HttpClientLike {
 })
 export class HttpHealthIndicator extends HealthIndicator {
   private nestJsAxios!: typeof NestJSAxios;
-  
+
   constructor(
     private readonly moduleRef: ModuleRef,
     @Inject(TERMINUS_LOGGER)
