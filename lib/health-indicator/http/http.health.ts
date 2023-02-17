@@ -31,10 +31,7 @@ interface HttpClientLike {
 })
 export class HttpHealthIndicator extends HealthIndicator {
   private nestJsAxios!: typeof NestJSAxios;
-  /**
-   * Initializes the health indicator
-   * @param httpService The HttpService provided by Nest
-   */
+  
   constructor(
     private readonly moduleRef: ModuleRef,
     @Inject(TERMINUS_LOGGER)
