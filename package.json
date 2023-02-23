@@ -93,7 +93,7 @@
     "rollup": "2.79.1",
     "rollup-plugin-dts": "4.2.3",
     "rxjs-compat": "6.6.7",
-    "sequelize": "6.28.0",
+    "sequelize": "6.29.0",
     "sequelize-typescript": "2.1.5",
     "sort-package-json": "2.4.1",
     "supertest": "6.3.3",
