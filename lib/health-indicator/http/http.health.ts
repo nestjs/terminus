@@ -33,7 +33,9 @@ export class HttpHealthIndicator extends HealthIndicator {
     private readonly logger: ConsoleLogger,
   ) {
     super();
-    this.logger.setContext(HttpHealthIndicator.name);
+    if (this.logger instanceof ConsoleLogger) {
+      this.logger.setContext(HttpHealthIndicator.name);
+    }
     this.checkDependantPackages();
   }
 
