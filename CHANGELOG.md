@@ -1,5 +1,13 @@
 
 
+## [9.2.2](https://github.com/nestjs/terminus/compare/9.2.1...9.2.2) (2023-03-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency mongoose to v6.9.2 ([62433b6](https://github.com/nestjs/terminus/commit/62433b6e0cd1b89e902a05fa16881985a8e00089))
+* missing setContext when using logger: false ([9274056](https://github.com/nestjs/terminus/commit/92740566d3476694b31c2fda72bdbf6e6e099568))
+
 ## [9.2.1](https://github.com/nestjs/terminus/compare/9.2.0...9.2.1) (2023-02-15)
 
 
