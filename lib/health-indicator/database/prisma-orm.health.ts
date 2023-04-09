@@ -1,11 +1,10 @@
 import { checkPackages, promiseTimeout, TimeoutError as PromiseTimeoutError } from "../../utils";
 import { HealthIndicator } from "../health-indicator";
-import { PrismaClient } from "@prisma/client";
 import { TimeoutError } from "../../errors";
 import { HealthCheckError } from "../../health-check";
 
 interface ThePrismaClient {
-	$queryRaw: (query: string) => Promise<any>;
+	$queryRawUnsafe: (query: string) => any;
 }
 
 export interface PrismaClientPingCheckSettings {
@@ -17,8 +16,8 @@ export interface PrismaClientPingCheckSettings {
 
 export class PrismaORMHealthIndicator extends HealthIndicator {
 	constructor() {
-			super();
-			this.checkDependantPackages();
+		super();
+		this.checkDependantPackages();
 	}
 
 	private checkDependantPackages() {
@@ -29,7 +28,7 @@ export class PrismaORMHealthIndicator extends HealthIndicator {
 	}
 
 	private async pingDb(timeout: number, prismaClient: ThePrismaClient) {
-		const sqlBasedPrismaCheck = prismaClient.$queryRaw('SELECT 1');
+		const sqlBasedPrismaCheck = prismaClient.$queryRawUnsafe('SELECT 1');
 
 		return promiseTimeout(timeout, sqlBasedPrismaCheck)
 	}
@@ -39,11 +38,12 @@ export class PrismaORMHealthIndicator extends HealthIndicator {
 		prismaClient: ThePrismaClient,
 		options: PrismaClientPingCheckSettings = {},
 	): Promise<any> {
-		const isHealthy = false;
+		let isHealthy = false;
 		const timeout = options.timeout || 1000;
 
 		try {
 			await this.pingDb(timeout, prismaClient);
+			isHealthy = true;
 		} catch (error) {
 			if(error instanceof PromiseTimeoutError) {
 				throw new TimeoutError(
@@ -54,7 +54,7 @@ export class PrismaORMHealthIndicator extends HealthIndicator {
         );
 			}
 		}
-		
+
     if (isHealthy) {
       return this.getStatus(key, isHealthy);
     } else {

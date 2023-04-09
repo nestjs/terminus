@@ -17,8 +17,9 @@ export class HealthController {
   @Get()
   @HealthCheck()
   check() {
+    this.prisma.$queryRawUnsafe('SELECT 1');
     return this.health.check([
-      async () => this.prismaHealth.pingCheck('prisma'),
+      async () => this.prismaHealth.pingCheck('prisma', this.prisma),
     ]);
   }
 }
