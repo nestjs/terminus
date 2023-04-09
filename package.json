@@ -60,6 +60,7 @@
     "@nestjs/swagger": "6.1.4",
     "@nestjs/testing": "9.3.2",
     "@nestjs/typeorm": "9.0.1",
+    "@prisma/client": "^4.12.0",
     "@release-it/conventional-changelog": "5.1.1",
     "@types/express": "4.17.17",
     "@types/jest": "28.1.8",
@@ -104,22 +105,23 @@
     "wait-port": "1.0.4"
   },
   "peerDependencies": {
-    "@nestjs/common": "9.x",
-    "@nestjs/core": "9.x",
-    "reflect-metadata": "0.1.x",
-    "rxjs": "7.x",
-    "@nestjs/microservices": "*",
     "@grpc/grpc-js": "*",
     "@grpc/proto-loader": "*",
-    "@nestjs/axios": "*",
-    "@mikro-orm/nestjs": "*",
     "@mikro-orm/core": "*",
+    "@mikro-orm/nestjs": "*",
+    "@nestjs/axios": "*",
+    "@nestjs/common": "9.x",
+    "@nestjs/core": "9.x",
+    "@nestjs/microservices": "*",
     "@nestjs/mongoose": "*",
     "@nestjs/sequelize": "*",
     "@nestjs/typeorm": "*",
     "mongoose": "*",
+    "reflect-metadata": "0.1.x",
+    "rxjs": "7.x",
     "sequelize": "*",
-    "typeorm": "*"
+    "typeorm": "*",
+    "@prisma/client": "*"
   },
   "peerDependenciesMeta": {
     "@nestjs/microservices": {
@@ -156,6 +158,9 @@
       "optional": true
     },
     "typeorm": {
+      "optional": true
+    },
+    "@prisma/client": {
       "optional": true
     }
   }
