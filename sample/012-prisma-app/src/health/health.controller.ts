@@ -3,7 +3,7 @@ import {
   HealthCheck,
   HealthCheckService,
   PrismaORMHealthIndicator,
-} from '../../../../';
+} from '@nestjs/terminus';
 
 @Controller('health')
 export class HealthController {
