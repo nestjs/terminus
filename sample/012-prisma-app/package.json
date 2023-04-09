@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build",
+    "build": "prisma generate && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -24,6 +24,7 @@
     "@nestjs/core": "9.3.2",
     "@nestjs/platform-express": "9.3.2",
     "@nestjs/terminus": "github:ThallesP/terminus",
+    "@prisma/client": "^4.12.0",
     "reflect-metadata": "0.1.13",
     "rxjs": "7.2.0"
   },

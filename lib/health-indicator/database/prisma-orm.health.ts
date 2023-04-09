@@ -1,4 +1,4 @@
-import { checkPackages, promiseTimeout, TimeoutError as PromiseTimeoutError } from "../../utils";
+import { promiseTimeout, TimeoutError as PromiseTimeoutError } from "../../utils";
 import { HealthIndicator } from "../health-indicator";
 import { TimeoutError } from "../../errors";
 import { HealthCheckError } from "../../health-check";
@@ -17,14 +17,6 @@ export interface PrismaClientPingCheckSettings {
 export class PrismaORMHealthIndicator extends HealthIndicator {
 	constructor() {
 		super();
-		this.checkDependantPackages();
-	}
-
-	private checkDependantPackages() {
-		checkPackages(
-			['@prisma/client'],
-			this.constructor.name,
-		);
 	}
 
 	private async pingDb(timeout: number, prismaClient: ThePrismaClient) {
@@ -47,10 +39,10 @@ export class PrismaORMHealthIndicator extends HealthIndicator {
 		} catch (error) {
 			if(error instanceof PromiseTimeoutError) {
 				throw new TimeoutError(
-          timeout,
-          this.getStatus(key, isHealthy, {
-            message: `timeout of ${timeout}ms exceeded`,
-          }),
+          			timeout,
+          			this.getStatus(key, isHealthy, {
+          			  message: `timeout of ${timeout}ms exceeded`,
+          		}),
         );
 			}
 		}

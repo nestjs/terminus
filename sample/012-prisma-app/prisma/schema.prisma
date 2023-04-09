@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./sample.db"
+  provider = "postgresql"
+  url      = "postgres://docker:default@localhost:5432/postgres"
 }
 
 model Sample {
