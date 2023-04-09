@@ -4,17 +4,21 @@ import {
   HealthCheckService,
   PrismaORMHealthIndicator,
 } from '@nestjs/terminus';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Controller('health')
 export class HealthController {
   constructor(
     private health: HealthCheckService,
-    private prisma: PrismaORMHealthIndicator,
+    private prismaHealth: PrismaORMHealthIndicator,
+    private prisma: PrismaService,
   ) {}
 
   @Get()
   @HealthCheck()
   check() {
-    return this.health.check([async () => this.prisma.pingCheck('prisma')]);
+    return this.health.check([
+      async () => this.prismaHealth.pingCheck('prisma'),
+    ]);
   }
 }

@@ -28,22 +28,22 @@ export class PrismaORMHealthIndicator extends HealthIndicator {
 		);
 	}
 
-	private async pingDb(timeout: number) {
-		const prisma = new PrismaClient() as unknown as ThePrismaClient;
-		const sqlBasedPrismaCheck = prisma.$queryRaw('SELECT 1');
+	private async pingDb(timeout: number, prismaClient: ThePrismaClient) {
+		const sqlBasedPrismaCheck = prismaClient.$queryRaw('SELECT 1');
 
 		return promiseTimeout(timeout, sqlBasedPrismaCheck)
 	}
 
 	public async pingCheck(
 		key: string,
+		prismaClient: ThePrismaClient,
 		options: PrismaClientPingCheckSettings = {},
 	): Promise<any> {
 		const isHealthy = false;
 		const timeout = options.timeout || 1000;
 
 		try {
-			await this.pingDb(timeout);
+			await this.pingDb(timeout, prismaClient);
 		} catch (error) {
 			if(error instanceof PromiseTimeoutError) {
 				throw new TimeoutError(
