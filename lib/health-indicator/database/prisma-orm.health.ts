@@ -5,10 +5,19 @@ import {
 import { HealthIndicator } from '../health-indicator';
 import { TimeoutError } from '../../errors';
 import { HealthCheckError } from '../../health-check';
+import { NotImplementedException } from '@nestjs/common';
 
-interface ThePrismaClient {
+type PingCommandSignature = { [Key in string]?: number };
+
+type PrismaClientDocument = {
+  $runCommandRaw: (command: PingCommandSignature) => any;
+};
+
+type PrismaClientSQL = {
   $queryRawUnsafe: (query: string) => any;
-}
+};
+
+type ThePrismaClient = PrismaClientDocument | PrismaClientSQL;
 
 export interface PrismaClientPingCheckSettings {
   /**
@@ -22,10 +31,29 @@ export class PrismaORMHealthIndicator extends HealthIndicator {
     super();
   }
 
-  private async pingDb(timeout: number, prismaClient: ThePrismaClient) {
-    const sqlBasedPrismaCheck = prismaClient.$queryRawUnsafe('SELECT 1');
+  private async pingDb(
+    timeout: number,
+    prismaClientSQLOrMongo: ThePrismaClient,
+  ) {
+    // The prisma client generates two different typescript types for different databases
+    // but inside they've the same methods
+    // But clearly, the will fail, that's why we do the try catch down below
+    const prismaClient = prismaClientSQLOrMongo as PrismaClientSQL &
+      PrismaClientDocument;
 
-    return promiseTimeout(timeout, sqlBasedPrismaCheck);
+    try {
+      await promiseTimeout(timeout, prismaClient.$runCommandRaw({ ping: 1 }));
+    } catch (error) {
+      if (
+        error instanceof Error &&
+        error.toString().includes('Use the mongodb provider')
+      ) {
+        await promiseTimeout(timeout, prismaClient.$queryRawUnsafe('SELECT 1'));
+        return;
+      }
+
+      throw error;
+    }
   }
 
   public async pingCheck(
@@ -48,6 +76,8 @@ export class PrismaORMHealthIndicator extends HealthIndicator {
           }),
         );
       }
+
+      console.log(error);
     }
 
     if (isHealthy) {

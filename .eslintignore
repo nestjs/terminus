@@ -1,2 +1,3 @@
 tests/**
 lib/**/*.spec.ts
+e2e/prisma/generated/**

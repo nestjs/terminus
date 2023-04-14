@@ -186,9 +186,9 @@ export function bootstrapTestingModule() {
   function withPrisma() {
     return {
       andMySql: () => {
-        execSync(
-          `npx prisma@4.8.1 generate --schema e2e/prisma/schema-mysql.prisma`,
-        );
+        return { setHealthEndpoint };
+      },
+      andMongo: () => {
         return { setHealthEndpoint };
       },
     };

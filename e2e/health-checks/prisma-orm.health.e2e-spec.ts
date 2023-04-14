@@ -1,5 +1,6 @@
 import { INestApplication } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient as MongoPrismaClient } from '../prisma/generated/mongodb';
+import { PrismaClient as MySQLPrismaClient } from '../prisma/generated/mysql';
 import { bootstrapTestingModule, DynamicHealthEndpointFn } from '../helper';
 import * as request from 'supertest';
 
@@ -9,25 +10,90 @@ describe('PrismaOrmHealthIndicator', () => {
   let app: INestApplication;
   let setHealthEndpoint: DynamicHealthEndpointFn;
 
-  describe('mysql', () => {
-    describe('#pingCheck', () => {
-      beforeEach(
-        () =>
-          (setHealthEndpoint = bootstrapTestingModule()
-            .withPrisma()
-            .andMySql().setHealthEndpoint),
-      );
+  describe('mongodb', () => {
+    beforeEach(
+      () =>
+        (setHealthEndpoint = bootstrapTestingModule()
+          .withPrisma()
+          .andMongo().setHealthEndpoint),
+    );
 
+    describe('#pingCheck', () => {
       it('should check if the prisma is available', async () => {
         app = await setHealthEndpoint(({ healthCheck, prisma }) =>
           healthCheck.check([
-            async () => prisma.pingCheck('prisma', new PrismaClient()),
+            async () =>
+              prisma.pingCheck('prismamongo', new MongoPrismaClient(), {
+                timeout: 30 * 1000,
+              }),
           ]),
         ).start();
 
         return request(app.getHttpServer())
           .get('/health')
           .expect(200)
+          .expect({
+            status: 'ok',
+            info: { prismamongo: { status: 'up' } },
+            error: {},
+            details: { prismamongo: { status: 'up' } },
+          });
+      });
+
+      it('should throw an error if runs into timeout error', async () => {
+        app = await setHealthEndpoint(({ healthCheck, prisma }) =>
+          healthCheck.check([
+            async () =>
+              prisma.pingCheck('prismamongo', new MongoPrismaClient(), {
+                timeout: 1,
+              }),
+          ]),
+        ).start();
+
+        return request(app.getHttpServer())
+          .get('/health')
+          .expect(503)
+          .expect({
+            status: 'error',
+            info: {},
+            error: {
+              prismamongo: {
+                status: 'down',
+                message: 'timeout of 1ms exceeded',
+              },
+            },
+            details: {
+              prismamongo: {
+                status: 'down',
+                message: 'timeout of 1ms exceeded',
+              },
+            },
+          });
+      });
+    });
+  });
+
+  describe('mysql', () => {
+    beforeEach(
+      () =>
+        (setHealthEndpoint = bootstrapTestingModule()
+          .withPrisma()
+          .andMySql().setHealthEndpoint),
+    );
+
+    describe('#pingCheck', () => {
+      it('should check if the prisma is available', async () => {
+        app = await setHealthEndpoint(({ healthCheck, prisma }) =>
+          healthCheck.check([
+            async () =>
+              prisma.pingCheck('prisma', new MySQLPrismaClient(), {
+                timeout: 30 * 1000,
+              }),
+          ]),
+        ).start();
+
+        return request(app.getHttpServer())
+          .get('/health')
           .expect({
             status: 'ok',
             info: { prisma: { status: 'up' } },
@@ -40,7 +106,9 @@ describe('PrismaOrmHealthIndicator', () => {
         app = await setHealthEndpoint(({ healthCheck, prisma }) =>
           healthCheck.check([
             async () =>
-              prisma.pingCheck('prisma', new PrismaClient(), { timeout: 1 }),
+              prisma.pingCheck('prisma', new MySQLPrismaClient(), {
+                timeout: 1,
+              }),
           ]),
         ).start();
 
