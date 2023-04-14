@@ -27,7 +27,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { HttpModule } from '@nestjs/axios';
 import { MikroOrmHealthIndicator } from '../../lib/health-indicator/database/mikro-orm.health';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { execSync } from 'child_process';
 
 type TestingHealthFunc = (props: {
   healthCheck: HealthCheckService;

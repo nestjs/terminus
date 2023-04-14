@@ -37,7 +37,7 @@ export class PrismaORMHealthIndicator extends HealthIndicator {
   ) {
     // The prisma client generates two different typescript types for different databases
     // but inside they've the same methods
-    // But clearly, the will fail, that's why we do the try catch down below
+    // But they will fail when using a document method on sql database, that's why we do the try catch down below
     const prismaClient = prismaClientSQLOrMongo as PrismaClientSQL &
       PrismaClientDocument;
 
@@ -76,8 +76,6 @@ export class PrismaORMHealthIndicator extends HealthIndicator {
           }),
         );
       }
-
-      console.log(error);
     }
 
     if (isHealthy) {
