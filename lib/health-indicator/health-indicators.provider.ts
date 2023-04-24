@@ -10,6 +10,7 @@ import {
   MicroserviceHealthIndicator,
   HealthIndicator,
   GRPCHealthIndicator,
+  PrismaORMHealthIndicator,
 } from '.';
 import { MikroOrmHealthIndicator } from './database/mikro-orm.health';
 
@@ -26,4 +27,5 @@ export const HEALTH_INDICATORS: Type<HealthIndicator>[] = [
   MicroserviceHealthIndicator,
   GRPCHealthIndicator,
   MikroOrmHealthIndicator,
+  PrismaORMHealthIndicator,
 ];

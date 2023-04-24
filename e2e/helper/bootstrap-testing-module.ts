@@ -17,6 +17,7 @@ import {
   MemoryHealthIndicator,
   MicroserviceHealthIndicator,
   MongooseHealthIndicator,
+  PrismaORMHealthIndicator,
   SequelizeHealthIndicator,
   TerminusModule,
   TypeOrmHealthIndicator,
@@ -37,6 +38,7 @@ type TestingHealthFunc = (props: {
   sequelize: SequelizeHealthIndicator;
   typeorm: TypeOrmHealthIndicator;
   mikroOrm: MikroOrmHealthIndicator;
+  prisma: PrismaORMHealthIndicator;
 }) => Promise<HealthCheckResult>;
 
 function createHealthController(func: TestingHealthFunc) {
@@ -52,6 +54,7 @@ function createHealthController(func: TestingHealthFunc) {
       private readonly sequelize: SequelizeHealthIndicator,
       private readonly typeorm: TypeOrmHealthIndicator,
       private readonly mikroOrm: MikroOrmHealthIndicator,
+      private readonly prisma: PrismaORMHealthIndicator,
     ) {}
     @Get('health')
     health() {
@@ -65,6 +68,7 @@ function createHealthController(func: TestingHealthFunc) {
         sequelize: this.sequelize,
         typeorm: this.typeorm,
         mikroOrm: this.mikroOrm,
+        prisma: this.prisma,
       });
     }
   }
@@ -178,6 +182,17 @@ export function bootstrapTestingModule() {
     };
   }
 
+  function withPrisma() {
+    return {
+      andMySql: () => {
+        return { setHealthEndpoint };
+      },
+      andMongo: () => {
+        return { setHealthEndpoint };
+      },
+    };
+  }
+
   function withHttp() {
     imports.push(HttpModule);
     return { setHealthEndpoint };
@@ -188,6 +203,7 @@ export function bootstrapTestingModule() {
     withTypeOrm,
     withSequelize,
     withHttp,
+    withPrisma,
     withMikroOrm,
     setHealthEndpoint,
   };
