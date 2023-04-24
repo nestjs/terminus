@@ -3,6 +3,7 @@
   "transform": {
     "^.+\\.tsx?$": "ts-jest"
   },
+  "setupFiles": ["<rootDir>/jest.setup.ts"],
   "testRegex": "/e2e/.*\\.(e2e-test|e2e-spec).(ts|tsx|js)$",
   "collectCoverageFrom": [
     "src/**/*.{js,jsx,tsx,ts}",
