@@ -1,5 +1,22 @@
 
 
+# [10.0.0-beta.0](https://github.com/nestjs/terminus/compare/9.2.2...10.0.0-beta.0) (2023-04-25)
+
+
+### chore
+
+* drop support for Node v12 ([beee03c](https://github.com/nestjs/terminus/commit/beee03cd9d01f8b936c3cdc2e61406ef1755dd8f))
+
+
+### Features
+
+* health indicator for Prisma ORM ([#2250](https://github.com/nestjs/terminus/issues/2250)) ([bef105d](https://github.com/nestjs/terminus/commit/bef105d7fb1ccf4be373e854fb918cc5a446687f))
+
+
+### BREAKING CHANGES
+
+* drop support for Node v12
+
 ## [9.2.2](https://github.com/nestjs/terminus/compare/9.2.1...9.2.2) (2023-03-27)
 
 
