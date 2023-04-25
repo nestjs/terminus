@@ -5,7 +5,6 @@ import {
 import { HealthIndicator } from '../health-indicator';
 import { TimeoutError } from '../../errors';
 import { HealthCheckError } from '../../health-check';
-import { NotImplementedException } from '@nestjs/common';
 
 type PingCommandSignature = { [Key in string]?: number };
 
