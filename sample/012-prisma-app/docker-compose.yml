@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: default
+      PGDATA: /data/postgres
+    ports:
+      - "5432:5432"
