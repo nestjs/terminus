@@ -30,10 +30,7 @@ export class PrismaHealthIndicator extends HealthIndicator {
     super();
   }
 
-  private async pingDb(
-    timeout: number,
-    prismaClientSQLOrMongo: PrismaClient,
-  ) {
+  private async pingDb(timeout: number, prismaClientSQLOrMongo: PrismaClient) {
     // The prisma client generates two different typescript types for different databases
     // but inside they've the same methods
     // But they will fail when using a document method on sql database, that's why we do the try catch down below
