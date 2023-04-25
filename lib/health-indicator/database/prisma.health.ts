@@ -16,7 +16,7 @@ type PrismaClientSQL = {
   $queryRawUnsafe: (query: string) => any;
 };
 
-type ThePrismaClient = PrismaClientDocument | PrismaClientSQL;
+type PrismaClient = PrismaClientDocument | PrismaClientSQL;
 
 export interface PrismaClientPingCheckSettings {
   /**
@@ -25,14 +25,14 @@ export interface PrismaClientPingCheckSettings {
   timeout?: number;
 }
 
-export class PrismaORMHealthIndicator extends HealthIndicator {
+export class PrismaHealthIndicator extends HealthIndicator {
   constructor() {
     super();
   }
 
   private async pingDb(
     timeout: number,
-    prismaClientSQLOrMongo: ThePrismaClient,
+    prismaClientSQLOrMongo: PrismaClient,
   ) {
     // The prisma client generates two different typescript types for different databases
     // but inside they've the same methods
@@ -57,7 +57,7 @@ export class PrismaORMHealthIndicator extends HealthIndicator {
 
   public async pingCheck(
     key: string,
-    prismaClient: ThePrismaClient,
+    prismaClient: PrismaClient,
     options: PrismaClientPingCheckSettings = {},
   ): Promise<any> {
     let isHealthy = false;
