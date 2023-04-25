@@ -6,7 +6,7 @@ import * as request from 'supertest';
 
 jest.setTimeout(30000);
 
-describe('PrismaOrmHealthIndicator', () => {
+describe('PrismaHealthIndicator', () => {
   let app: INestApplication;
   let setHealthEndpoint: DynamicHealthEndpointFn;
 
