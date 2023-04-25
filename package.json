@@ -121,7 +121,8 @@
     "reflect-metadata": "0.1.x",
     "rxjs": "7.x",
     "sequelize": "*",
-    "typeorm": "*"
+    "typeorm": "*",
+    "@prisma/client": "*"
   },
   "peerDependenciesMeta": {
     "@nestjs/microservices": {
@@ -158,6 +159,9 @@
       "optional": true
     },
     "typeorm": {
+      "optional": true
+    },
+    "@prisma/client": {
       "optional": true
     }
   }
