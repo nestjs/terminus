@@ -17,7 +17,7 @@
   "dependencies": {
     "@nestjs/common": "9.3.2",
     "@nestjs/core": "9.3.2",
-    "@nestjs/mongoose": "9.2.1",
+    "@nestjs/mongoose": "9.2.2",
     "@nestjs/platform-express": "9.3.2",
     "@nestjs/terminus": "9.2.0",
     "mongoose": "6.9.2",
