@@ -44,7 +44,7 @@
     "@commitlint/cli": "17.4.4",
     "@commitlint/config-angular": "17.4.4",
     "@grpc/grpc-js": "1.8.14",
-    "@grpc/proto-loader": "0.7.4",
+    "@grpc/proto-loader": "0.7.6",
     "@mikro-orm/core": "5.6.8",
     "@mikro-orm/mongodb": "5.6.8",
     "@mikro-orm/mysql": "5.6.8",
