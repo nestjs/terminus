@@ -10,8 +10,8 @@
   "author": "Livio Brunner",
   "main": "dist/index.js",
   "scripts": {
-    "build": "gulp build && gulp move:protos && gulp move",
-    "build:all": "gulp build:all",
+    "build": "tsc -p tsconfig.build.json && gulp move:protos && gulp move",
+    "build:all": "npm run build && gulp build:all",
     "build:samples": "gulp install:samples && npm run build && gulp build:samples && gulp test:samples && gulp test:e2e:samples",
     "clean": "gulp clean",
     "format": "prettier --write \"{lib,e2e,sample,tools}/**/*.ts\"",
@@ -79,7 +79,6 @@
     "gulp": "4.0.2",
     "gulp-clean": "0.4.0",
     "gulp-debug": "4.0.0",
-    "gulp-typescript": "5.0.1",
     "husky": "8.0.3",
     "ioredis": "5.3.2",
     "jest": "28.1.3",

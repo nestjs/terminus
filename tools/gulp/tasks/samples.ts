@@ -60,7 +60,4 @@ task('test:e2e:samples', async () =>
   executeNpmScriptInSamples('npm run test:e2e', '--passWithNoTests'),
 );
 
-task(
-  'build:all',
-  series(['build:app', 'install:samples', 'move', 'build:samples']),
-);
+task('build:all', series(['install:samples', 'move', 'build:samples']));
