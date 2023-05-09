@@ -56,7 +56,7 @@
     "@nestjs/mongoose": "9.2.2",
     "@nestjs/platform-express": "9.3.2",
     "@nestjs/platform-fastify": "9.3.2",
-    "@nestjs/sequelize": "9.0.0",
+    "@nestjs/sequelize": "9.0.2",
     "@nestjs/swagger": "6.1.4",
     "@nestjs/testing": "9.3.2",
     "@nestjs/typeorm": "9.0.1",
