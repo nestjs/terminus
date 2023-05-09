@@ -15,7 +15,7 @@
     "e2e:watch": "jest --watch --config=e2e/jest-e2e.json"
   },
   "dependencies": {
-    "@nestjs/axios": "1.0.1",
+    "@nestjs/axios": "2.0.0",
     "@nestjs/common": "9.3.2",
     "@nestjs/core": "9.3.2",
     "@nestjs/platform-express": "9.3.2",
