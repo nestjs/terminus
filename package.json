@@ -53,7 +53,7 @@
     "@nestjs/common": "9.3.2",
     "@nestjs/core": "9.3.2",
     "@nestjs/microservices": "9.3.2",
-    "@nestjs/mongoose": "9.2.1",
+    "@nestjs/mongoose": "9.2.2",
     "@nestjs/platform-express": "9.3.2",
     "@nestjs/platform-fastify": "9.3.2",
     "@nestjs/sequelize": "9.0.0",
