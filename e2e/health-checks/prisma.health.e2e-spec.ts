@@ -83,8 +83,7 @@ describe('PrismaHealthIndicator', () => {
       it('should check if the prisma is available', async () => {
         app = await setHealthEndpoint(({ healthCheck, prisma }) =>
           healthCheck.check([
-            async () =>
-              prisma.pingCheck('prisma', new MySQLPrismaClient()),
+            async () => prisma.pingCheck('prisma', new MySQLPrismaClient()),
           ]),
         ).start();
 
