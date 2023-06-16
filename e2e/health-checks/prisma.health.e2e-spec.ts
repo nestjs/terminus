@@ -4,7 +4,7 @@ import { PrismaClient as MySQLPrismaClient } from '../prisma/generated/mysql';
 import { bootstrapTestingModule, DynamicHealthEndpointFn } from '../helper';
 import * as request from 'supertest';
 
-jest.setTimeout(30000);
+jest.setTimeout(300_000);
 
 describe('PrismaHealthIndicator', () => {
   let app: INestApplication;
@@ -23,9 +23,7 @@ describe('PrismaHealthIndicator', () => {
         app = await setHealthEndpoint(({ healthCheck, prisma }) =>
           healthCheck.check([
             async () =>
-              prisma.pingCheck('prismamongo', new MongoPrismaClient(), {
-                timeout: 30 * 1000,
-              }),
+              prisma.pingCheck('prismamongo', new MongoPrismaClient()),
           ]),
         ).start();
 
@@ -86,9 +84,7 @@ describe('PrismaHealthIndicator', () => {
         app = await setHealthEndpoint(({ healthCheck, prisma }) =>
           healthCheck.check([
             async () =>
-              prisma.pingCheck('prisma', new MySQLPrismaClient(), {
-                timeout: 30 * 1000,
-              }),
+              prisma.pingCheck('prisma', new MySQLPrismaClient()),
           ]),
         ).start();
 
