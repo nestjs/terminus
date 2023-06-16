@@ -1,4 +1,4 @@
-import { XOR } from '../../utils/types';
+import { Prettify, XOR } from '../../utils/types';
 
 /**
  * @internal
@@ -33,18 +33,20 @@ interface DiskOptionsThresholdPercent {
 /**
  * @internal
  */
-export type DiskOptionsWithThreshold = DiskOptionsBase & DiskOptionsThreshold;
+export type DiskOptionsWithThreshold = Prettify<
+  DiskOptionsBase & DiskOptionsThreshold
+>;
 /**
  * @internal
  */
-export type DiskOptionsWithThresholdPercent = DiskOptionsBase &
-  DiskOptionsThresholdPercent;
+export type DiskOptionsWithThresholdPercent = Prettify<
+  DiskOptionsBase & DiskOptionsThresholdPercent
+>;
 
 /**
  * The options of the disk health indicator
  * @publicApi
  */
-export type DiskHealthIndicatorOptions = XOR<
-  DiskOptionsWithThreshold,
-  DiskOptionsWithThresholdPercent
+export type DiskHealthIndicatorOptions = Prettify<
+  XOR<DiskOptionsWithThreshold, DiskOptionsWithThresholdPercent>
 >;

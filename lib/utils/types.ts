@@ -13,3 +13,8 @@ export type XOR<T, U> = T | U extends object
  * @internal
  */
 export type PropType<TObj, TProp extends keyof TObj> = TObj[TProp];
+
+export type Prettify<T> = {
+  [K in keyof T]: T[K];
+// eslint-disable-next-line @typescript-eslint/ban-types
+} & {};
