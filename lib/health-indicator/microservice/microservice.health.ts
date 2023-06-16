@@ -63,7 +63,9 @@ export class MicroserviceHealthIndicator extends HealthIndicator {
     )[0];
   }
 
-  private async pingMicroservice<MicroserviceClientOptions>(
+  private async pingMicroservice<
+    MicroserviceClientOptions extends MicroserviceOptionsLike,
+  >(
     options: MicroserviceHealthIndicatorOptions<MicroserviceClientOptions>,
   ): Promise<void> {
     const client = this.nestJsMicroservices.ClientProxyFactory.create(options);

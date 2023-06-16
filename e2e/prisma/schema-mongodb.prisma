@@ -1,0 +1,17 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+    output   = "./generated/mongodb"
+    binaryTargets = ["native", "debian-openssl-1.1.x"]
+}
+
+datasource db {
+    provider = "mongodb"
+    url      = "mongodb://0.0.0.0:27017/test"
+}
+
+model Test {
+    id String @id @map("_id") @db.ObjectId
+}

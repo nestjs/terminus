@@ -12,7 +12,7 @@ function move() {
 
   return samplesDirs.reduce(
     (distFile, dir) =>
-      distFile.pipe(dest(join(dir, '/node_modules/@nestjs/terminus'))),
+      distFile.pipe(dest(join(dir, '/node_modules/@nestjs/terminus/dist'))),
     distFiles,
   );
 }

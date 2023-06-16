@@ -1,5 +1,57 @@
 
 
+# [10.0.0-beta.1](https://github.com/nestjs/terminus/compare/9.2.2...10.0.0-beta.1) (2023-06-16)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @grpc/grpc-js to v1.8.14 ([#2262](https://github.com/nestjs/terminus/issues/2262)) ([86152cc](https://github.com/nestjs/terminus/commit/86152cc617d07e3ed902c52c8557247ce0957a77))
+* **deps:** update dependency @grpc/grpc-js to v1.8.15 ([#2280](https://github.com/nestjs/terminus/issues/2280)) ([6ecdc1f](https://github.com/nestjs/terminus/commit/6ecdc1f243948f62375d9e0da812fcd85e676e8d))
+* **deps:** update dependency @grpc/proto-loader to v0.7.6 ([#2263](https://github.com/nestjs/terminus/issues/2263)) ([638a7cd](https://github.com/nestjs/terminus/commit/638a7cd04ffc504640c00bba1390dca1c659cf2c))
+* **deps:** update dependency @grpc/proto-loader to v0.7.7 ([#2268](https://github.com/nestjs/terminus/issues/2268)) ([48d2d8d](https://github.com/nestjs/terminus/commit/48d2d8d168145b47032a67a7456f8636f1f71d40))
+* **deps:** update dependency @mikro-orm/nestjs to v5.1.8 ([#2265](https://github.com/nestjs/terminus/issues/2265)) ([4bdb17d](https://github.com/nestjs/terminus/commit/4bdb17d9ab2c151cfe4a91dbc1500d78fb4f9656))
+* **deps:** update dependency @nestjs/mongoose to v9.2.2 ([#2267](https://github.com/nestjs/terminus/issues/2267)) ([d97deb7](https://github.com/nestjs/terminus/commit/d97deb762f5ec1035b8366dda64763d92de6562b))
+* **deps:** update dependency @nestjs/sequelize to v9.0.2 ([#2269](https://github.com/nestjs/terminus/issues/2269)) ([3de1168](https://github.com/nestjs/terminus/commit/3de11681f4520b8a17498877fb80bdde02256a99))
+* **deps:** update dependency ioredis to v5.3.2 ([#2281](https://github.com/nestjs/terminus/issues/2281)) ([3b58611](https://github.com/nestjs/terminus/commit/3b58611d7b1a088b7f76d19f5c4ac6b8ddf3b45c))
+* **deps:** update dependency mysql2 to v3.2.4 ([#2216](https://github.com/nestjs/terminus/issues/2216)) ([38c9593](https://github.com/nestjs/terminus/commit/38c95939a46cc73face8e2d3f780658068629395))
+
+
+### chore
+
+* drop support for Node v12 ([260d170](https://github.com/nestjs/terminus/commit/260d170cb9c45386d7e79e367177297d874d4cc0))
+* drop support for node v14 ([5f15d10](https://github.com/nestjs/terminus/commit/5f15d10bbb1559eb151c32c8153b46121bdbbfba))
+
+
+### Features
+
+* **deps:** upgrade TypeScript to v5 ([1e9d40e](https://github.com/nestjs/terminus/commit/1e9d40e301f9ab1943c69527cff88af23bc7ddaf))
+* **disk:** prettify type information ([e0b13aa](https://github.com/nestjs/terminus/commit/e0b13aac8069bb510c508783171aad2a87444fb1))
+* health indicator for Prisma ORM ([#2250](https://github.com/nestjs/terminus/issues/2250)) ([6960af6](https://github.com/nestjs/terminus/commit/6960af6eb4780af92a4f2097527df69d6c745bdb))
+* upgrade to nest v10 ([b1e4aa2](https://github.com/nestjs/terminus/commit/b1e4aa23134a793428f5f286f46865916d8c6e7a))
+
+
+### BREAKING CHANGES
+
+* drop support for node v14
+* drop support for Node v12
+
+# [10.0.0-beta.0](https://github.com/nestjs/terminus/compare/9.2.2...10.0.0-beta.0) (2023-04-25)
+
+
+### chore
+
+* drop support for Node v12 ([beee03c](https://github.com/nestjs/terminus/commit/beee03cd9d01f8b936c3cdc2e61406ef1755dd8f))
+
+
+### Features
+
+* health indicator for Prisma ORM ([#2250](https://github.com/nestjs/terminus/issues/2250)) ([bef105d](https://github.com/nestjs/terminus/commit/bef105d7fb1ccf4be373e854fb918cc5a446687f))
+
+
+### BREAKING CHANGES
+
+* drop support for Node v12
+
 ## [9.2.2](https://github.com/nestjs/terminus/compare/9.2.1...9.2.2) (2023-03-27)
 
 
