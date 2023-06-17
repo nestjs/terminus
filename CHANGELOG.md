@@ -1,5 +1,12 @@
 
 
+## [10.0.1](https://github.com/nestjs/terminus/compare/10.0.0...10.0.1) (2023-06-17)
+
+
+### Bug Fixes
+
+* **prisma:** add `@Injectable` decorator ([25893bd](https://github.com/nestjs/terminus/commit/25893bde9aa17cda07e39daad211ca5a782535de))
+
 # [10.0.0](https://github.com/nestjs/terminus/compare/9.2.2...10.0.0) (2023-06-17)
 
 
