@@ -25,6 +25,13 @@ export interface PrismaClientPingCheckSettings {
   timeout?: number;
 }
 
+/**
+ * The PrismaHealthIndicator contains health indicators
+ * which are used for health checks related to Prisma
+ *
+ * @publicApi
+ * @module TerminusModule
+ */
 export class PrismaHealthIndicator extends HealthIndicator {
   constructor() {
     super();
@@ -52,6 +59,14 @@ export class PrismaHealthIndicator extends HealthIndicator {
     }
   }
 
+  /**
+   * Checks if the Prisma responds in (default) 1000ms and
+   * returns a result object corresponding to the result
+   *
+   * @param key The key which will be used for the result object
+   * @param prismaClient PrismaClient
+   * @param options The options for the ping
+   */
   public async pingCheck(
     key: string,
     prismaClient: PrismaClient,
