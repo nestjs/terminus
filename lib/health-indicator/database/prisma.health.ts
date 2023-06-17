@@ -5,6 +5,7 @@ import {
 import { HealthIndicator } from '../health-indicator';
 import { TimeoutError } from '../../errors';
 import { HealthCheckError } from '../../health-check';
+import { Injectable } from '@nestjs/common';
 
 type PingCommandSignature = { [Key in string]?: number };
 
@@ -32,6 +33,7 @@ export interface PrismaClientPingCheckSettings {
  * @publicApi
  * @module TerminusModule
  */
+@Injectable()
 export class PrismaHealthIndicator extends HealthIndicator {
   constructor() {
     super();
