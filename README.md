@@ -107,7 +107,7 @@ Setup the development environment by following these instructions:
 2. Install the dependencies
 
 ```bash
-npm install
+npm install --legacy-peer-deps
 
 # To rebuild the project, run
 npm run build
