@@ -8,4 +8,5 @@ export {
   HealthCheckError,
   HealthCheckStatus,
   HealthCheckResult,
+  HealthCheckExecutor,
 } from './health-check';
