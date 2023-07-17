@@ -86,7 +86,7 @@
     "lint-staged": "13.2.2",
     "mongoose": "7.3.0",
     "mysql2": "3.3.5",
-    "nats": "2.14.0",
+    "nats": "2.15.1",
     "portfinder": "1.0.32",
     "prettier": "2.8.8",
     "prisma": "4.15.0",
