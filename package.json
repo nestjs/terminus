@@ -83,7 +83,7 @@
     "husky": "8.0.3",
     "ioredis": "5.3.2",
     "jest": "29.5.0",
-    "lint-staged": "13.2.2",
+    "lint-staged": "13.2.3",
     "mongoose": "7.3.0",
     "mysql2": "3.3.5",
     "nats": "2.14.0",
