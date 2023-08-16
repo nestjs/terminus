@@ -48,7 +48,7 @@
     "@mikro-orm/core": "5.7.13",
     "@mikro-orm/mongodb": "5.7.13",
     "@mikro-orm/mysql": "5.7.13",
-    "@mikro-orm/nestjs": "5.2.0",
+    "@mikro-orm/nestjs": "5.2.1",
     "@nestjs/axios": "3.0.0",
     "@nestjs/common": "10.1.0",
     "@nestjs/core": "10.1.0",
