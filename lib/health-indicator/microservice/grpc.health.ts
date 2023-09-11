@@ -106,6 +106,12 @@ export class GRPCHealthIndicator extends HealthIndicator {
   }
 
   /**
+   * A cache of open channels for the health indicator
+   * This is used to prevent opening new channels for every health check
+   */
+  private readonly openChannels = new Map<string, GRPCHealthService>();
+
+  /**
    * Checks if the dependant packages are present
    */
   private checkDependantPackages() {
@@ -185,13 +191,19 @@ export class GRPCHealthIndicator extends HealthIndicator {
 
     const settings = { ...defaultOptions, ...options };
 
-    const client = this.createClient<GrpcOptions>(settings);
-
     let healthService: GRPCHealthService;
     try {
-      healthService = client.getService<GRPCHealthService | any>(
-        settings.healthServiceName as string,
-      );
+      if (this.openChannels.has(service)) {
+        healthService = this.openChannels.get(service)!;
+      } else {
+        const client = this.createClient<GrpcOptions>(settings);
+
+        healthService = client.getService<GRPCHealthService>(
+          settings.healthServiceName as string,
+        );
+
+        this.openChannels.set(service, healthService);
+      }
     } catch (err) {
       if (err instanceof TypeError) throw err;
       if (isError(err)) {
