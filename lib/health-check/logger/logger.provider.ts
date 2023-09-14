@@ -1,4 +1,4 @@
-import { LoggerService, Provider, Type } from '@nestjs/common';
+import { type LoggerService, type Provider, type Type } from '@nestjs/common';
 import { DefaultTerminusLogger } from './default-logger.service';
 
 export const TERMINUS_LOGGER = 'TERMINUS_LOGGER';

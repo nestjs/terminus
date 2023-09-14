@@ -1,13 +1,13 @@
 import { Injectable, Scope } from '@nestjs/common';
 import * as NestJSMicroservices from '@nestjs/microservices';
-import { HealthIndicator, HealthIndicatorResult } from '../';
+import { HealthIndicator, type HealthIndicatorResult } from '../';
 import { TimeoutError } from '../../errors';
 import { HealthCheckError } from '../../health-check/health-check.error';
 import {
   checkPackages,
   promiseTimeout,
   TimeoutError as PromiseTimeoutError,
-  PropType,
+  type PropType,
   isError,
 } from '../../utils';
 

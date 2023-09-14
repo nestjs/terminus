@@ -1,8 +1,8 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import * as NestJSTypeOrm from '@nestjs/typeorm';
-import * as TypeOrm from 'typeorm';
-import { HealthIndicator, HealthIndicatorResult } from '../';
+import type * as NestJSTypeOrm from '@nestjs/typeorm';
+import type * as TypeOrm from 'typeorm';
+import { HealthIndicator, type HealthIndicatorResult } from '../';
 import {
   TimeoutError,
   ConnectionNotFoundError,
@@ -80,7 +80,9 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
           : driver.buildConnectionUrl(connection.options),
         driver.buildConnectionOptions(connection.options),
         (err: Error, client: any) => {
-          if (err) return reject(new MongoConnectionError(err.message));
+          if (err) {
+            return reject(new MongoConnectionError(err.message));
+          }
           client.close(() => resolve());
         },
       );

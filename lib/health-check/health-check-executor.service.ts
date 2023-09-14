@@ -1,12 +1,12 @@
-import { Injectable, BeforeApplicationShutdown } from '@nestjs/common';
+import { Injectable, type BeforeApplicationShutdown } from '@nestjs/common';
 import {
-  HealthCheckResult,
-  HealthCheckStatus,
+  type HealthCheckResult,
+  type HealthCheckStatus,
 } from './health-check-result.interface';
-import { HealthCheckError } from '../health-check/health-check.error';
+import { type HealthCheckError } from '../health-check/health-check.error';
 import {
-  HealthIndicatorFunction,
-  HealthIndicatorResult,
+  type HealthIndicatorFunction,
+  type HealthIndicatorResult,
 } from '../health-indicator';
 import { isHealthCheckError } from '../utils';
 
@@ -70,7 +70,9 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
       } else {
         const error = res.reason;
         // Is not an expected error. Throw further!
-        if (!isHealthCheckError(error)) throw error;
+        if (!isHealthCheckError(error)) {
+          throw error;
+        }
         // Is a expected health check error
         errors.push((error as HealthCheckError).causes);
       }

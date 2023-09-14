@@ -1,6 +1,7 @@
 import { Header } from '@nestjs/common';
 import { getHealthCheckSchema } from './health-check.schema';
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 type Swagger = typeof import('@nestjs/swagger');
 
 /**

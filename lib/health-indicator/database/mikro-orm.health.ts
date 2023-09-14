@@ -1,7 +1,7 @@
-import * as MikroOrm from '@mikro-orm/core';
+import type * as MikroOrm from '@mikro-orm/core';
 import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import { HealthIndicator, HealthIndicatorResult } from '..';
+import { HealthIndicator, type HealthIndicatorResult } from '..';
 import { TimeoutError } from '../../errors';
 import { HealthCheckError } from '../../health-check';
 import {

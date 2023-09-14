@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { HealthIndicator, HealthIndicatorResult } from '../';
+import { HealthIndicator, type HealthIndicatorResult } from '../';
 import { StorageExceededError } from '../../errors';
 import { STORAGE_EXCEEDED } from '../../errors/messages.constant';
 

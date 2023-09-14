@@ -81,7 +81,6 @@ export class PrismaHealthIndicator extends HealthIndicator {
       await this.pingDb(timeout, prismaClient);
       isHealthy = true;
     } catch (error) {
-      console.log(error);
       if (error instanceof PromiseTimeoutError) {
         throw new TimeoutError(
           timeout,

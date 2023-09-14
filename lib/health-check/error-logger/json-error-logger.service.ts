@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ErrorLogger } from './error-logger.interface';
+import { type ErrorLogger } from './error-logger.interface';
 
 @Injectable()
 export class JsonErrorLogger implements ErrorLogger {

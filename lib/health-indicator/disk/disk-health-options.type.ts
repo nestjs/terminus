@@ -1,4 +1,4 @@
-import { XOR } from '../../utils/types';
+import { type XOR } from '../../utils/types';
 
 /**
  * @internal

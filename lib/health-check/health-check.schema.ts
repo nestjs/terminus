@@ -1,5 +1,5 @@
-import { HealthCheckStatus } from './health-check-result.interface';
-import { HealthIndicatorResult } from '../health-indicator';
+import { type HealthCheckStatus } from './health-check-result.interface';
+import { type HealthIndicatorResult } from '../health-indicator';
 import type {} from '@nestjs/swagger';
 
 // These examples will be displayed on Swagger

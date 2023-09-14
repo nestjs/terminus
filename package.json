@@ -73,6 +73,7 @@
     "eslint-import-resolver-typescript": "^3.6.0",
     "eslint-plugin-deprecation": "^2.0.0",
     "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jest": "^27.2.3",
     "fastify": "4.20.0",
     "gulp": "4.0.2",
     "gulp-clean": "0.4.0",
@@ -286,14 +287,45 @@
             }
           }
         }
+      },
+      {
+        "files": [
+          "*.spec.ts",
+          "*.e2e-spec.ts"
+        ],
+        "env": {
+          "jest": true
+        },
+        "extends": [
+          "plugin:jest/recommended"
+        ]
       }
     ],
     "rules": {
+      "curly": 1,
+      "prefer-const": 1,
+      "no-console": 1,
+      "strict": 1,
+      "no-debugger": 1,
       "@typescript-eslint/interface-name-prefix": "off",
       "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-use-before-define": "off",
       "@typescript-eslint/no-non-null-assertion": "off",
+      "@typescript-eslint/prefer-optional-chain": 1,
+      "@typescript-eslint/no-unused-vars": [
+        1,
+        {
+          "varsIgnorePattern": "^_"
+        }
+      ],
+      "@typescript-eslint/consistent-type-imports": [
+        2,
+        {
+          "prefer": "type-imports",
+          "fixStyle": "inline-type-imports"
+        }
+      ],
       "import/newline-after-import": 2,
       "import/order": [
         2,

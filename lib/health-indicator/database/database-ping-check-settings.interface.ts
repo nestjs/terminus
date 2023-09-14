@@ -1,8 +1,8 @@
 /**
  * The settings for the typeorm ping check
  */
-import { Connection as MongooseConnection } from 'mongoose';
-import { DataSource } from 'typeorm';
+import { type Connection as MongooseConnection } from 'mongoose';
+import { type DataSource } from 'typeorm';
 
 /**
  * @publicApi

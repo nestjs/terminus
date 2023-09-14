@@ -8,9 +8,9 @@ import {
 import { ErrorLogger } from './error-logger/error-logger.interface';
 import { ERROR_LOGGER } from './error-logger/error-logger.provider';
 import { HealthCheckExecutor } from './health-check-executor.service';
-import { HealthCheckResult } from './health-check-result.interface';
+import { type HealthCheckResult } from './health-check-result.interface';
 import { TERMINUS_LOGGER } from './logger/logger.provider';
-import { HealthIndicatorFunction } from '../health-indicator';
+import { type HealthIndicatorFunction } from '../health-indicator';
 
 /**
  * Handles Health Checks which can be used in

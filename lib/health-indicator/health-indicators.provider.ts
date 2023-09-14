@@ -1,4 +1,4 @@
-import { Type } from '@nestjs/common';
+import { type Type } from '@nestjs/common';
 import {
   TypeOrmHealthIndicator,
   HttpHealthIndicator,
@@ -7,7 +7,7 @@ import {
   DiskHealthIndicator,
   MemoryHealthIndicator,
   MicroserviceHealthIndicator,
-  HealthIndicator,
+  type HealthIndicator,
   GRPCHealthIndicator,
   PrismaHealthIndicator,
 } from '.';

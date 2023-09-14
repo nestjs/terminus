@@ -1,9 +1,9 @@
 import { join } from 'path';
 import { Injectable, Scope } from '@nestjs/common';
 import type * as NestJSMicroservices from '@nestjs/microservices';
-import { Observable, lastValueFrom } from 'rxjs';
+import { type Observable, lastValueFrom } from 'rxjs';
 import {
-  HealthIndicatorResult,
+  type HealthIndicatorResult,
   TimeoutError,
   UnhealthyResponseCodeError,
 } from '../..';
@@ -12,7 +12,7 @@ import {
   checkPackages,
   isError,
   promiseTimeout,
-  PropType,
+  type PropType,
   TimeoutError as PromiseTimeoutError,
 } from '../../utils';
 import { HealthIndicator } from '../health-indicator';
@@ -205,7 +205,9 @@ export class GRPCHealthIndicator extends HealthIndicator {
         this.openChannels.set(service, healthService);
       }
     } catch (err) {
-      if (err instanceof TypeError) throw err;
+      if (err instanceof TypeError) {
+        throw err;
+      }
       if (isError(err)) {
         throw new HealthCheckError(
           err.message,

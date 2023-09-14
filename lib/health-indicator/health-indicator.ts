@@ -1,4 +1,4 @@
-import { HealthIndicatorResult } from './';
+import { type HealthIndicatorResult } from './';
 
 /**
  * A health indicator function for a health check

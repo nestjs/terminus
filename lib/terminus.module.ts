@@ -1,4 +1,4 @@
-import { DynamicModule, Module } from '@nestjs/common';
+import { type DynamicModule, Module } from '@nestjs/common';
 import { HealthCheckService } from './health-check';
 import { getErrorLoggerProvider } from './health-check/error-logger/error-logger.provider';
 import { ERROR_LOGGERS } from './health-check/error-logger/error-loggers.provider';
@@ -6,7 +6,7 @@ import { HealthCheckExecutor } from './health-check/health-check-executor.servic
 import { getLoggerProvider } from './health-check/logger/logger.provider';
 import { DiskUsageLibProvider } from './health-indicator/disk/disk-usage-lib.provider';
 import { HEALTH_INDICATORS } from './health-indicator/health-indicators.provider';
-import { TerminusModuleOptions } from './terminus-options.interface';
+import { type TerminusModuleOptions } from './terminus-options.interface';
 
 const providers = [
   ...ERROR_LOGGERS,

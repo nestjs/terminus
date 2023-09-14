@@ -1,8 +1,8 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import * as NestJSMongoose from '@nestjs/mongoose';
+import type * as NestJSMongoose from '@nestjs/mongoose';
 import {
-  HealthIndicatorResult,
+  type HealthIndicatorResult,
   TimeoutError,
   ConnectionNotFoundError,
 } from '../..';

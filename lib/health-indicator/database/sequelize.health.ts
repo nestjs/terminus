@@ -1,8 +1,8 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import * as NestJSSequelize from '@nestjs/sequelize';
+import type * as NestJSSequelize from '@nestjs/sequelize';
 import {
-  HealthIndicatorResult,
+  type HealthIndicatorResult,
   TimeoutError,
   ConnectionNotFoundError,
 } from '../..';
