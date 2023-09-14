@@ -112,7 +112,7 @@ export class MicroserviceHealthIndicator extends HealthIndicator {
    * @throws {HealthCheckError} If the microservice is not reachable
    *
    * @example
-   * microservice.pingCheck('tcp', {
+   * microservice.pingCheck<TcpClientOptions>('tcp', {
    *   transport: Transport.TCP,
    *   options: { host: 'localhost', port: 3001 },
    * })
@@ -123,6 +123,15 @@ export class MicroserviceHealthIndicator extends HealthIndicator {
   ): Promise<HealthIndicatorResult> {
     let isHealthy = false;
     const timeout = options.timeout || 1000;
+
+    if (options.transport === NestJSMicroservices.Transport.KAFKA) {
+      options.options = {
+        // We need to set the producerOnlyMode to true in order to speed
+        // up the connection process. https://github.com/nestjs/terminus/issues/1690
+        producerOnlyMode: true,
+        ...options.options,
+      };
+    }
 
     try {
       await promiseTimeout(timeout, this.pingMicroservice(options));

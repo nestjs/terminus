@@ -1,5 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
-import { Transport } from '@nestjs/microservices';
+import {
+  RedisOptions,
+  TcpClientOptions,
+  Transport,
+} from '@nestjs/microservices';
 import {
   HealthCheck,
   HealthCheckService,
@@ -18,12 +22,12 @@ export class HealthController {
   check() {
     return this.health.check([
       async () =>
-        this.microservice.pingCheck('tcp', {
+        this.microservice.pingCheck<TcpClientOptions>('tcp', {
           transport: Transport.TCP,
           options: { host: 'localhost', port: 8889 },
         }),
       async () =>
-        this.microservice.pingCheck('redis', {
+        this.microservice.pingCheck<RedisOptions>('redis', {
           transport: Transport.REDIS,
           options: {
             host: 'localhost',
