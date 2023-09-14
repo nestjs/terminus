@@ -1,5 +1,26 @@
 
 
+# [10.1.0](https://github.com/nestjs/terminus/compare/10.0.1...10.1.0) (2023-09-14)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @grpc/proto-loader to v0.7.9 ([#2309](https://github.com/nestjs/terminus/issues/2309)) ([e049c7e](https://github.com/nestjs/terminus/commit/e049c7ecefc7bd0e2cb67665d5420e44b000481d))
+* **deps:** update dependency @mikro-orm/nestjs to v5.2.1 ([#2316](https://github.com/nestjs/terminus/issues/2316)) ([64b0e69](https://github.com/nestjs/terminus/commit/64b0e6950708ccb3a574becad2ddce62065bf68b))
+* **deps:** update dependency mysql2 to v3.6.1 ([5c9c2b1](https://github.com/nestjs/terminus/commit/5c9c2b142a534e5c20c28c1e7c9f2b933ba554e0))
+* **deps:** update dependency redis to v4.6.7 ([#2283](https://github.com/nestjs/terminus/issues/2283)) ([c8be03b](https://github.com/nestjs/terminus/commit/c8be03bcc41fb7863cf5cb9141ca7a4fda588bb8))
+* **deps:** update dependency rimraf to v4.4.1 ([#2319](https://github.com/nestjs/terminus/issues/2319)) ([43b194e](https://github.com/nestjs/terminus/commit/43b194e7af6dad8f057c471b0b17d19f0b27d579))
+* **deps:** update dependency rxjs to v7.8.1 ([#2320](https://github.com/nestjs/terminus/issues/2320)) ([706d8e2](https://github.com/nestjs/terminus/commit/706d8e20658dbbb119b01894a246d09adf94a81f))
+* fails if unexpected error type thrown ([b641d2e](https://github.com/nestjs/terminus/commit/b641d2e1867563a1f468fbd4c28606ba17ed396e)), closes [#2256](https://github.com/nestjs/terminus/issues/2256)
+* **grpc:** Memory leak due to open channel references ([781c00e](https://github.com/nestjs/terminus/commit/781c00e8c4a53f5a8227bd21d0dc5eae72641d1a)), closes [#2329](https://github.com/nestjs/terminus/issues/2329)
+* **microservice:** connect to kafka with `producerOnlyMode` per default ([c6d8f7c](https://github.com/nestjs/terminus/commit/c6d8f7c9b77c574e899183f87e88e2a06fc3bbb6)), closes [#1690](https://github.com/nestjs/terminus/issues/1690)
+* **mikro-orm.health:** mikro-orm connection `type` is deprecated ([1c0eff9](https://github.com/nestjs/terminus/commit/1c0eff92f87121499f3e76231e14b256ed569f5b)), closes [#2325](https://github.com/nestjs/terminus/issues/2325)
+
+
+### Features
+
+* Do not cache health checks per default ([#2335](https://github.com/nestjs/terminus/issues/2335)) ([262c808](https://github.com/nestjs/terminus/commit/262c808f193591bbff8d6efb82c891acd25d33c7)), closes [#2328](https://github.com/nestjs/terminus/issues/2328)
+
 ## [10.0.1](https://github.com/nestjs/terminus/compare/10.0.0...10.0.1) (2023-06-17)
 
 
