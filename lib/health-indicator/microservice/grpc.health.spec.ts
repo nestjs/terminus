@@ -1,6 +1,6 @@
 import { GRPCHealthIndicator } from './grpc.health';
 import { checkPackages } from '../../utils/checkPackage.util';
-import { Transport } from '@nestjs/microservices';
+import { GrpcOptions, Transport } from '@nestjs/microservices';
 import { UnhealthyResponseCodeError, TimeoutError } from '../../errors';
 import { HealthCheckError } from '../../health-check/health-check.error';
 jest.mock('../../utils/checkPackage.util');
@@ -41,21 +41,21 @@ describe('GRPCHealthIndicator', () => {
   });
   describe('checkService', () => {
     it('should return a healthy result', async () => {
-      const result = await grpc.checkService('grpc', 'test');
+      const result = await grpc.checkService<GrpcOptions>('grpc', 'test');
       expect(result).toEqual({
         grpc: { servingStatus: 'SERVING', status: 'up', statusCode: 1 },
       });
     });
 
     it('should correctly call the ClientProxyFactory with default', async () => {
-      await grpc.checkService('grpc', 'test');
+      await grpc.checkService<GrpcOptions>('grpc', 'test');
       expect(clientProxyFactoryMock.create.mock.calls[0][0]).toEqual({
         options: { package: 'grpc.health.v1', protoPath: expect.anything() },
         transport: Transport.GRPC,
       });
     });
     it('should correctly all the ClientProxyFactory with custom options', async () => {
-      await grpc.checkService('grpc', 'test', {
+      await grpc.checkService<GrpcOptions>('grpc', 'test', {
         protoPath: 'test.proto',
         timeout: 100,
         package: 'grpc.health.v2',
@@ -70,14 +70,14 @@ describe('GRPCHealthIndicator', () => {
         toPromise: (): any => Promise.resolve({ status: 0 }),
       }));
       try {
-        await grpc.checkService('grpc', 'test');
+        await grpc.checkService<GrpcOptions>('grpc', 'test');
       } catch (err) {
         expect(err instanceof UnhealthyResponseCodeError).toBeTruthy();
       }
     });
     it('should throw an error when the timeout runs out', async () => {
       try {
-        await grpc.checkService('grpc', 'test', { timeout: 0 });
+        await grpc.checkService<GrpcOptions>('grpc', 'test', { timeout: 0 });
       } catch (err) {
         expect(err instanceof TimeoutError).toBeTruthy();
       }
@@ -87,12 +87,16 @@ describe('GRPCHealthIndicator', () => {
         .fn()
         .mockImplementation((): any => ({ status: 1 }));
 
-      await grpc.checkService('grpc', 'test', { healthServiceCheck });
+      await grpc.checkService<GrpcOptions>('grpc', 'test', {
+        healthServiceCheck,
+      });
 
       expect(healthServiceCheck.mock.calls.length).toBe(1);
     });
     it('should use the custom healthServiceName', async () => {
-      await grpc.checkService('grpc', 'test', { healthServiceName: 'health2' });
+      await grpc.checkService<GrpcOptions>('grpc', 'test', {
+        healthServiceName: 'health2',
+      });
       expect(grpcClientMock.getService.mock.calls[0][0]).toBe('health2');
     });
     it('should throw TypeError further in client.getService', async () => {
@@ -101,7 +105,7 @@ describe('GRPCHealthIndicator', () => {
         throw error;
       });
       try {
-        await grpc.checkService('grpc', 'test');
+        await grpc.checkService<GrpcOptions>('grpc', 'test');
       } catch (err) {
         expect(err).toEqual(error);
       }
@@ -112,14 +116,14 @@ describe('GRPCHealthIndicator', () => {
         throw error;
       });
       try {
-        await grpc.checkService('grpc', 'test');
+        await grpc.checkService<GrpcOptions>('grpc', 'test');
       } catch (err) {
         expect(err instanceof HealthCheckError).toBeTruthy();
       }
     });
     it('should throw HealthCheckError if the grpc check function fails', async () => {
       try {
-        await grpc.checkService('grpc', 'test', {
+        await grpc.checkService<GrpcOptions>('grpc', 'test', {
           healthServiceCheck: () => {
             throw new Error('test');
           },

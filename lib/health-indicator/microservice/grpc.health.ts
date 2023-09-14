@@ -148,17 +148,17 @@ export class GRPCHealthIndicator extends HealthIndicator {
    * @param {CheckGRPCOptions} [options] Configuration for the request
    *
    * @example
-   * grpc.checkService('hero_service', 'hero.health.v1')
+   * grpc.checkService<GrpcOptions>('hero_service', 'hero.health.v1')
    *
    * @example
    * // Change the timeout
-   * grpc.checkService('hero_service', 'hero.health.v1', { timeout: 300 })
+   * grpc.checkService<GrpcOptions>('hero_service', 'hero.health.v1', { timeout: 300 })
    *
    * @example
    * // You can customize the health check
    * // by giving these options. Nonetheless it is still seen
    * // as best practice to implement the recommended GRPC specs
-   * grpc.checkService('hero_service', 'hero.health.v1', {
+   * grpc.checkService<GrpcOptions>('hero_service', 'hero.health.v1', {
    *   timeout: 500,
    *   package: 'grpc.health.v2',
    *   protoPath: join(__dirname, './protos/my-custom-health.v1'),
