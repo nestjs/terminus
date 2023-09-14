@@ -1,5 +1,5 @@
 import { Injectable, Scope } from '@nestjs/common';
-import * as NestJSMicroservices from '@nestjs/microservices';
+import type * as NestJSMicroservices from '@nestjs/microservices';
 import { HealthIndicator, type HealthIndicatorResult } from '../';
 import { TimeoutError } from '../../errors';
 import { HealthCheckError } from '../../health-check/health-check.error';
@@ -124,7 +124,7 @@ export class MicroserviceHealthIndicator extends HealthIndicator {
     let isHealthy = false;
     const timeout = options.timeout || 1000;
 
-    if (options.transport === NestJSMicroservices.Transport.KAFKA) {
+    if (options.transport === this.nestJsMicroservices.Transport.KAFKA) {
       options.options = {
         // We need to set the producerOnlyMode to true in order to speed
         // up the connection process. https://github.com/nestjs/terminus/issues/1690
