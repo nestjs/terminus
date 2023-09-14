@@ -1,6 +1,6 @@
-import { Injectable, NotImplementedException, Scope } from '@nestjs/common';
+import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import { HealthCheckError } from '../../health-check/health-check.error';
+import { HealthCheckError } from '../../health-check';
 
 import * as MikroOrm from '@mikro-orm/core';
 import { TimeoutError } from '../../errors';
@@ -121,24 +121,7 @@ export class MikroOrmHealthIndicator extends HealthIndicator {
    *
    */
   private async pingDb(connection: MikroOrm.Connection, timeout: number) {
-    let check: Promise<any>;
-    const type = connection.getPlatform().getConfig().get('type');
-
-    switch (type) {
-      case 'postgresql':
-      case 'mysql':
-      case 'mariadb':
-      case 'sqlite':
-        check = connection.execute('SELECT 1');
-        break;
-      case 'mongo':
-        check = connection.isConnected();
-        break;
-      default:
-        throw new NotImplementedException(
-          `${type} ping check is not implemented yet`,
-        );
-    }
-    return await promiseTimeout(timeout, check);
+    const isConnected = connection.isConnected();
+    return await promiseTimeout(timeout, isConnected);
   }
 }

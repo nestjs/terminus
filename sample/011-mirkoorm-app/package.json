@@ -20,13 +20,13 @@
   "dependencies": {
     "@mikro-orm/core": "5.6.8",
     "@mikro-orm/mysql": "5.6.8",
-    "@mikro-orm/nestjs": "5.1.8",
+    "@mikro-orm/nestjs": "5.2.1",
     "@nestjs/common": "9.3.2",
     "@nestjs/core": "9.3.2",
     "@nestjs/platform-express": "9.3.2",
     "@nestjs/terminus": "9.2.0",
     "reflect-metadata": "0.1.13",
-    "rxjs": "7.2.0"
+    "rxjs": "7.8.1"
   },
   "devDependencies": {
     "@nestjs/testing": "9.3.2",
