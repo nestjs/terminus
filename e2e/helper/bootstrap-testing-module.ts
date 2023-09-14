@@ -11,6 +11,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import {
   DiskHealthIndicator,
+  HealthCheck,
   HealthCheckResult,
   HealthCheckService,
   HttpHealthIndicator,
@@ -27,6 +28,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { HttpModule } from '@nestjs/axios';
 import { MikroOrmHealthIndicator } from '../../lib/health-indicator/database/mikro-orm.health';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { HealthCheckOptions } from '../../lib/health-check';
 
 type TestingHealthFunc = (props: {
   healthCheck: HealthCheckService;
@@ -41,7 +43,10 @@ type TestingHealthFunc = (props: {
   prisma: PrismaHealthIndicator;
 }) => Promise<HealthCheckResult>;
 
-function createHealthController(func: TestingHealthFunc) {
+function createHealthController(
+  func: TestingHealthFunc,
+  options: { healthCheckOptions?: HealthCheckOptions },
+) {
   @Controller()
   class HealthController {
     constructor(
@@ -57,6 +62,7 @@ function createHealthController(func: TestingHealthFunc) {
       private readonly prisma: PrismaHealthIndicator,
     ) {}
     @Get('health')
+    @HealthCheck(options.healthCheckOptions)
     health() {
       return func({
         healthCheck: this.healthCheck,
@@ -78,7 +84,10 @@ function createHealthController(func: TestingHealthFunc) {
 
 type PropType<TObj, TProp extends keyof TObj> = TObj[TProp];
 
-export type DynamicHealthEndpointFn = (func: TestingHealthFunc) => {
+export type DynamicHealthEndpointFn = (
+  func: TestingHealthFunc,
+  options?: { healthCheckOptions?: HealthCheckOptions },
+) => {
   start(
     httpAdapter?: FastifyAdapter | ExpressAdapter,
   ): Promise<INestApplication>;
@@ -87,10 +96,10 @@ export type DynamicHealthEndpointFn = (func: TestingHealthFunc) => {
 export function bootstrapTestingModule() {
   const imports: PropType<ModuleMetadata, 'imports'> = [TerminusModule];
 
-  function setHealthEndpoint(func: TestingHealthFunc) {
+  const setHealthEndpoint: DynamicHealthEndpointFn = (func, options = {}) => {
     const testingModule = Test.createTestingModule({
       imports,
-      controllers: [createHealthController(func)],
+      controllers: [createHealthController(func, options)],
     });
 
     async function start(
@@ -106,7 +115,7 @@ export function bootstrapTestingModule() {
     }
 
     return { start };
-  }
+  };
 
   function withMongoose() {
     imports.push(MongooseModule.forRoot('mongodb://0.0.0.0:27017/test'));
