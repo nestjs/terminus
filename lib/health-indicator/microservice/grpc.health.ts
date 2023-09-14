@@ -184,7 +184,8 @@ export class GRPCHealthIndicator extends HealthIndicator {
       package: 'grpc.health.v1',
       protoPath: join(__dirname, './protos/health.proto'),
       healthServiceCheck: (healthService: GRPCHealthService, service: string) =>
-        lastValueFrom(healthService.check({ service })),
+        // eslint-disable-next-line deprecation/deprecation
+        healthService.check({ service }).toPromise(),
       timeout: 1000,
       healthServiceName: 'Health',
     };
