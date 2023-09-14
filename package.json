@@ -70,8 +70,9 @@
     "delete-empty": "3.0.0",
     "eslint": "8.45.0",
     "eslint-config-prettier": "8.8.0",
+    "eslint-import-resolver-typescript": "^3.6.0",
     "eslint-plugin-deprecation": "^2.0.0",
-    "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-import": "^2.27.5",
     "fastify": "4.20.0",
     "gulp": "4.0.2",
     "gulp-clean": "0.4.0",
@@ -260,6 +261,8 @@
       "plugin:deprecation/recommended",
       "plugin:@typescript-eslint/eslint-recommended",
       "plugin:@typescript-eslint/recommended",
+      "plugin:import/recommended",
+      "plugin:import/typescript",
       "prettier"
     ],
     "root": true,
@@ -267,12 +270,61 @@
       "node": true,
       "jest": true
     },
+    "overrides": [
+      {
+        "files": [
+          "*.{js,ts}"
+        ],
+        "settings": {
+          "import/resolver": {
+            "typescript": {
+              "alwaysTryTypes": true,
+              "project": [
+                "./tsconfig.json",
+                "./e2e/tsconfig.json"
+              ]
+            }
+          }
+        }
+      }
+    ],
     "rules": {
       "@typescript-eslint/interface-name-prefix": "off",
       "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-use-before-define": "off",
-      "@typescript-eslint/no-non-null-assertion": "off"
+      "@typescript-eslint/no-non-null-assertion": "off",
+      "import/newline-after-import": 2,
+      "import/order": [
+        2,
+        {
+          "groups": [
+            "builtin",
+            "external",
+            "internal",
+            [
+              "parent",
+              "sibling",
+              "index"
+            ]
+          ],
+          "pathGroups": [
+            {
+              "pattern": "@nestjs*",
+              "group": "external",
+              "position": "before"
+            }
+          ],
+          "distinctGroup": false,
+          "alphabetize": {
+            "order": "asc",
+            "orderImportKind": "asc",
+            "caseInsensitive": true
+          },
+          "newlines-between": "never",
+          "pathGroupsExcludedImportTypes": []
+        }
+      ]
     }
   }
 }

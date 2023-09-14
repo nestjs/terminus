@@ -1,15 +1,14 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { isNil } from '@nestjs/common/utils/shared.utils';
 import checkDiskSpace from 'check-disk-space';
-
-import { HealthIndicator, HealthIndicatorResult } from '../';
-import { CHECK_DISK_SPACE_LIB } from '../../terminus.constants';
-import { StorageExceededError } from '../../errors';
-import { STORAGE_EXCEEDED } from '../../errors/messages.constant';
 import {
   DiskHealthIndicatorOptions,
   DiskOptionsWithThresholdPercent,
 } from './disk-health-options.type';
+import { HealthIndicator, HealthIndicatorResult } from '../';
+import { StorageExceededError } from '../../errors';
+import { STORAGE_EXCEEDED } from '../../errors/messages.constant';
+import { CHECK_DISK_SPACE_LIB } from '../../terminus.constants';
 
 type CheckDiskSpace = typeof checkDiskSpace;
 

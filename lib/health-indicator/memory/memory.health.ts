@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { HealthIndicator, HealthIndicatorResult } from '../';
-import { STORAGE_EXCEEDED } from '../../errors/messages.constant';
 import { StorageExceededError } from '../../errors';
+import { STORAGE_EXCEEDED } from '../../errors/messages.constant';
 
 /**
  * The MemoryHealthIndicator contains checks which are related

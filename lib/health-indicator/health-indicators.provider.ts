@@ -1,5 +1,4 @@
 import { Type } from '@nestjs/common';
-
 import {
   TypeOrmHealthIndicator,
   HttpHealthIndicator,

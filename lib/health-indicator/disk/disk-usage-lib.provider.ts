@@ -1,6 +1,6 @@
+import checkDiskSpace from 'check-disk-space';
 import { CHECK_DISK_SPACE_LIB } from '../../terminus.constants';
 
-import checkDiskSpace from 'check-disk-space';
 
 /**
  * Wrapper of the check-disk-space library.

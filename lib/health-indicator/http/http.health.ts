@@ -1,14 +1,14 @@
-import { ConsoleLogger, Inject, Injectable, Scope } from '@nestjs/common';
-import { HealthIndicator, HealthIndicatorResult } from '..';
-import { HealthCheckError } from '../../health-check/health-check.error';
-import { lastValueFrom, Observable } from 'rxjs';
-import { ModuleRef } from '@nestjs/core';
-import { checkPackages, isAxiosError } from '../../utils';
-import type * as NestJSAxios from '@nestjs/axios';
-import { AxiosRequestConfig, AxiosResponse } from './axios.interfaces';
 import { URL } from 'url';
+import type * as NestJSAxios from '@nestjs/axios';
+import { ConsoleLogger, Inject, Injectable, Scope } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
+import { lastValueFrom, Observable } from 'rxjs';
+import { AxiosRequestConfig, AxiosResponse } from './axios.interfaces';
+import { HealthIndicator, HealthIndicatorResult } from '..';
 import { AxiosError } from '../../errors/axios.error';
+import { HealthCheckError } from '../../health-check/health-check.error';
 import { TERMINUS_LOGGER } from '../../health-check/logger/logger.provider';
+import { checkPackages, isAxiosError } from '../../utils';
 
 interface HttpClientLike {
   request<T = any>(config: any): Observable<AxiosResponse<T>>;

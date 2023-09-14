@@ -1,5 +1,5 @@
-import { HealthCheckError } from '../health-check/health-check.error';
 import { STORAGE_EXCEEDED } from './messages.constant';
+import { HealthCheckError } from '../health-check/health-check.error';
 
 /**
  * Error which gets thrown when the given storage threshold

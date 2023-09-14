@@ -1,15 +1,14 @@
+import * as MikroOrm from '@mikro-orm/core';
 import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import { HealthCheckError } from '../../health-check';
-
-import * as MikroOrm from '@mikro-orm/core';
+import { HealthIndicator, HealthIndicatorResult } from '..';
 import { TimeoutError } from '../../errors';
+import { HealthCheckError } from '../../health-check';
 import {
   TimeoutError as PromiseTimeoutError,
   promiseTimeout,
   checkPackages,
 } from '../../utils';
-import { HealthIndicator, HealthIndicatorResult } from '..';
 
 export interface MikroOrmPingCheckSettings {
   /**

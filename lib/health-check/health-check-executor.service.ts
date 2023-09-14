@@ -1,13 +1,13 @@
 import { Injectable, BeforeApplicationShutdown } from '@nestjs/common';
 import {
-  HealthIndicatorFunction,
-  HealthIndicatorResult,
-} from '../health-indicator';
-import { HealthCheckError } from '../health-check/health-check.error';
-import {
   HealthCheckResult,
   HealthCheckStatus,
 } from './health-check-result.interface';
+import { HealthCheckError } from '../health-check/health-check.error';
+import {
+  HealthIndicatorFunction,
+  HealthIndicatorResult,
+} from '../health-indicator';
 import { isHealthCheckError } from '../utils';
 
 /**

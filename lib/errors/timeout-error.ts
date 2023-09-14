@@ -1,5 +1,5 @@
-import { HealthCheckError } from '../health-check/health-check.error';
 import { TIMEOUT_EXCEEDED } from './messages.constant';
+import { HealthCheckError } from '../health-check/health-check.error';
 
 /**
  * Gets thrown when the timeout of the health check exceeds

@@ -1,11 +1,11 @@
+import { Injectable } from '@nestjs/common';
+import { TimeoutError } from '../../errors';
+import { HealthCheckError } from '../../health-check';
 import {
   promiseTimeout,
   TimeoutError as PromiseTimeoutError,
 } from '../../utils';
 import { HealthIndicator } from '../health-indicator';
-import { TimeoutError } from '../../errors';
-import { HealthCheckError } from '../../health-check';
-import { Injectable } from '@nestjs/common';
 
 type PingCommandSignature = { [Key in string]?: number };
 

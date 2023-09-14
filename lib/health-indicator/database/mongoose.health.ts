@@ -1,19 +1,17 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import { HealthCheckError } from '../../health-check/health-check.error';
-
 import * as NestJSMongoose from '@nestjs/mongoose';
-
-import {
-  promiseTimeout,
-  TimeoutError as PromiseTimeoutError,
-  checkPackages,
-} from '../../utils';
 import {
   HealthIndicatorResult,
   TimeoutError,
   ConnectionNotFoundError,
 } from '../..';
+import { HealthCheckError } from '../../health-check/health-check.error';
+import {
+  promiseTimeout,
+  TimeoutError as PromiseTimeoutError,
+  checkPackages,
+} from '../../utils';
 import { HealthIndicator } from '../health-indicator';
 
 export interface MongoosePingCheckSettings {

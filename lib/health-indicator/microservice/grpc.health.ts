@@ -1,13 +1,13 @@
-import { HealthCheckError } from '../../health-check/health-check.error';
+import { join } from 'path';
 import { Injectable, Scope } from '@nestjs/common';
 import type * as NestJSMicroservices from '@nestjs/microservices';
-import { join } from 'path';
 import { Observable, lastValueFrom } from 'rxjs';
 import {
   HealthIndicatorResult,
   TimeoutError,
   UnhealthyResponseCodeError,
 } from '../..';
+import { HealthCheckError } from '../../health-check/health-check.error';
 import {
   checkPackages,
   isError,

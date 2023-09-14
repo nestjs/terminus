@@ -1,5 +1,5 @@
-import { HealthCheckError } from '../health-check/health-check.error';
 import { UNHEALTHY_RESPONSE_CODE } from './messages.constant';
+import { HealthCheckError } from '../health-check/health-check.error';
 
 /**
  * Error which gets thrown when the terminus client receives
