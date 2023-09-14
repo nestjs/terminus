@@ -10,5 +10,5 @@ export function isAxiosError(err: any): err is AxiosError {
 }
 
 export function isError(err: any): err is Error {
-  return !!err.message;
+  return !!err?.message;
 }
