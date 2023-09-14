@@ -1,5 +1,12 @@
 
 
+## [10.1.1-beta.0](https://github.com/nestjs/terminus/compare/10.1.0...10.1.1-beta.0) (2023-09-14)
+
+
+### Bug Fixes
+
+* @nestjs/microservices as direct dependency ([acfdfb3](https://github.com/nestjs/terminus/commit/acfdfb32ec085168e2dbc838efbc15afa024c4da))
+
 # [10.1.0](https://github.com/nestjs/terminus/compare/10.0.1...10.1.0) (2023-09-14)
 
 
