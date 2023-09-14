@@ -58,13 +58,13 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
   /**
    * Returns the connection of the current DI context
    */
-  private getContextConnection(): TypeOrm.Connection | null {
-    const { getConnectionToken } =
+  private getContextConnection(): TypeOrm.DataSource | null {
+    const { getDataSourceToken } =
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('@nestjs/typeorm/dist/common/typeorm.utils') as typeof NestJSTypeOrm;
 
     try {
-      return this.moduleRef.get(getConnectionToken() as string, {
+      return this.moduleRef.get(getDataSourceToken() as string, {
         strict: false,
       });
     } catch (err) {
@@ -96,7 +96,7 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
    * @param timeout The timeout how long the ping should maximum take
    *
    */
-  private async pingDb(connection: TypeOrm.Connection, timeout: number) {
+  private async pingDb(connection: TypeOrm.DataSource, timeout: number) {
     let check: Promise<any>;
     switch (connection.options.type) {
       case 'mongodb':
@@ -131,7 +131,7 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
     let isHealthy = false;
     this.checkDependantPackages();
 
-    const connection: TypeOrm.Connection | null =
+    const connection: TypeOrm.DataSource | null =
       options.connection || this.getContextConnection();
     const timeout = options.timeout || 1000;
 

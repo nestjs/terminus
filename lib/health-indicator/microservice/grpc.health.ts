@@ -2,7 +2,7 @@ import { HealthCheckError } from '../../health-check/health-check.error';
 import { Injectable, Scope } from '@nestjs/common';
 import type * as NestJSMicroservices from '@nestjs/microservices';
 import { join } from 'path';
-import { Observable } from 'rxjs';
+import { Observable, lastValueFrom } from 'rxjs';
 import {
   HealthIndicatorResult,
   TimeoutError,
@@ -184,7 +184,7 @@ export class GRPCHealthIndicator extends HealthIndicator {
       package: 'grpc.health.v1',
       protoPath: join(__dirname, './protos/health.proto'),
       healthServiceCheck: (healthService: GRPCHealthService, service: string) =>
-        healthService.check({ service }).toPromise(),
+        lastValueFrom(healthService.check({ service })),
       timeout: 1000,
       healthServiceName: 'Health',
     };

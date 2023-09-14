@@ -70,6 +70,7 @@
     "delete-empty": "3.0.0",
     "eslint": "8.45.0",
     "eslint-config-prettier": "8.8.0",
+    "eslint-plugin-deprecation": "^2.0.0",
     "eslint-plugin-import": "2.27.5",
     "fastify": "4.20.0",
     "gulp": "4.0.2",
@@ -171,14 +172,18 @@
   },
   "renovate": {
     "semanticCommits": true,
-    "packageRules": [{
-      "depTypeList": ["devDependencies"],
-      "automerge": true
-    }],
+    "packageRules": [
+      {
+        "depTypeList": [
+          "devDependencies"
+        ],
+        "automerge": true
+      }
+    ],
     "extends": [
       "config:base"
     ]
-  },  
+  },
   "commitlint": {
     "extends": [
       "@commitlint/config-angular"
@@ -252,6 +257,7 @@
       "@typescript-eslint/eslint-plugin"
     ],
     "extends": [
+      "plugin:deprecation/recommended",
       "plugin:@typescript-eslint/eslint-recommended",
       "plugin:@typescript-eslint/recommended",
       "prettier"

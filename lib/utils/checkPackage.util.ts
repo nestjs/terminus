@@ -32,7 +32,7 @@ const logger = new Logger('PackageLoader');
 function optional<T = any>(module: string): T | null {
   try {
     if (module[0] in { '.': 1 }) {
-      module = process.cwd() + module.substr(1);
+      module = process.cwd() + module.substring(1);
     }
     return require(`${module}`);
   } catch (err) {}
