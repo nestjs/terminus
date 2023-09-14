@@ -25,16 +25,11 @@
     "publish:npm": "npm publish --access public",
     "test": "npm run test:ut && npm run test:import",
     "test:e2e": "jest --config=e2e/jest-e2e.json --detectOpenHandles --forceExit",
-    "test:ut": "jest --config=jest.json --detectOpenHandles",
+    "test:ut": "jest --detectOpenHandles",
     "test:ut:cov": "npm run test:ut -- --coverage",
     "test:import": "ts-node tools/import-check.ts",
     "release": "release-it",
     "prepare": "husky install"
-  },
-  "lint-staged": {
-    "*.ts": [
-      "prettier --write"
-    ]
   },
   "dependencies": {
     "boxen": "5.1.2",
@@ -163,6 +158,115 @@
     },
     "@prisma/client": {
       "optional": true
+    }
+  },
+  "lint-staged": {
+    "*.ts": [
+      "prettier --write"
+    ]
+  },
+  "prettier": {
+    "trailingComma": "all",
+    "singleQuote": true
+  },
+  "renovate": {
+    "semanticCommits": true,
+    "packageRules": [{
+      "depTypeList": ["devDependencies"],
+      "automerge": true
+    }],
+    "extends": [
+      "config:base"
+    ]
+  },  
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-angular"
+    ],
+    "rules": {
+      "subject-case": [
+        2,
+        "always",
+        [
+          "sentence-case",
+          "start-case",
+          "pascal-case",
+          "upper-case",
+          "lower-case"
+        ]
+      ],
+      "type-enum": [
+        2,
+        "always",
+        [
+          "build",
+          "chore",
+          "ci",
+          "docs",
+          "feat",
+          "fix",
+          "perf",
+          "refactor",
+          "revert",
+          "style",
+          "test",
+          "sample"
+        ]
+      ]
+    }
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ],
+    "transform": {
+      "^.+\\.ts$": "ts-jest",
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "setupFiles": [
+      "<rootDir>/node_modules/reflect-metadata/Reflect.js"
+    ],
+    "testRegex": "/lib/.*\\.(test|spec).(ts|tsx|js)$",
+    "collectCoverageFrom": [
+      "lib/**/*.{js,jsx,tsx,ts}",
+      "!**/node_modules/**",
+      "!**/vendor/**"
+    ],
+    "coverageReporters": [
+      "json",
+      "lcov"
+    ],
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node"
+  },
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "project": "tsconfig.json",
+      "sourceType": "module"
+    },
+    "plugins": [
+      "@typescript-eslint/eslint-plugin"
+    ],
+    "extends": [
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended",
+      "prettier"
+    ],
+    "root": true,
+    "env": {
+      "node": true,
+      "jest": true
+    },
+    "rules": {
+      "@typescript-eslint/interface-name-prefix": "off",
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-use-before-define": "off",
+      "@typescript-eslint/no-non-null-assertion": "off"
     }
   }
 }
