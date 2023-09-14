@@ -1,5 +1,7 @@
 
 
+## [10.1.1](https://github.com/nestjs/terminus/compare/10.1.1-beta.0...10.1.1) (2023-09-14)
+
 ## [10.1.1-beta.0](https://github.com/nestjs/terminus/compare/10.1.0...10.1.1-beta.0) (2023-09-14)
 
 
