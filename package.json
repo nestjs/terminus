@@ -68,7 +68,7 @@
     "axios": "^1.4.0",
     "cli-color": "2.0.3",
     "delete-empty": "3.0.0",
-    "eslint": "8.45.0",
+    "eslint": "8.49.0",
     "eslint-config-prettier": "8.8.0",
     "eslint-import-resolver-typescript": "^3.6.0",
     "eslint-plugin-deprecation": "^2.0.0",
