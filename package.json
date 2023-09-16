@@ -69,7 +69,7 @@
     "cli-color": "2.0.3",
     "delete-empty": "3.0.0",
     "eslint": "8.49.0",
-    "eslint-config-prettier": "8.10.0",
+    "eslint-config-prettier": "9.0.0",
     "eslint-import-resolver-typescript": "^3.6.0",
     "eslint-plugin-deprecation": "^2.0.0",
     "eslint-plugin-import": "^2.27.5",
