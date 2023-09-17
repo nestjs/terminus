@@ -18,8 +18,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@mikro-orm/core": "5.6.8",
-    "@mikro-orm/mysql": "5.6.8",
+    "@mikro-orm/core": "5.8.1",
+    "@mikro-orm/mysql": "5.8.1",
     "@mikro-orm/nestjs": "5.2.1",
     "@nestjs/common": "9.4.3",
     "@nestjs/core": "9.4.3",
