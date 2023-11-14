@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { Injectable, Scope } from '@nestjs/common';
 import type * as NestJSMicroservices from '@nestjs/microservices';
-import { type Observable, lastValueFrom } from 'rxjs';
+import { type Observable } from 'rxjs';
 import {
   type HealthIndicatorResult,
   TimeoutError,
