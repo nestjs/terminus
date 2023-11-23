@@ -32,7 +32,7 @@
     "@types/express": "4.17.21",
     "@types/jest": "29.5.10",
     "@types/node": "16.18.64",
-    "@types/sequelize": "4.28.16",
+    "@types/sequelize": "4.28.19",
     "@types/supertest": "2.0.13",
     "@typescript-eslint/eslint-plugin": "6.7.3",
     "@typescript-eslint/parser": "6.7.3",
