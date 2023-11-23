@@ -16,9 +16,7 @@ export const TERMINUS_GRACEFUL_SHUTDOWN_TIMEOUT =
  * for some time before the application shuts down.
  */
 @Injectable()
-export class GracefulShutdownService
-  implements BeforeApplicationShutdown
-{
+export class GracefulShutdownService implements BeforeApplicationShutdown {
   constructor(
     @Inject(TERMINUS_LOGGER)
     private readonly logger: LoggerService,
@@ -26,7 +24,7 @@ export class GracefulShutdownService
     private readonly gracefulShutdownTimeoutMs: number,
   ) {
     if (this.logger instanceof ConsoleLogger) {
-      this.logger.setContext(GracefulShutdownTimeoutService.name);
+      this.logger.setContext(GracefulShutdownService.name);
     }
   }
 
