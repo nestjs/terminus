@@ -52,7 +52,7 @@
     "@nestjs/platform-express": "10.2.6",
     "@nestjs/platform-fastify": "10.2.6",
     "@nestjs/sequelize": "10.0.0",
-    "@nestjs/swagger": "7.1.12",
+    "@nestjs/swagger": "7.1.16",
     "@nestjs/testing": "10.2.6",
     "@nestjs/typeorm": "10.0.0",
     "@prisma/client": "4.16.2",
