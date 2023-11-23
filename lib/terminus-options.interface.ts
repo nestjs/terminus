@@ -12,5 +12,9 @@ export type ErrorLogStyle = 'pretty' | 'json';
 export interface TerminusModuleOptions {
   errorLogStyle?: ErrorLogStyle;
   logger?: Type<LoggerService> | boolean;
+  /**
+   * The timeout to wait in ms before the application shuts down
+   * @default 0
+   */
   gracefulShutdownTimeoutMs?: number;
 }
