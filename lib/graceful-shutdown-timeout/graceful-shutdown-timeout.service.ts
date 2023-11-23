@@ -16,7 +16,7 @@ export const TERMINUS_GRACEFUL_SHUTDOWN_TIMEOUT =
  * for some time before the application shuts down.
  */
 @Injectable()
-export class GracefulShutdownTimeoutService
+export class GracefulShutdownService
   implements BeforeApplicationShutdown
 {
   constructor(
