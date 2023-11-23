@@ -22,7 +22,7 @@ export class GracefulShutdownTimeoutService
   constructor(
     @Inject(TERMINUS_LOGGER)
     private readonly logger: LoggerService,
-    @Inject('TERMINUS_GRACEFUL_SHUTDOWN_TIMEOUT')
+    @Inject(TERMINUS_GRACEFUL_SHUTDOWN_TIMEOUT)
     private readonly gracefulShutdownTimeoutMs: number,
   ) {
     if (this.logger instanceof ConsoleLogger) {
