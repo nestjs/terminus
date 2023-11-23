@@ -11,6 +11,9 @@ export type ErrorLogStyle = 'pretty' | 'json';
  */
 export interface TerminusModuleOptions {
   errorLogStyle?: ErrorLogStyle;
+  /**
+   * The logger to use. Either default logger or your own.
+   */
   logger?: Type<LoggerService> | boolean;
   /**
    * The timeout to wait in ms before the application shuts down
