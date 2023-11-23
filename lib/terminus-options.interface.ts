@@ -10,6 +10,10 @@ export type ErrorLogStyle = 'pretty' | 'json';
  * gracefulShutdownTimeoutMs: The timeout to wait in ms before the application shuts down. Default to 0ms.
  */
 export interface TerminusModuleOptions {
+  /**
+   * The style of the error logger
+   * @default 'json'
+   */
   errorLogStyle?: ErrorLogStyle;
   /**
    * The logger to use. Either default logger or your own.
