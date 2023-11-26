@@ -95,10 +95,6 @@ If everything is set up correctly, you can access the healthcheck on `http://loc
 For more information, [see docs](https://docs.nestjs.com/recipes/terminus).
 You can find more samples in the [samples/](https://github.com/nestjs/terminus/tree/master/sample) folder of this repository.
 
-### Graceful shutdown timeout
-
-If your application requires postponing its shutdown process, this can be done by configuring the `gracefulShutdownTimeoutMs` in the `TerminusModule options`. This setting can prove particularly beneficial when working with an orchestrator such as Kubernetes. By setting a delay slightly longer than the readiness check interval, you can achieve zero downtime when shutting down containers.
-
 ## Contribute
 
 In order to get started, first read through our [Contributing guidelines](https://github.com/nestjs/terminus/blob/master/CONTRIBUTING.md).
