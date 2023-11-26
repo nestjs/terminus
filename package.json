@@ -88,7 +88,7 @@
     "mysql2": "3.6.1",
     "nats": "2.16.0",
     "portfinder": "1.0.32",
-    "prettier": "2.8.8",
+    "prettier": "3.1.0",
     "prisma": "4.16.2",
     "reflect-metadata": "0.1.13",
     "release-it": "15.11.0",
