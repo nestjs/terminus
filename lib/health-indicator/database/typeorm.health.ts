@@ -72,16 +72,22 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
 
   private async checkMongoDBConnection(connection: any) {
     return new Promise<void>((resolve, reject) => {
-      const driver = connection.driver as any;
-      // Hacky workaround which uses the native MongoClient
+      const driver = connection.driver;
+      const url = connection.options.url
+        ? connection.options.url
+        : driver.buildConnectionUrl(connection.options);
+
+      // FIXME: Hacky workaround which uses the native MongoClient
       driver.mongodb.MongoClient.connect(
-        connection.options.url
-          ? connection.options.url
-          : driver.buildConnectionUrl(connection.options),
+        url,
         driver.buildConnectionOptions(connection.options),
       )
         .catch((err: Error) => reject(new MongoConnectionError(err.message)))
-        .then((client: TypeOrm.MongoClient) => client.close().catch(() => {}))
+        .then((client: TypeOrm.MongoClient) => client.close())
+
+        // Noop when trying to close a closed connection
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        .catch(() => {})
         .then(() => resolve());
     });
   }
