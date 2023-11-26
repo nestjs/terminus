@@ -40,9 +40,8 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
   async execute(
     healthIndicators: HealthIndicatorFunction[],
   ): Promise<HealthCheckResult> {
-    const { results, errors } = await this.executeHealthIndicators(
-      healthIndicators,
-    );
+    const { results, errors } =
+      await this.executeHealthIndicators(healthIndicators);
 
     return this.getResult(results, errors);
   }

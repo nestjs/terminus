@@ -44,9 +44,8 @@ describe('Http Response Health Indicator', () => {
       ],
     }).compile();
 
-    httpHealthIndicator = await moduleRef.resolve<HttpHealthIndicator>(
-      HttpHealthIndicator,
-    );
+    httpHealthIndicator =
+      await moduleRef.resolve<HttpHealthIndicator>(HttpHealthIndicator);
 
     httpService = await moduleRef.resolve<HttpService>(
       nestJSAxiosMock.HttpService as any,
