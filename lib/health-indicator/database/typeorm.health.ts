@@ -79,13 +79,10 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
           ? connection.options.url
           : driver.buildConnectionUrl(connection.options),
         driver.buildConnectionOptions(connection.options),
-        (err: Error, client: any) => {
-          if (err) {
-            return reject(new MongoConnectionError(err.message));
-          }
-          client.close(() => resolve());
-        },
-      );
+      )
+        .catch((err: Error) => reject(new MongoConnectionError(err.message)))
+        .then((client: TypeOrm.MongoClient) => client.close().catch(() => {}))
+        .then(() => resolve());
     });
   }
 
