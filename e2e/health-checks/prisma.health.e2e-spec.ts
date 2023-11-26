@@ -1,8 +1,11 @@
-import { INestApplication } from '@nestjs/common';
+import { type INestApplication } from '@nestjs/common';
+import * as request from 'supertest';
+import {
+  bootstrapTestingModule,
+  type DynamicHealthEndpointFn,
+} from '../helper';
 import { PrismaClient as MongoPrismaClient } from '../prisma/generated/mongodb';
 import { PrismaClient as MySQLPrismaClient } from '../prisma/generated/mysql';
-import { bootstrapTestingModule, DynamicHealthEndpointFn } from '../helper';
-import * as request from 'supertest';
 
 jest.setTimeout(300_000);
 

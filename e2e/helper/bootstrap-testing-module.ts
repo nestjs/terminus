@@ -1,18 +1,21 @@
+import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { HttpModule } from '@nestjs/axios';
 import {
   Controller,
   Get,
-  INestApplication,
-  ModuleMetadata,
+  type INestApplication,
+  type ModuleMetadata,
 } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
-import { FastifyAdapter } from '@nestjs/platform-fastify';
+import { MongooseModule } from '@nestjs/mongoose';
 import { ExpressAdapter } from '@nestjs/platform-express';
+import { type FastifyAdapter } from '@nestjs/platform-fastify';
+import { SequelizeModule } from '@nestjs/sequelize';
+import { Test } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
 import {
   DiskHealthIndicator,
   HealthCheck,
-  HealthCheckResult,
+  type HealthCheckResult,
   HealthCheckService,
   HttpHealthIndicator,
   MemoryHealthIndicator,
@@ -23,12 +26,8 @@ import {
   TerminusModule,
   TypeOrmHealthIndicator,
 } from '../../lib';
-import { SequelizeModule } from '@nestjs/sequelize';
-import { MongooseModule } from '@nestjs/mongoose';
-import { HttpModule } from '@nestjs/axios';
+import { type HealthCheckOptions } from '../../lib/health-check';
 import { MikroOrmHealthIndicator } from '../../lib/health-indicator/database/mikro-orm.health';
-import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { HealthCheckOptions } from '../../lib/health-check';
 
 type TestingHealthFunc = (props: {
   healthCheck: HealthCheckService;

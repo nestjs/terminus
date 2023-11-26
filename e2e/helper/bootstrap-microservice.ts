@@ -1,4 +1,4 @@
-import { INestMicroservice, Module } from '@nestjs/common';
+import { type INestMicroservice, Module } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
 import * as waitPort from 'wait-port';

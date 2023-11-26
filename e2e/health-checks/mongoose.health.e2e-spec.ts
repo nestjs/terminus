@@ -1,6 +1,9 @@
+import { type INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { INestApplication } from '@nestjs/common';
-import { bootstrapTestingModule, DynamicHealthEndpointFn } from '../helper';
+import {
+  bootstrapTestingModule,
+  type DynamicHealthEndpointFn,
+} from '../helper';
 
 describe('MongooseHealthIndicator', () => {
   let app: INestApplication;

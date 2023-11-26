@@ -1,5 +1,5 @@
-import { dest, src, task } from 'gulp';
 import { join } from 'path';
+import { dest, src, task } from 'gulp';
 import { samplePath, libPath, distPath } from '../config';
 import { getDirs } from '../util/task-helpers';
 

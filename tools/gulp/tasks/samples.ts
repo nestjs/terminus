@@ -1,9 +1,9 @@
 import * as childProcess from 'child_process';
+import { resolve } from 'path';
+import { promisify } from 'util';
 import * as clc from 'cli-color';
 import * as log from 'fancy-log';
 import { task, series } from 'gulp';
-import { resolve } from 'path';
-import { promisify } from 'util';
 import { samplePath } from '../config';
 import { getDirs } from '../util/task-helpers';
 

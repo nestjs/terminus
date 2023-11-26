@@ -1,11 +1,10 @@
+import { type INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { INestApplication } from '@nestjs/common';
-
 import {
   bootstrapRemoteServer,
   bootstrapTestingModule,
-  DynamicHealthEndpointFn,
-  DynamicRemoteServerFn,
+  type DynamicHealthEndpointFn,
+  type DynamicRemoteServerFn,
 } from '../helper';
 
 describe(`HttpHealthIndicator`, () => {

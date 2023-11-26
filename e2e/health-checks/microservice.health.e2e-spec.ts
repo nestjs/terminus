@@ -1,16 +1,16 @@
+import { type INestApplication, type INestMicroservice } from '@nestjs/common';
+import {
+  type KafkaOptions,
+  type RmqOptions,
+  type TcpClientOptions,
+  Transport,
+} from '@nestjs/microservices';
 import * as request from 'supertest';
-import { INestApplication, INestMicroservice } from '@nestjs/common';
 import {
   bootstrapMicroservice,
   bootstrapTestingModule,
-  DynamicHealthEndpointFn,
+  type DynamicHealthEndpointFn,
 } from '../helper';
-import {
-  KafkaOptions,
-  RmqOptions,
-  TcpClientOptions,
-  Transport,
-} from '@nestjs/microservices';
 
 describe('MicroserviceHealthIndicator', () => {
   let app: INestApplication;

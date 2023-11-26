@@ -1,5 +1,5 @@
-import { getDirs } from './util/task-helpers';
 import { join } from 'path';
+import { getDirs } from './util/task-helpers';
 
 // All paths are related to the base dir
 export const rootFolder = join(__dirname, '../../');

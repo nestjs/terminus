@@ -1,8 +1,10 @@
-import * as request from 'supertest';
-import { INestApplication } from '@nestjs/common';
+import { type INestApplication } from '@nestjs/common';
 import checkDiskSpace from 'check-disk-space';
-
-import { bootstrapTestingModule, DynamicHealthEndpointFn } from '../helper';
+import * as request from 'supertest';
+import {
+  bootstrapTestingModule,
+  type DynamicHealthEndpointFn,
+} from '../helper';
 
 describe('DiskHealthIndicator', () => {
   let app: INestApplication;

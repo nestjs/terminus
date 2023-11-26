@@ -1,5 +1,5 @@
+import { type Server } from 'http';
 import * as express from 'express';
-import { Server } from 'http';
 import * as portfinder from 'portfinder';
 
 type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;

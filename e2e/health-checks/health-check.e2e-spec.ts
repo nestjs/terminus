@@ -1,7 +1,10 @@
+import { type INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { INestApplication } from '@nestjs/common';
-import { DynamicHealthEndpointFn, bootstrapTestingModule } from '../helper';
-import { HealthIndicatorResult } from '../../lib';
+import { type HealthIndicatorResult } from '../../lib';
+import {
+  type DynamicHealthEndpointFn,
+  bootstrapTestingModule,
+} from '../helper';
 
 describe.only('HealthCheck', () => {
   let app: INestApplication;
