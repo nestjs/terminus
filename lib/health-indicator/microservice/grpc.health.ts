@@ -128,9 +128,14 @@ export class GRPCHealthIndicator extends HealthIndicator {
   private createClient<GrpcOptions extends GrpcClientOptionsLike>(
     options: CheckGRPCServiceOptions<GrpcOptions>,
   ): NestJSMicroservices.ClientGrpc {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { timeout, healthServiceName, healthServiceCheck, ...grpcOptions } =
-      options;
+    const {
+      // Remove the options which are not needed for the client
+      timeout: _t,
+      healthServiceName: _hS,
+      healthServiceCheck: _hSC,
+
+      ...grpcOptions
+    } = options;
     return this.nestJsMicroservices.ClientProxyFactory.create({
       transport: 4,
       options: grpcOptions as any,

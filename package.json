@@ -75,6 +75,7 @@
     "eslint-plugin-deprecation": "^2.0.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jest": "^27.2.3",
+    "eslint-plugin-unused-imports": "^3.0.0",
     "fastify": "4.23.2",
     "gulp": "4.0.2",
     "gulp-clean": "0.4.0",
@@ -257,7 +258,8 @@
       "sourceType": "module"
     },
     "plugins": [
-      "@typescript-eslint/eslint-plugin"
+      "@typescript-eslint/eslint-plugin",
+      "unused-imports"
     ],
     "extends": [
       "plugin:deprecation/recommended",
@@ -313,10 +315,15 @@
       "@typescript-eslint/no-use-before-define": "off",
       "@typescript-eslint/no-non-null-assertion": "off",
       "@typescript-eslint/prefer-optional-chain": 1,
-      "@typescript-eslint/no-unused-vars": [
-        1,
+      "@typescript-eslint/no-unused-vars": "off",
+      "unused-imports/no-unused-imports": "error",
+      "unused-imports/no-unused-vars": [
+        "warn",
         {
-          "varsIgnorePattern": "^_"
+          "vars": "all",
+          "varsIgnorePattern": "^_",
+          "args": "after-used",
+          "argsIgnorePattern": "^_"
         }
       ],
       "@typescript-eslint/consistent-type-imports": [
