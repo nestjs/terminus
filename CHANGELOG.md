@@ -1,5 +1,37 @@
 
 
+# [10.2.0-beta.0](https://github.com/nestjs/terminus/compare/10.1.1...10.2.0-beta.0) (2023-11-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @grpc/grpc-js to v1.9.11 ([8b9477e](https://github.com/nestjs/terminus/commit/8b9477e7fb8ca1338a777a6ec766cf3af68b6e4f))
+* **deps:** update dependency @grpc/grpc-js to v1.9.3 ([8205d8e](https://github.com/nestjs/terminus/commit/8205d8e2eee975ac732a9d4cbd690ce9bba17fae))
+* **deps:** update dependency @grpc/proto-loader to v0.7.10 ([#2398](https://github.com/nestjs/terminus/issues/2398)) ([c16da49](https://github.com/nestjs/terminus/commit/c16da49191df6d54fc05aad8591d5d51b6fd75e3))
+* **deps:** update dependency @mikro-orm/nestjs to v5.2.2 ([0c72183](https://github.com/nestjs/terminus/commit/0c72183db557664745c6e65553181d9a5323143a))
+* **deps:** update dependency @nestjs/axios to v3 ([6f1d4bb](https://github.com/nestjs/terminus/commit/6f1d4bbf24f45f5ad72eb691a4ef351a5ffe9b60))
+* **deps:** update dependency @nestjs/axios to v3.0.1 ([#2438](https://github.com/nestjs/terminus/issues/2438)) ([7239bb0](https://github.com/nestjs/terminus/commit/7239bb0abf31e0856b11785751d4966df5e25874))
+* **deps:** update dependency @nestjs/mongoose to v10.0.1 ([9c4baef](https://github.com/nestjs/terminus/commit/9c4baef9cbc9496e99927cc36bf0601054a18085))
+* **deps:** update dependency @nestjs/mongoose to v10.0.2 ([8e70686](https://github.com/nestjs/terminus/commit/8e706863a546e89b16e56cd7ecc7b21d07fbfb2d))
+* **deps:** update dependency @nestjs/sequelize to v10 ([100d8fa](https://github.com/nestjs/terminus/commit/100d8fa4874e7eed2fb181f7e80853a913b8ffe2))
+* **deps:** update dependency @nestjs/typeorm to v10 ([77972fe](https://github.com/nestjs/terminus/commit/77972fe46b23185baae5d59cd6824af91a43ea17))
+* **deps:** update dependency @nestjs/typeorm to v10.0.1 ([3cf5c15](https://github.com/nestjs/terminus/commit/3cf5c15d4f915e0f9a35ac7959b380e25c3c7c9e))
+* **deps:** update dependency mongoose to v7.6.4 ([51cb375](https://github.com/nestjs/terminus/commit/51cb375a28fde30258c59684503127c5a2cd4cee))
+* **deps:** update dependency mongoose to v7.6.5 ([af11baf](https://github.com/nestjs/terminus/commit/af11baf292876927b7268fab1cf7ca67a4a813d1))
+* **deps:** update dependency redis to v4.6.8 ([5c35747](https://github.com/nestjs/terminus/commit/5c357473655329a6e34936d49a29e432ab2fa624))
+* **deps:** update dependency rimraf to v5 ([46cd5be](https://github.com/nestjs/terminus/commit/46cd5be7f9f6f09c1a93d0cd08d982a63817ed5a))
+* **deps:** update dependency sequelize to v6.33.0 ([b362509](https://github.com/nestjs/terminus/commit/b362509c792eb9262340026f3b279dfa59d27182))
+* **deps:** update dependency typeorm to v0.3.17 ([d07b83a](https://github.com/nestjs/terminus/commit/d07b83a98fa52409536d9b8ac777e6b54e96d85f))
+* **deps:** update mikro-orm monorepo to v5.8.1 ([2a0d68a](https://github.com/nestjs/terminus/commit/2a0d68a9838259b280c235560f243c91b615f558))
+* **deps:** update nest monorepo ([c25b594](https://github.com/nestjs/terminus/commit/c25b5946d13800e028d4ae56ecbf099f2c7c792b))
+* **deps:** update prisma monorepo to v4.16.2 ([3933016](https://github.com/nestjs/terminus/commit/3933016d306e17d60fc443466485ff501d0e2992))
+* Fixed typeorm mongodb health check fails with mongodb>=5.0 ([#2399](https://github.com/nestjs/terminus/issues/2399)) ([b6026c2](https://github.com/nestjs/terminus/commit/b6026c2e863c0a509177749cd6ee82a0a5bc2030))
+
+
+### Features
+
+* graceful shutdown timeout ([#2422](https://github.com/nestjs/terminus/issues/2422)) ([cc3d402](https://github.com/nestjs/terminus/commit/cc3d402294f7da1cdc91d4f475c1280c17855cb1))
+
 ## [10.1.1](https://github.com/nestjs/terminus/compare/10.1.1-beta.0...10.1.1) (2023-09-14)
 
 ## [10.1.1-beta.0](https://github.com/nestjs/terminus/compare/10.1.0...10.1.1-beta.0) (2023-09-14)
