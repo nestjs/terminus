@@ -36,8 +36,7 @@ jobs:
       continue-on-error: true
       run: npm list
 
-    # TODO: Remove --legacy-peer-deps once https://github.com/mikro-orm/nestjs/issues/122 is resolved
-    - run: npm ci --legacy-peer-deps
+    - run: npm ci
     - run: npm run build:all
       env:
         CI: true
