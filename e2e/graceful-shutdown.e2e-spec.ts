@@ -43,7 +43,7 @@ describe('Graceful shutdown', () => {
     expect(isClosed).toBe(true);
   });
 
-  it('should not gracefully shutdown the application if the timeout is 0', async () => {
+  it('should not delay the shutdown if the application if the timeout is 0', async () => {
     jest.spyOn(global, 'setTimeout');
     const setHealthEndpoint = bootstrapTestingModule({
       gracefulShutdownTimeoutMs: 0,
