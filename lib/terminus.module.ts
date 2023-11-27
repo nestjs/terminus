@@ -1,5 +1,8 @@
-import { type DynamicModule, Module } from '@nestjs/common';
-import { TERMINUS_GRACEFUL_SHUTDOWN_TIMEOUT } from './graceful-shutdown-timeout/graceful-shutdown-timeout.service';
+import { type DynamicModule, Module, type Provider } from '@nestjs/common';
+import {
+  GracefulShutdownService,
+  TERMINUS_GRACEFUL_SHUTDOWN_TIMEOUT,
+} from './graceful-shutdown-timeout/graceful-shutdown-timeout.service';
 import { HealthCheckService } from './health-check';
 import { getErrorLoggerProvider } from './health-check/error-logger/error-logger.provider';
 import { ERROR_LOGGERS } from './health-check/error-logger/error-loggers.provider';
@@ -9,7 +12,7 @@ import { DiskUsageLibProvider } from './health-indicator/disk/disk-usage-lib.pro
 import { HEALTH_INDICATORS } from './health-indicator/health-indicators.provider';
 import { type TerminusModuleOptions } from './terminus-options.interface';
 
-const providers = [
+const baseProviders: Provider[] = [
   ...ERROR_LOGGERS,
   DiskUsageLibProvider,
   HealthCheckExecutor,
@@ -26,7 +29,7 @@ const exports_ = [HealthCheckService, ...HEALTH_INDICATORS];
  * @publicApi
  */
 @Module({
-  providers: [...providers, getErrorLoggerProvider(), getLoggerProvider()],
+  providers: [...baseProviders, getErrorLoggerProvider(), getLoggerProvider()],
   exports: exports_,
 })
 export class TerminusModule {
@@ -37,17 +40,24 @@ export class TerminusModule {
       gracefulShutdownTimeoutMs = 0,
     } = options;
 
+    const providers: Provider[] = [
+      ...baseProviders,
+      getErrorLoggerProvider(errorLogStyle),
+      getLoggerProvider(logger),
+    ];
+
+    if (gracefulShutdownTimeoutMs > 0) {
+      providers.push({
+        provide: TERMINUS_GRACEFUL_SHUTDOWN_TIMEOUT,
+        useValue: gracefulShutdownTimeoutMs,
+      });
+
+      providers.push(GracefulShutdownService);
+    }
+
     return {
       module: TerminusModule,
-      providers: [
-        ...providers,
-        getErrorLoggerProvider(errorLogStyle),
-        getLoggerProvider(logger),
-        {
-          provide: TERMINUS_GRACEFUL_SHUTDOWN_TIMEOUT,
-          useValue: gracefulShutdownTimeoutMs,
-        },
-      ],
+      providers,
       exports: exports_,
     };
   }
