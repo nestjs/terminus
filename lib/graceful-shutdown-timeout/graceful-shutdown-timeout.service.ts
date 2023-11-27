@@ -29,7 +29,7 @@ export class GracefulShutdownService implements BeforeApplicationShutdown {
   }
 
   async beforeApplicationShutdown(signal: string) {
-    this.logger.log(`Received termination signal ${signal}`);
+    this.logger.log(`Received termination signal ${signal || ''}`);
 
     if (signal === 'SIGTERM') {
       this.logger.log(

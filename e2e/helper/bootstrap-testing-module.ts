@@ -25,6 +25,7 @@ import {
   SequelizeHealthIndicator,
   TerminusModule,
   TypeOrmHealthIndicator,
+  type TerminusModuleOptions,
 } from '../../lib';
 import { type HealthCheckOptions } from '../../lib/health-check';
 import { MikroOrmHealthIndicator } from '../../lib/health-indicator/database/mikro-orm.health';
@@ -92,8 +93,12 @@ export type DynamicHealthEndpointFn = (
   ): Promise<INestApplication>;
 };
 
-export function bootstrapTestingModule() {
-  const imports: PropType<ModuleMetadata, 'imports'> = [TerminusModule];
+export function bootstrapTestingModule(
+  terminusModuleOptions: TerminusModuleOptions = {},
+) {
+  const imports: PropType<ModuleMetadata, 'imports'> = [
+    TerminusModule.forRoot(terminusModuleOptions),
+  ];
 
   const setHealthEndpoint: DynamicHealthEndpointFn = (func, options = {}) => {
     const testingModule = Test.createTestingModule({
