@@ -38,7 +38,7 @@ services:
       - 6379:6379
 
   kafka_zookeeper:
-    image: confluentinc/cp-zookeeper:7.5.2
+    image: confluentinc/cp-zookeeper:7.5.3
     container_name: kafka_zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
