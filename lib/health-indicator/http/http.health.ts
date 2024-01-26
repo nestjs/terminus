@@ -146,9 +146,13 @@ export class HttpHealthIndicator extends HealthIndicator {
         httpService.request({ url: url.toString(), ...options }),
       );
     } catch (error) {
-      if (isAxiosError(error) && error.response) {
-        response = error.response;
-        axiosError = error;
+      if (isAxiosError(error)) {
+        if (error.response) {
+          response = error.response;
+          axiosError = error;
+        } else {
+          throw this.generateHttpError(key, error);
+        }
       } else {
         throw error;
       }
