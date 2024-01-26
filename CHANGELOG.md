@@ -1,5 +1,14 @@
 
 
+## [10.2.1](https://github.com/nestjs/terminus/compare/10.2.0...10.2.1) (2024-01-26)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @grpc/grpc-js to v1.9.14 ([#2455](https://github.com/nestjs/terminus/issues/2455)) ([6ba52e5](https://github.com/nestjs/terminus/commit/6ba52e5c964df985d00cd1eadc50990909ee617b))
+* **deps:** update dependency mysql2 to v3.9.0 ([#2443](https://github.com/nestjs/terminus/issues/2443)) ([2f0c978](https://github.com/nestjs/terminus/commit/2f0c9786c3785cdcc64661a3b8c2608add97fb8b))
+* responseCheck throwing internal error ([#2395](https://github.com/nestjs/terminus/issues/2395)) ([#2452](https://github.com/nestjs/terminus/issues/2452)) ([5df9aff](https://github.com/nestjs/terminus/commit/5df9aff4f8a18929265f514ded6bd7202f226d08))
+
 # [10.2.0](https://github.com/nestjs/terminus/compare/10.2.0-beta.0...10.2.0) (2023-11-27)
 
 # [10.2.0-beta.0](https://github.com/nestjs/terminus/compare/10.1.1...10.2.0-beta.0) (2023-11-27)
