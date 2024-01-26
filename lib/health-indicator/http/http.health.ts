@@ -75,19 +75,23 @@ export class HttpHealthIndicator extends HealthIndicator {
    * @throws {HealthCheckError}
    */
   private generateHttpError(key: string, error: AxiosError | any) {
-    if (isAxiosError(error)) {
-      const response: { [key: string]: any } = {
-        message: error.message,
-      };
-      if (error.response) {
-        response.statusCode = error.response.status;
-        response.statusText = error.response.statusText;
-      }
-      throw new HealthCheckError(
-        error.message,
-        this.getStatus(key, false, response),
-      );
+    if (!isAxiosError(error)) {
+      return;
     }
+
+    const response: { [key: string]: any } = {
+      message: error.message,
+    };
+
+    if (error.response) {
+      response.statusCode = error.response.status;
+      response.statusText = error.response.statusText;
+    }
+
+    throw new HealthCheckError(
+      error.message,
+      this.getStatus(key, false, response),
+    );
   }
 
   /**
@@ -146,16 +150,15 @@ export class HttpHealthIndicator extends HealthIndicator {
         httpService.request({ url: url.toString(), ...options }),
       );
     } catch (error) {
-      if (isAxiosError(error)) {
-        if (error.response) {
-          response = error.response;
-          axiosError = error;
-        } else {
-          throw this.generateHttpError(key, error);
-        }
-      } else {
+      if (!isAxiosError(error)) {
         throw error;
       }
+      if (!error.response) {
+        throw this.generateHttpError(key, error);
+      }
+
+      response = error.response;
+      axiosError = error;
     }
 
     const isHealthy = await callback(response);
