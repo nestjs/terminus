@@ -80,7 +80,7 @@
     "gulp": "4.0.2",
     "gulp-clean": "0.4.0",
     "gulp-debug": "4.0.0",
-    "husky": "8.0.3",
+    "husky": "9.0.7",
     "ioredis": "5.3.2",
     "jest": "29.7.0",
     "kafkajs": "^2.2.4",
