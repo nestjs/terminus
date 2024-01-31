@@ -111,7 +111,6 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
     key: string,
     options: TypeOrmPingCheckSettings = {},
   ): Promise<HealthIndicatorResult> {
-    let isHealthy = false;
     this.checkDependantPackages();
 
     const connection: TypeOrm.DataSource | null =
@@ -120,7 +119,7 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
 
     if (!connection) {
       throw new ConnectionNotFoundError(
-        this.getStatus(key, isHealthy, {
+        this.getStatus(key, false, {
           message: 'Connection provider not found in application context',
         }),
       );
@@ -128,12 +127,11 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
 
     try {
       await this.pingDb(connection, timeout);
-      isHealthy = true;
     } catch (err) {
       if (err instanceof PromiseTimeoutError) {
         throw new TimeoutError(
           timeout,
-          this.getStatus(key, isHealthy, {
+          this.getStatus(key, false, {
             message: `timeout of ${timeout}ms exceeded`,
           }),
         );
@@ -141,20 +139,18 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
       if (err instanceof MongoConnectionError) {
         throw new HealthCheckError(
           err.message,
-          this.getStatus(key, isHealthy, {
+          this.getStatus(key, false, {
             message: err.message,
           }),
         );
       }
-    }
 
-    if (isHealthy) {
-      return this.getStatus(key, isHealthy);
-    } else {
       throw new HealthCheckError(
         `${key} is not available`,
-        this.getStatus(key, isHealthy),
+        this.getStatus(key, false),
       );
     }
+
+    return this.getStatus(key, true);
   }
 }

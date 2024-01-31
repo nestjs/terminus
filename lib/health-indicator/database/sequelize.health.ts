@@ -92,7 +92,6 @@ export class SequelizeHealthIndicator extends HealthIndicator {
     key: string,
     options: SequelizePingCheckSettings = {},
   ): Promise<HealthIndicatorResult> {
-    let isHealthy = false;
     this.checkDependantPackages();
 
     const connection = options.connection || this.getContextConnection();
@@ -100,7 +99,7 @@ export class SequelizeHealthIndicator extends HealthIndicator {
 
     if (!connection) {
       throw new ConnectionNotFoundError(
-        this.getStatus(key, isHealthy, {
+        this.getStatus(key, false, {
           message: 'Connection provider not found in application context',
         }),
       );
@@ -108,25 +107,22 @@ export class SequelizeHealthIndicator extends HealthIndicator {
 
     try {
       await this.pingDb(connection, timeout);
-      isHealthy = true;
     } catch (err) {
       if (err instanceof PromiseTimeoutError) {
         throw new TimeoutError(
           timeout,
-          this.getStatus(key, isHealthy, {
+          this.getStatus(key, false, {
             message: `timeout of ${timeout}ms exceeded`,
           }),
         );
       }
-    }
 
-    if (isHealthy) {
-      return this.getStatus(key, isHealthy);
-    } else {
       throw new HealthCheckError(
         `${key} is not available`,
-        this.getStatus(key, isHealthy),
+        this.getStatus(key, false),
       );
     }
+
+    return this.getStatus(key, true);
   }
 }

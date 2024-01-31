@@ -74,30 +74,26 @@ export class PrismaHealthIndicator extends HealthIndicator {
     prismaClient: PrismaClient,
     options: PrismaClientPingCheckSettings = {},
   ): Promise<any> {
-    let isHealthy = false;
     const timeout = options.timeout || 1000;
 
     try {
       await this.pingDb(timeout, prismaClient);
-      isHealthy = true;
     } catch (error) {
       if (error instanceof PromiseTimeoutError) {
         throw new TimeoutError(
           timeout,
-          this.getStatus(key, isHealthy, {
+          this.getStatus(key, false, {
             message: `timeout of ${timeout}ms exceeded`,
           }),
         );
       }
-    }
 
-    if (isHealthy) {
-      return this.getStatus(key, isHealthy);
-    } else {
       throw new HealthCheckError(
         `${key} is not available`,
-        this.getStatus(key, isHealthy),
+        this.getStatus(key, false),
       );
     }
+
+    return this.getStatus(key, true);
   }
 }
