@@ -1,3 +1,4 @@
+import { MikroORM } from '@mikro-orm/core';
 import { type INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import {
@@ -74,6 +75,42 @@ describe('MikroOrmHealthIndicator', () => {
           info: {},
           error: details,
           details,
+        });
+      });
+
+      it('should indicate that mikroOrm is down if the connection has been closed after startup', async () => {
+        app = await setHealthEndpoint(({ healthCheck, mikroOrm }) =>
+          healthCheck.check([async () => mikroOrm.pingCheck('mikroOrm')]),
+        ).start();
+
+        const up = {
+          mikroOrm: {
+            status: 'up',
+          },
+        };
+
+        request(app.getHttpServer()).get('/health').expect(200).expect({
+          status: 'ok',
+          info: up,
+          error: {},
+          details: up,
+        });
+
+        const orm = app.get(MikroORM);
+        await orm.close();
+
+        const down = {
+          mikroOrm: {
+            status: 'down',
+            message: 'Not connected to database',
+          },
+        };
+
+        return request(app.getHttpServer()).get('/health').expect(503).expect({
+          status: 'error',
+          info: {},
+          error: down,
+          details: down,
         });
       });
     });

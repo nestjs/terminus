@@ -3,7 +3,8 @@ import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { HealthIndicator, type HealthIndicatorResult } from '..';
 import { TimeoutError } from '../../errors';
-import { HealthCheckError } from '../../health-check';
+import { DatabaseNotConnectedError } from '../../errors/database-not-connected.error';
+import { HealthCheckError } from '../../health-check/health-check.error';
 import {
   TimeoutError as PromiseTimeoutError,
   promiseTimeout,
@@ -74,9 +75,7 @@ export class MikroOrmHealthIndicator extends HealthIndicator {
           }),
         );
       }
-
-      // Check if the error is a connection not found error
-      if (error instanceof Error) {
+      if (error instanceof DatabaseNotConnectedError) {
         throw new HealthCheckError(
           error.message,
           this.getStatus(key, false, {
@@ -84,6 +83,11 @@ export class MikroOrmHealthIndicator extends HealthIndicator {
           }),
         );
       }
+
+      throw new HealthCheckError(
+        `${key} is not available`,
+        this.getStatus(key, false),
+      );
     }
 
     return this.getStatus(key, true);
@@ -120,7 +124,13 @@ export class MikroOrmHealthIndicator extends HealthIndicator {
    *
    */
   private async pingDb(connection: MikroOrm.Connection, timeout: number) {
-    const isConnected = connection.isConnected();
-    return await promiseTimeout(timeout, isConnected);
+    const checker = async () => {
+      const isConnected = await connection.isConnected();
+      if (!isConnected) {
+        throw new DatabaseNotConnectedError();
+      }
+    };
+
+    return await promiseTimeout(timeout, checker());
   }
 }
