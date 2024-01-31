@@ -1,5 +1,16 @@
 
 
+## [10.2.2-beta.0](https://github.com/nestjs/terminus/compare/10.2.1...10.2.2-beta.0) (2024-01-31)
+
+
+### Bug Fixes
+
+* **deps:** update dependency class-validator to v0.14.1 ([#2479](https://github.com/nestjs/terminus/issues/2479)) ([a8585ce](https://github.com/nestjs/terminus/commit/a8585ce604d8eff5769d80ec8cfbfc3fb9a0341d))
+* **deps:** update dependency typeorm to v0.3.20 ([#2480](https://github.com/nestjs/terminus/issues/2480)) ([72e7f7a](https://github.com/nestjs/terminus/commit/72e7f7affed27be8dc25df394d614cfc4a05adfd))
+* **deps:** update mikro-orm monorepo to v5.9.7 ([#2481](https://github.com/nestjs/terminus/issues/2481)) ([1eaa605](https://github.com/nestjs/terminus/commit/1eaa60547bf249bb62626d1f0354ca2b52df9fbb))
+* **deps:** update nest monorepo ([#2482](https://github.com/nestjs/terminus/issues/2482)) ([3c555e0](https://github.com/nestjs/terminus/commit/3c555e019b9a5094ce0c874b508d2e540edd3971))
+* mikroorm is indicated as up even when disconnected ([#2509](https://github.com/nestjs/terminus/issues/2509)) ([#2511](https://github.com/nestjs/terminus/issues/2511)) ([069b998](https://github.com/nestjs/terminus/commit/069b998701e8a69989cadd736e0c97c110905aca)), closes [#2460](https://github.com/nestjs/terminus/issues/2460)
+
 ## [10.2.1](https://github.com/nestjs/terminus/compare/10.2.0...10.2.1) (2024-01-26)
 
 
