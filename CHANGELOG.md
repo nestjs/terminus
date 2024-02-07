@@ -1,5 +1,15 @@
 
 
+## [10.2.2](https://github.com/nestjs/terminus/compare/10.2.2-beta.0...10.2.2) (2024-02-07)
+
+
+### Bug Fixes
+
+* **@nestjs/terminus:** generate the correct openapi health schema ([01ce13b](https://github.com/nestjs/terminus/commit/01ce13bc3b77c7db26de698671fce81ff854d4e7))
+* **deps:** update dependency reflect-metadata to v0.2.1 ([e2420bd](https://github.com/nestjs/terminus/commit/e2420bdef6a056cbf66c069cc771720839b0caeb))
+* **deps:** update prisma monorepo to v5.9.1 ([d88770c](https://github.com/nestjs/terminus/commit/d88770cba8138d3e57e56397c86a4068e72c09f7))
+* swagger definition for health check result additional props ([44c06f6](https://github.com/nestjs/terminus/commit/44c06f65f00ffc971dd4480dd13917b0bae73663)), closes [#2516](https://github.com/nestjs/terminus/issues/2516)
+
 ## [10.2.2-beta.0](https://github.com/nestjs/terminus/compare/10.2.1...10.2.2-beta.0) (2024-01-31)
 
 
