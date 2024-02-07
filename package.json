@@ -91,7 +91,7 @@
     "portfinder": "1.0.32",
     "prettier": "3.2.4",
     "prisma": "4.16.2",
-    "reflect-metadata": "0.1.13",
+    "reflect-metadata": "0.2.1",
     "release-it": "15.11.0",
     "rollup": "4.9.6",
     "rollup-plugin-dts": "6.1.0",
@@ -119,7 +119,7 @@
     "@nestjs/typeorm": "^9.0.0 || ^10.0.0",
     "@prisma/client": "*",
     "mongoose": "*",
-    "reflect-metadata": "0.1.x",
+    "reflect-metadata": "0.1.x || 0.2.x",
     "rxjs": "7.x",
     "sequelize": "*",
     "typeorm": "*"
