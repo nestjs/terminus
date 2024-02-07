@@ -17,6 +17,7 @@ const healthIndicatorSchema = (example: HealthIndicatorResult) => ({
   example,
   additionalProperties: {
     type: 'object',
+    required: ['status'],
     properties: {
       status: {
         type: 'string',
