@@ -47,7 +47,8 @@ async function executeNpmScriptInSamples(
 }
 
 task('install:samples', async () =>
-  executeNpmScriptInSamples('npm install --legacy-peer'),
+  // FIXME: Remove the `--legacy-peer-deps` flag once all dependencies are updated
+  executeNpmScriptInSamples('npm install --legacy-peer-deps'),
 );
 task('build:samples', async () => executeNpmScriptInSamples('npm run build'));
 task('test:samples', async () =>

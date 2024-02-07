@@ -36,7 +36,8 @@ jobs:
       continue-on-error: true
       run: npm list
 
-    - run: npm ci
+      # FIXME: Remove the `--legacy-peer-deps` flag once all dependencies are updated
+    - run: npm ci --legacy-peer-deps
     - run: npm run build:all
       env:
         CI: true
