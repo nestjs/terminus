@@ -47,10 +47,7 @@ async function executeNpmScriptInSamples(
 }
 
 task('install:samples', async () =>
-  executeNpmScriptInSamples(
-    // 'npm ci --no-audit --no-shrinkwrap --no-optional',
-    'npm install',
-  ),
+  executeNpmScriptInSamples('npm install --legacy-peer'),
 );
 task('build:samples', async () => executeNpmScriptInSamples('npm run build'));
 task('test:samples', async () =>
