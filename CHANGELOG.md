@@ -1,5 +1,12 @@
 
 
+## [10.2.3](https://github.com/nestjs/terminus/compare/10.2.2...10.2.3) (2024-02-18)
+
+
+### Bug Fixes
+
+* additional props in openapi health schema ([38425de](https://github.com/nestjs/terminus/commit/38425de24557cda291283cb758a6508c1def51ce)), closes [#2516](https://github.com/nestjs/terminus/issues/2516)
+
 ## [10.2.2](https://github.com/nestjs/terminus/compare/10.2.2-beta.0...10.2.2) (2024-02-07)
 
 
