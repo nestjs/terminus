@@ -17,7 +17,7 @@
   "dependencies": {
     "@nestjs/common": "10.3.1",
     "@nestjs/core": "10.3.1",
-    "@nestjs/platform-express": "10.3.1",
+    "@nestjs/platform-express": "10.3.7",
     "@nestjs/sequelize": "10.0.0",
     "@nestjs/terminus": "10.2.1",
     "mysql2": "3.9.0",
