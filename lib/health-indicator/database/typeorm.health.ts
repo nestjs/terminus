@@ -70,28 +70,6 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
     }
   }
 
-  private async checkMongoDBConnection(connection: any) {
-    return new Promise<void>((resolve, reject) => {
-      const driver = connection.driver;
-      const url = connection.options.url
-        ? connection.options.url
-        : driver.buildConnectionUrl(connection.options);
-
-      // FIXME: Hacky workaround which uses the native MongoClient
-      driver.mongodb.MongoClient.connect(
-        url,
-        driver.buildConnectionOptions(connection.options),
-      )
-        .catch((err: Error) => reject(new MongoConnectionError(err.message)))
-        .then((client: TypeOrm.MongoClient) => client.close())
-
-        // Noop when trying to close a closed connection
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        .catch(() => {})
-        .then(() => resolve());
-    });
-  }
-
   /**
    * Pings a typeorm connection
    *
@@ -103,7 +81,9 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
     let check: Promise<any>;
     switch (connection.options.type) {
       case 'mongodb':
-        check = this.checkMongoDBConnection(connection);
+        check = (connection.driver as any).queryRunner.databaseConnection
+          .db()
+          .command({ ping: 1 });
         break;
       case 'oracle':
         check = connection.query('SELECT 1 FROM DUAL');
