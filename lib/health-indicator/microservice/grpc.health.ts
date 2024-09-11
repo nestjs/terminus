@@ -2,12 +2,7 @@ import { join } from 'path';
 import { Injectable, Scope } from '@nestjs/common';
 import type * as NestJSMicroservices from '@nestjs/microservices';
 import { type Observable } from 'rxjs';
-import {
-  type HealthIndicatorResult,
-  TimeoutError,
-  UnhealthyResponseCodeError,
-} from '../..';
-import { HealthCheckError } from '../../health-check/health-check.error';
+import { type HealthIndicatorResult } from '../..';
 import {
   checkPackages,
   isError,
@@ -16,6 +11,7 @@ import {
   TimeoutError as PromiseTimeoutError,
 } from '../../utils';
 import { HealthIndicator } from '../health-indicator';
+import { HealthIndicatorService } from '../health-indicator.service';
 
 /**
  * The status of the request service
@@ -100,7 +96,7 @@ export class GRPCHealthIndicator extends HealthIndicator {
   /**
    * Initializes the health indicator
    */
-  constructor() {
+  constructor(private readonly healthIndicatorService: HealthIndicatorService) {
     super();
     this.checkDependantPackages();
   }
@@ -142,6 +138,23 @@ export class GRPCHealthIndicator extends HealthIndicator {
     });
   }
 
+  getHealthService(
+    service: string,
+    settings: CheckGRPCServiceOptions<GrpcClientOptionsLike>,
+  ) {
+    if (this.openChannels.has(service)) {
+      return this.openChannels.get(service)!;
+    }
+
+    const client = this.createClient<NestJSMicroservices.GrpcOptions>(settings);
+    const healthService = client.getService<GRPCHealthService>(
+      settings.healthServiceName as string,
+    );
+
+    this.openChannels.set(service, healthService);
+    return healthService;
+  }
+
   /**
    * Checks if the given service is up using the standard health check
    * specification of GRPC.
@@ -180,11 +193,14 @@ export class GRPCHealthIndicator extends HealthIndicator {
    */
   async checkService<
     GrpcOptions extends GrpcClientOptionsLike = GrpcClientOptionsLike,
+    Key extends string = string,
   >(
-    key: string,
+    key: Key,
     service: string,
     options: CheckGRPCServiceOptions<GrpcOptions> = {},
-  ): Promise<HealthIndicatorResult> {
+  ): Promise<HealthIndicatorResult<Key>> {
+    const check = this.healthIndicatorService.check(key);
+
     const defaultOptions: CheckGRPCServiceOptions<GrpcOptions> = {
       package: 'grpc.health.v1',
       protoPath: join(__dirname, './protos/health.proto'),
@@ -199,31 +215,19 @@ export class GRPCHealthIndicator extends HealthIndicator {
 
     let healthService: GRPCHealthService;
     try {
-      if (this.openChannels.has(service)) {
-        healthService = this.openChannels.get(service)!;
-      } else {
-        const client = this.createClient<GrpcOptions>(settings);
-
-        healthService = client.getService<GRPCHealthService>(
-          settings.healthServiceName as string,
-        );
-
-        this.openChannels.set(service, healthService);
-      }
+      healthService = this.getHealthService(service, settings);
     } catch (err) {
       if (err instanceof TypeError) {
         throw err;
       }
       if (isError(err)) {
-        throw new HealthCheckError(
-          err.message,
-          this.getStatus(key, false, { message: err.message }),
-        );
+        return check.down(err.message);
       }
-      throw new HealthCheckError(
-        err as any,
-        this.getStatus(key, false, { message: err as any }),
-      );
+      if (typeof err === 'string') {
+        return check.down(err);
+      }
+
+      return check.down();
     }
 
     let response: HealthCheckResponse;
@@ -238,39 +242,30 @@ export class GRPCHealthIndicator extends HealthIndicator {
       );
     } catch (err) {
       if (err instanceof PromiseTimeoutError) {
-        throw new TimeoutError(
-          settings.timeout as number,
-          this.getStatus(key, false, {
-            message: `timeout of ${settings.timeout}ms exceeded`,
-          }),
-        );
+        return check.down(`timeout of ${settings.timeout}ms exceeded`);
       }
       if (isError(err)) {
-        throw new HealthCheckError(
-          err.message,
-          this.getStatus(key, false, { message: err.message }),
-        );
+        return check.down(err.message);
       }
-      throw new HealthCheckError(
-        err as any,
-        this.getStatus(key, false, { message: err as any }),
-      );
+      if (typeof err === 'string') {
+        return check.down(err);
+      }
+
+      return check.down();
     }
 
     const isHealthy = response.status === ServingStatus.SERVING;
 
-    const status = this.getStatus(key, isHealthy, {
+    if (!isHealthy) {
+      return check.down({
+        statusCode: response.status,
+        servingStatus: ServingStatus[response.status],
+      });
+    }
+
+    return check.up({
       statusCode: response.status,
       servingStatus: ServingStatus[response.status],
     });
-
-    if (!isHealthy) {
-      throw new UnhealthyResponseCodeError(
-        `${response.status}, ${ServingStatus[response.status]}`,
-        status,
-      );
-    }
-
-    return status;
   }
 }

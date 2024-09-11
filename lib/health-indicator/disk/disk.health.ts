@@ -6,9 +6,9 @@ import {
   type DiskOptionsWithThresholdPercent,
 } from './disk-health-options.type';
 import { HealthIndicator, type HealthIndicatorResult } from '../';
-import { StorageExceededError } from '../../errors';
 import { STORAGE_EXCEEDED } from '../../errors/messages.constant';
 import { CHECK_DISK_SPACE_LIB } from '../../terminus.constants';
+import { HealthIndicatorService } from '../health-indicator.service';
 
 type CheckDiskSpace = typeof checkDiskSpace;
 
@@ -21,16 +21,10 @@ type CheckDiskSpace = typeof checkDiskSpace;
  */
 @Injectable()
 export class DiskHealthIndicator extends HealthIndicator {
-  /**
-   * Initializes the health indicator
-   *
-   * @param {CheckDiskSpace} checkDiskSpace The check-disk-space library
-   *
-   * @internal
-   */
   constructor(
     @Inject(CHECK_DISK_SPACE_LIB)
-    private checkDiskSpace: CheckDiskSpace,
+    private readonly checkDiskSpace: CheckDiskSpace,
+    private readonly healthIndicatorService: HealthIndicatorService,
   ) {
     super();
   }
@@ -70,12 +64,18 @@ export class DiskHealthIndicator extends HealthIndicator {
    * // The used disk storage should not exceed 50% of the full disk size
    * diskHealthIndicator.checkStorage('storage', { thresholdPercent: 0.5, path: 'C:\\' });
    */
-  public async checkStorage(
-    key: string,
+  public async checkStorage<Key extends string = string>(
+    key: Key,
     options: DiskHealthIndicatorOptions,
-  ): Promise<HealthIndicatorResult> {
+  ): Promise<HealthIndicatorResult<Key>> {
+    const check = this.healthIndicatorService.check(key);
     const { free, size } = await this.checkDiskSpace(options.path);
     const used = size - free;
+
+    // Prevent division by zero
+    if (isNaN(size) || size === 0) {
+      return check.down(STORAGE_EXCEEDED('disk storage'));
+    }
 
     let isHealthy = false;
     if (this.isOptionThresholdPercent(options)) {
@@ -85,13 +85,8 @@ export class DiskHealthIndicator extends HealthIndicator {
     }
 
     if (!isHealthy) {
-      throw new StorageExceededError(
-        'disk storage',
-        this.getStatus(key, false, {
-          message: STORAGE_EXCEEDED('disk storage'),
-        }),
-      );
+      return check.down(STORAGE_EXCEEDED('disk storage'));
     }
-    return this.getStatus(key, true);
+    return check.up();
   }
 }
