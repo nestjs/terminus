@@ -92,7 +92,7 @@
     "prettier": "3.2.4",
     "prisma": "4.16.2",
     "reflect-metadata": "0.2.1",
-    "release-it": "15.11.0",
+    "release-it": "17.10.0",
     "rollup": "4.9.6",
     "rollup-plugin-dts": "6.1.0",
     "rxjs-compat": "6.6.7",
