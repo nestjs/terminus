@@ -154,7 +154,7 @@ export class HttpHealthIndicator extends HealthIndicator {
         throw error;
       }
       if (!error.response) {
-        throw this.generateHttpError(key, error);
+        this.generateHttpError(key, error);
       }
 
       response = error.response;
@@ -165,7 +165,7 @@ export class HttpHealthIndicator extends HealthIndicator {
 
     if (!isHealthy) {
       if (axiosError) {
-        throw this.generateHttpError(key, axiosError);
+        this.generateHttpError(key, axiosError);
       }
 
       throw new HealthCheckError(
