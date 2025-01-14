@@ -85,7 +85,7 @@
     "jest": "29.7.0",
     "kafkajs": "^2.2.4",
     "lint-staged": "15.2.1",
-    "mongoose": "7.6.8",
+    "mongoose": "8.9.5",
     "mysql2": "3.9.0",
     "nats": "2.19.0",
     "portfinder": "1.0.32",
