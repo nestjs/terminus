@@ -1,5 +1,18 @@
 
 
+# [11.0.0-beta.0](https://github.com/nestjs/terminus/compare/10.3.0...11.0.0-beta.0) (2025-01-23)
+
+
+### Features
+
+* simplify custom health indicator creation ([9f10a9b](https://github.com/nestjs/terminus/commit/9f10a9b7029f53eddb620c046a3a48cb4dfb35b3))
+* upgrade to nestjs v11 ([c2569df](https://github.com/nestjs/terminus/commit/c2569dfbf84a096110c1890ce0cfcfb7bc7c7247)), closes [#2570](https://github.com/nestjs/terminus/issues/2570)
+
+
+### BREAKING CHANGES
+
+* Drop support for Node 16 / 18
+
 # [10.3.0](https://github.com/nestjs/terminus/compare/10.3.0-beta.0...10.3.0) (2025-01-23)
 
 # [10.3.0-beta.0](https://github.com/nestjs/terminus/compare/10.2.3...10.3.0-beta.0) (2024-07-16)
