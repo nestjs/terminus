@@ -65,14 +65,21 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
 
     result.forEach((res) => {
       if (res.status === 'fulfilled') {
-        results.push(res.value);
+        Object.entries(res.value).forEach(([key, value]) => {
+          if (value.status === 'up') {
+            results.push({ [key]: value });
+          } else if (value.status === 'down') {
+            errors.push({ [key]: value });
+          }
+        });
       } else {
         const error = res.reason;
         // Is not an expected error. Throw further!
         if (!isHealthCheckError(error)) {
           throw error;
         }
-        // Is a expected health check error
+
+        // eslint-disable-next-line deprecation/deprecation
         errors.push((error as HealthCheckError).causes);
       }
     });
