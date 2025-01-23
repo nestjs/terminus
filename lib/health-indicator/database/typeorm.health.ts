@@ -2,18 +2,14 @@ import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import type * as NestJSTypeOrm from '@nestjs/typeorm';
 import type * as TypeOrm from 'typeorm';
-import { HealthIndicator, type HealthIndicatorResult } from '../';
-import {
-  TimeoutError,
-  ConnectionNotFoundError,
-  MongoConnectionError,
-} from '../../errors';
-import { HealthCheckError } from '../../health-check/health-check.error';
+import { type HealthIndicatorResult } from '../';
+import { MongoConnectionError } from '../../errors';
 import {
   TimeoutError as PromiseTimeoutError,
   promiseTimeout,
   checkPackages,
 } from '../../utils';
+import { HealthIndicatorService } from '../health-indicator.service';
 
 export interface TypeOrmPingCheckSettings {
   /**
@@ -35,14 +31,11 @@ export interface TypeOrmPingCheckSettings {
  * @module TerminusModule
  */
 @Injectable({ scope: Scope.TRANSIENT })
-export class TypeOrmHealthIndicator extends HealthIndicator {
-  /**
-   * Initializes the TypeOrmHealthIndicator
-   *
-   * @param {ModuleRef} moduleRef The NestJS module reference
-   */
-  constructor(private moduleRef: ModuleRef) {
-    super();
+export class TypeOrmHealthIndicator {
+  constructor(
+    private readonly moduleRef: ModuleRef,
+    private readonly healthIndicatorService: HealthIndicatorService,
+  ) {
     this.checkDependantPackages();
   }
 
@@ -107,11 +100,11 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
    * @example
    * typeOrmHealthIndicator.pingCheck('database', { timeout: 1500 });
    */
-  async pingCheck(
-    key: string,
+  async pingCheck<Key extends string>(
+    key: Key,
     options: TypeOrmPingCheckSettings = {},
-  ): Promise<HealthIndicatorResult> {
-    let isHealthy = false;
+  ): Promise<HealthIndicatorResult<Key>> {
+    const check = this.healthIndicatorService.check(key);
     this.checkDependantPackages();
 
     const connection: TypeOrm.DataSource | null =
@@ -119,42 +112,22 @@ export class TypeOrmHealthIndicator extends HealthIndicator {
     const timeout = options.timeout || 1000;
 
     if (!connection) {
-      throw new ConnectionNotFoundError(
-        this.getStatus(key, isHealthy, {
-          message: 'Connection provider not found in application context',
-        }),
-      );
+      return check.down('Connection provider not found in application context');
     }
 
     try {
       await this.pingDb(connection, timeout);
-      isHealthy = true;
     } catch (err) {
       if (err instanceof PromiseTimeoutError) {
-        throw new TimeoutError(
-          timeout,
-          this.getStatus(key, isHealthy, {
-            message: `timeout of ${timeout}ms exceeded`,
-          }),
-        );
+        return check.down(`timeout of ${timeout}ms exceeded`);
       }
       if (err instanceof MongoConnectionError) {
-        throw new HealthCheckError(
-          err.message,
-          this.getStatus(key, isHealthy, {
-            message: err.message,
-          }),
-        );
+        return check.down(err.message);
       }
+
+      return check.down();
     }
 
-    if (isHealthy) {
-      return this.getStatus(key, isHealthy);
-    } else {
-      throw new HealthCheckError(
-        `${key} is not available`,
-        this.getStatus(key, isHealthy),
-      );
-    }
+    return check.up();
   }
 }

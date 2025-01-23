@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { TimeoutError } from '../../errors';
-import { HealthCheckError } from '../../health-check';
 import {
   promiseTimeout,
   TimeoutError as PromiseTimeoutError,
 } from '../../utils';
-import { HealthIndicator } from '../health-indicator';
+import { type HealthIndicatorResult } from '../health-indicator-result.interface';
+import { HealthIndicatorService } from '../health-indicator.service';
 
 type PingCommandSignature = { [Key in string]?: number };
 
@@ -34,10 +33,10 @@ export interface PrismaClientPingCheckSettings {
  * @module TerminusModule
  */
 @Injectable()
-export class PrismaHealthIndicator extends HealthIndicator {
-  constructor() {
-    super();
-  }
+export class PrismaHealthIndicator {
+  constructor(
+    private readonly healthIndicatorService: HealthIndicatorService,
+  ) {}
 
   private async pingDb(timeout: number, prismaClientSQLOrMongo: PrismaClient) {
     // The prisma client generates two different typescript types for different databases
@@ -69,35 +68,24 @@ export class PrismaHealthIndicator extends HealthIndicator {
    * @param prismaClient PrismaClient
    * @param options The options for the ping
    */
-  public async pingCheck(
-    key: string,
+  public async pingCheck<Key extends string = string>(
+    key: Key,
     prismaClient: PrismaClient,
     options: PrismaClientPingCheckSettings = {},
-  ): Promise<any> {
-    let isHealthy = false;
+  ): Promise<HealthIndicatorResult<Key>> {
+    const check = this.healthIndicatorService.check(key);
     const timeout = options.timeout || 1000;
 
     try {
       await this.pingDb(timeout, prismaClient);
-      isHealthy = true;
     } catch (error) {
       if (error instanceof PromiseTimeoutError) {
-        throw new TimeoutError(
-          timeout,
-          this.getStatus(key, isHealthy, {
-            message: `timeout of ${timeout}ms exceeded`,
-          }),
-        );
+        return check.down(`timeout of ${timeout}ms exceeded`);
       }
+
+      return check.down();
     }
 
-    if (isHealthy) {
-      return this.getStatus(key, isHealthy);
-    } else {
-      throw new HealthCheckError(
-        `${key} is not available`,
-        this.getStatus(key, isHealthy),
-      );
-    }
+    return check.up();
   }
 }

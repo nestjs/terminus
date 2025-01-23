@@ -9,18 +9,24 @@ import { ERROR_LOGGERS } from './health-check/error-logger/error-loggers.provide
 import { HealthCheckExecutor } from './health-check/health-check-executor.service';
 import { getLoggerProvider } from './health-check/logger/logger.provider';
 import { DiskUsageLibProvider } from './health-indicator/disk/disk-usage-lib.provider';
+import { HealthIndicatorService } from './health-indicator/health-indicator.service';
 import { HEALTH_INDICATORS } from './health-indicator/health-indicators.provider';
 import { type TerminusModuleOptions } from './terminus-options.interface';
 
 const baseProviders: Provider[] = [
   ...ERROR_LOGGERS,
+  HealthIndicatorService,
   DiskUsageLibProvider,
   HealthCheckExecutor,
   HealthCheckService,
   ...HEALTH_INDICATORS,
 ];
 
-const exports_ = [HealthCheckService, ...HEALTH_INDICATORS];
+const exports_ = [
+  HealthIndicatorService,
+  HealthCheckService,
+  ...HEALTH_INDICATORS,
+];
 
 /**
  * The Terminus module integrates health checks

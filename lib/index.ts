@@ -5,6 +5,7 @@ export * from './errors';
 export {
   HealthCheck,
   HealthCheckService,
+  // eslint-disable-next-line deprecation/deprecation
   HealthCheckError,
   HealthCheckStatus,
   HealthCheckResult,

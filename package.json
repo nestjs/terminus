@@ -29,6 +29,7 @@
     "test:ut": "jest --detectOpenHandles",
     "test:ut:cov": "npm run test:ut -- --coverage",
     "test:import": "ts-node tools/import-check.ts",
+    "test:samples": "gulp test:samples && gulp test:e2e:samples",
     "release": "release-it",
     "prepare": "husky install"
   },

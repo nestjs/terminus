@@ -39,5 +39,6 @@ jobs:
       # FIXME: Remove the `--legacy-peer-deps` flag once all dependencies are updated
     - run: npm ci --legacy-peer-deps
     - run: npm run build:all
+    - run: npm run test:samples
       env:
         CI: true

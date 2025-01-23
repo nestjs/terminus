@@ -1,18 +1,13 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import type * as NestJSSequelize from '@nestjs/sequelize';
-import {
-  type HealthIndicatorResult,
-  TimeoutError,
-  ConnectionNotFoundError,
-} from '../..';
-import { HealthCheckError } from '../../health-check/health-check.error';
+import { type HealthIndicatorResult } from '../..';
 import {
   promiseTimeout,
   TimeoutError as PromiseTimeoutError,
   checkPackages,
 } from '../../utils';
-import { HealthIndicator } from '../health-indicator';
+import { HealthIndicatorService } from '../health-indicator.service';
 
 export interface SequelizePingCheckSettings {
   /**
@@ -33,14 +28,11 @@ export interface SequelizePingCheckSettings {
  * @module TerminusModule
  */
 @Injectable({ scope: Scope.TRANSIENT })
-export class SequelizeHealthIndicator extends HealthIndicator {
-  /**
-   * Initializes the SequelizeHealthIndicator
-   *
-   * @param {ModuleRef} moduleRef The NestJS module reference
-   */
-  constructor(private moduleRef: ModuleRef) {
-    super();
+export class SequelizeHealthIndicator {
+  constructor(
+    private readonly moduleRef: ModuleRef,
+    private readonly healthIndicatorService: HealthIndicatorService,
+  ) {
     this.checkDependantPackages();
   }
 
@@ -88,45 +80,30 @@ export class SequelizeHealthIndicator extends HealthIndicator {
    * @example
    * sequelizeHealthIndicator.pingCheck('database', { timeout: 1500 });
    */
-  public async pingCheck(
-    key: string,
+  public async pingCheck<Key extends string = string>(
+    key: Key,
     options: SequelizePingCheckSettings = {},
-  ): Promise<HealthIndicatorResult> {
-    let isHealthy = false;
+  ): Promise<HealthIndicatorResult<Key>> {
     this.checkDependantPackages();
+    const check = this.healthIndicatorService.check(key);
 
     const connection = options.connection || this.getContextConnection();
     const timeout = options.timeout || 1000;
 
     if (!connection) {
-      throw new ConnectionNotFoundError(
-        this.getStatus(key, isHealthy, {
-          message: 'Connection provider not found in application context',
-        }),
-      );
+      return check.down('Connection provider not found in application context');
     }
 
     try {
       await this.pingDb(connection, timeout);
-      isHealthy = true;
     } catch (err) {
       if (err instanceof PromiseTimeoutError) {
-        throw new TimeoutError(
-          timeout,
-          this.getStatus(key, isHealthy, {
-            message: `timeout of ${timeout}ms exceeded`,
-          }),
-        );
+        return check.down(`timeout of ${timeout}ms exceeded`);
       }
+
+      return check.down();
     }
 
-    if (isHealthy) {
-      return this.getStatus(key, isHealthy);
-    } else {
-      throw new HealthCheckError(
-        `${key} is not available`,
-        this.getStatus(key, isHealthy),
-      );
-    }
+    return check.up();
   }
 }

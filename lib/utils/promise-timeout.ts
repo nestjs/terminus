@@ -16,12 +16,12 @@ export class TimeoutError extends Error {}
  *
  * @internal
  */
-export const promiseTimeout = function (
+export const promiseTimeout = <T>(
   ms: number,
-  promise: Promise<any>,
-): Promise<any> {
+  promise: Promise<T>,
+): Promise<T> => {
   let timer: NodeJS.Timeout;
-  return Promise.race([
+  return Promise.race<T>([
     promise,
     new Promise(
       (_, reject) =>
