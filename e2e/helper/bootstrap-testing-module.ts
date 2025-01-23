@@ -1,3 +1,5 @@
+import { MongoDriver } from '@mikro-orm/mongodb';
+import { MySqlDriver } from '@mikro-orm/mysql';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { HttpModule } from '@nestjs/axios';
 import {
@@ -152,7 +154,6 @@ export function bootstrapTestingModule(
         username: 'root',
         password: 'root',
         database: 'test',
-        keepConnectionAlive: true,
         retryAttempts: 2,
         retryDelay: 1000,
       }),
@@ -166,7 +167,7 @@ export function bootstrapTestingModule(
       andMongo: () => {
         imports.push(
           MikroOrmModule.forRoot({
-            type: 'mongo',
+            driver: MongoDriver,
             dbName: 'test',
             discovery: { warnWhenNoEntities: false },
             strict: true,
@@ -179,7 +180,7 @@ export function bootstrapTestingModule(
       andMysql: () => {
         imports.push(
           MikroOrmModule.forRoot({
-            type: 'mysql',
+            driver: MySqlDriver,
             host: '0.0.0.0',
             port: 3306,
             user: 'root',
