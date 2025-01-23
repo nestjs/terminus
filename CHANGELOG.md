@@ -1,5 +1,13 @@
 
 
+# [10.3.0-beta.0](https://github.com/nestjs/terminus/compare/10.2.3...10.3.0-beta.0) (2024-07-16)
+
+
+### Features
+
+* **typeorm:** change typeorm mongodb check ([2f0e97d](https://github.com/nestjs/terminus/commit/2f0e97d77c53826012bfe10ebd2ed111e0445cd4))
+* Use nest app logger for Terminus per default ([40c6ec5](https://github.com/nestjs/terminus/commit/40c6ec5868c7838fe4344a563732d0f664cd55c6)), closes [#2547](https://github.com/nestjs/terminus/issues/2547)
+
 ## [10.2.3](https://github.com/nestjs/terminus/compare/10.2.2...10.2.3) (2024-02-18)
 
 
