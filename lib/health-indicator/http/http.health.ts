@@ -3,11 +3,11 @@ import type * as NestJSAxios from '@nestjs/axios';
 import { ConsoleLogger, Inject, Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { lastValueFrom, type Observable } from 'rxjs';
+import { type HealthIndicatorResult } from '..';
 import {
   type AxiosRequestConfig,
   type AxiosResponse,
 } from './axios.interfaces';
-import { type HealthIndicatorResult } from '..';
 import { type AxiosError } from '../../errors/axios.error';
 import { TERMINUS_LOGGER } from '../../health-check/logger/logger.provider';
 import { checkPackages, isAxiosError } from '../../utils';

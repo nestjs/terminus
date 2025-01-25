@@ -5,7 +5,6 @@
   "license": "MIT",
   "scripts": {
     "build": "rm -rf dist && tsc -p tsconfig.json",
-    "e2e": "jest --config=e2e/jest-e2e.json --forceExit",
     "e2e:watch": "jest --watch --config=e2e/jest-e2e.json",
     "start": "concurrently -n client,server \"npm:start:client\" \"npm:start:server\" --prefix-colors blue,yellow",
     "start:client": "ts-node src/client/main.ts",
@@ -14,7 +13,7 @@
     "start:server": "ts-node src/server/main.ts",
     "test": "jest",
     "test:coverage": "jest --config=jest.json --coverage --coverageDirectory=coverage",
-    "test:e2e": "echo 'No e2e tests implemented yet.'",
+    "e2e": "echo 'No e2e tests implemented yet.'",
     "test:watch": "jest --watch --config=jest.json"
   },
   "dependencies": {
@@ -24,7 +23,7 @@
     "@nestjs/core": "11.0.5",
     "@nestjs/microservices": "11.0.5",
     "@nestjs/platform-express": "11.0.5",
-    "@nestjs/terminus": "10.3.0",
+    "@nestjs/terminus": "11.0.0-beta.0",
     "class-transformer": "0.5.1",
     "class-validator": "0.14.1",
     "lodash": "4.17.21",
@@ -37,7 +36,7 @@
     "@types/node": "20.10.5",
     "@typescript-eslint/eslint-plugin": "6.20.0",
     "@typescript-eslint/parser": "6.20.0",
-    "concurrently": "8.2.2",
+    "concurrently": "9.1.2",
     "eslint": "8.56.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-import": "2.29.1",

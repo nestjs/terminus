@@ -20,6 +20,7 @@ describe('TypeOrmHealthIndicator', () => {
       app = await setHealthEndpoint(({ healthCheck, typeorm }) =>
         healthCheck.check([async () => typeorm.pingCheck('typeorm')]),
       ).start();
+
       const details = { typeorm: { status: 'up' } };
       return request(app.getHttpServer()).get('/health').expect(200).expect({
         status: 'ok',

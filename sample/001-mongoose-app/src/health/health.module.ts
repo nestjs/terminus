@@ -5,7 +5,7 @@ import { HealthController } from './health.controller';
 
 @Module({
   imports: [
-    TerminusModule,
+    TerminusModule.forRoot(),
     MongooseModule.forRoot('mongodb://localhost:27017/test'),
   ],
   controllers: [HealthController],

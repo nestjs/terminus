@@ -11,7 +11,7 @@
     "test": "jest",
     "test:watch": "jest --watch --config=jest.json",
     "test:coverage": "jest --config=jest.json --coverage --coverageDirectory=coverage",
-    "test:e2e": "echo 'No e2e tests implemented yet.'",
+    "e2e": "echo 'No e2e tests implemented yet.'",
     "e2e:watch": "jest --watch --config=e2e/jest-e2e.json"
   },
   "dependencies": {
@@ -19,7 +19,7 @@
     "@nestjs/core": "11.0.5",
     "@nestjs/microservices": "10.3.1",
     "@nestjs/platform-express": "11.0.5",
-    "@nestjs/terminus": "10.3.0",
+    "@nestjs/terminus": "11.0.0-beta.0",
     "class-transformer": "0.5.1",
     "class-validator": "0.14.1",
     "ioredis": "5.3.2",
