@@ -56,7 +56,7 @@ importers:
         version: 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@11.0.5)(@nestjs/platform-express@11.0.5)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/microservices':
         specifier: 11.0.5
-        version: 11.0.5(@grpc/grpc-js@1.12.5)(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(amqp-connection-manager@4.1.14(amqplib@0.10.3))(amqplib@0.10.3)(ioredis@5.4.2)(kafkajs@2.2.4)(nats@2.29.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+        version: 11.0.5(@grpc/grpc-js@1.12.5)(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(amqp-connection-manager@4.1.14(amqplib@0.10.5))(amqplib@0.10.5)(ioredis@5.4.2)(kafkajs@2.2.4)(nats@2.29.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/mongoose':
         specifier: 11.0.0
         version: 11.0.0(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(mongoose@8.9.5(socks@2.8.3))(rxjs@7.8.1)
@@ -104,10 +104,10 @@ importers:
         version: 6.20.0(eslint@8.57.1)(typescript@5.7.3)
       amqp-connection-manager:
         specifier: 4.1.14
-        version: 4.1.14(amqplib@0.10.3)
+        version: 4.1.14(amqplib@0.10.5)
       amqplib:
-        specifier: 0.10.3
-        version: 0.10.3
+        specifier: 0.10.5
+        version: 0.10.5
       axios:
         specifier: ^1.7.9
         version: 1.7.9
@@ -376,7 +376,7 @@ importers:
         version: 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@10.3.1)(@nestjs/platform-express@11.0.5)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/microservices':
         specifier: 10.3.1
-        version: 10.3.1(@grpc/grpc-js@1.12.5)(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(amqp-connection-manager@4.1.14(amqplib@0.10.3))(amqplib@0.10.3)(ioredis@5.3.2)(kafkajs@2.2.4)(nats@2.29.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+        version: 10.3.1(@grpc/grpc-js@1.12.5)(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(amqp-connection-manager@4.1.14(amqplib@0.10.5))(amqplib@0.10.5)(ioredis@5.3.2)(kafkajs@2.2.4)(nats@2.29.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/platform-express':
         specifier: 11.0.5
         version: 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)
@@ -522,7 +522,7 @@ importers:
         version: 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@11.0.5)(@nestjs/platform-express@11.0.5)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/microservices':
         specifier: 11.0.5
-        version: 11.0.5(@grpc/grpc-js@1.12.5)(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(amqp-connection-manager@4.1.14(amqplib@0.10.3))(amqplib@0.10.3)(ioredis@5.4.2)(kafkajs@2.2.4)(nats@2.29.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+        version: 11.0.5(@grpc/grpc-js@1.12.5)(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(amqp-connection-manager@4.1.14(amqplib@0.10.5))(amqplib@0.10.5)(ioredis@5.4.2)(kafkajs@2.2.4)(nats@2.29.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/platform-express':
         specifier: 11.0.5
         version: 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)
@@ -2882,8 +2882,8 @@ packages:
     peerDependencies:
       amqplib: '*'
 
-  amqplib@0.10.3:
-    resolution: {integrity: sha512-UHmuSa7n8vVW/a5HGh2nFPqAEr8+cD4dEZ6u9GjP91nHfr1a54RyAKyra7Sb5NH7NBKOUlyQSMXIp0qAixKexw==}
+  amqplib@0.10.5:
+    resolution: {integrity: sha512-Dx5zmy0Ur+Q7LPPdhz+jx5IzmJBoHd15tOeAfQ8SuvEtyPJ20hBemhOBA4b1WeORCRa0ENM/kHCzmem1w/zHvQ==}
     engines: {node: '>=10'}
 
   ansi-align@3.0.1:
@@ -6041,9 +6041,6 @@ packages:
   readable-stream@1.0.34:
     resolution: {integrity: sha512-ok1qVCJuRkNmvebYikljxJA/UEsKwLl2nI1OmaqAu4/UE+h0wKCHok4XkL/gvi39OacXvw59RJUOFUkDib2rHg==}
 
-  readable-stream@1.1.14:
-    resolution: {integrity: sha512-+MeVjFf4L44XUkhM1eYbD8fyEsxcV81pqMSR5gblfcLCHfZvbrqy4/qYHE+/R5HoBUT11WV5O08Cr1n3YXkWVQ==}
-
   readable-stream@2.3.7:
     resolution: {integrity: sha512-Ebho8K4jIbHAxnuxi7o42OrZgF/ZTNcsZj6nRKyUmkhLFq8CHItp/fy6hQZuZmP/n3yZ9VBUbp4zz/mX8hmYPw==}
 
@@ -8343,7 +8340,7 @@ snapshots:
       tslib: 2.8.1
       uid: 2.0.2
     optionalDependencies:
-      '@nestjs/microservices': 10.3.1(@grpc/grpc-js@1.12.5)(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(amqp-connection-manager@4.1.14(amqplib@0.10.3))(amqplib@0.10.3)(ioredis@5.3.2)(kafkajs@2.2.4)(nats@2.29.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/microservices': 10.3.1(@grpc/grpc-js@1.12.5)(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(amqp-connection-manager@4.1.14(amqplib@0.10.5))(amqplib@0.10.5)(ioredis@5.3.2)(kafkajs@2.2.4)(nats@2.29.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/platform-express': 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)
 
   '@nestjs/core@11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@11.0.5)(@nestjs/platform-express@11.0.5)(reflect-metadata@0.2.2)(rxjs@7.8.1)':
@@ -8358,7 +8355,7 @@ snapshots:
       tslib: 2.8.1
       uid: 2.0.2
     optionalDependencies:
-      '@nestjs/microservices': 11.0.5(@grpc/grpc-js@1.12.5)(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(amqp-connection-manager@4.1.14(amqplib@0.10.3))(amqplib@0.10.3)(ioredis@5.4.2)(kafkajs@2.2.4)(nats@2.29.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/microservices': 11.0.5(@grpc/grpc-js@1.12.5)(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(amqp-connection-manager@4.1.14(amqplib@0.10.5))(amqplib@0.10.5)(ioredis@5.4.2)(kafkajs@2.2.4)(nats@2.29.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/platform-express': 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)
 
   '@nestjs/mapped-types@2.1.0(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)':
@@ -8369,7 +8366,7 @@ snapshots:
       class-transformer: 0.5.1
       class-validator: 0.14.1
 
-  '@nestjs/microservices@10.3.1(@grpc/grpc-js@1.12.5)(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(amqp-connection-manager@4.1.14(amqplib@0.10.3))(amqplib@0.10.3)(ioredis@5.3.2)(kafkajs@2.2.4)(nats@2.29.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)':
+  '@nestjs/microservices@10.3.1(@grpc/grpc-js@1.12.5)(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(amqp-connection-manager@4.1.14(amqplib@0.10.5))(amqplib@0.10.5)(ioredis@5.3.2)(kafkajs@2.2.4)(nats@2.29.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)':
     dependencies:
       '@nestjs/common': 11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/core': 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@10.3.1)(@nestjs/platform-express@11.0.5)(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -8379,13 +8376,13 @@ snapshots:
       tslib: 2.6.2
     optionalDependencies:
       '@grpc/grpc-js': 1.12.5
-      amqp-connection-manager: 4.1.14(amqplib@0.10.3)
-      amqplib: 0.10.3
+      amqp-connection-manager: 4.1.14(amqplib@0.10.5)
+      amqplib: 0.10.5
       ioredis: 5.3.2
       kafkajs: 2.2.4
       nats: 2.29.1
 
-  '@nestjs/microservices@11.0.5(@grpc/grpc-js@1.12.5)(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(amqp-connection-manager@4.1.14(amqplib@0.10.3))(amqplib@0.10.3)(ioredis@5.4.2)(kafkajs@2.2.4)(nats@2.29.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)':
+  '@nestjs/microservices@11.0.5(@grpc/grpc-js@1.12.5)(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(amqp-connection-manager@4.1.14(amqplib@0.10.5))(amqplib@0.10.5)(ioredis@5.4.2)(kafkajs@2.2.4)(nats@2.29.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)':
     dependencies:
       '@nestjs/common': 11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/core': 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@11.0.5)(@nestjs/platform-express@11.0.5)(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -8395,8 +8392,8 @@ snapshots:
       tslib: 2.8.1
     optionalDependencies:
       '@grpc/grpc-js': 1.12.5
-      amqp-connection-manager: 4.1.14(amqplib@0.10.3)
-      amqplib: 0.10.3
+      amqp-connection-manager: 4.1.14(amqplib@0.10.5)
+      amqplib: 0.10.5
       ioredis: 5.4.2
       kafkajs: 2.2.4
       nats: 2.29.1
@@ -8482,7 +8479,7 @@ snapshots:
       '@nestjs/core': 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@11.0.5)(@nestjs/platform-express@11.0.5)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       tslib: 2.6.2
     optionalDependencies:
-      '@nestjs/microservices': 11.0.5(@grpc/grpc-js@1.12.5)(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(amqp-connection-manager@4.1.14(amqplib@0.10.3))(amqplib@0.10.3)(ioredis@5.4.2)(kafkajs@2.2.4)(nats@2.29.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/microservices': 11.0.5(@grpc/grpc-js@1.12.5)(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(amqp-connection-manager@4.1.14(amqplib@0.10.5))(amqplib@0.10.5)(ioredis@5.4.2)(kafkajs@2.2.4)(nats@2.29.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/platform-express': 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)
 
   '@nestjs/testing@11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(@nestjs/microservices@11.0.5)(@nestjs/platform-express@11.0.5)':
@@ -8491,7 +8488,7 @@ snapshots:
       '@nestjs/core': 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@11.0.5)(@nestjs/platform-express@11.0.5)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       tslib: 2.8.1
     optionalDependencies:
-      '@nestjs/microservices': 11.0.5(@grpc/grpc-js@1.12.5)(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(amqp-connection-manager@4.1.14(amqplib@0.10.3))(amqplib@0.10.3)(ioredis@5.4.2)(kafkajs@2.2.4)(nats@2.29.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/microservices': 11.0.5(@grpc/grpc-js@1.12.5)(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(amqp-connection-manager@4.1.14(amqplib@0.10.5))(amqplib@0.10.5)(ioredis@5.4.2)(kafkajs@2.2.4)(nats@2.29.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/platform-express': 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)
 
   '@nestjs/typeorm@10.0.2(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(ioredis@5.4.2)(mongodb@5.9.1)(mysql2@3.12.0)(redis@4.7.0)(ts-node@10.9.2(@types/node@20.10.5)(typescript@5.7.3)))':
@@ -9453,16 +9450,15 @@ snapshots:
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
 
-  amqp-connection-manager@4.1.14(amqplib@0.10.3):
+  amqp-connection-manager@4.1.14(amqplib@0.10.5):
     dependencies:
-      amqplib: 0.10.3
+      amqplib: 0.10.5
       promise-breaker: 6.0.0
 
-  amqplib@0.10.3:
+  amqplib@0.10.5:
     dependencies:
       '@acuminous/bitsyntax': 0.1.2
       buffer-more-ints: 1.0.0
-      readable-stream: 1.1.14
       url-parse: 1.5.10
     transitivePeerDependencies:
       - supports-color
@@ -13521,13 +13517,6 @@ snapshots:
       type-fest: 0.6.0
 
   readable-stream@1.0.34:
-    dependencies:
-      core-util-is: 1.0.3
-      inherits: 2.0.4
-      isarray: 0.0.1
-      string_decoder: 0.10.31
-
-  readable-stream@1.1.14:
     dependencies:
       core-util-is: 1.0.3
       inherits: 2.0.4
