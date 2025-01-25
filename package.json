@@ -107,7 +107,7 @@
     "kafkajs": "^2.2.4",
     "lint-staged": "15.4.2",
     "mongoose": "8.9.5",
-    "mysql2": "3.12.0",
+    "mysql2": "3.9.8",
     "nats": "2.29.1",
     "portfinder": "1.0.32",
     "prettier": "3.4.2",
