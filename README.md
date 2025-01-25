@@ -107,25 +107,36 @@ Setup the development environment by following these instructions:
 2. Install the dependencies
 
 ```bash
-npm install
-
-# To rebuild the project, run
-npm run build
+pnpm i
+pnpm dev
 ```
+
+In order to test the library against a sample, simply go to a sample and run
+`pnpm start:dev`
+
+```typescript
+cd sample/000-dogs-app
+pnpm start:dev
+```
+
+> [!NOTE] 
+> Once the library is rebuilt, the `pnpm start:dev` within a sample
+> needs to be restarted in order to pick up the changes.
 
 ### Test
 
 For unit testing run the following command:
 
 ```bash
-npm run test
+pnpm test
 ```
 
-For e2e testing, make sure you have docker installed
+For e2e testing, a Docker Compose stack is required. Make sure
+Docker is installed on your machine and run the following command.
 
 ```bash
-docker-compose up -d
-npm run test:e2e
+docker compose up -d
+pnpm test:e2e
 ```
 
 ## Support

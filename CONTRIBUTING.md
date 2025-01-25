@@ -76,7 +76,7 @@ Before you submit your Pull Request (PR) consider the following guidelines:
   that relates to your submission. You don't want to duplicate effort.
 <!-- 1. Please sign our [Contributor License Agreement (CLA)](#cla) before sending PRs.
   We cannot accept code without this. -->
-1. Fork the nestjs/nest repo.
+1. Fork the nestjs/terminus repo.
 1. Make your changes in a new git branch:
 
      ```shell
@@ -85,7 +85,7 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 
 1. Create your patch, **including appropriate test cases**.
 1. Follow our [Coding Rules](#rules).
-1. Run the full Nest test suite, as described in the [developer documentation][dev-doc],
+1. Run the full Nest test suite, as described in the README.md,
   and ensure that all tests pass.
 1. Commit your changes using a descriptive commit message that follows our
   [commit message conventions](#commit). Adherence to these conventions
@@ -102,7 +102,7 @@ Before you submit your Pull Request (PR) consider the following guidelines:
     git push origin my-fix-branch
     ```
 
-1. In GitHub, send a pull request to `nestjs:master`.
+1. In GitHub, send a pull request to `nestjs/terminus:master`.
 * If we suggest changes then:
   * Make the required updates.
   * Re-run the Nest test suites to ensure tests are still passing.
@@ -148,12 +148,6 @@ from the main (upstream) repository:
 To ensure consistency throughout the source code, keep these rules in mind as you are working:
 
 * All features or bug fixes **must be tested** by one or more specs (unit-tests).
-<!--
-// We're working on auto-documentation.
-* All public API methods **must be documented**. (Details TBC). -->
-* We follow [Google's JavaScript Style Guide][js-style-guide], but wrap all code at
-  **100 characters**. An automated formatter is available, see
-  [DEVELOPER.md](docs/DEVELOPER.md#clang-format).
 
 ## <a name="commit"></a> Commit Message Guidelines
 
@@ -180,13 +174,13 @@ to read on GitHub as well as in various git tools.
 
 Footer should contain a [closing reference to an issue](https://help.github.com/articles/closing-issues-via-commit-messages/) if any.
 
-Samples: (even more [samples](https://github.com/nestjs/nest/commits/master))
+Samples: (even more [samples](https://github.com/nestjs/terminus/commits/master))
 
 ```
-docs(changelog) update change log to beta.5
+docs: update change log to beta.5
 ```
 ```
-fix(@nestjs/core) need to depend on latest rxjs and zone.js
+fix: need to depend on latest rxjs and zone.js
 
 The version in our package.json gets copied to the one we publish, and users need the latest of these.
 ```
@@ -242,7 +236,6 @@ changes to be accepted, the CLA must be signed. It's a quick process, we promise
 <!-- [coc]: https://github.com/angular/code-of-conduct/blob/master/CODE_OF_CONDUCT.md -->
 [commit-message-format]: https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#
 [corporate-cla]: http://code.google.com/legal/corporate-cla-v1.0.html
-[dev-doc]: https://github.com/nestjs/nest/blob/master/docs/DEVELOPER.md
 [github]: https://github.com/nestjs/nest
 [discord]: https://discord.gg/nestjs
 [individual-cla]: http://code.google.com/legal/individual-cla-v1.0.html
