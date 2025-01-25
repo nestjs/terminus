@@ -88,7 +88,7 @@
     "@typescript-eslint/eslint-plugin": "6.20.0",
     "@typescript-eslint/parser": "6.20.0",
     "amqp-connection-manager": "4.1.14",
-    "amqplib": "0.10.3",
+    "amqplib": "0.10.5",
     "axios": "^1.7.9",
     "cli-color": "2.0.4",
     "copyfiles": "^2.4.1",
