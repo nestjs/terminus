@@ -5,7 +5,6 @@
   "license": "MIT",
   "scripts": {
     "build": "rm -rf dist && tsc -p tsconfig.json",
-    "e2e": "jest --config=e2e/jest-e2e.json --forceExit",
     "e2e:watch": "jest --watch --config=e2e/jest-e2e.json",
     "start": "concurrently -n client,server \"npm:start:client\" \"npm:start:server\" --prefix-colors blue,yellow",
     "start:client": "ts-node src/client/main.ts",
@@ -14,7 +13,7 @@
     "start:server": "ts-node src/server/main.ts",
     "test": "jest",
     "test:coverage": "jest --config=jest.json --coverage --coverageDirectory=coverage",
-    "test:e2e": "echo 'No e2e tests implemented yet.'",
+    "e2e": "echo 'No e2e tests implemented yet.'",
     "test:watch": "jest --watch --config=jest.json"
   },
   "dependencies": {

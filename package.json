@@ -165,6 +165,7 @@
       "optional": true
     }
   },
+  "packageManager": "pnpm@9.15.4",
   "lint-staged": {
     "*.ts": [
       "prettier --write"
