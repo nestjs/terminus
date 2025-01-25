@@ -509,8 +509,8 @@ importers:
         specifier: 1.12.5
         version: 1.12.5
       '@grpc/proto-loader':
-        specifier: 0.7.10
-        version: 0.7.10
+        specifier: 0.7.13
+        version: 0.7.13
       '@nestjs/common':
         specifier: 11.0.5
         version: 11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -1595,11 +1595,6 @@ packages:
   '@grpc/grpc-js@1.12.5':
     resolution: {integrity: sha512-d3iiHxdpg5+ZcJ6jnDSOT8Z0O0VMVGy34jAnYLUX8yd36b1qn8f1TwOA/Lc7TsOh03IkPJ38eGI5qD2EjNkoEA==}
     engines: {node: '>=12.10.0'}
-
-  '@grpc/proto-loader@0.7.10':
-    resolution: {integrity: sha512-CAqDfoaQ8ykFd9zqBDn4k6iWT9loLAlc2ETmDFS9JCD70gDcnA4L3AFEo2iV7KyAtAAHFW9ftq1Fz+Vsgq80RQ==}
-    engines: {node: '>=6'}
-    hasBin: true
 
   '@grpc/proto-loader@0.7.13':
     resolution: {integrity: sha512-AiXO/bfe9bmxBjxxtYxFAXGZvMaN5s8kO+jBHAJCON8rJoB5YS/D6X7ZNc6XQkuHNmyl4CYaMI1fJ/Gn27RGGw==}
@@ -7512,13 +7507,6 @@ snapshots:
     dependencies:
       '@grpc/proto-loader': 0.7.13
       '@js-sdsl/ordered-map': 4.4.2
-
-  '@grpc/proto-loader@0.7.10':
-    dependencies:
-      lodash.camelcase: 4.3.0
-      long: 5.2.4
-      protobufjs: 7.4.0
-      yargs: 17.7.2
 
   '@grpc/proto-loader@0.7.13':
     dependencies:
