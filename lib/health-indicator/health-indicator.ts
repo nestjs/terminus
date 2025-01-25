@@ -28,6 +28,9 @@ export type HealthIndicatorFunction = () =>
  * ```
  *
  * @publicApi
+ * @deprecated
+ * This class has been deprecated and will be removed in the next major release.
+ * Instead utilise the `HealthIndicatorService` to indicate the health of your health indicator.
  */
 export abstract class HealthIndicator {
   /**

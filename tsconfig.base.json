@@ -12,7 +12,7 @@
     "target": "es6",
     "sourceMap": true,
     "outDir": "./dist",
-    "rootDir": "./lib",
+    "rootDirs": ["./lib", "./e2e"],
     "alwaysStrict": true,
     "skipLibCheck": true
   },

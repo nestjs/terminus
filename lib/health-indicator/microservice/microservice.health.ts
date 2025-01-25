@@ -1,8 +1,6 @@
 import { Injectable, Scope } from '@nestjs/common';
 import type * as NestJSMicroservices from '@nestjs/microservices';
-import { HealthIndicator, type HealthIndicatorResult } from '../';
-import { TimeoutError } from '../../errors';
-import { HealthCheckError } from '../../health-check/health-check.error';
+import { type HealthIndicatorResult } from '../';
 import {
   checkPackages,
   promiseTimeout,
@@ -10,6 +8,7 @@ import {
   type PropType,
   isError,
 } from '../../utils';
+import { HealthIndicatorService } from '../health-indicator.service';
 
 // Since @nestjs/microservices is lazily loaded we are not able to use
 // its types. It would end up in the d.ts file if we would use the types.
@@ -43,13 +42,10 @@ export type MicroserviceHealthIndicatorOptions<
  * @module TerminusModule
  */
 @Injectable({ scope: Scope.TRANSIENT })
-export class MicroserviceHealthIndicator extends HealthIndicator {
+export class MicroserviceHealthIndicator {
   private nestJsMicroservices!: typeof NestJSMicroservices;
-  /**
-   * Initializes the health indicator
-   */
-  constructor() {
-    super();
+
+  constructor(private readonly healthIndicatorService: HealthIndicatorService) {
     this.checkDependantPackages();
   }
 
@@ -77,34 +73,6 @@ export class MicroserviceHealthIndicator extends HealthIndicator {
   }
 
   /**
-   * Prepares and throw a HealthCheckError
-   * @param key The key which will be used for the result object
-   * @param error The thrown error
-   * @param timeout The timeout in ms
-   *
-   * @throws {HealthCheckError}
-   */
-  private generateError(key: string, error: Error, timeout: number) {
-    if (!error) {
-      return;
-    }
-    if (error instanceof PromiseTimeoutError) {
-      throw new TimeoutError(
-        timeout,
-        this.getStatus(key, false, {
-          message: `timeout of ${timeout}ms exceeded`,
-        }),
-      );
-    }
-    throw new HealthCheckError(
-      error.message,
-      this.getStatus(key, false, {
-        message: error.message,
-      }),
-    );
-  }
-
-  /**
    * Checks if the given microservice is up
    * @param key The key which will be used for the result object
    * @param options The options of the microservice
@@ -117,11 +85,14 @@ export class MicroserviceHealthIndicator extends HealthIndicator {
    *   options: { host: 'localhost', port: 3001 },
    * })
    */
-  async pingCheck<MicroserviceClientOptions extends MicroserviceOptionsLike>(
-    key: string,
+  async pingCheck<
+    MicroserviceClientOptions extends MicroserviceOptionsLike,
+    Key extends string = string,
+  >(
+    key: Key,
     options: MicroserviceHealthIndicatorOptions<MicroserviceClientOptions>,
-  ): Promise<HealthIndicatorResult> {
-    let isHealthy = false;
+  ): Promise<HealthIndicatorResult<Key>> {
+    const check = this.healthIndicatorService.check(key);
     const timeout = options.timeout || 1000;
 
     if (options.transport === this.nestJsMicroservices.Transport.KAFKA) {
@@ -135,20 +106,17 @@ export class MicroserviceHealthIndicator extends HealthIndicator {
 
     try {
       await promiseTimeout(timeout, this.pingMicroservice(options));
-      isHealthy = true;
     } catch (err) {
+      if (err instanceof PromiseTimeoutError) {
+        return check.down(`timeout of ${timeout}ms exceeded`);
+      }
       if (isError(err)) {
-        this.generateError(key, err, timeout);
+        return check.down(err.message);
       }
 
-      const errorMsg = `${key} is not available`;
-
-      throw new HealthCheckError(
-        errorMsg,
-        this.getStatus(key, false, { message: errorMsg }),
-      );
+      return check.down(`${key} is not available`);
     }
 
-    return this.getStatus(key, isHealthy);
+    return check.up();
   }
 }

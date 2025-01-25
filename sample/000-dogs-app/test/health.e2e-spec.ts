@@ -21,9 +21,9 @@ describe('HealthModule (e2e)', () => {
       .expect(200)
       .expect({
         status: 'ok',
-        info: { dog: { status: 'up', badboys: 0 } },
+        info: { dog: { status: 'up' } },
         error: {},
-        details: { dog: { status: 'up', badboys: 0 } },
+        details: { dog: { status: 'up' } },
       });
   });
 });

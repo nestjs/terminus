@@ -5,8 +5,8 @@ import { checkPackages } from '../../utils/checkPackage.util';
 import { of } from 'rxjs';
 import { TERMINUS_LOGGER } from '../../health-check/logger/logger.provider';
 import { AxiosError } from 'axios';
-import { AxiosRequestConfig } from './axios.interfaces';
 import { HealthCheckError } from 'lib/health-check';
+import { HealthIndicatorService } from '../health-indicator.service';
 jest.mock('../../utils/checkPackage.util');
 
 // == MOCKS ==
@@ -20,7 +20,6 @@ const nestJSAxiosMock = {
 
 describe('Http Response Health Indicator', () => {
   let httpHealthIndicator: HttpHealthIndicator;
-  let httpService: jest.Mocked<HttpService>;
 
   beforeEach(async () => {
     (checkPackages as jest.Mock).mockImplementation((): any => [
@@ -33,6 +32,7 @@ describe('Http Response Health Indicator', () => {
       imports: [HttpModule],
       providers: [
         HttpHealthIndicator,
+        HealthIndicatorService,
         {
           provide: nestJSAxiosMock.HttpService as any,
           useValue: httpServiceMock,
@@ -49,10 +49,6 @@ describe('Http Response Health Indicator', () => {
 
     httpHealthIndicator =
       await moduleRef.resolve<HttpHealthIndicator>(HttpHealthIndicator);
-
-    httpService = (await moduleRef.resolve<HttpService>(
-      nestJSAxiosMock.HttpService as any,
-    )) as jest.Mocked<HttpService>;
   });
 
   describe('#pingCheck', () => {

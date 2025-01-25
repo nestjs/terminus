@@ -5,33 +5,20 @@ on: [push, pull_request]
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        node-version: [20]
 
     steps:
     - uses: actions/checkout@v4
-    - name: Use Node.js 18.x
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+    - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
-        node-version: 18.x
+        node-version: ${{ matrix.node-version }}
+        cache: 'pnpm'
 
-    - name: Cache node modules
-      id: cache-npm
-      uses: actions/cache@v4
-      env:
-        cache-name: cache-node-modules
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
-
-    - if: ${{ steps.cache-npm.outputs.cache-hit == 'false' }}
-      name: List the state of node modules
-      continue-on-error: true
-      run: npm list
-
-    # FIXME: Remove the `--legacy-peer-deps` flag once all dependencies are updated
-    - run: npm ci --legacy-peer-deps
-    - run: npm run format
+    - run: pnpm i
+    - run: pnpm format

@@ -1,9 +1,14 @@
+/* eslint-disable deprecation/deprecation */
 import { TIMEOUT_EXCEEDED } from './messages.constant';
 import { HealthCheckError } from '../health-check/health-check.error';
 
 /**
  * Gets thrown when the timeout of the health check exceeds
  * @publicApi
+ *
+ * @deprecated
+ * This class has been deprecated and will be removed in the next major release.
+ * Instead utilise the `HealthIndicatorService` to indicate the health of your health indicator.
  */
 export class TimeoutError extends HealthCheckError {
   /**

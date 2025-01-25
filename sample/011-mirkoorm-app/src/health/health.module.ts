@@ -2,11 +2,12 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { HealthController } from './health.controller';
 import { TerminusModule } from '@nestjs/terminus';
+import { MySqlDriver } from '@mikro-orm/mysql';
 
 @Module({
   imports: [
     MikroOrmModule.forRoot({
-      type: 'mysql',
+      driver: MySqlDriver,
       dbName: 'test',
       user: 'root',
       password: 'root',

@@ -3,15 +3,18 @@ import type * as NestJSAxios from '@nestjs/axios';
 import { ConsoleLogger, Inject, Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { lastValueFrom, type Observable } from 'rxjs';
+import { type HealthIndicatorResult } from '..';
 import {
   type AxiosRequestConfig,
   type AxiosResponse,
 } from './axios.interfaces';
-import { HealthIndicator, type HealthIndicatorResult } from '..';
 import { type AxiosError } from '../../errors/axios.error';
-import { HealthCheckError } from '../../health-check/health-check.error';
 import { TERMINUS_LOGGER } from '../../health-check/logger/logger.provider';
 import { checkPackages, isAxiosError } from '../../utils';
+import {
+  HealthIndicatorService,
+  type HealthIndicatorSession,
+} from '../health-indicator.service';
 
 interface HttpClientLike {
   request<T = any>(config: any): Observable<AxiosResponse<T>>;
@@ -27,15 +30,15 @@ interface HttpClientLike {
 @Injectable({
   scope: Scope.TRANSIENT,
 })
-export class HttpHealthIndicator extends HealthIndicator {
+export class HttpHealthIndicator {
   private nestJsAxios!: typeof NestJSAxios;
 
   constructor(
     private readonly moduleRef: ModuleRef,
     @Inject(TERMINUS_LOGGER)
     private readonly logger: ConsoleLogger,
+    private readonly healthIndicatorService: HealthIndicatorService,
   ) {
-    super();
     if (this.logger instanceof ConsoleLogger) {
       this.logger.setContext(HttpHealthIndicator.name);
     }
@@ -74,11 +77,10 @@ export class HttpHealthIndicator extends HealthIndicator {
    *
    * @throws {HealthCheckError}
    */
-  private generateHttpError(key: string, error: AxiosError | any) {
-    if (!isAxiosError(error)) {
-      return;
-    }
-
+  private generateHttpError(
+    check: HealthIndicatorSession,
+    error: AxiosError | any,
+  ) {
     const response: { [key: string]: any } = {
       message: error.message,
     };
@@ -88,10 +90,7 @@ export class HttpHealthIndicator extends HealthIndicator {
       response.statusText = error.response.statusText;
     }
 
-    throw new HealthCheckError(
-      error.message,
-      this.getStatus(key, false, response),
-    );
+    return check.down(response);
   }
 
   /**
@@ -106,15 +105,16 @@ export class HttpHealthIndicator extends HealthIndicator {
    * @example
    * httpHealthIndicator.pingCheck('google', 'https://google.com', { timeout: 800 })
    */
-  async pingCheck(
-    key: string,
+  async pingCheck<Key extends string>(
+    key: Key,
     url: string,
     {
       httpClient,
       ...options
     }: AxiosRequestConfig & { httpClient?: HttpClientLike } = {},
-  ): Promise<HealthIndicatorResult> {
-    let isHealthy = false;
+  ): Promise<HealthIndicatorResult<Key>> {
+    const check = this.healthIndicatorService.check(key);
+
     // In case the user has a preconfigured HttpService (see `HttpModule.register`)
     // we just let him/her pass in this HttpService so that he/she does not need to
     // reconfigure it.
@@ -123,23 +123,27 @@ export class HttpHealthIndicator extends HealthIndicator {
 
     try {
       await lastValueFrom(httpService.request({ url, ...options }));
-      isHealthy = true;
     } catch (err) {
-      this.generateHttpError(key, err);
+      if (isAxiosError(err)) {
+        return this.generateHttpError(check, err);
+      }
+
+      throw err;
     }
 
-    return this.getStatus(key, isHealthy);
+    return check.up();
   }
 
-  async responseCheck<T>(
-    key: string,
+  async responseCheck<T, Key extends string>(
+    key: Key,
     url: URL | string,
     callback: (response: AxiosResponse<T>) => boolean | Promise<boolean>,
     {
       httpClient,
       ...options
     }: AxiosRequestConfig & { httpClient?: HttpClientLike } = {},
-  ): Promise<HealthIndicatorResult> {
+  ): Promise<HealthIndicatorResult<Key>> {
+    const check = this.healthIndicatorService.check(key);
     const httpService = httpClient || this.getHttpService();
 
     let response: AxiosResponse;
@@ -153,10 +157,14 @@ export class HttpHealthIndicator extends HealthIndicator {
       if (!isAxiosError(error)) {
         throw error;
       }
+      // We received an Axios Error but no response for unknown reasons.
       if (!error.response) {
-        throw this.generateHttpError(key, error);
+        return check.down(error.message);
       }
 
+      // We store the response no matter if the http request was successful or not.
+      // So that we can pass it to the callback function and the user can decide
+      // if the response is healthy or not.
       response = error.response;
       axiosError = error;
     }
@@ -165,15 +173,12 @@ export class HttpHealthIndicator extends HealthIndicator {
 
     if (!isHealthy) {
       if (axiosError) {
-        throw this.generateHttpError(key, axiosError);
+        return this.generateHttpError(check, axiosError);
       }
 
-      throw new HealthCheckError(
-        `${key} is not available`,
-        this.getStatus(key, false),
-      );
+      return check.down();
     }
 
-    return this.getStatus(key, true);
+    return check.up();
   }
 }

@@ -1,4 +1,3 @@
-import { type Type } from '@nestjs/common';
 import {
   TypeOrmHealthIndicator,
   HttpHealthIndicator,
@@ -7,7 +6,6 @@ import {
   DiskHealthIndicator,
   MemoryHealthIndicator,
   MicroserviceHealthIndicator,
-  type HealthIndicator,
   GRPCHealthIndicator,
   PrismaHealthIndicator,
 } from '.';
@@ -16,7 +14,7 @@ import { MikroOrmHealthIndicator } from './database/mikro-orm.health';
 /**
  * All the health indicators terminus provides as array
  */
-export const HEALTH_INDICATORS: Type<HealthIndicator>[] = [
+export const HEALTH_INDICATORS = [
   TypeOrmHealthIndicator,
   HttpHealthIndicator,
   MongooseHealthIndicator,
