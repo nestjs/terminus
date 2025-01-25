@@ -28,6 +28,7 @@
   "license": "MIT",
   "author": "Livio Brunner",
   "main": "dist/index.js",
+  "packageManager": "pnpm@9.15.4",
   "scripts": {
     "dev": "nest build --watch",
     "build": "nest build",
@@ -185,7 +186,6 @@
       "optional": true
     }
   },
-  "packageManager": "pnpm@9.15.4",
   "lint-staged": {
     "*.ts": [
       "prettier --write"
