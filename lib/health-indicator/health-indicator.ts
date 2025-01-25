@@ -10,13 +10,20 @@ export type HealthIndicatorFunction = () =>
   | HealthIndicatorResult;
 
 /**
+ * @deprecated
+ * **This class has been deprecated and will be removed in the next major release.**
+ * Instead utilise the `HealthIndicatorService` to indicate the health of your health indicator.
+ *
+ * @see {@link https://docs.nestjs.com/migration-guide#terminus-module|Migration Guide}
+ *
+ * @description
  * Represents an abstract health indicator
  * with common functionalities
  *
  * A custom HealthIndicator should inherit the `HealthIndicator` class.
  *
+ * @example
  * ```typescript
- *
  * class MyHealthIndicator extends HealthIndicator {
  *   public check(key: string) {
  *     // Replace with the actual check
@@ -26,11 +33,7 @@ export type HealthIndicatorFunction = () =>
  *   }
  * }
  * ```
- *
  * @publicApi
- * @deprecated
- * This class has been deprecated and will be removed in the next major release.
- * Instead utilise the `HealthIndicatorService` to indicate the health of your health indicator.
  */
 export abstract class HealthIndicator {
   /**

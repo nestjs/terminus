@@ -7,18 +7,23 @@ import { type HealthIndicatorResult } from './health-indicator-result.interface'
  */
 @Injectable()
 export class HealthIndicatorService {
-  check<Key extends string>(key: Key) {
+  check<const Key extends string>(key: Key) {
     return new HealthIndicatorSession(key);
   }
 }
 
 type AdditionalData = Record<string, unknown>;
 
+/**
+ * Indicate the health of a health indicator with the given key
+ *
+ * @publicApi
+ */
 export class HealthIndicatorSession<Key extends Readonly<string> = string> {
   constructor(private readonly key: Key) {}
 
   /**
-   * Mark the health indicator as down
+   * Mark the health indicator as `down`
    * @param data additional data which will get appended to the result object
    */
   down<T extends AdditionalData>(
@@ -49,6 +54,10 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
     } as Record<Key, typeof detail>;
   }
 
+  /**
+   * Mark the health indicator as `up`
+   * @param data additional data which will get appended to the result object
+   */
   up<T extends AdditionalData>(data?: T): HealthIndicatorResult<Key, 'up', T>;
   up<T extends string>(
     data?: T,
