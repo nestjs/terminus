@@ -10,8 +10,8 @@
   "author": "Livio Brunner",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "tsc -p tsconfig.build.json --watch",
-    "build": "tsc -p tsconfig.build.json && pnpm copy:proto",
+    "dev": "nest build --watch",
+    "build": "nest build",
     "copy:proto": "copyfiles lib/health-indicator/microservice/protos/health.proto dist/health-indicator/microservice/protos/health.proto",
     "build:all": "pnpm run build && pnpm run -r build",
     "test:all": "pnpm run test && pnpm run -if-present -r test --passWithNoTests",
@@ -48,6 +48,7 @@
     "@mikro-orm/mysql": "6.4.4",
     "@mikro-orm/nestjs": "6.0.2",
     "@nestjs/axios": "4.0.0",
+    "@nestjs/cli": "^11.0.2",
     "@nestjs/common": "11.0.5",
     "@nestjs/core": "11.0.5",
     "@nestjs/microservices": "11.0.5",
