@@ -229,7 +229,7 @@ importers:
         specifier: 11.0.5
         version: 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)
       '@nestjs/terminus':
-        specifier: 11.0.0-beta.0
+        specifier: 11.0.0-beta.1
         version: link:../..
       '@nestjs/testing':
         specifier: 11.0.5
@@ -293,7 +293,7 @@ importers:
         specifier: 11.0.5
         version: 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)
       '@nestjs/terminus':
-        specifier: 11.0.0-beta.0
+        specifier: 11.0.0-beta.1
         version: link:../..
       mongoose:
         specifier: 8.9.5
@@ -381,7 +381,7 @@ importers:
         specifier: 11.0.5
         version: 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)
       '@nestjs/terminus':
-        specifier: 11.0.0-beta.0
+        specifier: 11.0.0-beta.1
         version: link:../..
       class-transformer:
         specifier: 0.5.1
@@ -451,7 +451,7 @@ importers:
         specifier: 11.0.5
         version: 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)
       '@nestjs/terminus':
-        specifier: 11.0.0-beta.0
+        specifier: 11.0.0-beta.1
         version: link:../..
       class-transformer:
         specifier: 0.5.1
@@ -527,7 +527,7 @@ importers:
         specifier: 11.0.5
         version: 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)
       '@nestjs/terminus':
-        specifier: 11.0.0-beta.0
+        specifier: 11.0.0-beta.1
         version: link:../..
       class-transformer:
         specifier: 0.5.1
@@ -600,7 +600,7 @@ importers:
         specifier: 11.0.5
         version: 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)
       '@nestjs/terminus':
-        specifier: 11.0.0-beta.0
+        specifier: 11.0.0-beta.1
         version: link:../..
       '@nestjs/typeorm':
         specifier: 11.0.0
@@ -691,7 +691,7 @@ importers:
         specifier: 11.0.5
         version: 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)
       '@nestjs/terminus':
-        specifier: 11.0.0-beta.0
+        specifier: 11.0.0-beta.1
         version: link:../..
       '@nestjs/typeorm':
         specifier: 10.0.2
@@ -785,7 +785,7 @@ importers:
         specifier: 11.0.0
         version: 11.0.0(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(reflect-metadata@0.2.2)(rxjs@7.8.1)(sequelize-typescript@2.1.6(@types/node@20.10.5)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.5(mysql2@3.9.8)))(sequelize@6.37.5(mysql2@3.9.8))
       '@nestjs/terminus':
-        specifier: 11.0.0-beta.0
+        specifier: 11.0.0-beta.1
         version: link:../..
       mysql2:
         specifier: 3.9.8
@@ -882,7 +882,7 @@ importers:
         specifier: 11.0.5
         version: 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)
       '@nestjs/terminus':
-        specifier: 11.0.0-beta.0
+        specifier: 11.0.0-beta.1
         version: link:../..
       mongoose:
         specifier: 8.9.5
@@ -970,7 +970,7 @@ importers:
         specifier: 11.0.5
         version: 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)
       '@nestjs/terminus':
-        specifier: 11.0.0-beta.0
+        specifier: 11.0.0-beta.1
         version: link:../..
       reflect-metadata:
         specifier: 0.2.2
@@ -1055,7 +1055,7 @@ importers:
         specifier: 11.0.5
         version: 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)
       '@nestjs/terminus':
-        specifier: 11.0.0-beta.0
+        specifier: 11.0.0-beta.1
         version: link:../..
       reflect-metadata:
         specifier: 0.2.2
@@ -1146,7 +1146,7 @@ importers:
         specifier: 11.0.5
         version: 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)
       '@nestjs/terminus':
-        specifier: 11.0.0-beta.0
+        specifier: 11.0.0-beta.1
         version: link:../..
       reflect-metadata:
         specifier: 0.2.2
@@ -1225,7 +1225,7 @@ importers:
         specifier: 11.0.5
         version: 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)
       '@nestjs/terminus':
-        specifier: 11.0.0-beta.0
+        specifier: 11.0.0-beta.1
         version: link:../..
       '@prisma/client':
         specifier: 6.2.1

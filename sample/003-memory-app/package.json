@@ -18,7 +18,7 @@
     "@nestjs/common": "11.0.5",
     "@nestjs/core": "11.0.5",
     "@nestjs/platform-express": "11.0.5",
-    "@nestjs/terminus": "11.0.0-beta.0",
+    "@nestjs/terminus": "11.0.0-beta.1",
     "class-transformer": "0.5.1",
     "class-validator": "0.14.1",
     "lodash": "4.17.21",
