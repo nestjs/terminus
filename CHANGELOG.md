@@ -1,5 +1,20 @@
 
 
+# [11.0.0-beta.1](https://github.com/nestjs/terminus/compare/11.0.0-beta.0...11.0.0-beta.1) (2025-01-25)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @grpc/proto-loader to v0.7.13 ([bf08ece](https://github.com/nestjs/terminus/commit/bf08ece6f63327c9a74fd0a1cf33140114f7bbb8))
+* **deps:** update dependency @nestjs/typeorm to v10.0.2 ([8430d1f](https://github.com/nestjs/terminus/commit/8430d1fc3ae5b9a596519fdbd3996816855b0e32))
+* **deps:** update dependency mysql2 to v3.9.8 [security] ([eae8679](https://github.com/nestjs/terminus/commit/eae86797d078f51d3d54b03c601a72f2dc4820e6))
+* **deps:** update dependency reflect-metadata to v0.2.2 ([004d971](https://github.com/nestjs/terminus/commit/004d971c55ca0a2274af0ceef23ee3dfc532c5e6))
+
+
+### Features
+
+* update dependencies ([969bfd7](https://github.com/nestjs/terminus/commit/969bfd753c08db27854391b2a3f3991de90b262e))
+
 # [11.0.0-beta.0](https://github.com/nestjs/terminus/compare/10.3.0...11.0.0-beta.0) (2025-01-23)
 
 
