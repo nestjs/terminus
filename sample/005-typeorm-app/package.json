@@ -18,7 +18,7 @@
     "@nestjs/common": "11.0.5",
     "@nestjs/core": "11.0.5",
     "@nestjs/platform-express": "11.0.5",
-    "@nestjs/terminus": "10.3.0",
+    "@nestjs/terminus": "11.0.0-beta.0",
     "@nestjs/typeorm": "11.0.0",
     "mysql": "2.18.1",
     "reflect-metadata": "0.2.2",

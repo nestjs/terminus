@@ -17,12 +17,12 @@
   "dependencies": {
     "@nestjs/common": "11.0.5",
     "@nestjs/core": "11.0.5",
-    "@nestjs/mongoose": "10.0.2",
+    "@nestjs/mongoose": "11.0.0",
     "@nestjs/platform-express": "11.0.5",
-    "@nestjs/terminus": "10.3.0",
-    "mongoose": "8.0.3",
-    "reflect-metadata": "0.2.1",
-    "rimraf": "5.0.5",
+    "@nestjs/terminus": "11.0.0-beta.0",
+    "mongoose": "8.9.5",
+    "reflect-metadata": "0.2.2",
+    "rimraf": "6.0.1",
     "rxjs": "7.8.1"
   },
   "devDependencies": {

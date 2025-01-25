@@ -98,7 +98,7 @@ export type DynamicHealthEndpointFn = (
 export function bootstrapTestingModule(
   terminusModuleOptions: TerminusModuleOptions = {},
 ) {
-  const imports: PropType<ModuleMetadata, 'imports'> = [
+  const imports: NonNullable<PropType<ModuleMetadata, 'imports'>> = [
     TerminusModule.forRoot(terminusModuleOptions),
   ];
 
@@ -150,6 +150,7 @@ export function bootstrapTestingModule(
       TypeOrmModule.forRoot({
         type: 'mysql',
         host: '0.0.0.0',
+        connectorPackage: 'mysql2',
         port: 3306,
         username: 'root',
         password: 'root',
