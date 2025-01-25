@@ -783,13 +783,13 @@ importers:
         version: 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)
       '@nestjs/sequelize':
         specifier: 11.0.0
-        version: 11.0.0(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(reflect-metadata@0.2.2)(rxjs@7.8.1)(sequelize-typescript@2.1.6(@types/node@20.10.5)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.5(mysql2@3.9.0)))(sequelize@6.37.5(mysql2@3.9.0))
+        version: 11.0.0(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(reflect-metadata@0.2.2)(rxjs@7.8.1)(sequelize-typescript@2.1.6(@types/node@20.10.5)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.5(mysql2@3.9.8)))(sequelize@6.37.5(mysql2@3.9.8))
       '@nestjs/terminus':
         specifier: 11.0.0-beta.0
         version: link:../..
       mysql2:
-        specifier: 3.9.0
-        version: 3.9.0
+        specifier: 3.9.8
+        version: 3.9.8
       reflect-metadata:
         specifier: 0.2.2
         version: 0.2.2
@@ -801,10 +801,10 @@ importers:
         version: 7.8.1
       sequelize:
         specifier: 6.37.5
-        version: 6.37.5(mysql2@3.9.0)
+        version: 6.37.5(mysql2@3.9.8)
       sequelize-typescript:
         specifier: 2.1.6
-        version: 2.1.6(@types/node@20.10.5)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.5(mysql2@3.9.0))
+        version: 2.1.6(@types/node@20.10.5)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.5(mysql2@3.9.8))
     devDependencies:
       '@nestjs/testing':
         specifier: 11.0.5
@@ -5521,8 +5521,8 @@ packages:
     resolution: {integrity: sha512-C8fWhVysZoH63tJbX8d10IAoYCyXy4fdRFz2Ihrt9jtPILYynFEKUUzpp1U7qxzDc3tMbotvaBH+sl6bFnGZiw==}
     engines: {node: '>= 8.0'}
 
-  mysql2@3.9.0:
-    resolution: {integrity: sha512-yS7FtbnO9sYqUZbjaiUwflh1bJAENJ3DQ9aHEYj9G+Hi15+FP7UKaTDNe6SeXx/LpkU6coAQ6vIYQaAmsFA+qQ==}
+  mysql2@3.9.8:
+    resolution: {integrity: sha512-+5JKNjPuks1FNMoy9TYpl77f+5frbTklz7eb3XDwbpsERRLEeXiW2PDEkakYF50UuKU2qwfGnyXpKYvukv8mGA==}
     engines: {node: '>= 8.0'}
 
   mysql@2.18.1:
@@ -8502,14 +8502,14 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@nestjs/sequelize@11.0.0(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(reflect-metadata@0.2.2)(rxjs@7.8.1)(sequelize-typescript@2.1.6(@types/node@20.10.5)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.5(mysql2@3.9.0)))(sequelize@6.37.5(mysql2@3.9.0))':
+  '@nestjs/sequelize@11.0.0(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(reflect-metadata@0.2.2)(rxjs@7.8.1)(sequelize-typescript@2.1.6(@types/node@20.10.5)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.5(mysql2@3.9.8)))(sequelize@6.37.5(mysql2@3.9.8))':
     dependencies:
       '@nestjs/common': 11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/core': 11.0.5(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@11.0.5)(@nestjs/platform-express@11.0.5)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       reflect-metadata: 0.2.2
       rxjs: 7.8.1
-      sequelize: 6.37.5(mysql2@3.9.0)
-      sequelize-typescript: 2.1.6(@types/node@20.10.5)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.5(mysql2@3.9.0))
+      sequelize: 6.37.5(mysql2@3.9.8)
+      sequelize-typescript: 2.1.6(@types/node@20.10.5)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.5(mysql2@3.9.8))
 
   '@nestjs/sequelize@11.0.0(@nestjs/common@11.0.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.5)(reflect-metadata@0.2.2)(rxjs@7.8.1)(sequelize-typescript@2.1.6(@types/node@20.17.16)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.5(mysql2@3.12.0)))(sequelize@6.37.5(mysql2@3.12.0))':
     dependencies:
@@ -13029,7 +13029,7 @@ snapshots:
       seq-queue: 0.0.5
       sqlstring: 2.3.3
 
-  mysql2@3.9.0:
+  mysql2@3.9.8:
     dependencies:
       denque: 2.1.0
       generate-function: 2.3.1
@@ -13925,13 +13925,13 @@ snapshots:
 
   sequelize-pool@7.1.0: {}
 
-  sequelize-typescript@2.1.6(@types/node@20.10.5)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.5(mysql2@3.9.0)):
+  sequelize-typescript@2.1.6(@types/node@20.10.5)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.5(mysql2@3.9.8)):
     dependencies:
       '@types/node': 20.10.5
       '@types/validator': 13.12.2
       glob: 7.2.0
       reflect-metadata: 0.2.2
-      sequelize: 6.37.5(mysql2@3.9.0)
+      sequelize: 6.37.5(mysql2@3.9.8)
 
   sequelize-typescript@2.1.6(@types/node@20.17.16)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.5(mysql2@3.12.0)):
     dependencies:
@@ -13964,7 +13964,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  sequelize@6.37.5(mysql2@3.9.0):
+  sequelize@6.37.5(mysql2@3.9.8):
     dependencies:
       '@types/debug': 4.1.12
       '@types/validator': 13.12.2
@@ -13983,7 +13983,7 @@ snapshots:
       validator: 13.12.0
       wkx: 0.5.0
     optionalDependencies:
-      mysql2: 3.9.0
+      mysql2: 3.9.8
     transitivePeerDependencies:
       - supports-color
 
