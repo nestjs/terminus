@@ -79,7 +79,7 @@
     "@nestjs/testing": "11.0.5",
     "@nestjs/typeorm": "11.0.0",
     "@prisma/client": "6.2.1",
-    "@release-it/conventional-changelog": "5.1.1",
+    "@release-it/conventional-changelog": "10.0.0",
     "@types/express": "5.0.0",
     "@types/jest": "29.5.14",
     "@types/node": "20.17.16",
