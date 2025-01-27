@@ -91,7 +91,7 @@
     "axios": "^1.7.9",
     "cli-color": "2.0.4",
     "eslint": "8.57.1",
-    "eslint-config-prettier": "9.1.0",
+    "eslint-config-prettier": "10.0.1",
     "eslint-import-resolver-typescript": "^3.6.0",
     "eslint-plugin-deprecation": "^2.0.0",
     "eslint-plugin-import": "^2.27.5",
