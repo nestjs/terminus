@@ -20,7 +20,7 @@ services:
       - 27017:27017
 
   rabbitmq:
-    image: rabbitmq:3-management-alpine
+    image: rabbitmq:4-management-alpine
     container_name: 'rabbitmq'
     networks:
         - overlay
