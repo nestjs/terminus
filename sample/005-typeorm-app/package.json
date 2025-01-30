@@ -15,10 +15,10 @@
     "e2e:watch": "jest --watch --config=e2e/jest-e2e.json"
   },
   "dependencies": {
-    "@nestjs/common": "11.0.5",
-    "@nestjs/core": "11.0.5",
-    "@nestjs/platform-express": "11.0.5",
-    "@nestjs/terminus": "11.0.0-beta.1",
+    "@nestjs/common": "11.0.6",
+    "@nestjs/core": "11.0.6",
+    "@nestjs/platform-express": "11.0.6",
+    "@nestjs/terminus": "11.0.0",
     "@nestjs/typeorm": "11.0.0",
     "mysql": "2.18.1",
     "reflect-metadata": "0.2.2",
@@ -26,7 +26,7 @@
     "typeorm": "0.3.20"
   },
   "devDependencies": {
-    "@nestjs/testing": "11.0.5",
+    "@nestjs/testing": "11.0.6",
     "@types/express": "5.0.0",
     "@types/jest": "29.5.14",
     "@types/node": "20.17.16",
