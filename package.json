@@ -54,7 +54,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "boxen": "5.1.2",
+    "boxen": "8.0.1",
     "check-disk-space": "3.4.0"
   },
   "devDependencies": {
