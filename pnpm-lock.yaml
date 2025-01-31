@@ -31,17 +31,17 @@ importers:
         specifier: 0.7.13
         version: 0.7.13
       '@mikro-orm/core':
-        specifier: 6.4.4
-        version: 6.4.4
+        specifier: 6.4.5
+        version: 6.4.5
       '@mikro-orm/mongodb':
-        specifier: 6.4.4
-        version: 6.4.4(@mikro-orm/core@6.4.4)(socks@2.8.3)
+        specifier: 6.4.5
+        version: 6.4.5(@mikro-orm/core@6.4.5)(socks@2.8.3)
       '@mikro-orm/mysql':
-        specifier: 6.4.4
-        version: 6.4.4(@mikro-orm/core@6.4.4)
+        specifier: 6.4.5
+        version: 6.4.5(@mikro-orm/core@6.4.5)
       '@mikro-orm/nestjs':
         specifier: 6.1.0
-        version: 6.1.0(@mikro-orm/core@6.4.4)(@nestjs/common@11.0.6(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.6)
+        version: 6.1.0(@mikro-orm/core@6.4.5)(@nestjs/common@11.0.6(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.6)
       '@nestjs/axios':
         specifier: 4.0.0
         version: 4.0.0(@nestjs/common@11.0.6(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.7.9)(rxjs@7.8.1)
@@ -1098,14 +1098,14 @@ importers:
   sample/011-mirkoorm-app:
     dependencies:
       '@mikro-orm/core':
-        specifier: 6.4.4
-        version: 6.4.4
+        specifier: 6.4.5
+        version: 6.4.5
       '@mikro-orm/mysql':
-        specifier: 6.4.4
-        version: 6.4.4(@mikro-orm/core@6.4.4)
+        specifier: 6.4.5
+        version: 6.4.5(@mikro-orm/core@6.4.5)
       '@mikro-orm/nestjs':
         specifier: 6.1.0
-        version: 6.1.0(@mikro-orm/core@6.4.4)(@nestjs/common@11.0.6(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.6)
+        version: 6.1.0(@mikro-orm/core@6.4.5)(@nestjs/common@11.0.6(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.6)
       '@nestjs/common':
         specifier: 11.0.6
         version: 11.0.6(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -1838,12 +1838,12 @@ packages:
   '@microsoft/tsdoc@0.15.0':
     resolution: {integrity: sha512-HZpPoABogPvjeJOdzCOSJsXeL/SMCBgBZMVC3X3d7YYp2gf31MfxhUoYUNwf1ERPJOnQc0wkFn9trqI6ZEdZuA==}
 
-  '@mikro-orm/core@6.4.4':
-    resolution: {integrity: sha512-1Ff+fJX7pZFaZt9ebFxPW2w8yDp/uz2VhSMqqop1538VRvTqHseTRI+2Tmm9oX5pm5y5YS7+FdgnyAx6FLWjHg==}
+  '@mikro-orm/core@6.4.5':
+    resolution: {integrity: sha512-9/CZ5oSbf4P1oBZA2HHKzuxh5yYKDNUZZq/RvJmzMdJDgV8fpTt26po/7J6UytABqZp9yXj1jXc+Kqv73vGGOA==}
     engines: {node: '>= 18.12.0'}
 
-  '@mikro-orm/knex@6.4.4':
-    resolution: {integrity: sha512-lzTce9SrdD3zO9mQP0MXqXTPM1+X7DXP19SgFnhygLEcBfWPgx1iRxjxOWbLjdM6p41p0Fh+5W73bwF/4jrIfQ==}
+  '@mikro-orm/knex@6.4.5':
+    resolution: {integrity: sha512-5D4NGD9bxmROUf8MVhR4mmZjzQtuM/Sg+eOnfOPzVaIkvuQItE4zR0Bg7gRr1XSgZ/OcJ/6q2ZoXH1HxSjykkw==}
     engines: {node: '>= 18.12.0'}
     peerDependencies:
       '@mikro-orm/core': ^6.0.0
@@ -1858,14 +1858,14 @@ packages:
       mariadb:
         optional: true
 
-  '@mikro-orm/mongodb@6.4.4':
-    resolution: {integrity: sha512-rKh9QJTPFIIUnAmaarMnqeslrVle8JOSfUHP+QcKWSz2guoPpGlLNw3wx/z66tpT7HGIx0kuHVBtxJqmCkxNNw==}
+  '@mikro-orm/mongodb@6.4.5':
+    resolution: {integrity: sha512-YPlLl6jjM+XH5FRT/X5C7MqS0MVGYijgtQsWjx9NubtJAP+GEqgOGA9OmYHyKRi5SBloB9lrpkd6emSOIeFTAw==}
     engines: {node: '>= 18.12.0'}
     peerDependencies:
       '@mikro-orm/core': ^6.0.0
 
-  '@mikro-orm/mysql@6.4.4':
-    resolution: {integrity: sha512-OnSsYnr/o8TLjmFXtwI2anuAyNj5Nrgde2uUY5pECGnUkN2jH9+8AdXQmlgljodYNmZrc04QbhbvG65PjL0LsA==}
+  '@mikro-orm/mysql@6.4.5':
+    resolution: {integrity: sha512-DAVroZqmXyAgIUXdiTCSRC3wG00FxE8FTi6YqcI0tE5SptJxc2t87lloRoU0oqzrwwKrlIDuBQ8le/opeiogkQ==}
     engines: {node: '>= 18.12.0'}
     peerDependencies:
       '@mikro-orm/core': ^6.0.0
@@ -5132,8 +5132,8 @@ packages:
     resolution: {integrity: sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA==}
     engines: {node: '>=8.6'}
 
-  mikro-orm@6.4.4:
-    resolution: {integrity: sha512-nHV0lZnPUwidqeVyJwBegKDW9KwTxfH5yNp0aGSud9EI0mFkjK/M4EVfh+vwg/y6gdSIu9UnwDORYP2hJw96dQ==}
+  mikro-orm@6.4.5:
+    resolution: {integrity: sha512-CFQf87MG4c1N3J/3ELtmwFKXHBzp62o/da7dt43V9cGXygBs65KSk3EBCAdyd5VYNtu/09mt/rztanQSWNWzog==}
     engines: {node: '>= 18.12.0'}
 
   mime-db@1.52.0:
@@ -7721,19 +7721,19 @@ snapshots:
 
   '@microsoft/tsdoc@0.15.0': {}
 
-  '@mikro-orm/core@6.4.4':
+  '@mikro-orm/core@6.4.5':
     dependencies:
       dataloader: 2.2.3
       dotenv: 16.4.7
       esprima: 4.0.1
       fs-extra: 11.3.0
       globby: 11.1.0
-      mikro-orm: 6.4.4
+      mikro-orm: 6.4.5
       reflect-metadata: 0.2.2
 
-  '@mikro-orm/knex@6.4.4(@mikro-orm/core@6.4.4)(mysql2@3.12.0)':
+  '@mikro-orm/knex@6.4.5(@mikro-orm/core@6.4.5)(mysql2@3.12.0)':
     dependencies:
-      '@mikro-orm/core': 6.4.4
+      '@mikro-orm/core': 6.4.5
       fs-extra: 11.3.0
       knex: 3.1.0(mysql2@3.12.0)
       sqlstring: 2.3.3
@@ -7746,9 +7746,9 @@ snapshots:
       - supports-color
       - tedious
 
-  '@mikro-orm/mongodb@6.4.4(@mikro-orm/core@6.4.4)(socks@2.8.3)':
+  '@mikro-orm/mongodb@6.4.5(@mikro-orm/core@6.4.5)(socks@2.8.3)':
     dependencies:
-      '@mikro-orm/core': 6.4.4
+      '@mikro-orm/core': 6.4.5
       bson: 6.10.1
       mongodb: 6.12.0(socks@2.8.3)
     transitivePeerDependencies:
@@ -7760,10 +7760,10 @@ snapshots:
       - snappy
       - socks
 
-  '@mikro-orm/mysql@6.4.4(@mikro-orm/core@6.4.4)':
+  '@mikro-orm/mysql@6.4.5(@mikro-orm/core@6.4.5)':
     dependencies:
-      '@mikro-orm/core': 6.4.4
-      '@mikro-orm/knex': 6.4.4(@mikro-orm/core@6.4.4)(mysql2@3.12.0)
+      '@mikro-orm/core': 6.4.5
+      '@mikro-orm/knex': 6.4.5(@mikro-orm/core@6.4.5)(mysql2@3.12.0)
       mysql2: 3.12.0
     transitivePeerDependencies:
       - better-sqlite3
@@ -7776,9 +7776,9 @@ snapshots:
       - supports-color
       - tedious
 
-  '@mikro-orm/nestjs@6.1.0(@mikro-orm/core@6.4.4)(@nestjs/common@11.0.6(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.6)':
+  '@mikro-orm/nestjs@6.1.0(@mikro-orm/core@6.4.5)(@nestjs/common@11.0.6(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.6)':
     dependencies:
-      '@mikro-orm/core': 6.4.4
+      '@mikro-orm/core': 6.4.5
       '@nestjs/common': 11.0.6(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/core': 11.0.6(@nestjs/common@11.0.6(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@11.0.6)(@nestjs/platform-express@11.0.6)(reflect-metadata@0.2.2)(rxjs@7.8.1)
 
@@ -8448,7 +8448,7 @@ snapshots:
 
   '@types/whatwg-url@8.2.2':
     dependencies:
-      '@types/node': 20.17.16
+      '@types/node': 22.10.10
       '@types/webidl-conversions': 7.0.3
     optional: true
 
@@ -11545,7 +11545,7 @@ snapshots:
       braces: 3.0.3
       picomatch: 2.3.1
 
-  mikro-orm@6.4.4: {}
+  mikro-orm@6.4.5: {}
 
   mime-db@1.52.0: {}
 
