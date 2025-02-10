@@ -18,9 +18,9 @@
     "e2e": "echo 'No e2e tests implemented yet.'"
   },
   "dependencies": {
-    "@nestjs/common": "11.0.6",
-    "@nestjs/core": "11.0.6",
-    "@nestjs/platform-express": "11.0.6",
+    "@nestjs/common": "11.0.9",
+    "@nestjs/core": "11.0.9",
+    "@nestjs/platform-express": "11.0.9",
     "@nestjs/terminus": "11.0.0",
     "@prisma/client": "6.3.0",
     "prisma": "^6.2.1",

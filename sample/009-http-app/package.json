@@ -16,15 +16,15 @@
   },
   "dependencies": {
     "@nestjs/axios": "4.0.0",
-    "@nestjs/common": "11.0.6",
-    "@nestjs/core": "11.0.6",
-    "@nestjs/platform-express": "11.0.6",
+    "@nestjs/common": "11.0.9",
+    "@nestjs/core": "11.0.9",
+    "@nestjs/platform-express": "11.0.9",
     "@nestjs/terminus": "11.0.0",
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.1"
   },
   "devDependencies": {
-    "@nestjs/testing": "11.0.6",
+    "@nestjs/testing": "11.0.9",
     "@types/express": "5.0.0",
     "@types/jest": "29.5.14",
     "@types/node": "20.17.17",
