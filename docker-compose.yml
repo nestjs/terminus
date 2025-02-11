@@ -43,7 +43,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   kafka_broker:
-    image: confluentinc/cp-kafka:7.8.0
+    image: confluentinc/cp-kafka:7.8.1
     container_name: broker
     ports:
       - "9092:9092"
