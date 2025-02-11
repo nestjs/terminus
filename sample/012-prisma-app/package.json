@@ -28,7 +28,7 @@
     "rxjs": "7.8.1"
   },
   "devDependencies": {
-    "@nestjs/testing": "10.4.15",
+    "@nestjs/testing": "11.0.9",
     "@types/express": "5.0.0",
     "@types/jest": "29.5.14",
     "@types/node": "20.17.17",
