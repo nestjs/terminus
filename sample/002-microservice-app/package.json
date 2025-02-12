@@ -17,7 +17,7 @@
   "dependencies": {
     "@nestjs/common": "11.0.9",
     "@nestjs/core": "11.0.9",
-    "@nestjs/microservices": "10.4.15",
+    "@nestjs/microservices": "11.0.9",
     "@nestjs/platform-express": "11.0.9",
     "@nestjs/terminus": "11.0.0",
     "class-transformer": "0.5.1",
