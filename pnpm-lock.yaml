@@ -59,7 +59,7 @@ importers:
         version: 11.0.9(@grpc/grpc-js@1.12.5)(@nestjs/common@11.0.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.9)(amqp-connection-manager@4.1.14(amqplib@0.10.5))(amqplib@0.10.5)(ioredis@5.4.2)(kafkajs@2.2.4)(nats@2.29.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/mongoose':
         specifier: 11.0.1
-        version: 11.0.1(@nestjs/common@11.0.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.9)(mongoose@8.9.5(socks@2.8.3))(rxjs@7.8.1)
+        version: 11.0.1(@nestjs/common@11.0.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.9)(mongoose@8.10.1(socks@2.8.3))(rxjs@7.8.1)
       '@nestjs/platform-express':
         specifier: 11.0.9
         version: 11.0.9(@nestjs/common@11.0.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.9)
@@ -154,8 +154,8 @@ importers:
         specifier: 15.4.3
         version: 15.4.3
       mongoose:
-        specifier: 8.9.5
-        version: 8.9.5(socks@2.8.3)
+        specifier: 8.10.1
+        version: 8.10.1(socks@2.8.3)
       mysql2:
         specifier: 3.12.0
         version: 3.12.0
@@ -279,7 +279,7 @@ importers:
         version: 11.0.9(@nestjs/common@11.0.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@11.0.9)(@nestjs/platform-express@11.0.9)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/mongoose':
         specifier: 11.0.1
-        version: 11.0.1(@nestjs/common@11.0.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.9)(mongoose@8.9.5(socks@2.8.3))(rxjs@7.8.1)
+        version: 11.0.1(@nestjs/common@11.0.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.9)(mongoose@8.10.1(socks@2.8.3))(rxjs@7.8.1)
       '@nestjs/platform-express':
         specifier: 11.0.9
         version: 11.0.9(@nestjs/common@11.0.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.9)
@@ -287,8 +287,8 @@ importers:
         specifier: 11.0.0
         version: link:../..
       mongoose:
-        specifier: 8.9.5
-        version: 8.9.5(socks@2.8.3)
+        specifier: 8.10.1
+        version: 8.10.1(socks@2.8.3)
       reflect-metadata:
         specifier: 0.2.2
         version: 0.2.2
@@ -856,7 +856,7 @@ importers:
         version: 11.0.9(@nestjs/common@11.0.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@11.0.9)(@nestjs/platform-express@11.0.9)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/mongoose':
         specifier: 11.0.1
-        version: 11.0.1(@nestjs/common@11.0.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.9)(mongoose@8.9.5(socks@2.8.3))(rxjs@7.8.1)
+        version: 11.0.1(@nestjs/common@11.0.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.9)(mongoose@8.10.1(socks@2.8.3))(rxjs@7.8.1)
       '@nestjs/platform-express':
         specifier: 11.0.9
         version: 11.0.9(@nestjs/common@11.0.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.9)
@@ -864,8 +864,8 @@ importers:
         specifier: 11.0.0
         version: link:../..
       mongoose:
-        specifier: 8.9.5
-        version: 8.9.5(socks@2.8.3)
+        specifier: 8.10.1
+        version: 8.10.1(socks@2.8.3)
       reflect-metadata:
         specifier: 0.2.2
         version: 0.2.2
@@ -5201,8 +5201,35 @@ packages:
       socks:
         optional: true
 
-  mongoose@8.9.5:
-    resolution: {integrity: sha512-SPhOrgBm0nKV3b+IIHGqpUTOmgVL5Z3OO9AwkFEmvOZznXTvplbomstCnPOGAyungtRXE5pJTgKpKcZTdjeESg==}
+  mongodb@6.13.0:
+    resolution: {integrity: sha512-KeESYR5TEaFxOuwRqkOm3XOsMqCSkdeDMjaW5u2nuKfX7rqaofp7JQGoi7sVqQcNJTKuveNbzZtWMstb8ABP6Q==}
+    engines: {node: '>=16.20.1'}
+    peerDependencies:
+      '@aws-sdk/credential-providers': ^3.188.0
+      '@mongodb-js/zstd': ^1.1.0 || ^2.0.0
+      gcp-metadata: ^5.2.0
+      kerberos: ^2.0.1
+      mongodb-client-encryption: '>=6.0.0 <7'
+      snappy: ^7.2.2
+      socks: ^2.7.1
+    peerDependenciesMeta:
+      '@aws-sdk/credential-providers':
+        optional: true
+      '@mongodb-js/zstd':
+        optional: true
+      gcp-metadata:
+        optional: true
+      kerberos:
+        optional: true
+      mongodb-client-encryption:
+        optional: true
+      snappy:
+        optional: true
+      socks:
+        optional: true
+
+  mongoose@8.10.1:
+    resolution: {integrity: sha512-5beTeBZnJNndRXU9rxPol0JmTWZMAtgkPbooROkGilswvrZALDERY4cJrGZmgGwDS9dl0mxiB7si+Mv9Yms2fg==}
     engines: {node: '>=16.20.1'}
 
   mpath@0.9.0:
@@ -7799,11 +7826,11 @@ snapshots:
       kafkajs: 2.2.4
       nats: 2.29.1
 
-  '@nestjs/mongoose@11.0.1(@nestjs/common@11.0.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.9)(mongoose@8.9.5(socks@2.8.3))(rxjs@7.8.1)':
+  '@nestjs/mongoose@11.0.1(@nestjs/common@11.0.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.9)(mongoose@8.10.1(socks@2.8.3))(rxjs@7.8.1)':
     dependencies:
       '@nestjs/common': 11.0.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/core': 11.0.9(@nestjs/common@11.0.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@11.0.9)(@nestjs/platform-express@11.0.9)(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      mongoose: 8.9.5(socks@2.8.3)
+      mongoose: 8.10.1(socks@2.8.3)
       rxjs: 7.8.1
 
   '@nestjs/platform-express@11.0.9(@nestjs/common@11.0.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.9)':
@@ -11491,11 +11518,19 @@ snapshots:
     optionalDependencies:
       socks: 2.8.3
 
-  mongoose@8.9.5(socks@2.8.3):
+  mongodb@6.13.0(socks@2.8.3):
+    dependencies:
+      '@mongodb-js/saslprep': 1.1.9
+      bson: 6.10.1
+      mongodb-connection-string-url: 3.0.2
+    optionalDependencies:
+      socks: 2.8.3
+
+  mongoose@8.10.1(socks@2.8.3):
     dependencies:
       bson: 6.10.1
       kareem: 2.6.3
-      mongodb: 6.12.0(socks@2.8.3)
+      mongodb: 6.13.0(socks@2.8.3)
       mpath: 0.9.0
       mquery: 5.0.0
       ms: 2.1.3
