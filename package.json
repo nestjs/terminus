@@ -60,7 +60,7 @@
   "devDependencies": {
     "@commitlint/cli": "19.7.1",
     "@commitlint/config-angular": "19.7.1",
-    "@grpc/grpc-js": "1.12.5",
+    "@grpc/grpc-js": "1.12.6",
     "@grpc/proto-loader": "0.7.13",
     "@mikro-orm/core": "6.4.5",
     "@mikro-orm/mongodb": "6.4.5",
