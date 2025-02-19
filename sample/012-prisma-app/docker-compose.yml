@@ -2,7 +2,7 @@ version: "3"
 
 services:
   postgres:
-    image: postgres:16
+    image: postgres:17
     restart: always
     environment:
       POSTGRES_USER: docker
