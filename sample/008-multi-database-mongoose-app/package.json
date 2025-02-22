@@ -22,7 +22,7 @@
     "@nestjs/terminus": "11.0.0",
     "mongoose": "8.10.1",
     "reflect-metadata": "0.2.2",
-    "rxjs": "7.8.1"
+    "rxjs": "7.8.2"
   },
   "devDependencies": {
     "@nestjs/testing": "11.0.9",

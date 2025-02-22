@@ -22,7 +22,7 @@
     "@nestjs/typeorm": "11.0.0",
     "mysql": "2.18.1",
     "reflect-metadata": "0.2.2",
-    "rxjs": "7.8.1",
+    "rxjs": "7.8.2",
     "typeorm": "0.3.20"
   },
   "devDependencies": {

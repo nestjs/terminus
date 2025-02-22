@@ -29,7 +29,7 @@
     "lodash": "4.17.21",
     "redis": "4.7.0",
     "reflect-metadata": "0.2.2",
-    "rxjs": "7.8.1"
+    "rxjs": "7.8.2"
   },
   "devDependencies": {
     "@types/jest": "29.5.14",
