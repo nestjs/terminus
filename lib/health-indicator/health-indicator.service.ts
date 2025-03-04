@@ -28,13 +28,13 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
    */
   down<T extends AdditionalData>(
     data?: T,
-  ): HealthIndicatorResult<typeof this.key, 'down', T>;
+  ): HealthIndicatorResult<Key, 'down', T>;
   down<T extends string>(
     data?: T,
-  ): HealthIndicatorResult<typeof this.key, 'down', { message: T }>;
+  ): HealthIndicatorResult<Key, 'down', { message: T }>;
   down<T extends AdditionalData | string>(
     data?: T,
-  ): HealthIndicatorResult<typeof this.key, 'down'> {
+  ): HealthIndicatorResult<Key, 'down'> {
     let additionalData: AdditionalData = {};
 
     if (typeof data === 'string') {
