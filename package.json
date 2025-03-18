@@ -113,7 +113,7 @@
     "release-it": "18.1.2",
     "rollup": "4.34.8",
     "rollup-plugin-dts": "6.1.1",
-    "sequelize": "6.37.5",
+    "sequelize": "6.37.6",
     "sequelize-typescript": "2.1.6",
     "supertest": "7.0.0",
     "ts-jest": "29.2.6",
