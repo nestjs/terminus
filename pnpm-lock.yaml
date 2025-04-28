@@ -40,8 +40,8 @@ importers:
         specifier: 6.4.5
         version: 6.4.5(@mikro-orm/core@6.4.5)
       '@mikro-orm/nestjs':
-        specifier: 6.1.0
-        version: 6.1.0(@mikro-orm/core@6.4.5)(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)
+        specifier: 6.1.1
+        version: 6.1.1(@mikro-orm/core@6.4.5)(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)
       '@nestjs/axios':
         specifier: 4.0.0
         version: 4.0.0(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.8.3)(rxjs@7.8.2)
@@ -1104,8 +1104,8 @@ importers:
         specifier: 6.4.5
         version: 6.4.5(@mikro-orm/core@6.4.5)
       '@mikro-orm/nestjs':
-        specifier: 6.1.0
-        version: 6.1.0(@mikro-orm/core@6.4.5)(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)
+        specifier: 6.1.1
+        version: 6.1.1(@mikro-orm/core@6.4.5)(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)
       '@nestjs/common':
         specifier: 11.0.11
         version: 11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -1934,11 +1934,11 @@ packages:
     peerDependencies:
       '@mikro-orm/core': ^6.0.0
 
-  '@mikro-orm/nestjs@6.1.0':
-    resolution: {integrity: sha512-nuCjYSzEfcvFRjXAdVoKoCLw2TeZi1Ig3j1thTo1bo7Yjvko3lGchOBlYjx/vnC4HDQaAdAhRuAa6ceGZVMR8w==}
+  '@mikro-orm/nestjs@6.1.1':
+    resolution: {integrity: sha512-aluD3eTeuCvIePDk5UBanHIhu1zAJQXqWAg47MZdHJmFkNuXn62DCXbD2c4X5TCpKW/m0zjba22ilyZ/AFG9qg==}
     engines: {node: '>= 18.12.0'}
     peerDependencies:
-      '@mikro-orm/core': ^6.0.0 || ^6.0.0-dev.0
+      '@mikro-orm/core': ^6.0.0 || ^6.0.0-dev.0 || ^7.0.0-dev.0
       '@nestjs/common': ^10.0.0 || ^11.0.5
       '@nestjs/core': ^10.0.0 || ^11.0.5
 
@@ -7772,7 +7772,7 @@ snapshots:
       - supports-color
       - tedious
 
-  '@mikro-orm/nestjs@6.1.0(@mikro-orm/core@6.4.5)(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)':
+  '@mikro-orm/nestjs@6.1.1(@mikro-orm/core@6.4.5)(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)':
     dependencies:
       '@mikro-orm/core': 6.4.5
       '@nestjs/common': 11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
