@@ -1,4 +1,8 @@
-import { type LoggerService, type Type } from '@nestjs/common';
+import {
+  type LoggerService,
+  type ModuleMetadata,
+  type Type,
+} from '@nestjs/common';
 
 export type ErrorLogStyle = 'pretty' | 'json';
 
@@ -25,4 +29,40 @@ export interface TerminusModuleOptions {
    * @default 0
    */
   gracefulShutdownTimeoutMs?: number;
+}
+
+/**
+ * Options factory interface for creating TerminusModuleOptions
+ * @publicApi
+ */
+export interface TerminusModuleOptionsFactory {
+  createTerminusOptions():
+    | Promise<TerminusModuleOptions>
+    | TerminusModuleOptions;
+}
+
+/**
+ * Async options for TerminusModule
+ * @publicApi
+ */
+export interface TerminusModuleAsyncOptions
+  extends Pick<ModuleMetadata, 'imports'> {
+  /**
+   * Factory function that returns TerminusModuleOptions
+   */
+  useFactory?: (
+    ...args: any[]
+  ) => Promise<TerminusModuleOptions> | TerminusModuleOptions;
+  /**
+   * Dependencies to inject into the factory function
+   */
+  inject?: any[];
+  /**
+   * Class to use as options factory
+   */
+  useClass?: Type<TerminusModuleOptionsFactory>;
+  /**
+   * Existing instance to use as options factory
+   */
+  useExisting?: Type<TerminusModuleOptionsFactory>;
 }
