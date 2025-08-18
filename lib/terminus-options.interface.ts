@@ -25,4 +25,11 @@ export interface TerminusModuleOptions {
    * @default 0
    */
   gracefulShutdownTimeoutMs?: number;
+
+  /**
+   * When true, all @HealthCheck() endpoints return 503 once shutdown begins.
+   * Combine with gracefulShutdownTimeoutMs to drain traffic before closing.
+   * Default: false
+   */
+  failReadinessOnShutdown?: boolean;
 }

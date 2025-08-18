@@ -8,6 +8,7 @@ import { getErrorLoggerProvider } from './health-check/error-logger/error-logger
 import { ERROR_LOGGERS } from './health-check/error-logger/error-loggers.provider';
 import { HealthCheckExecutor } from './health-check/health-check-executor.service';
 import { getLoggerProvider } from './health-check/logger/logger.provider';
+import { TERMINUS_FAIL_READINESS_ON_SHUTDOWN } from './health-check/shutdown.constants';
 import { DiskUsageLibProvider } from './health-indicator/disk/disk-usage-lib.provider';
 import { HealthIndicatorService } from './health-indicator/health-indicator.service';
 import { HEALTH_INDICATORS } from './health-indicator/health-indicators.provider';
@@ -34,6 +35,7 @@ const exports_ = [
  *
  * @publicApi
  */
+
 @Module({
   providers: [...baseProviders, getErrorLoggerProvider(), getLoggerProvider()],
   exports: exports_,
@@ -44,6 +46,7 @@ export class TerminusModule {
       errorLogStyle = 'json',
       logger = true,
       gracefulShutdownTimeoutMs = 0,
+      failReadinessOnShutdown = false,
     } = options;
 
     const providers: Provider[] = [
@@ -57,14 +60,16 @@ export class TerminusModule {
         provide: TERMINUS_GRACEFUL_SHUTDOWN_TIMEOUT,
         useValue: gracefulShutdownTimeoutMs,
       });
-
       providers.push(GracefulShutdownService);
     }
 
-    return {
-      module: TerminusModule,
-      providers,
-      exports: exports_,
-    };
+    if (failReadinessOnShutdown) {
+      providers.push({
+        provide: TERMINUS_FAIL_READINESS_ON_SHUTDOWN,
+        useValue: true,
+      });
+    }
+
+    return { module: TerminusModule, providers, exports: exports_ };
   }
 }

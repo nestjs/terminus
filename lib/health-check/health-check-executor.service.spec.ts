@@ -1,11 +1,12 @@
 import { Test } from '@nestjs/testing';
-import { HealthCheckExecutor } from './health-check-executor.service';
+import { HealthCheckError } from '../health-check/health-check.error';
 import {
   HealthIndicatorResult,
   HealthIndicatorService,
 } from '../health-indicator';
+import { HealthCheckExecutor } from './health-check-executor.service';
 import { HealthCheckResult } from './health-check-result.interface';
-import { HealthCheckError } from '../health-check/health-check.error';
+import { TERMINUS_FAIL_READINESS_ON_SHUTDOWN } from './shutdown.constants';
 
 ////////////////////////////////////////////////////////////////
 
@@ -264,6 +265,46 @@ describe('HealthCheckExecutorService', () => {
             },
           },
         });
+      });
+    });
+
+    describe('shutdown behavior', () => {
+      it('should return status "error" while shutting down when failReadinessOnShutdown is enabled', async () => {
+        const moduleRef = await Test.createTestingModule({
+          providers: [
+            HealthCheckExecutor,
+            HealthIndicatorService,
+            { provide: TERMINUS_FAIL_READINESS_ON_SHUTDOWN, useValue: true },
+          ],
+        }).compile();
+
+        const exec = moduleRef.get(HealthCheckExecutor);
+        const svc = moduleRef.get(HealthIndicatorService);
+
+        exec.beforeApplicationShutdown(); // simulate SIGTERM
+        const result = await exec.execute([() => healthIndicator(svc)]);
+
+        expect(result.status).toBe('error');
+        // indicators still execute; info should contain healthy result
+        expect(result.info).toHaveProperty('healthy.status', 'up');
+        // overall details reflect the indicator outcome
+        expect(result.details).toHaveProperty('healthy.status', 'up');
+      });
+
+      it('should return status "shutting_down" while shutting down when failReadinessOnShutdown is disabled', async () => {
+        const moduleRef = await Test.createTestingModule({
+          providers: [HealthCheckExecutor, HealthIndicatorService],
+        }).compile();
+
+        const exec = moduleRef.get(HealthCheckExecutor);
+        const svc = moduleRef.get(HealthIndicatorService);
+
+        exec.beforeApplicationShutdown(); // simulate SIGTERM
+        const result = await exec.execute([() => healthIndicator(svc)]);
+
+        expect(result.status).toBe('shutting_down');
+        // indicator still ran
+        expect(result.info).toHaveProperty('healthy.status', 'up');
       });
     });
   });
