@@ -15,28 +15,28 @@
     "test:watch": "jest --watch --config=jest.json"
   },
   "dependencies": {
-    "@nestjs/common": "11.0.11",
-    "@nestjs/core": "11.0.11",
-    "@nestjs/platform-express": "11.0.11",
-    "@nestjs/terminus": "11.0.0",
-    "class-transformer": "0.5.1",
-    "class-validator": "0.14.1",
-    "lodash": "4.17.21",
-    "reflect-metadata": "0.2.2",
-    "rxjs": "7.8.2"
+    "@nestjs/terminus": "link:../../",
+    "@nestjs/common": "catalog:",
+    "@nestjs/core": "catalog:",
+    "@nestjs/platform-express": "catalog:",
+    "class-transformer": "catalog:",
+    "class-validator": "catalog:",
+    "lodash": "catalog:",
+    "reflect-metadata": "catalog:",
+    "rxjs": "catalog:"
   },
   "devDependencies": {
-    "@types/jest": "29.5.14",
-    "@types/node": "22.13.10",
-    "@typescript-eslint/eslint-plugin": "6.21.0",
-    "@typescript-eslint/parser": "6.21.0",
-    "eslint": "8.57.1",
-    "eslint-config-prettier": "10.0.1",
-    "eslint-plugin-import": "2.31.0",
-    "jest": "29.7.0",
-    "supertest": "7.0.0",
-    "ts-jest": "29.2.6",
-    "ts-node": "10.9.2",
-    "typescript": "5.7.3"
+    "@types/jest": "catalog:",
+    "@types/node": "catalog:",
+    "@typescript-eslint/eslint-plugin": "catalog:",
+    "@typescript-eslint/parser": "catalog:",
+    "eslint": "catalog:",
+    "eslint-config-prettier": "catalog:",
+    "eslint-plugin-import": "catalog:",
+    "jest": "catalog:",
+    "supertest": "catalog:",
+    "ts-jest": "catalog:",
+    "ts-node": "catalog:",
+    "typescript": "catalog:"
   }
 }
