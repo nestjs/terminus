@@ -62,7 +62,7 @@ catalog:
   "supertest": "7.0.0"
   "ts-jest": "29.2.6"
   "ts-node": "10.9.2"
-  "typeorm": "0.3.22"
+  "typeorm": "0.3.26"
   "typescript": "5.7.3"
   "wait-port": "1.1.0"
   "rxjs": "7.8.2"
