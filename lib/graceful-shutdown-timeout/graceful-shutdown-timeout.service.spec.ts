@@ -4,7 +4,7 @@ import { GracefulShutdownService } from './graceful-shutdown-timeout.service';
 import {
   TERMINUS_LOGGER,
   TERMINUS_MODULE_OPTIONS,
-} from 'lib/terminus.constants';
+} from '../terminus.constants';
 import { sleep } from '../utils';
 
 jest.mock('../utils', () => ({

@@ -5,7 +5,7 @@ import {
   type Type,
 } from '@nestjs/common';
 import { NOOP_LOGGER } from './noop-logger';
-import { TERMINUS_LOGGER } from 'lib/terminus.constants';
+import { TERMINUS_LOGGER } from '../../terminus.constants';
 
 export function getLoggerProvider(
   logger?: Type<LoggerService> | boolean,
