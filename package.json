@@ -1,6 +1,6 @@
 {
   "name": "@nestjs/terminus",
-  "version": "11.0.0",
+  "version": "11.1.0",
   "description": "Terminus integration provides readiness/liveness health checks for NestJS.",
   "repository": {
     "type": "git",

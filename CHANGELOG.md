@@ -1,4 +1,35 @@
+# Changelog
 
+# [11.1.0](https://github.com/nestjs/terminus/compare/11.0.0...11.1.0) (2026-02-17)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @grpc/grpc-js to v1.12.6 ([7dd0d5f](https://github.com/nestjs/terminus/commit/7dd0d5f0811dbb83b9fa5d6a89e18e6cc7520ada))
+* **deps:** update dependency @mikro-orm/nestjs to v6.1.0 ([177fc8c](https://github.com/nestjs/terminus/commit/177fc8c1c47f99f2dc7c469b678559f422b70e48))
+* **deps:** update dependency @mikro-orm/nestjs to v6.1.1 ([8e3b253](https://github.com/nestjs/terminus/commit/8e3b253bd12c07b15f25639d67a94cc3694a2222))
+* **deps:** update dependency @nestjs/mongoose to v11.0.1 ([0af02b5](https://github.com/nestjs/terminus/commit/0af02b53c3d4bc04fce8d6588bc3532775b0f09d))
+* **deps:** update dependency @nestjs/typeorm to v11 ([687a4fe](https://github.com/nestjs/terminus/commit/687a4fe2ca0910a29b061968d311acdfc21f8f29))
+* **deps:** update dependency ioredis to v5.4.2 ([47125b6](https://github.com/nestjs/terminus/commit/47125b6c479ce40b434bd9a5779a41dfa6a1e806))
+* **deps:** update dependency mongoose to v8.10.1 ([4b8e133](https://github.com/nestjs/terminus/commit/4b8e1331f185655ee524b900a2fb675431e7aae2))
+* **deps:** update dependency mysql2 to v3.12.0 ([0970ecd](https://github.com/nestjs/terminus/commit/0970ecda947e0c6845003db43f83b9e7d6c35605))
+* **deps:** update dependency rxjs to v7.8.2 ([4cceadb](https://github.com/nestjs/terminus/commit/4cceadb1f10ab28f5e7a09d218e541c82ba312c1))
+* **deps:** update dependency typeorm to v0.3.22 ([b0e6662](https://github.com/nestjs/terminus/commit/b0e6662894ac1d1c9f38073ae0610a4883a4d4ec))
+* **deps:** update mikro-orm monorepo to v6.4.5 ([5ece0f8](https://github.com/nestjs/terminus/commit/5ece0f8385e6d27a2536decd6d8653526d3c25c9))
+* **deps:** update nest monorepo ([eb4cab2](https://github.com/nestjs/terminus/commit/eb4cab2c2474082830735492fcb9b55fbe6b7f72))
+* **deps:** update nest monorepo ([abd9ba8](https://github.com/nestjs/terminus/commit/abd9ba8896bc5d0e9ffcc28588028d53d9c14d6e))
+* **deps:** update nest monorepo to v11 ([207b45d](https://github.com/nestjs/terminus/commit/207b45dace3fd54483ed60617522dfcd986323cb))
+* **deps:** update nest monorepo to v11.0.11 ([a36f951](https://github.com/nestjs/terminus/commit/a36f951414c2008ed7b6e5230a9f4d4408113e73))
+* **deps:** update nest monorepo to v11.0.9 ([2865a5b](https://github.com/nestjs/terminus/commit/2865a5b25dbfea1732f5d8c1d012e16f931b1ad6))
+* **deps:** update prisma monorepo to v6.3.0 ([4c42699](https://github.com/nestjs/terminus/commit/4c42699b3c6aebfd8ef36736b22c558911310e8b))
+* **deps:** update prisma monorepo to v6.3.1 ([1ed2ff0](https://github.com/nestjs/terminus/commit/1ed2ff053cea716cf9d5fe95fddb5f91294f36e8))
+* disallow using reserved keyword `status` for health indicators ([303948f](https://github.com/nestjs/terminus/commit/303948f07a412d88b4df8be890140432ddca1bfd)), closes [#2682](https://github.com/nestjs/terminus/issues/2682)
+
+
+### Features
+
+* add support for dynamic configuration with `Terminus.forRootAsync` ([489904f](https://github.com/nestjs/terminus/commit/489904f0e08d9939eb35a6e2e93b96f3c8d3e509)), closes [#2649](https://github.com/nestjs/terminus/issues/2649)
+* infer health check result ([4e59375](https://github.com/nestjs/terminus/commit/4e59375f24c3f0d7c03f86ef1b7e28a1d03031c6))
 
 # [11.0.0](https://github.com/nestjs/terminus/compare/11.0.0-beta.1...11.0.0) (2025-01-25)
 
