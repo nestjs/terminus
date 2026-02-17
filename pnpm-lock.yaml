@@ -202,8 +202,8 @@ catalogs:
       specifier: 7.8.2
       version: 7.8.2
     sequelize:
-      specifier: 6.37.5
-      version: 6.37.5
+      specifier: 6.37.7
+      version: 6.37.7
     sequelize-typescript:
       specifier: 2.1.6
       version: 2.1.6
@@ -299,7 +299,7 @@ importers:
         version: 11.0.11(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)
       '@nestjs/sequelize':
         specifier: 'catalog:'
-        version: 11.0.0(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)(sequelize-typescript@2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.5(mysql2@3.12.0)))(sequelize@6.37.5(mysql2@3.12.0))
+        version: 11.0.0(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)(sequelize-typescript@2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.7(mysql2@3.12.0)))(sequelize@6.37.7(mysql2@3.12.0))
       '@nestjs/swagger':
         specifier: 'catalog:'
         version: 11.0.6(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)
@@ -416,10 +416,10 @@ importers:
         version: 6.1.1(rollup@4.34.8)(typescript@5.7.3)
       sequelize:
         specifier: 'catalog:'
-        version: 6.37.5(mysql2@3.12.0)
+        version: 6.37.7(mysql2@3.12.0)
       sequelize-typescript:
         specifier: 'catalog:'
-        version: 2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.5(mysql2@3.12.0))
+        version: 2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.7(mysql2@3.12.0))
       supertest:
         specifier: 'catalog:'
         version: 7.0.0
@@ -996,7 +996,7 @@ importers:
         version: 11.0.11(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)
       '@nestjs/sequelize':
         specifier: 'catalog:'
-        version: 11.0.0(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)(sequelize-typescript@2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.5(mysql2@3.12.0)))(sequelize@6.37.5(mysql2@3.12.0))
+        version: 11.0.0(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)(sequelize-typescript@2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.7(mysql2@3.12.0)))(sequelize@6.37.7(mysql2@3.12.0))
       '@nestjs/terminus':
         specifier: link:../../
         version: link:../..
@@ -1011,10 +1011,10 @@ importers:
         version: 7.8.2
       sequelize:
         specifier: 'catalog:'
-        version: 6.37.5(mysql2@3.12.0)
+        version: 6.37.7(mysql2@3.12.0)
       sequelize-typescript:
         specifier: 'catalog:'
-        version: 2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.5(mysql2@3.12.0))
+        version: 2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.7(mysql2@3.12.0))
     devDependencies:
       '@nestjs/testing':
         specifier: 'catalog:'
@@ -4423,20 +4423,22 @@ packages:
 
   glob@10.4.5:
     resolution: {integrity: sha512-7Bv8RF0k6xjo7d4A/PxYLbUCfb6c+Vpd2/mB2yRDlew7Jb5hEXiCD9ibfO7wpk8i4sevK6DFny9h7EYbM3/sHg==}
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
     hasBin: true
 
   glob@11.0.1:
     resolution: {integrity: sha512-zrQDm8XPnYEKawJScsnM0QzobJxlT/kHOOlRTio8IH/GrmxRE5fjllkzdaHclIuNjUQTJYH2xHNIGfdpJkDJUw==}
     engines: {node: 20 || >=22}
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
     hasBin: true
 
   glob@7.2.0:
     resolution: {integrity: sha512-lmLf6gtyrPq8tTjSmrO94wBeQbFR3HbLHbuyD69wuyQkImp2hWqMGB47OX65FBkPffO641IP9jWa1z4ivqG26Q==}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   global-directory@4.0.1:
     resolution: {integrity: sha512-wHTUcDUoZ1H5/0iVqEudYW4/kAlN5cZ3j/bXn0Dpbizl9iaUVeWSHqiOjsgk6OW2bkLclbBjzewBz6weQ1zA2Q==}
@@ -6227,8 +6229,8 @@ packages:
       reflect-metadata: '*'
       sequelize: '>=6.20.1'
 
-  sequelize@6.37.5:
-    resolution: {integrity: sha512-10WA4poUb3XWnUROThqL2Apq9C2NhyV1xHPMZuybNMCucDsbbFuKg51jhmyvvAUyUqCiimwTZamc3AHhMoBr2Q==}
+  sequelize@6.37.7:
+    resolution: {integrity: sha512-mCnh83zuz7kQxxJirtFD7q6Huy6liPanI67BSlbzSYgVNl5eXVdE2CN1FuAeZwG1SNpGsNRCV+bJAVVnykZAFA==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       ibm_db: '*'
@@ -8124,14 +8126,14 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@nestjs/sequelize@11.0.0(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)(sequelize-typescript@2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.5(mysql2@3.12.0)))(sequelize@6.37.5(mysql2@3.12.0))':
+  '@nestjs/sequelize@11.0.0(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)(sequelize-typescript@2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.7(mysql2@3.12.0)))(sequelize@6.37.7(mysql2@3.12.0))':
     dependencies:
       '@nestjs/common': 11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 11.0.11(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/microservices@11.0.11)(@nestjs/platform-express@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       reflect-metadata: 0.2.2
       rxjs: 7.8.2
-      sequelize: 6.37.5(mysql2@3.12.0)
-      sequelize-typescript: 2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.5(mysql2@3.12.0))
+      sequelize: 6.37.7(mysql2@3.12.0)
+      sequelize-typescript: 2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.7(mysql2@3.12.0))
 
   '@nestjs/swagger@11.0.6(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)':
     dependencies:
@@ -8584,7 +8586,7 @@ snapshots:
 
   '@types/sequelize@6.12.0(mysql2@3.12.0)':
     dependencies:
-      sequelize: 6.37.5(mysql2@3.12.0)
+      sequelize: 6.37.7(mysql2@3.12.0)
     transitivePeerDependencies:
       - ibm_db
       - mariadb
@@ -12544,15 +12546,15 @@ snapshots:
 
   sequelize-pool@7.1.0: {}
 
-  sequelize-typescript@2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.5(mysql2@3.12.0)):
+  sequelize-typescript@2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.7(mysql2@3.12.0)):
     dependencies:
       '@types/node': 22.13.10
       '@types/validator': 13.12.2
       glob: 7.2.0
       reflect-metadata: 0.2.2
-      sequelize: 6.37.5(mysql2@3.12.0)
+      sequelize: 6.37.7(mysql2@3.12.0)
 
-  sequelize@6.37.5(mysql2@3.12.0):
+  sequelize@6.37.7(mysql2@3.12.0):
     dependencies:
       '@types/debug': 4.1.12
       '@types/validator': 13.12.2
