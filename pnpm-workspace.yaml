@@ -71,7 +71,7 @@ catalog:
   "tsconfig-paths": "4.2.0"
   "class-transformer": "0.5.1"
   "class-validator": "0.14.2"
-  "lodash": "4.17.21"
+  "lodash": "4.17.23"
   "concurrently": "9.2.1"
   "redis": "5.8.2"
   "mysql": "2.18.1"
