@@ -5,11 +5,10 @@ import {
   Injectable,
   LoggerService,
 } from '@nestjs/common';
-import { TERMINUS_LOGGER } from '../health-check/logger/logger.provider';
+import { TERMINUS_LOGGER } from 'lib/terminus.constants';
 import { sleep } from '../utils';
-
-export const TERMINUS_GRACEFUL_SHUTDOWN_TIMEOUT =
-  'TERMINUS_GRACEFUL_SHUTDOWN_TIMEOUT';
+import { TERMINUS_MODULE_OPTIONS } from 'lib/terminus.constants';
+import { TerminusModuleOptions } from 'lib';
 
 /**
  * Handles Graceful shutdown timeout useful to await
@@ -20,22 +19,30 @@ export class GracefulShutdownService implements BeforeApplicationShutdown {
   constructor(
     @Inject(TERMINUS_LOGGER)
     private readonly logger: LoggerService,
-    @Inject(TERMINUS_GRACEFUL_SHUTDOWN_TIMEOUT)
-    private readonly gracefulShutdownTimeoutMs: number,
+    @Inject(TERMINUS_MODULE_OPTIONS)
+    private readonly options: TerminusModuleOptions,
   ) {
     if (this.logger instanceof ConsoleLogger) {
       this.logger.setContext(GracefulShutdownService.name);
     }
   }
 
+  private get isEnabled() {
+    return (this.options.gracefulShutdownTimeoutMs ?? 0) > 0;
+  }
+
   async beforeApplicationShutdown(signal: string) {
+    if (!this.isEnabled) {
+      return;
+    }
+
     this.logger.log(`Received termination signal ${signal || ''}`);
 
     if (signal === 'SIGTERM') {
       this.logger.log(
-        `Awaiting ${this.gracefulShutdownTimeoutMs}ms before shutdown`,
+        `Awaiting ${this.options.gracefulShutdownTimeoutMs}ms before shutdown`,
       );
-      await sleep(this.gracefulShutdownTimeoutMs);
+      await sleep(this.options.gracefulShutdownTimeoutMs!);
       this.logger.log(`Timeout reached, shutting down now`);
     }
   }

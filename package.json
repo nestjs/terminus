@@ -252,6 +252,9 @@
       "^.+\\.ts$": "ts-jest",
       "^.+\\.tsx?$": "ts-jest"
     },
+    "moduleNameMapper": {
+      "^lib/(.*)$": "<rootDir>/lib/$1"
+    },
     "setupFiles": [
       "<rootDir>/node_modules/reflect-metadata/Reflect.js"
     ],

@@ -3,7 +3,7 @@ import { HttpModule, HttpService } from '@nestjs/axios';
 import { HttpHealthIndicator } from './http.health';
 import { checkPackages } from '../../utils/checkPackage.util';
 import { of } from 'rxjs';
-import { TERMINUS_LOGGER } from '../../health-check/logger/logger.provider';
+import { TERMINUS_LOGGER } from 'lib/terminus.constants';
 import { AxiosError } from 'axios';
 import { HealthCheckError } from 'lib/health-check';
 import { HealthIndicatorService } from '../health-indicator.service';

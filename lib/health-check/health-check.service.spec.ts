@@ -3,7 +3,7 @@ import { HealthCheckService } from './health-check.service';
 import { HealthCheckExecutor } from './health-check-executor.service';
 import { ERROR_LOGGER } from './error-logger/error-logger.provider';
 import { ErrorLogger } from './error-logger/error-logger.interface';
-import { TERMINUS_LOGGER } from './logger/logger.provider';
+import { TERMINUS_LOGGER } from 'lib/terminus.constants';
 import { ConsoleLogger, LoggerService } from '@nestjs/common';
 
 const healthCheckExecutorMock: Partial<HealthCheckExecutor> = {

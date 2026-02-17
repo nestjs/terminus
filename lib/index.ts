@@ -1,5 +1,9 @@
 export { TerminusModule } from './terminus.module';
-export { TerminusModuleOptions } from './terminus-options.interface';
+export {
+  TerminusModuleOptions,
+  TerminusOptionsFactory,
+  TerminusAsyncOptions,
+} from './terminus-options.interface';
 export * from './health-indicator';
 export * from './errors';
 export {

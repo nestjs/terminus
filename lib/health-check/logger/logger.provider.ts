@@ -4,17 +4,8 @@ import {
   type Provider,
   type Type,
 } from '@nestjs/common';
-
-export const TERMINUS_LOGGER = 'TERMINUS_LOGGER';
-
-const NOOP_LOGGER = {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  log: () => {},
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  error: () => {},
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  warn: () => {},
-};
+import { NOOP_LOGGER } from './noop-logger';
+import { TERMINUS_LOGGER } from 'lib/terminus.constants';
 
 export function getLoggerProvider(
   logger?: Type<LoggerService> | boolean,
