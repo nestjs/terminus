@@ -10,3 +10,4 @@ export {
   HealthCheckStatus,
   HealthCheckResult,
 } from './health-check';
+export { GracefulShutdownService } from './graceful-shutdown-timeout/graceful-shutdown-timeout.service';

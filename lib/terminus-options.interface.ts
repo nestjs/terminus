@@ -25,4 +25,22 @@ export interface TerminusModuleOptions {
    * @default 0
    */
   gracefulShutdownTimeoutMs?: number;
+  /**
+   * Enable enhanced graceful shutdown sequence for production environments
+   * When enabled, the shutdown process will:
+   * 1. Mark readiness probe as unhealthy
+   * 2. Wait for load balancer to stop routing traffic
+   * 3. Process remaining requests
+   * 4. Close connections and shutdown
+   * @default false
+   */
+  enableEnhancedShutdown?: boolean;
+  /**
+   * Time to wait (in ms) after marking readiness probe unhealthy
+   * before starting the shutdown process.
+   * This allows load balancers to detect and stop routing traffic.
+   * Only used when enableEnhancedShutdown is true.
+   * @default 15000
+   */
+  beforeShutdownDelayMs?: number;
 }
