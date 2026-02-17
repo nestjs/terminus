@@ -1,5 +1,8 @@
-import { type LoggerService, type Type } from '@nestjs/common';
-import { type ModuleMetadata } from '@nestjs/common';
+import {
+  type LoggerService,
+  type Type,
+  type ModuleMetadata,
+} from '@nestjs/common';
 
 export type ErrorLogStyle = 'pretty' | 'json';
 
