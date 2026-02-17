@@ -6,7 +6,7 @@ import {
   bootstrapTestingModule,
 } from '../helper';
 
-describe.only('HealthCheck', () => {
+describe('HealthCheck', () => {
   let app: INestApplication;
   let setHealthEndpoint: DynamicHealthEndpointFn;
 

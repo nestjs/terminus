@@ -5,6 +5,7 @@ import {
 } from './health-check-result.interface';
 import { type HealthCheckError } from '../health-check/health-check.error';
 import {
+  type InferHealthIndicatorResults,
   type HealthIndicatorFunction,
   type HealthIndicatorResult,
 } from '../health-indicator';
@@ -37,13 +38,15 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
    * @returns the result of given health indicators
    * @param healthIndicators The health indicators which should get executed
    */
-  async execute(
-    healthIndicators: HealthIndicatorFunction[],
-  ): Promise<HealthCheckResult> {
+  async execute<const TFns extends HealthIndicatorFunction[]>(
+    healthIndicators: TFns,
+  ) {
     const { results, errors } =
       await this.executeHealthIndicators(healthIndicators);
 
-    return this.getResult(results, errors);
+    return this.getResult(results, errors) as HealthCheckResult<
+      InferHealthIndicatorResults<TFns>
+    >;
   }
 
   /**

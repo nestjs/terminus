@@ -12,6 +12,13 @@ export class HealthIndicatorService {
   }
 }
 
+/**
+ * Show a compilation error if `status` is used in the additional data.
+ */
+type WithoutStatus<T> = {
+  [K in keyof T]: K extends 'status' ? never : T[K];
+};
+
 type AdditionalData = Record<string, unknown>;
 
 /**
@@ -25,16 +32,17 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
   /**
    * Mark the health indicator as `down`
    * @param data additional data which will get appended to the result object
+   * @remarks The `status` key is reserved and cannot be used in additional data.
    */
   down<T extends AdditionalData>(
-    data?: T,
-  ): HealthIndicatorResult<typeof this.key, 'down', T>;
+    data?: T & WithoutStatus<T>,
+  ): HealthIndicatorResult<Key, 'down', T>;
   down<T extends string>(
     data?: T,
-  ): HealthIndicatorResult<typeof this.key, 'down', { message: T }>;
+  ): HealthIndicatorResult<Key, 'down', { message: T }>;
   down<T extends AdditionalData | string>(
     data?: T,
-  ): HealthIndicatorResult<typeof this.key, 'down'> {
+  ): HealthIndicatorResult<Key, 'down'> {
     let additionalData: AdditionalData = {};
 
     if (typeof data === 'string') {
@@ -43,9 +51,15 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
       additionalData = data;
     }
 
+    if ('status' in additionalData) {
+      throw new Error(
+        '"status" is a reserved key and cannot be used in additional data',
+      );
+    }
+
     const detail = {
-      status: 'down' as const,
       ...additionalData,
+      status: 'down' as const,
     };
 
     return {
@@ -57,8 +71,11 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
   /**
    * Mark the health indicator as `up`
    * @param data additional data which will get appended to the result object
+   * @remarks The `status` key is reserved and cannot be used in additional data.
    */
-  up<T extends AdditionalData>(data?: T): HealthIndicatorResult<Key, 'up', T>;
+  up<T extends AdditionalData>(
+    data?: T & WithoutStatus<T>,
+  ): HealthIndicatorResult<Key, 'up', T>;
   up<T extends string>(
     data?: T,
   ): HealthIndicatorResult<Key, 'up', { message: T }>;
@@ -73,9 +90,15 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
       additionalData = data;
     }
 
+    if ('status' in additionalData) {
+      throw new Error(
+        '"status" is a reserved key and cannot be used in additional data',
+      );
+    }
+
     const detail = {
-      status: 'up' as const,
       ...additionalData,
+      status: 'up' as const,
     };
 
     return {

@@ -9,7 +9,7 @@ import {
   type AxiosResponse,
 } from './axios.interfaces';
 import { type AxiosError } from '../../errors/axios.error';
-import { TERMINUS_LOGGER } from '../../health-check/logger/logger.provider';
+import { TERMINUS_LOGGER } from '../../terminus.constants';
 import { checkPackages, isAxiosError } from '../../utils';
 import {
   HealthIndicatorService,

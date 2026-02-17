@@ -1,17 +1,20 @@
 import { type DynamicModule, Module, type Provider } from '@nestjs/common';
-import {
-  GracefulShutdownService,
-  TERMINUS_GRACEFUL_SHUTDOWN_TIMEOUT,
-} from './graceful-shutdown-timeout/graceful-shutdown-timeout.service';
+import { GracefulShutdownService } from './graceful-shutdown-timeout/graceful-shutdown-timeout.service';
 import { HealthCheckService } from './health-check';
-import { getErrorLoggerProvider } from './health-check/error-logger/error-logger.provider';
 import { ERROR_LOGGERS } from './health-check/error-logger/error-loggers.provider';
 import { HealthCheckExecutor } from './health-check/health-check-executor.service';
-import { getLoggerProvider } from './health-check/logger/logger.provider';
 import { DiskUsageLibProvider } from './health-indicator/disk/disk-usage-lib.provider';
 import { HealthIndicatorService } from './health-indicator/health-indicator.service';
 import { HEALTH_INDICATORS } from './health-indicator/health-indicators.provider';
-import { type TerminusModuleOptions } from './terminus-options.interface';
+import {
+  type TerminusAsyncOptions,
+  type TerminusModuleOptions,
+} from './terminus-options.interface';
+import {
+  createAsyncOptionsProvider,
+  createOptionsProvider,
+  createTerminusProviders,
+} from './terminus.providers';
 
 const baseProviders: Provider[] = [
   ...ERROR_LOGGERS,
@@ -19,6 +22,7 @@ const baseProviders: Provider[] = [
   DiskUsageLibProvider,
   HealthCheckExecutor,
   HealthCheckService,
+  GracefulShutdownService,
   ...HEALTH_INDICATORS,
 ];
 
@@ -35,36 +39,62 @@ const exports_ = [
  * @publicApi
  */
 @Module({
-  providers: [...baseProviders, getErrorLoggerProvider(), getLoggerProvider()],
+  providers: [
+    ...baseProviders,
+    createOptionsProvider(),
+    ...createTerminusProviders(),
+  ],
   exports: exports_,
 })
 export class TerminusModule {
+  /**
+   * Register the module synchronously.
+   */
   static forRoot(options: TerminusModuleOptions = {}): DynamicModule {
-    const {
-      errorLogStyle = 'json',
-      logger = true,
-      gracefulShutdownTimeoutMs = 0,
-    } = options;
-
     const providers: Provider[] = [
       ...baseProviders,
-      getErrorLoggerProvider(errorLogStyle),
-      getLoggerProvider(logger),
+      createOptionsProvider(options),
+      ...createTerminusProviders(options),
     ];
-
-    if (gracefulShutdownTimeoutMs > 0) {
-      providers.push({
-        provide: TERMINUS_GRACEFUL_SHUTDOWN_TIMEOUT,
-        useValue: gracefulShutdownTimeoutMs,
-      });
-
-      providers.push(GracefulShutdownService);
-    }
 
     return {
       module: TerminusModule,
       providers,
       exports: exports_,
     };
+  }
+
+  /**
+   * Register the module asynchronously.
+   */
+  static forRootAsync(options: TerminusAsyncOptions): DynamicModule {
+    const providers: Provider[] = [
+      ...baseProviders,
+      ...this.createAsyncProviders(options),
+      ...createTerminusProviders(),
+    ];
+
+    return {
+      module: TerminusModule,
+      imports: options.imports || [],
+      providers,
+      exports: exports_,
+    };
+  }
+
+  private static createAsyncProviders(
+    options: TerminusAsyncOptions,
+  ): Provider[] {
+    if (options.useExisting || options.useFactory) {
+      return [createAsyncOptionsProvider(options)];
+    }
+
+    return [
+      createAsyncOptionsProvider(options),
+      {
+        provide: options.useClass!,
+        useClass: options.useClass!,
+      },
+    ];
   }
 }
