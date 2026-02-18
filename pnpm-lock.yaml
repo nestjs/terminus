@@ -55,8 +55,8 @@ catalogs:
       specifier: 11.1.11
       version: 11.1.11
     '@nestjs/sequelize':
-      specifier: 11.0.0
-      version: 11.0.0
+      specifier: 11.0.1
+      version: 11.0.1
     '@nestjs/swagger':
       specifier: 11.0.6
       version: 11.0.6
@@ -299,7 +299,7 @@ importers:
         version: 11.1.11(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)
       '@nestjs/sequelize':
         specifier: 'catalog:'
-        version: 11.0.0(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)(sequelize-typescript@2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.7(mysql2@3.12.0)))(sequelize@6.37.7(mysql2@3.12.0))
+        version: 11.0.1(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)(sequelize-typescript@2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.7(mysql2@3.12.0)))(sequelize@6.37.7(mysql2@3.12.0))
       '@nestjs/swagger':
         specifier: 'catalog:'
         version: 11.0.6(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)
@@ -999,7 +999,7 @@ importers:
         version: 11.0.11(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)
       '@nestjs/sequelize':
         specifier: 'catalog:'
-        version: 11.0.0(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)(sequelize-typescript@2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.7(mysql2@3.12.0)))(sequelize@6.37.7(mysql2@3.12.0))
+        version: 11.0.1(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)(sequelize-typescript@2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.7(mysql2@3.12.0)))(sequelize@6.37.7(mysql2@3.12.0))
       '@nestjs/terminus':
         specifier: link:../../
         version: link:../..
@@ -2299,8 +2299,8 @@ packages:
     peerDependencies:
       typescript: '>=4.8.2'
 
-  '@nestjs/sequelize@11.0.0':
-    resolution: {integrity: sha512-Wb7uXPFjrHaDw4fugV6/TrKXBRP+tsKBxtqznvQMKXGBaTaw4eHw4obzWiQ90O63T1hZLksTKRK/6OuyBwvbaw==}
+  '@nestjs/sequelize@11.0.1':
+    resolution: {integrity: sha512-Zh1D2jRm736JeY9W+UyXGqHc7hfisl9232DY0//cbEGudom7s4LlJyWx+YP3n2GBS7z/G91+UFKPDq3UxttVpQ==}
     peerDependencies:
       '@nestjs/common': ^10.0.0 || ^11.0.0
       '@nestjs/core': ^10.0.0 || ^11.0.0
@@ -8110,7 +8110,7 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@nestjs/sequelize@11.0.0(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)(sequelize-typescript@2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.7(mysql2@3.12.0)))(sequelize@6.37.7(mysql2@3.12.0))':
+  '@nestjs/sequelize@11.0.1(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)(sequelize-typescript@2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.7(mysql2@3.12.0)))(sequelize@6.37.7(mysql2@3.12.0))':
     dependencies:
       '@nestjs/common': 11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 11.0.11(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/microservices@11.0.11)(@nestjs/platform-express@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)
