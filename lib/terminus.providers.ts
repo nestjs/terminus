@@ -77,7 +77,7 @@ function createLoggerProvider(options?: TerminusModuleOptions): Provider {
   // resolve the logger dynamically at runtime.
   return {
     provide: TERMINUS_LOGGER,
-    useFactory: async (opts: TerminusModuleOptions, moduleRef: ModuleRef) => {
+    useFactory: (opts: TerminusModuleOptions, moduleRef: ModuleRef) => {
       if (opts.logger === false) {
         return NOOP_LOGGER;
       }
@@ -85,8 +85,6 @@ function createLoggerProvider(options?: TerminusModuleOptions): Provider {
       if (opts.logger === true || opts.logger === undefined) {
         return new Logger();
       }
-
-      await Promise.resolve();
 
       return moduleRef.get(opts.logger, { strict: false });
     },
