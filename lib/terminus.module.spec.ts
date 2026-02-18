@@ -1,18 +1,24 @@
-import { Injectable, LoggerService, Module } from '@nestjs/common';
+import {
+  Global,
+  Inject,
+  Injectable,
+  LoggerService,
+  Module,
+} from '@nestjs/common';
 import { Test } from '@nestjs/testing';
+import { GracefulShutdownService } from './graceful-shutdown-timeout/graceful-shutdown-timeout.service';
+import { HealthCheckService } from './health-check';
+import { ERROR_LOGGER } from './health-check/error-logger/error-logger.provider';
+import { JsonErrorLogger } from './health-check/error-logger/json-error-logger.service';
+import { PrettyErrorLogger } from './health-check/error-logger/pretty-error-logger.service';
+import { NOOP_LOGGER } from './health-check/logger/noop-logger';
+import { HealthIndicatorService } from './health-indicator/health-indicator.service';
 import {
   TerminusModuleOptions,
   TerminusOptionsFactory,
 } from './terminus-options.interface';
 import { TERMINUS_LOGGER, TERMINUS_MODULE_OPTIONS } from './terminus.constants';
 import { TerminusModule } from './terminus.module';
-import { HealthCheckService } from './health-check';
-import { HealthIndicatorService } from './health-indicator/health-indicator.service';
-import { ERROR_LOGGER } from './health-check/error-logger/error-logger.provider';
-import { PrettyErrorLogger } from './health-check/error-logger/pretty-error-logger.service';
-import { JsonErrorLogger } from './health-check/error-logger/json-error-logger.service';
-import { NOOP_LOGGER } from './health-check/logger/noop-logger';
-import { GracefulShutdownService } from './graceful-shutdown-timeout/graceful-shutdown-timeout.service';
 
 @Injectable()
 class TerminusConfigService implements TerminusOptionsFactory {
@@ -270,6 +276,43 @@ describe('TerminusModule', () => {
       const service = module.get(GracefulShutdownService);
       expect(service).toBeDefined();
     });
+
+    it('should resolve custom logger class with injected dependencies', async () => {
+      const LOGGER_DEPENDENCY = 'LOGGER_DEPENDENCY';
+      const dependencyValue = { context: 'test' };
+
+      @Injectable()
+      class CustomLoggerWithDeps implements LoggerService {
+        constructor(
+          @Inject(LOGGER_DEPENDENCY)
+          public readonly dep: typeof dependencyValue,
+        ) {}
+        log() {}
+        error() {}
+        warn() {}
+      }
+
+      @Global()
+      @Module({
+        providers: [
+          { provide: LOGGER_DEPENDENCY, useValue: dependencyValue },
+          CustomLoggerWithDeps,
+        ],
+        exports: [LOGGER_DEPENDENCY, CustomLoggerWithDeps],
+      })
+      class LoggerDepsModule {}
+
+      const module = await Test.createTestingModule({
+        imports: [
+          LoggerDepsModule,
+          TerminusModule.forRoot({ logger: CustomLoggerWithDeps }),
+        ],
+      }).compile();
+
+      const logger = module.get<CustomLoggerWithDeps>(TERMINUS_LOGGER);
+      expect(logger).toBeInstanceOf(CustomLoggerWithDeps);
+      expect(logger.dep).toBe(dependencyValue);
+    });
   });
 
   describe('forRootAsync - provider resolution', () => {
@@ -300,15 +343,23 @@ describe('TerminusModule', () => {
     });
 
     it('should resolve custom logger class via async useFactory', async () => {
+      @Injectable()
       class CustomLogger implements LoggerService {
         log() {}
         error() {}
         warn() {}
       }
 
+      @Module({
+        providers: [CustomLogger],
+        exports: [CustomLogger],
+      })
+      class CustomLoggerModule {}
+
       const module = await Test.createTestingModule({
         imports: [
           TerminusModule.forRootAsync({
+            imports: [CustomLoggerModule],
             useFactory: () => ({ logger: CustomLogger }),
           }),
         ],
@@ -329,6 +380,45 @@ describe('TerminusModule', () => {
 
       const errorLogger = module.get(ERROR_LOGGER);
       expect(errorLogger).toBeInstanceOf(PrettyErrorLogger);
+    });
+
+    it('should resolve custom logger class with injected dependencies via async useFactory', async () => {
+      const LOGGER_DEPENDENCY = 'LOGGER_DEPENDENCY';
+      const dependencyValue = { context: 'test' };
+
+      @Injectable()
+      class CustomLoggerWithDeps implements LoggerService {
+        constructor(
+          @Inject(LOGGER_DEPENDENCY)
+          public readonly dep: typeof dependencyValue,
+        ) {}
+        log() {}
+        error() {}
+        warn() {}
+      }
+
+      // @Global()
+      @Module({
+        providers: [
+          { provide: LOGGER_DEPENDENCY, useValue: dependencyValue },
+          CustomLoggerWithDeps,
+        ],
+        exports: [CustomLoggerWithDeps],
+      })
+      class LoggerDepsModule {}
+
+      const module = await Test.createTestingModule({
+        imports: [
+          LoggerDepsModule,
+          TerminusModule.forRootAsync({
+            useFactory: () => ({ logger: CustomLoggerWithDeps }),
+          }),
+        ],
+      }).compile();
+
+      const logger = module.get<CustomLoggerWithDeps>(TERMINUS_LOGGER);
+      expect(logger).toBeInstanceOf(CustomLoggerWithDeps);
+      expect(logger.dep).toBe(dependencyValue);
     });
 
     it('should resolve GracefulShutdownService with async options', async () => {
