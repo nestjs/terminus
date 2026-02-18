@@ -41,8 +41,8 @@ const exports_ = [
 @Module({
   providers: [
     ...baseProviders,
-    createOptionsProvider(),
-    ...createTerminusProviders(),
+    createOptionsProvider({}),
+    ...createTerminusProviders({}),
   ],
   exports: exports_,
 })

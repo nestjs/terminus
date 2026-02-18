@@ -4,11 +4,12 @@ import { JsonErrorLogger } from './health-check/error-logger/json-error-logger.s
 import { PrettyErrorLogger } from './health-check/error-logger/pretty-error-logger.service';
 import { NOOP_LOGGER } from './health-check/logger/noop-logger';
 import {
+  type TerminusAsyncModuleOptions,
   type TerminusAsyncOptions,
   type TerminusModuleOptions,
   type TerminusOptionsFactory,
 } from './terminus-options.interface';
-import { TERMINUS_MODULE_OPTIONS, TERMINUS_LOGGER } from './terminus.constants';
+import { TERMINUS_LOGGER, TERMINUS_MODULE_OPTIONS } from './terminus.constants';
 
 export const createOptionsProvider = (
   options: TerminusModuleOptions = {},
@@ -36,7 +37,7 @@ export const createAsyncOptionsProvider = (
 };
 
 export const createTerminusProviders = (
-  _options: TerminusModuleOptions = {},
+  options?: TerminusModuleOptions,
 ): Provider[] => {
   return [
     {
@@ -51,20 +52,42 @@ export const createTerminusProviders = (
       },
       inject: [TERMINUS_MODULE_OPTIONS],
     },
-    {
-      provide: TERMINUS_LOGGER,
-      useFactory: (options: TerminusModuleOptions) => {
-        if (options.logger === false) {
-          return NOOP_LOGGER;
-        }
-
-        if (options.logger === true || options.logger === undefined) {
-          return new Logger();
-        }
-
-        return new options.logger();
-      },
-      inject: [TERMINUS_MODULE_OPTIONS],
-    },
+    createLoggerProvider(options),
   ];
 };
+
+function createLoggerProvider(options?: TerminusModuleOptions): Provider {
+  // When options are known at registration time (forRoot / static @Module),
+  // use static providers so NestJS resolves the logger through DI.
+  if (options) {
+    if (options.logger === false) {
+      return { provide: TERMINUS_LOGGER, useValue: NOOP_LOGGER };
+    }
+
+    return {
+      provide: TERMINUS_LOGGER,
+      useClass:
+        options.logger === true || options.logger === undefined
+          ? Logger
+          : options.logger,
+    };
+  }
+
+  // When options are not known at registration time (forRootAsync),
+  // the factory returns a resolved logger instance directly.
+  return {
+    provide: TERMINUS_LOGGER,
+    useFactory: (opts: TerminusAsyncModuleOptions) => {
+      if (opts.logger === false) {
+        return NOOP_LOGGER;
+      }
+
+      if (opts.logger === true || opts.logger === undefined) {
+        return new Logger();
+      }
+
+      return opts.logger;
+    },
+    inject: [TERMINUS_MODULE_OPTIONS],
+  };
+}
