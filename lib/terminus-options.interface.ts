@@ -29,14 +29,17 @@ export interface TerminusModuleOptions {
 /**
  * The Terminus module options for asynchronous registration.
  */
-export type TerminusAsyncModuleOptions = Omit<TerminusModuleOptions, 'logger'> & {
+export type TerminusAsyncModuleOptions = Omit<
+  TerminusModuleOptions,
+  'logger'
+> & {
   /**
    * A resolved logger instance, or a boolean.
    * Pass `false` to disable logging, `true` for the default NestJS logger,
    * or an already-instantiated LoggerService.
    */
   logger?: LoggerService | boolean;
-}
+};
 
 /**
  * Interface for a factory that creates TerminusModuleOptions.
