@@ -8,11 +8,6 @@ export type ErrorLogStyle = 'pretty' | 'json';
 
 /**
  * The Terminus module options
- *
- * errorLogStyle: The style of the error logger. Either 'pretty' or 'json'. Default to 'json'.
- * logger: The logger to use. Either default logger or your own.
- * gracefulShutdownTimeoutMs: The timeout to wait in ms before the application shuts down. Default to 0ms.
- * @publicApi
  */
 export interface TerminusModuleOptions {
   /**
@@ -32,13 +27,25 @@ export interface TerminusModuleOptions {
 }
 
 /**
+ * The Terminus module options for asynchronous registration.
+ */
+export type TerminusAsyncModuleOptions = Omit<TerminusModuleOptions, 'logger'> & {
+  /**
+   * A resolved logger instance, or a boolean.
+   * Pass `false` to disable logging, `true` for the default NestJS logger,
+   * or an already-instantiated LoggerService.
+   */
+  logger?: LoggerService | boolean;
+}
+
+/**
  * Interface for a factory that creates TerminusModuleOptions.
  * @publicApi
  */
 export interface TerminusOptionsFactory {
   createTerminusOptions():
-    | Promise<TerminusModuleOptions>
-    | TerminusModuleOptions;
+    | Promise<TerminusAsyncModuleOptions>
+    | TerminusAsyncModuleOptions;
 }
 
 /**
@@ -60,7 +67,7 @@ export interface TerminusAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
    */
   useFactory?: (
     ...args: any[]
-  ) => Promise<TerminusModuleOptions> | TerminusModuleOptions;
+  ) => Promise<TerminusAsyncModuleOptions> | TerminusAsyncModuleOptions;
   /**
    * Optional list of providers to be injected into the context of the Factory function.
    */
