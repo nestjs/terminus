@@ -15,7 +15,7 @@ catalog:
   "@nestjs/common": "11.0.11"
   "@nestjs/core": "11.0.11"
   "@nestjs/microservices": "11.0.11"
-  "@nestjs/mongoose": "11.0.1"
+  "@nestjs/mongoose": "11.0.4"
   "@nestjs/platform-express": "11.0.11"
   "@nestjs/platform-fastify": "11.1.11"
   "@nestjs/sequelize": "11.0.0"
