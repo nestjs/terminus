@@ -12,7 +12,7 @@ catalog:
   "@mikro-orm/nestjs": "6.1.1"
   "@nestjs/axios": "4.0.1"
   "@nestjs/cli": "^11.0.2"
-  "@nestjs/common": "11.0.11"
+  "@nestjs/common": "11.0.16"
   "@nestjs/core": "11.0.11"
   "@nestjs/microservices": "11.0.11"
   "@nestjs/mongoose": "11.0.4"
