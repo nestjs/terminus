@@ -28,7 +28,7 @@
   "license": "MIT",
   "author": "Livio Brunner",
   "main": "dist/index.js",
-  "packageManager": "pnpm@9.15.9",
+  "packageManager": "pnpm@10.30.3",
   "scripts": {
     "dev": "nest build --watch",
     "build": "nest build",
