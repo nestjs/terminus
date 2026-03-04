@@ -55,7 +55,7 @@ catalog:
   "prisma": "6.3.1"
   "reflect-metadata": "0.2.2"
   "release-it": "18.1.2"
-  "rollup": "4.34.8"
+  "rollup": "4.59.0"
   "rollup-plugin-dts": "6.1.1"
   "sequelize": "6.37.7"
   "sequelize-typescript": "2.1.6"
