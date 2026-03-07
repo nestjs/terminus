@@ -1,3 +1,4 @@
+import { setTimeout } from 'node:timers/promises';
 import {
   type BeforeApplicationShutdown,
   ConsoleLogger,
@@ -10,7 +11,6 @@ import {
   TERMINUS_LOGGER,
   TERMINUS_MODULE_OPTIONS,
 } from '../terminus.constants';
-import { sleep } from '../utils';
 
 /**
  * Handles Graceful shutdown timeout useful to await
@@ -44,7 +44,7 @@ export class GracefulShutdownService implements BeforeApplicationShutdown {
       this.logger.log(
         `Awaiting ${this.options.gracefulShutdownTimeoutMs}ms before shutdown`,
       );
-      await sleep(this.options.gracefulShutdownTimeoutMs!);
+      await setTimeout(this.options.gracefulShutdownTimeoutMs!);
       this.logger.log(`Timeout reached, shutting down now`);
     }
   }

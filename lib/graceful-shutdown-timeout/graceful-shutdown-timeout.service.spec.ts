@@ -5,10 +5,10 @@ import {
   TERMINUS_LOGGER,
   TERMINUS_MODULE_OPTIONS,
 } from '../terminus.constants';
-import { sleep } from '../utils';
+import { setTimeout } from 'node:timers/promises';
 
-jest.mock('../utils', () => ({
-  sleep: jest.fn(),
+jest.mock('node:timers/promises', () => ({
+  setTimeout: jest.fn(),
 }));
 
 const loggerMock: Partial<LoggerService> = {
@@ -42,12 +42,12 @@ describe('GracefulShutdownService', () => {
 
     it('should not trigger sleep if signal is not SIGTERM', async () => {
       await service.beforeApplicationShutdown('SIGINT');
-      expect(sleep).not.toHaveBeenCalled();
+      expect(setTimeout).not.toHaveBeenCalled();
     });
 
     it('should trigger sleep if signal is SIGTERM', async () => {
       await service.beforeApplicationShutdown('SIGTERM');
-      expect(sleep).toHaveBeenCalledWith(1000);
+      expect(setTimeout).toHaveBeenCalledWith(1000);
     });
 
     it('should log the received signal', async () => {
@@ -91,7 +91,7 @@ describe('GracefulShutdownService', () => {
 
     it('should not trigger sleep even for SIGTERM', async () => {
       await service.beforeApplicationShutdown('SIGTERM');
-      expect(sleep).not.toHaveBeenCalled();
+      expect(setTimeout).not.toHaveBeenCalled();
     });
 
     it('should not log anything', async () => {
@@ -119,7 +119,7 @@ describe('GracefulShutdownService', () => {
 
     it('should not trigger sleep when no timeout is configured', async () => {
       await service.beforeApplicationShutdown('SIGTERM');
-      expect(sleep).not.toHaveBeenCalled();
+      expect(setTimeout).not.toHaveBeenCalled();
     });
   });
 });

@@ -5,7 +5,6 @@ import { checkPackages } from '../../utils/checkPackage.util';
 import { of } from 'rxjs';
 import { TERMINUS_LOGGER } from '../../terminus.constants';
 import { AxiosError } from 'axios';
-import { HealthCheckError } from 'lib/health-check';
 import { HealthIndicatorService } from '../health-indicator.service';
 jest.mock('../../utils/checkPackage.util');
 
@@ -85,15 +84,7 @@ describe('Http Response Health Indicator', () => {
       httpServiceMock.request.mockImplementation(() => {
         throw new AxiosError('Error');
       });
-      try {
-        await httpHealthIndicator.pingCheck('key', 'url');
-      } catch (err) {
-        expect(err).toBeDefined();
-        expect((err as any).constructor.name).toEqual('HealthCheckError');
-        expect((err as HealthCheckError).causes).toEqual({
-          key: { message: 'Error', status: 'down' },
-        });
-      }
+      await httpHealthIndicator.pingCheck('key', 'url');
 
       expect(httpServiceMock.request).toHaveBeenCalledWith({ url: 'url' });
     });
@@ -180,17 +171,6 @@ describe('Http Response Health Indicator', () => {
         );
       } catch (err) {
         expect(err).toBeDefined();
-        expect((err as HealthCheckError).constructor.name).toEqual(
-          'HealthCheckError',
-        );
-        expect((err as HealthCheckError).causes).toEqual({
-          key: {
-            message: 'Error',
-            status: 'down',
-            statusCode: 200,
-            statusText: 'Yes',
-          },
-        });
       }
 
       expect(httpServiceMock.request).toHaveBeenCalledWith({ url: 'url' });

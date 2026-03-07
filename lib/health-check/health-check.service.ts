@@ -6,11 +6,11 @@ import {
   LoggerService,
   InternalServerErrorException,
 } from '@nestjs/common';
+import { type HealthIndicatorFunction } from '../health-indicator';
+import { TERMINUS_LOGGER } from '../terminus.constants';
 import { ErrorLogger } from './error-logger/error-logger.interface';
 import { ERROR_LOGGER } from './error-logger/error-logger.provider';
 import { HealthCheckExecutor } from './health-check-executor.service';
-import { type HealthIndicatorFunction } from '../health-indicator';
-import { TERMINUS_LOGGER } from '../terminus.constants';
 
 /**
  * Handles Health Checks which can be used in
