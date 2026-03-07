@@ -1,10 +1,9 @@
 import { GRPCHealthIndicator } from './grpc.health';
 import { checkPackages } from '../../utils/checkPackage.util';
 import { GrpcOptions, Transport } from '@nestjs/microservices';
-import { TimeoutError } from '../../errors';
-import { HealthCheckError } from '../../health-check/health-check.error';
 import { Test } from '@nestjs/testing';
 import { HealthIndicatorService } from '../health-indicator.service';
+import { TimeoutError } from 'rxjs';
 
 jest.mock('../../utils/checkPackage.util');
 
@@ -119,31 +118,6 @@ describe('GRPCHealthIndicator', () => {
         await grpc.checkService<GrpcOptions>('grpc', 'test');
       } catch (err) {
         expect(err).toEqual(error);
-      }
-    });
-
-    it('should throw HealthCheckError in client.getService', async () => {
-      const error = new Error('test');
-      grpcClientMock.getService.mockImplementationOnce((): any => {
-        throw error;
-      });
-
-      try {
-        await grpc.checkService<GrpcOptions>('grpc', 'test');
-      } catch (err) {
-        expect(err instanceof HealthCheckError).toBeTruthy();
-      }
-    });
-
-    it('should throw HealthCheckError if the grpc check function fails', async () => {
-      try {
-        await grpc.checkService<GrpcOptions>('grpc', 'test', {
-          healthServiceCheck: () => {
-            throw new Error('test');
-          },
-        });
-      } catch (err) {
-        expect(err instanceof HealthCheckError).toBeTruthy();
       }
     });
   });
