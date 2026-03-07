@@ -33,6 +33,49 @@ describe('HealthCheckExecutorService', () => {
   });
 
   describe('execute', () => {
+    it('should support HealthCheckAttempt in the health indicators array', async () => {
+      const attempt = h.check('db').attempt(async () => {});
+      const result = await healthCheckExecutor.execute([attempt]);
+      expect(result).toEqual<HealthCheckResult>({
+        status: 'ok',
+        info: { db: { status: 'up' } },
+        error: {},
+        details: { db: { status: 'up' } },
+      });
+    });
+
+    it('should support a failing HealthCheckAttempt', async () => {
+      const attempt = h.check('db').attempt(async () => {
+        throw new Error('Connection refused');
+      });
+      const result = await healthCheckExecutor.execute([attempt]);
+      expect(result).toEqual<HealthCheckResult>({
+        status: 'error',
+        info: {},
+        error: { db: { status: 'down', error: 'Connection refused' } },
+        details: { db: { status: 'down', error: 'Connection refused' } },
+      });
+    });
+
+    it('should support mixing HealthCheckAttempt with regular functions', async () => {
+      const attempt = h.check('db').attempt(async () => {});
+      const result = await healthCheckExecutor.execute([
+        () => healthIndicator(h),
+        attempt,
+      ]);
+      expect(result).toEqual<HealthCheckResult>({
+        status: 'ok',
+        info: {
+          healthy: { status: 'up' },
+          db: { status: 'up' },
+        },
+        error: {},
+        details: {
+          healthy: { status: 'up' },
+          db: { status: 'up' },
+        },
+      });
+    });
     it('should return a result object without errors', async () => {
       const result = await healthCheckExecutor.execute([
         () => healthIndicator(h),
