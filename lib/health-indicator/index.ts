@@ -1,6 +1,9 @@
 export * from './health-indicator-result.interface';
 export * from './health-indicator';
-export { HealthIndicatorService } from './health-indicator.service';
+export {
+  HealthIndicatorService,
+  HealthCheckAttempt,
+} from './health-indicator.service';
 
 /** Health Indicators */
 export * from './http/http.health';

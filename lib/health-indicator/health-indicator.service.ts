@@ -106,4 +106,109 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
       // TypeScript does not infer this.key as Key correctly.
     } as Record<Key, typeof detail>;
   }
+
+  /**
+   * Attempt to execute a function and mark the health indicator as `up` or `down` based on whether it throws.
+   * Returns a `HealthCheckAttempt` builder that can be further configured (e.g. `.withTimeout()`).
+   *
+   * @param fn The function to execute
+   * @returns A `HealthCheckAttempt` builder
+   *
+   * @example
+   * ```typescript
+   * this.healthIndicatorService
+   *   .check('db')
+   *   .attempt(async () => sql`SELECT(1)`)
+   *
+   * this.healthIndicatorService
+   *   .check('external')
+   *   .attempt(async ({ signal }) => { await fetch('https://example.com', { signal }) })
+   *   .withTimeout(3000)
+   * ```
+   */
+  attempt(
+    fn: (options: {
+      signal: AbortSignal;
+    }) => Promise<AdditionalData | void> | AdditionalData | void,
+  ): HealthCheckAttempt<Key> {
+    return new HealthCheckAttempt(this, fn);
+  }
+}
+
+/**
+ * A builder that describes a health check attempt.
+ * Use `.withTimeout()` to configure a timeout.
+ *
+ * Can be passed directly into `health.check([...])` and will be executed by the `HealthCheckExecutor`.
+ *
+ * @publicApi
+ */
+export class HealthCheckAttempt<Key extends Readonly<string> = string> {
+  private timeoutMs?: number;
+
+  constructor(
+    private readonly session: HealthIndicatorSession<Key>,
+    private readonly fn: (options: {
+      signal: AbortSignal;
+    }) => Promise<AdditionalData | void> | AdditionalData | void,
+  ) {}
+
+  /**
+   * Set a timeout for the health check attempt.
+   * If the function does not resolve within the given time, the health indicator will be marked as `down`.
+   * An `AbortSignal` is passed to the callback so the underlying operation can be cancelled.
+   *
+   * @param ms The timeout in milliseconds
+   * @returns this (for chaining)
+   */
+  withTimeout(ms: number): this {
+    this.timeoutMs = ms;
+    return this;
+  }
+
+  /**
+   * Execute the health check attempt.
+   *
+   * @internal
+   * @returns A promise that resolves to the health indicator result
+   */
+  async execute(): Promise<HealthIndicatorResult<Key>> {
+    const controller = new AbortController();
+    let timer: ReturnType<typeof setTimeout> | undefined;
+
+    try {
+      const promise = Promise.resolve(this.fn({ signal: controller.signal }));
+
+      if (this.timeoutMs !== undefined) {
+        const result = await Promise.race([
+          promise,
+          new Promise<never>((_, reject) => {
+            timer = setTimeout(() => {
+              controller.abort();
+              reject(
+                new Error(`Health check timed out after ${this.timeoutMs}ms`),
+              );
+            }, this.timeoutMs);
+          }),
+        ]);
+
+        return result === undefined
+          ? this.session.up()
+          : this.session.up(result);
+      }
+
+      const result = await promise;
+
+      return result === undefined ? this.session.up() : this.session.up(result);
+    } catch (err) {
+      return this.session.down({
+        error: err instanceof Error ? err.message : String(err),
+      });
+    } finally {
+      if (timer) {
+        clearTimeout(timer);
+      }
+      controller.abort();
+    }
+  }
 }

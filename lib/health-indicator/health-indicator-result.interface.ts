@@ -1,4 +1,5 @@
 import { type HealthIndicatorFunction } from './health-indicator';
+import { type HealthCheckAttempt } from './health-indicator.service';
 
 /**
  * @publicApi
@@ -20,7 +21,11 @@ export type HealthIndicatorResult<
  */
 export type InferHealthIndicatorResult<
   Fn extends HealthIndicatorFunction = HealthIndicatorFunction,
-> = Awaited<ReturnType<Fn>>;
+> = Fn extends HealthCheckAttempt
+  ? HealthIndicatorResult
+  : Fn extends (...args: any) => any
+    ? Awaited<ReturnType<Fn>>
+    : HealthIndicatorResult;
 
 /**
  * @internal
