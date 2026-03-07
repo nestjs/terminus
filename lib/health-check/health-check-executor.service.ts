@@ -8,6 +8,7 @@ import {
   type HealthIndicatorFunction,
   type HealthIndicatorResult,
 } from '../health-indicator';
+import { HealthCheckAttempt } from '../health-indicator/health-indicator.service';
 
 /**
  * This class is responsible for executing the health indicators and returning the result.
@@ -52,7 +53,12 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
     const errors: HealthIndicatorResult[] = [];
 
     const result = await Promise.allSettled(
-      healthIndicators.map(async (h) => h()),
+      healthIndicators.map(async (h) => {
+        if (h instanceof HealthCheckAttempt) return h.execute();
+        const res = await h();
+        if (res instanceof HealthCheckAttempt) return res.execute();
+        return res;
+      }),
     );
 
     result.forEach((res) => {
