@@ -3,7 +3,6 @@ import { ModuleRef } from '@nestjs/core';
 import type * as NestJSTypeOrm from '@nestjs/typeorm';
 import type * as TypeOrm from 'typeorm';
 import { type HealthIndicatorResult } from '../';
-import { MongoConnectionError } from '../../errors';
 import {
   TimeoutError as PromiseTimeoutError,
   promiseTimeout,
@@ -120,9 +119,6 @@ export class TypeOrmHealthIndicator {
     } catch (err) {
       if (err instanceof PromiseTimeoutError) {
         return check.down(`timeout of ${timeout}ms exceeded`);
-      }
-      if (err instanceof MongoConnectionError) {
-        return check.down(err.message);
       }
 
       return check.down();

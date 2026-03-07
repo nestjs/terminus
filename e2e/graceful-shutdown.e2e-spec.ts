@@ -1,8 +1,8 @@
+import { setTimeout } from 'node:timers/promises';
 import { ShutdownSignal } from '@nestjs/common';
 import { type NestApplicationContext } from '@nestjs/core';
 import * as request from 'supertest';
 import { bootstrapTestingModule } from './helper';
-import { sleep } from '../lib/utils';
 
 describe('Graceful shutdown', () => {
   afterEach(() => {
@@ -30,16 +30,16 @@ describe('Graceful shutdown', () => {
       },
     );
 
-    await sleep(16);
+    await setTimeout(16);
     // 1. setTimeout is called by the `GracefulShutdownService`
     // 2. setTimeout is called above
     expect(setTimeout).toHaveBeenCalledTimes(2);
     expect(isClosed).toBe(false);
-    await sleep(16);
+    await setTimeout(16);
     expect(isClosed).toBe(false);
-    await sleep(16);
+    await setTimeout(16);
     expect(isClosed).toBe(false);
-    await sleep(64);
+    await setTimeout(64);
     expect(isClosed).toBe(true);
   });
 

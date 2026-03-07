@@ -3,25 +3,14 @@ import {
   type HealthCheckResult,
   type HealthCheckStatus,
 } from './health-check-result.interface';
-import { type HealthCheckError } from '../health-check/health-check.error';
 import {
   type InferHealthIndicatorResults,
   type HealthIndicatorFunction,
   type HealthIndicatorResult,
 } from '../health-indicator';
-import { isHealthCheckError } from '../utils';
 
 /**
- * Takes care of the execution of health indicators.
- *
- * @description
- * The HealthCheckExecutor is standalone, so it can be used for
- * the legacy TerminusBootstrapService and the HealthCheckService.
- *
- * On top of that, the HealthCheckExecutor uses the `BeforeApplicationShutdown`
- * hook, therefore it must implement the `beforeApplicationShutdown`
- * method as public. We do not want to expose that
- * to the end-user.
+ * This class is responsible for executing the health indicators and returning the result.
  *
  * @internal
  */
@@ -77,13 +66,7 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
         });
       } else {
         const error = res.reason;
-        // Is not an expected error. Throw further!
-        if (!isHealthCheckError(error)) {
-          throw error;
-        }
-
-        // eslint-disable-next-line deprecation/deprecation
-        errors.push((error as HealthCheckError).causes);
+        throw error;
       }
     });
 
