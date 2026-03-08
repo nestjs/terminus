@@ -49,7 +49,7 @@ catalog:
   "lint-staged": "15.4.3"
   "mongoose": "8.10.1"
   "mysql2": "3.12.0"
-  "nats": "2.29.2"
+  "nats": "2.29.3"
   "portfinder": "1.0.35"
   "prettier": "3.5.3"
   "prisma": "6.3.1"
