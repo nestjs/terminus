@@ -99,6 +99,9 @@ catalogs:
     amqplib:
       specifier: 0.10.7
       version: 0.10.7
+    axios:
+      specifier: ^1.7.9
+      version: 1.13.6
     class-transformer:
       specifier: 0.5.1
       version: 0.5.1
@@ -199,8 +202,8 @@ catalogs:
       specifier: 7.8.2
       version: 7.8.2
     sequelize:
-      specifier: 6.37.7
-      version: 6.37.7
+      specifier: 6.37.8
+      version: 6.37.8
     sequelize-typescript:
       specifier: 2.1.6
       version: 2.1.6
@@ -296,7 +299,7 @@ importers:
         version: 11.1.14(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)
       '@nestjs/sequelize':
         specifier: 'catalog:'
-        version: 11.0.1(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)(sequelize-typescript@2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.7(mysql2@3.12.0)))(sequelize@6.37.7(mysql2@3.12.0))
+        version: 11.0.1(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)(sequelize-typescript@2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.8(mysql2@3.12.0)))(sequelize@6.37.8(mysql2@3.12.0))
       '@nestjs/swagger':
         specifier: 'catalog:'
         version: 11.0.6(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)
@@ -413,10 +416,10 @@ importers:
         version: 6.1.1(rollup@4.59.0)(typescript@5.7.3)
       sequelize:
         specifier: 'catalog:'
-        version: 6.37.7(mysql2@3.12.0)
+        version: 6.37.8(mysql2@3.12.0)
       sequelize-typescript:
         specifier: 'catalog:'
-        version: 2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.7(mysql2@3.12.0))
+        version: 2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.8(mysql2@3.12.0))
       supertest:
         specifier: 'catalog:'
         version: 7.0.0
@@ -996,7 +999,7 @@ importers:
         version: 11.0.11(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)
       '@nestjs/sequelize':
         specifier: 'catalog:'
-        version: 11.0.1(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)(sequelize-typescript@2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.7(mysql2@3.12.0)))(sequelize@6.37.7(mysql2@3.12.0))
+        version: 11.0.1(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)(sequelize-typescript@2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.8(mysql2@3.12.0)))(sequelize@6.37.8(mysql2@3.12.0))
       '@nestjs/terminus':
         specifier: link:../../
         version: link:../..
@@ -1011,10 +1014,10 @@ importers:
         version: 7.8.2
       sequelize:
         specifier: 'catalog:'
-        version: 6.37.7(mysql2@3.12.0)
+        version: 6.37.8(mysql2@3.12.0)
       sequelize-typescript:
         specifier: 'catalog:'
-        version: 2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.7(mysql2@3.12.0))
+        version: 2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.8(mysql2@3.12.0))
     devDependencies:
       '@nestjs/testing':
         specifier: 'catalog:'
@@ -6202,8 +6205,8 @@ packages:
       reflect-metadata: '*'
       sequelize: '>=6.20.1'
 
-  sequelize@6.37.7:
-    resolution: {integrity: sha512-mCnh83zuz7kQxxJirtFD7q6Huy6liPanI67BSlbzSYgVNl5eXVdE2CN1FuAeZwG1SNpGsNRCV+bJAVVnykZAFA==}
+  sequelize@6.37.8:
+    resolution: {integrity: sha512-HJ0IQFqcTsTiqbEgiuioYFMSD00TP6Cz7zoTti+zVVBwVe9fEhev9cH6WnM3XU31+ABS356durAb99ZuOthnKw==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       ibm_db: '*'
@@ -7365,7 +7368,7 @@ snapshots:
   '@commitlint/is-ignored@19.7.1':
     dependencies:
       '@commitlint/types': 19.5.0
-      semver: 7.7.1
+      semver: 7.7.4
 
   '@commitlint/lint@19.7.1':
     dependencies:
@@ -8094,14 +8097,14 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@nestjs/sequelize@11.0.1(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)(sequelize-typescript@2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.7(mysql2@3.12.0)))(sequelize@6.37.7(mysql2@3.12.0))':
+  '@nestjs/sequelize@11.0.1(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)(sequelize-typescript@2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.8(mysql2@3.12.0)))(sequelize@6.37.8(mysql2@3.12.0))':
     dependencies:
       '@nestjs/common': 11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 11.0.11(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/microservices@11.0.11)(@nestjs/platform-express@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       reflect-metadata: 0.2.2
       rxjs: 7.8.2
-      sequelize: 6.37.7(mysql2@3.12.0)
-      sequelize-typescript: 2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.7(mysql2@3.12.0))
+      sequelize: 6.37.8(mysql2@3.12.0)
+      sequelize-typescript: 2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.8(mysql2@3.12.0))
 
   '@nestjs/swagger@11.0.6(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)':
     dependencies:
@@ -8559,7 +8562,7 @@ snapshots:
 
   '@types/sequelize@6.12.0(mysql2@3.12.0)':
     dependencies:
-      sequelize: 6.37.7(mysql2@3.12.0)
+      sequelize: 6.37.8(mysql2@3.12.0)
     transitivePeerDependencies:
       - ibm_db
       - mariadb
@@ -8687,7 +8690,7 @@ snapshots:
       globby: 11.1.0
       is-glob: 4.0.3
       minimatch: 9.0.5
-      semver: 7.7.1
+      semver: 7.7.4
       ts-api-utils: 1.4.3(typescript@5.7.3)
     optionalDependencies:
       typescript: 5.7.3
@@ -10290,7 +10293,7 @@ snapshots:
       minimatch: 3.1.2
       node-abort-controller: 3.1.1
       schema-utils: 3.3.0
-      semver: 7.7.1
+      semver: 7.7.4
       tapable: 2.2.1
       typescript: 5.7.3
       webpack: 5.98.0
@@ -10712,7 +10715,7 @@ snapshots:
 
   is-bun-module@1.3.0:
     dependencies:
-      semver: 7.7.1
+      semver: 7.7.4
 
   is-callable@1.2.7: {}
 
@@ -10895,7 +10898,7 @@ snapshots:
       '@babel/parser': 7.26.7
       '@istanbuljs/schema': 0.1.3
       istanbul-lib-coverage: 3.2.2
-      semver: 7.7.1
+      semver: 7.7.4
     transitivePeerDependencies:
       - supports-color
 
@@ -11194,7 +11197,7 @@ snapshots:
       jest-util: 29.7.0
       natural-compare: 1.4.0
       pretty-format: 29.7.0
-      semver: 7.7.1
+      semver: 7.7.4
     transitivePeerDependencies:
       - supports-color
 
@@ -11473,7 +11476,7 @@ snapshots:
 
   make-dir@4.0.0:
     dependencies:
-      semver: 7.7.1
+      semver: 7.7.4
 
   make-error@1.3.6: {}
 
@@ -11704,7 +11707,7 @@ snapshots:
 
   node-emoji@1.11.0:
     dependencies:
-      lodash: 4.17.21
+      lodash: 4.17.23
 
   node-int64@0.4.0: {}
 
@@ -11905,7 +11908,7 @@ snapshots:
       ky: 1.7.4
       registry-auth-token: 5.0.3
       registry-url: 6.0.1
-      semver: 7.7.1
+      semver: 7.7.4
 
   parent-module@1.0.1:
     dependencies:
@@ -12441,27 +12444,27 @@ snapshots:
 
   sequelize-pool@7.1.0: {}
 
-  sequelize-typescript@2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.7(mysql2@3.12.0)):
+  sequelize-typescript@2.1.6(@types/node@22.13.10)(@types/validator@13.12.2)(reflect-metadata@0.2.2)(sequelize@6.37.8(mysql2@3.12.0)):
     dependencies:
       '@types/node': 22.13.10
       '@types/validator': 13.12.2
       glob: 7.2.0
       reflect-metadata: 0.2.2
-      sequelize: 6.37.7(mysql2@3.12.0)
+      sequelize: 6.37.8(mysql2@3.12.0)
 
-  sequelize@6.37.7(mysql2@3.12.0):
+  sequelize@6.37.8(mysql2@3.12.0):
     dependencies:
       '@types/debug': 4.1.12
       '@types/validator': 13.12.2
       debug: 4.4.0(supports-color@5.5.0)
       dottie: 2.0.6
       inflection: 1.13.4
-      lodash: 4.17.21
+      lodash: 4.17.23
       moment: 2.30.1
       moment-timezone: 0.5.46
       pg-connection-string: 2.7.0
       retry-as-promised: 7.0.4
-      semver: 7.7.1
+      semver: 7.7.4
       sequelize-pool: 7.1.0
       toposort-class: 1.0.1
       uuid: 8.3.2
@@ -13100,7 +13103,7 @@ snapshots:
       is-npm: 6.0.0
       latest-version: 9.0.0
       pupa: 3.1.0
-      semver: 7.7.1
+      semver: 7.7.4
       xdg-basedir: 5.1.0
 
   uri-js@4.4.1:
