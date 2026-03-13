@@ -99,6 +99,9 @@ catalogs:
     amqplib:
       specifier: 0.10.7
       version: 0.10.7
+    axios:
+      specifier: ^1.7.9
+      version: 1.13.6
     class-transformer:
       specifier: 0.5.1
       version: 0.5.1
@@ -172,8 +175,8 @@ catalogs:
       specifier: 3.1.10
       version: 3.1.10
     portfinder:
-      specifier: 1.0.35
-      version: 1.0.35
+      specifier: 1.0.38
+      version: 1.0.38
     prettier:
       specifier: 3.5.3
       version: 3.5.3
@@ -392,7 +395,7 @@ importers:
         version: 2.29.3
       portfinder:
         specifier: 'catalog:'
-        version: 1.0.35
+        version: 1.0.38
       prettier:
         specifier: 'catalog:'
         version: 3.5.3
@@ -5830,8 +5833,8 @@ packages:
     resolution: {integrity: sha512-Nc3IT5yHzflTfbjgqWcCPpo7DaKy4FnpB0l/zCAW0Tc7jxAiuqSxHasntB3D7887LSrA93kDJ9IXovxJYxyLCA==}
     engines: {node: '>=4'}
 
-  portfinder@1.0.35:
-    resolution: {integrity: sha512-73JaFg4NwYNAufDtS5FsFu/PdM49ahJrO1i44aCRsDWju1z5wuGDaqyFUQWR6aJoK2JPDWlaYYAGFNIGTSUHSw==}
+  portfinder@1.0.38:
+    resolution: {integrity: sha512-rEwq/ZHlJIKw++XtLAO8PPuOQA/zaPJOZJ37BVuN97nLpMJeuDVLVGRwbFoBgLudgdTMP2hdRJP++H+8QOA3vg==}
     engines: {node: '>= 10.12'}
 
   possible-typed-array-names@1.0.0:
@@ -12001,7 +12004,7 @@ snapshots:
 
   pluralize@8.0.0: {}
 
-  portfinder@1.0.35:
+  portfinder@1.0.38:
     dependencies:
       async: 3.2.6
       debug: 4.4.0(supports-color@5.5.0)
