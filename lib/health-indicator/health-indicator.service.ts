@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { type HealthIndicatorResult } from './health-indicator-result.interface';
+import { rejectOnAbort } from '../utils/rejectOnAbort';
 
 /**
  * Helper service which can be used to create health indicator results
@@ -173,31 +174,18 @@ export class HealthCheckAttempt<Key extends Readonly<string> = string> {
    * @returns A promise that resolves to the health indicator result
    */
   async execute(): Promise<HealthIndicatorResult<Key>> {
+    const signals: AbortSignal[] = [];
+
+    if (this.timeoutMs !== undefined) {
+      signals.push(AbortSignal.timeout(this.timeoutMs));
+    }
+
     const controller = new AbortController();
-    let timer: ReturnType<typeof setTimeout> | undefined;
+    const signal = AbortSignal.any([controller.signal, ...signals]);
 
     try {
-      const promise = Promise.resolve(this.fn({ signal: controller.signal }));
-
-      if (this.timeoutMs !== undefined) {
-        const result = await Promise.race([
-          promise,
-          new Promise<never>((_, reject) => {
-            timer = setTimeout(() => {
-              controller.abort();
-              reject(
-                new Error(`Health check timed out after ${this.timeoutMs}ms`),
-              );
-            }, this.timeoutMs);
-          }),
-        ]);
-
-        return result === undefined
-          ? this.session.up()
-          : this.session.up(result);
-      }
-
-      const result = await promise;
+      const promise = Promise.resolve(this.fn({ signal }));
+      const result = await rejectOnAbort(promise, signal);
 
       return result === undefined ? this.session.up() : this.session.up(result);
     } catch (err) {
@@ -205,9 +193,6 @@ export class HealthCheckAttempt<Key extends Readonly<string> = string> {
         error: err instanceof Error ? err.message : String(err),
       });
     } finally {
-      if (timer) {
-        clearTimeout(timer);
-      }
       controller.abort();
     }
   }
