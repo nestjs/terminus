@@ -54,9 +54,13 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
 
     const result = await Promise.allSettled(
       healthIndicators.map(async (h) => {
-        if (h instanceof HealthCheckAttempt) return h.execute();
+        if (h instanceof HealthCheckAttempt) {
+          return h.execute();
+        }
         const res = await h();
-        if (res instanceof HealthCheckAttempt) return res.execute();
+        if (res instanceof HealthCheckAttempt) {
+          return res.execute();
+        }
         return res;
       }),
     );

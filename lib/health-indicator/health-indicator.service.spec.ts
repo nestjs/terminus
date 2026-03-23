@@ -86,7 +86,7 @@ describe('HealthCheckAttempt', () => {
   describe('execute', () => {
     it('should pass an AbortSignal to the callback', async () => {
       let receivedSignal: AbortSignal | undefined;
-      const attempt = session.attempt((signal) => {
+      const attempt = session.attempt(({ signal }) => {
         receivedSignal = signal;
       });
       await attempt.execute();
@@ -174,7 +174,7 @@ describe('HealthCheckAttempt', () => {
       expect(result).toEqual({
         test: {
           status: 'down',
-          error: expect.stringContaining('timed out'),
+          error: expect.stringContaining('TimeoutError'),
         },
       });
     });
@@ -182,7 +182,7 @@ describe('HealthCheckAttempt', () => {
     it('should abort the signal when timeout fires', async () => {
       let receivedSignal: AbortSignal | undefined;
       const attempt = session
-        .attempt(async (signal) => {
+        .attempt(async ({ signal }) => {
           receivedSignal = signal;
           return new Promise<void>((resolve) => setTimeout(resolve, 5000));
         })

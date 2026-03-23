@@ -8,4 +8,5 @@ import { type HealthCheckAttempt } from './health-indicator.service';
  */
 export type HealthIndicatorFunction =
   | (() => PromiseLike<HealthIndicatorResult> | HealthIndicatorResult)
-  | (() => PromiseLike<HealthCheckAttempt> | HealthCheckAttempt);
+  | (() => PromiseLike<HealthCheckAttempt> | HealthCheckAttempt)
+  | HealthCheckAttempt;
