@@ -49,8 +49,8 @@ export abstract class HealthIndicator {
   ): HealthIndicatorResult {
     return {
       [key]: {
-        status: isHealthy ? 'up' : 'down',
         ...data,
+        status: isHealthy ? 'up' : 'down',
       },
     };
   }
