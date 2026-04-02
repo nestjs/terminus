@@ -99,6 +99,9 @@ catalogs:
     amqplib:
       specifier: 0.10.7
       version: 0.10.7
+    axios:
+      specifier: ^1.7.9
+      version: 1.13.6
     class-transformer:
       specifier: 0.5.1
       version: 0.5.1
@@ -154,8 +157,8 @@ catalogs:
       specifier: 15.4.3
       version: 15.4.3
     lodash:
-      specifier: 4.17.23
-      version: 4.17.23
+      specifier: 4.18.1
+      version: 4.18.1
     mongoose:
       specifier: 8.10.1
       version: 8.10.1
@@ -613,7 +616,7 @@ importers:
         version: 5.9.3
       lodash:
         specifier: 'catalog:'
-        version: 4.17.23
+        version: 4.18.1
       reflect-metadata:
         specifier: 'catalog:'
         version: 0.2.2
@@ -680,7 +683,7 @@ importers:
         version: 0.14.2
       lodash:
         specifier: 'catalog:'
-        version: 4.17.23
+        version: 4.18.1
       reflect-metadata:
         specifier: 'catalog:'
         version: 0.2.2
@@ -756,7 +759,7 @@ importers:
         version: 0.14.2
       lodash:
         specifier: 'catalog:'
-        version: 4.17.23
+        version: 4.18.1
       redis:
         specifier: 'catalog:'
         version: 5.8.2
@@ -5249,6 +5252,9 @@ packages:
 
   lodash@4.17.23:
     resolution: {integrity: sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==}
+
+  lodash@4.18.1:
+    resolution: {integrity: sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==}
 
   log-symbols@4.1.0:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
@@ -11429,6 +11435,8 @@ snapshots:
 
   lodash@4.17.23: {}
 
+  lodash@4.18.1: {}
+
   log-symbols@4.1.0:
     dependencies:
       chalk: 4.1.2
@@ -11704,7 +11712,7 @@ snapshots:
 
   node-emoji@1.11.0:
     dependencies:
-      lodash: 4.17.21
+      lodash: 4.17.23
 
   node-int64@0.4.0: {}
 
@@ -12456,7 +12464,7 @@ snapshots:
       debug: 4.4.0(supports-color@5.5.0)
       dottie: 2.0.6
       inflection: 1.13.4
-      lodash: 4.17.21
+      lodash: 4.17.23
       moment: 2.30.1
       moment-timezone: 0.5.46
       pg-connection-string: 2.7.0
