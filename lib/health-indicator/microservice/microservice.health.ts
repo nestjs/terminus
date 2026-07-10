@@ -19,7 +19,7 @@ import { HealthIndicatorService } from '../health-indicator.service';
 // That is why the user has to pass the options as Type Param.
 interface MicroserviceOptionsLike {
   transport?: number;
-  options?: object;
+  options?: Record<string, any>;
 }
 
 /**
@@ -72,6 +72,31 @@ export class MicroserviceHealthIndicator {
     return await checkConnection();
   }
 
+  private setRmqHealthCheckDefaults(
+    options: MicroserviceHealthIndicatorOptions<MicroserviceOptionsLike>,
+  ) {
+    if (options.transport !== this.nestJsMicroservices.Transport.RMQ) {
+      return;
+    }
+
+    const rmqOptions = options.options || {};
+
+    if (
+      'queue' in rmqOptions ||
+      'noAssert' in rmqOptions ||
+      'queueOptions' in rmqOptions ||
+      'exchange' in rmqOptions ||
+      'routingKey' in rmqOptions
+    ) {
+      return;
+    }
+
+    options.options = {
+      ...rmqOptions,
+      noAssert: true,
+    };
+  }
+
   /**
    * Checks if the given microservice is up
    * @param key The key which will be used for the result object
@@ -94,6 +119,8 @@ export class MicroserviceHealthIndicator {
   ): Promise<HealthIndicatorResult<Key>> {
     const check = this.healthIndicatorService.check(key);
     const timeout = options.timeout || 1000;
+
+    this.setRmqHealthCheckDefaults(options);
 
     if (options.transport === this.nestJsMicroservices.Transport.KAFKA) {
       options.options = {
