@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { HttpModule, HttpService } from '@nestjs/axios';
+import { HttpService } from '@nestjs/axios';
 import { HttpHealthIndicator } from './http.health';
 import { checkPackages } from '../../utils/checkPackage.util';
 import { of } from 'rxjs';
@@ -15,13 +15,16 @@ const httpServiceMock = {
 };
 
 const nestJSAxiosMock = {
-  HttpService: httpServiceMock,
+  // getHttpService() does `new this.nestJsAxios.HttpService()`, so this
+  // needs to be a constructor, not a plain object.
+  HttpService: jest.fn().mockImplementation(() => httpServiceMock),
 };
 
 describe('Http Response Health Indicator', () => {
   let httpHealthIndicator: HttpHealthIndicator;
 
   beforeEach(async () => {
+    jest.clearAllMocks();
     (checkPackages as jest.Mock).mockImplementation((): any => [
       nestJSAxiosMock,
     ]);
@@ -29,14 +32,9 @@ describe('Http Response Health Indicator', () => {
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [HttpModule],
       providers: [
         HttpHealthIndicator,
         HealthIndicatorService,
-        {
-          provide: nestJSAxiosMock.HttpService as any,
-          useValue: httpServiceMock,
-        },
         {
           provide: TERMINUS_LOGGER,
           useValue: {
@@ -64,7 +62,8 @@ describe('Http Response Health Indicator', () => {
       await httpHealthIndicator.pingCheck('key', 'url', {
         httpClient,
       });
-      expect(httpServiceMock.request).toHaveBeenCalledWith({ url: 'url' });
+      expect(httpClient.request).toHaveBeenCalledWith({ url: 'url' });
+      expect(httpServiceMock.request).not.toHaveBeenCalled();
     });
 
     it('should throw an error if the response is not an axios error', async () => {

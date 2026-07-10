@@ -1,7 +1,6 @@
 import { type URL } from 'url';
 import type * as NestJSAxios from '@nestjs/axios';
 import { ConsoleLogger, Inject, Injectable, Scope } from '@nestjs/common';
-import { ModuleRef } from '@nestjs/core';
 import { lastValueFrom, type Observable } from 'rxjs';
 import { type HealthIndicatorResult } from '..';
 import {
@@ -34,7 +33,6 @@ export class HttpHealthIndicator {
   private nestJsAxios!: typeof NestJSAxios;
 
   constructor(
-    private readonly moduleRef: ModuleRef,
     @Inject(TERMINUS_LOGGER)
     private readonly logger: ConsoleLogger,
     private readonly healthIndicatorService: HealthIndicatorService,
@@ -55,19 +53,18 @@ export class HttpHealthIndicator {
     )[0];
   }
 
-  private getHttpService() {
-    try {
-      return this.moduleRef.get(this.nestJsAxios.HttpService, {
-        strict: false,
-      });
-    } catch (err) {
-      this.logger.error(
-        'It seems like "HttpService" is not available in the current context. Are you sure you imported the HttpModule from the @nestjs/axios package?',
-      );
-      throw new Error(
-        'It seems like "HttpService" is not available in the current context. Are you sure you imported the HttpModule from the @nestjs/axios package?',
-      );
-    }
+  /**
+   * Returns a plain, unconfigured `HttpService` backed by the default axios
+   * instance. This intentionally does not look up any `HttpService` a user
+   * may have registered elsewhere in their application (e.g. via
+   * `HttpModule.register(...)`) - doing so via a global, unscoped DI lookup
+   * previously let a health check silently pick up an unrelated module's
+   * configured axios instance (wrong baseURL, headers, interceptors, etc.).
+   * Pass a `httpClient` explicitly to `pingCheck`/`responseCheck` if you want
+   * to reuse your own preconfigured client.
+   */
+  private getHttpService(): HttpClientLike {
+    return new this.nestJsAxios.HttpService();
   }
 
   /**
