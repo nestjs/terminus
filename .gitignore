@@ -20,3 +20,6 @@ e2e/prisma/generated
 dist
 
 documentation
+.scratch/
+CLAUDE.md
+docs/agents
