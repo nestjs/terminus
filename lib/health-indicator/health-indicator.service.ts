@@ -187,7 +187,7 @@ export class HealthCheckAttempt<Key extends Readonly<string> = string> {
       const promise = Promise.resolve(this.fn({ signal }));
       const result = await rejectOnAbort(promise, signal);
 
-      return result === undefined ? this.session.up() : this.session.up(result);
+      return this.session.up(result as AdditionalData | undefined);
     } catch (err) {
       return this.session.down({
         error: err instanceof Error ? err.message : String(err),
