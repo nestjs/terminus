@@ -1,4 +1,4 @@
-import { setTimeout } from 'node:timers/promises';
+import * as timers from 'node:timers/promises';
 import { ShutdownSignal } from '@nestjs/common';
 import { type NestApplicationContext } from '@nestjs/core';
 import * as request from 'supertest';
@@ -10,7 +10,7 @@ describe('Graceful shutdown', () => {
   });
 
   it('should gracefully shutdown the application', async () => {
-    jest.spyOn(global, 'setTimeout');
+    jest.spyOn(timers, 'setTimeout');
     const setHealthEndpoint = bootstrapTestingModule({
       gracefulShutdownTimeoutMs: 64,
     }).setHealthEndpoint;
@@ -30,21 +30,21 @@ describe('Graceful shutdown', () => {
       },
     );
 
-    await setTimeout(16);
+    await timers.setTimeout(16);
     // 1. setTimeout is called by the `GracefulShutdownService`
     // 2. setTimeout is called above
-    expect(setTimeout).toHaveBeenCalledTimes(2);
+    expect(timers.setTimeout).toHaveBeenCalledTimes(2);
     expect(isClosed).toBe(false);
-    await setTimeout(16);
+    await timers.setTimeout(16);
     expect(isClosed).toBe(false);
-    await setTimeout(16);
+    await timers.setTimeout(16);
     expect(isClosed).toBe(false);
-    await setTimeout(64);
+    await timers.setTimeout(64);
     expect(isClosed).toBe(true);
   });
 
   it('should not delay the shutdown if the application if the timeout is 0', async () => {
-    jest.spyOn(global, 'setTimeout');
+    jest.spyOn(timers, 'setTimeout');
     const setHealthEndpoint = bootstrapTestingModule({
       gracefulShutdownTimeoutMs: 0,
     }).setHealthEndpoint;
@@ -61,6 +61,6 @@ describe('Graceful shutdown', () => {
       ShutdownSignal.SIGTERM,
     );
 
-    expect(setTimeout).not.toHaveBeenCalled();
+    expect(timers.setTimeout).not.toHaveBeenCalled();
   });
 });
