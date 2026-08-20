@@ -70,9 +70,11 @@ export class MongooseHealthIndicator {
    *
    */
   private async pingDb(connection: any, timeout: number) {
-    const promise =
-      connection.readyState === 1 ? Promise.resolve() : Promise.reject();
-    return await promiseTimeout(timeout, promise);
+    if (!connection.db) {
+      return Promise.reject();
+    }
+
+    return await promiseTimeout(timeout, connection.db.command({ ping: 1 }));
   }
 
   /**
