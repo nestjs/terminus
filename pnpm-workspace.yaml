@@ -67,7 +67,7 @@ catalog:
   "wait-port": "1.1.0"
   "rxjs": "7.8.2"
   "nodemon": "3.1.10"
-  "ts-loader": "9.5.4"
+  "ts-loader": "9.6.2"
   "tsconfig-paths": "4.2.0"
   "class-transformer": "0.5.1"
   "class-validator": "0.14.2"
