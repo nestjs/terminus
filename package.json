@@ -108,6 +108,7 @@
     "eslint-plugin-deprecation": "catalog:",
     "eslint-plugin-import": "catalog:",
     "eslint-plugin-unused-imports": "catalog:",
+    "express": "catalog:",
     "fastify": "catalog:",
     "husky": "catalog:",
     "ioredis": "catalog:",

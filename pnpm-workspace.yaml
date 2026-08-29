@@ -65,7 +65,7 @@ catalog:
   "tsx": "4.21.0"
   "typeorm": "0.3.31"
   "typescript": "5.9.3"
-  "@swc/core": "1.15.3"
+  "@swc/core": "1.15.33"
   "unplugin-swc": "1.5.9"
   "vite": "8.2.2"
   "vitest": "4.1.11"
@@ -83,3 +83,4 @@ catalog:
   "@types/sequelize": "6.12.0"
   "eslint-plugin-prettier": "5.2.3"
   "source-map-support": "0.5.21"
+  "express": "5.2.1"
