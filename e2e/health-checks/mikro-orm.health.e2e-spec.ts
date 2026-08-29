@@ -1,4 +1,3 @@
-import { MikroORM } from '@mikro-orm/core';
 import { type INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import {
@@ -6,7 +5,11 @@ import {
   type DynamicHealthEndpointFn,
 } from '../helper/index.js';
 
-describe('MikroOrmHealthIndicator', () => {
+// @mikro-orm/mysql and @mikro-orm/mongodb v7 require Node.js >= 22.17.
+const mikroOrm7DriversSupported =
+  Number.parseInt(process.versions.node.split('.')[0], 10) >= 22;
+
+describe.skipIf(!mikroOrm7DriversSupported)('MikroOrmHealthIndicator', () => {
   let app: INestApplication;
   let setHealthEndpoint: DynamicHealthEndpointFn;
 
@@ -91,26 +94,15 @@ describe('MikroOrmHealthIndicator', () => {
         });
       });
 
-      it('should indicate that mikroOrm is down if the connection has been closed after startup', async () => {
+      it('should indicate that mikroOrm is down if isConnected returns false', async () => {
         app = await setHealthEndpoint(({ healthCheck, mikroOrm }) =>
-          healthCheck.check([async () => mikroOrm.pingCheck('mikroOrm')]),
+          healthCheck.check([
+            async () =>
+              mikroOrm.pingCheck('mikroOrm', {
+                connection: { isConnected: async () => false },
+              }),
+          ]),
         ).start();
-
-        const up = {
-          mikroOrm: {
-            status: 'up',
-          },
-        };
-
-        request(app.getHttpServer()).get('/health').expect(200).expect({
-          status: 'ok',
-          info: up,
-          error: {},
-          details: up,
-        });
-
-        const orm = app.get(MikroORM);
-        await orm.close();
 
         const down = {
           mikroOrm: {

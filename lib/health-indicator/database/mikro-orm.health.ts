@@ -16,6 +16,11 @@ import { HealthIndicatorService } from '../health-indicator.service.js';
  */
 interface MikroOrmPingTarget {
   isConnected(): boolean | Promise<boolean>;
+  /**
+   * MikroORM 7 connects lazily (`init()` no longer opens a socket).
+   * Present on `MikroORM` and on driver `Connection` objects.
+   */
+  connect?: () => unknown | Promise<unknown>;
 }
 
 export interface MikroOrmPingCheckSettings {
@@ -101,7 +106,19 @@ export class MikroOrmHealthIndicator {
    */
   private async pingDb(connection: MikroOrmPingTarget, timeout: number) {
     const checker = async () => {
-      const isConnected = await connection.isConnected();
+      let isConnected = await connection.isConnected();
+
+      // v7: MikroORM.init() / Nest forRoot() no longer open the driver
+      // connection. Open it once when the first probe sees a cold ORM.
+      if (!isConnected && typeof connection.connect === 'function') {
+        try {
+          await connection.connect();
+        } catch {
+          throw new DatabaseNotConnectedError();
+        }
+        isConnected = await connection.isConnected();
+      }
+
       if (!isConnected) {
         throw new DatabaseNotConnectedError();
       }
