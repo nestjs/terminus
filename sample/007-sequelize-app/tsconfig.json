@@ -12,8 +12,9 @@
     "target": "es6",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./",
+    "rootDir": "./src",
     "skipLibCheck": true,
+    "types": ["node"],
     "esModuleInterop": true,
   },
   "include": [

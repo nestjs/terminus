@@ -18,5 +18,6 @@ e2e/prisma/generated
 
 # dist
 dist
+*.tsbuildinfo
 
 documentation

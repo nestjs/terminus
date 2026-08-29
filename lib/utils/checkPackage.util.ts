@@ -45,7 +45,9 @@ function optional<T = any>(module: string): T | null {
       module = process.cwd() + module.substring(1);
     }
     return optionalRequire(`${module}`);
-  } catch (err) {}
+  } catch {
+    // Package is optional; missing modules are handled by the caller.
+  }
   return null;
 }
 

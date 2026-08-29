@@ -59,7 +59,7 @@ export class TypeOrmHealthIndicator {
       return this.moduleRef.get(getDataSourceToken() as string, {
         strict: false,
       });
-    } catch (err) {
+    } catch {
       return null;
     }
   }

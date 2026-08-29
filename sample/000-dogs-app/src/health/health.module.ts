@@ -11,7 +11,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         errorLogStyle: configService.get('TERMINUS_ERROR_LOG_STYLE'),
         logger: configService.get('TERMINUS_LOGGER') === 'true',
         gracefulShutdownTimeoutMs: parseInt(
-          configService.get('TERMINUS_GRACEFUL_SHUTDOWN_TIMEOUT_MS'),
+          configService.get('TERMINUS_GRACEFUL_SHUTDOWN_TIMEOUT_MS') ?? '0',
           10,
         ),
       }),

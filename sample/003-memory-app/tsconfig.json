@@ -12,7 +12,9 @@
         "sourceMap": true,
         "allowJs": true,
         "outDir": "./dist",
+        "rootDir": "./src",
         "skipLibCheck": true,
+        "types": ["node"],
         "esModuleInterop": true,
     },
     "include": [

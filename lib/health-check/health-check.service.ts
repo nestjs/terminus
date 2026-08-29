@@ -65,8 +65,7 @@ export class HealthCheckService {
 
       default:
         // Ensure that we have exhaustively checked all cases
-        // eslint-disable-next-line unused-imports/no-unused-vars
-        const exhaustiveCheck: never = result.status;
+        const _exhaustiveCheck: never = result.status;
         throw new InternalServerErrorException();
     }
   }

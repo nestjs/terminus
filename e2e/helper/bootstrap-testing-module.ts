@@ -171,7 +171,6 @@ export function bootstrapTestingModule(
             driver: MongoDriver,
             dbName: 'test',
             discovery: { warnWhenNoEntities: false },
-            strict: true,
             clientUrl: 'mongodb://0.0.0.0:27017',
           }),
         );
@@ -188,7 +187,6 @@ export function bootstrapTestingModule(
             password: 'root',
             dbName: 'test',
             discovery: { warnWhenNoEntities: false },
-            strict: true,
           }),
         );
 

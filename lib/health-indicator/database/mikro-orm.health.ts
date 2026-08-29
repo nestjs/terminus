@@ -1,4 +1,3 @@
-import type * as MikroOrm from '@mikro-orm/core';
 import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { DatabaseNotConnectedError } from '../../errors/database-not-connected.error.js';
@@ -11,11 +10,21 @@ import {
 import { type HealthIndicatorResult } from '../health-indicator-result.interface.js';
 import { HealthIndicatorService } from '../health-indicator.service.js';
 
+/**
+ * Duck type shared by MikroORM v6 `Connection` and v7 `MikroORM`.
+ * Optional peers are not imported as values so both majors keep working.
+ */
+interface MikroOrmPingTarget {
+  isConnected(): boolean | Promise<boolean>;
+}
+
 export interface MikroOrmPingCheckSettings {
   /**
-   * The connection which the ping check should get executed
+   * The connection which the ping check should get executed.
+   * Accepts a MikroORM `Connection` (v6), the `MikroORM` instance (v7),
+   * or any object exposing `isConnected()`.
    */
-  connection?: any;
+  connection?: MikroOrmPingTarget;
   /**
    * The amount of time the check should require in ms
    */
@@ -46,18 +55,41 @@ export class MikroOrmHealthIndicator {
   }
 
   /**
-   * Returns the connection of the current DI context
+   * Returns a ping target from the current DI context.
+   * MikroORM v6 exposes `isConnected()` on the driver connection;
+   * v7 also exposes it on the `MikroORM` instance itself.
    */
-  private getContextConnection(): MikroOrm.Connection | null {
-    const { MikroORM } = optionalRequire('@mikro-orm/core') as typeof MikroOrm;
-    const mikro = this.moduleRef.get(MikroORM, { strict: false });
+  private getContextConnection(): MikroOrmPingTarget | null {
+    const mikroOrm = optionalRequire('@mikro-orm/core') as {
+      MikroORM?: new (...args: any[]) => MikroOrmPingTarget & {
+        em?: { getConnection?: () => MikroOrmPingTarget };
+      };
+    } | null;
 
-    const connection: MikroOrm.Connection = mikro.em.getConnection();
-
-    if (!connection) {
+    if (!mikroOrm?.MikroORM) {
       return null;
     }
-    return connection;
+
+    try {
+      const mikro = this.moduleRef.get(mikroOrm.MikroORM, {
+        strict: false,
+      }) as MikroOrmPingTarget & {
+        em?: { getConnection?: () => MikroOrmPingTarget };
+      };
+
+      if (typeof mikro?.isConnected === 'function') {
+        return mikro;
+      }
+
+      const connection = mikro?.em?.getConnection?.();
+      if (typeof connection?.isConnected === 'function') {
+        return connection;
+      }
+
+      return null;
+    } catch {
+      return null;
+    }
   }
 
   /**
@@ -67,7 +99,7 @@ export class MikroOrmHealthIndicator {
    * @param timeout The timeout how long the ping should maximum take
    *
    */
-  private async pingDb(connection: MikroOrm.Connection, timeout: number) {
+  private async pingDb(connection: MikroOrmPingTarget, timeout: number) {
     const checker = async () => {
       const isConnected = await connection.isConnected();
       if (!isConnected) {

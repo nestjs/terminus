@@ -50,8 +50,8 @@
     "test:e2e:all": "pnpm run test:e2e && pnpm run --if-present -r e2e --passWithNoTests",
     "format": "prettier --check \"{lib,e2e,sample,tools}/**/*.ts\"",
     "format:fix": "prettier --write \"{lib,e2e,sample,tools}/**/*.ts\"",
-    "lint": "eslint \"lib/**/*.ts\"",
-    "lint:fix": "eslint \"lib/**/*.ts\" --fix",
+    "lint": "oxlint --config oxlint.json lib/",
+    "lint:fix": "oxlint --config oxlint.json lib/ --fix",
     "precommit": "lint-staged",
     "prepublish": "pnpm run build",
     "prepublish:next": "pnpm run build",
@@ -96,6 +96,7 @@
     "@types/express": "catalog:",
     "@types/node": "catalog:",
     "@types/supertest": "catalog:",
+    "@typescript/typescript6": "catalog:",
     "@typescript-eslint/eslint-plugin": "catalog:",
     "@typescript-eslint/parser": "catalog:",
     "amqp-connection-manager": "catalog:",
@@ -105,7 +106,6 @@
     "eslint": "catalog:",
     "eslint-config-prettier": "catalog:",
     "eslint-import-resolver-typescript": "catalog:",
-    "eslint-plugin-deprecation": "catalog:",
     "eslint-plugin-import": "catalog:",
     "eslint-plugin-unused-imports": "catalog:",
     "express": "catalog:",
@@ -117,6 +117,7 @@
     "mongoose": "catalog:",
     "mysql2": "catalog:",
     "nats": "catalog:",
+    "oxlint": "catalog:",
     "portfinder": "catalog:",
     "prettier": "catalog:",
     "prisma": "catalog:",
@@ -139,8 +140,8 @@
   "peerDependencies": {
     "@grpc/grpc-js": "*",
     "@grpc/proto-loader": "*",
-    "@mikro-orm/core": "*",
-    "@mikro-orm/nestjs": "*",
+    "@mikro-orm/core": ">=6",
+    "@mikro-orm/nestjs": ">=6",
     "@nestjs/axios": "^4.0.0 || ^12.0.0",
     "@nestjs/common": "^11.0.0 || ^12.0.0",
     "@nestjs/core": "^11.0.0 || ^12.0.0",
@@ -252,119 +253,6 @@
           "test",
           "sample"
         ]
-      ]
-    }
-  },
-  "eslintConfig": {
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-      "project": "tsconfig.eslint.json",
-      "sourceType": "module"
-    },
-    "plugins": [
-      "@typescript-eslint/eslint-plugin",
-      "unused-imports"
-    ],
-    "extends": [
-      "plugin:deprecation/recommended",
-      "plugin:@typescript-eslint/eslint-recommended",
-      "plugin:@typescript-eslint/recommended",
-      "plugin:import/recommended",
-      "plugin:import/typescript",
-      "prettier"
-    ],
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "overrides": [
-      {
-        "files": [
-          "*.{js,ts}"
-        ],
-        "settings": {
-          "import/resolver": {
-            "typescript": {
-              "alwaysTryTypes": true,
-              "project": [
-                "./tsconfig.json",
-                "./e2e/tsconfig.json",
-                "./tsconfig.eslint.json"
-              ]
-            }
-          }
-        }
-      },
-      {
-        "files": [
-          "*.spec.ts",
-          "*.e2e-spec.ts"
-        ],
-        "env": {
-          "jest": false
-        }
-      }
-    ],
-    "rules": {
-      "curly": 1,
-      "prefer-const": 1,
-      "no-console": 1,
-      "strict": 1,
-      "no-debugger": 1,
-      "@typescript-eslint/interface-name-prefix": "off",
-      "@typescript-eslint/explicit-function-return-type": "off",
-      "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-use-before-define": "off",
-      "@typescript-eslint/no-non-null-assertion": "off",
-      "@typescript-eslint/prefer-optional-chain": 1,
-      "@typescript-eslint/no-unused-vars": "off",
-      "unused-imports/no-unused-imports": "error",
-      "unused-imports/no-unused-vars": [
-        "warn",
-        {
-          "vars": "all",
-          "varsIgnorePattern": "^_",
-          "args": "after-used",
-          "argsIgnorePattern": "^_"
-        }
-      ],
-      "@typescript-eslint/consistent-type-imports": [
-        2,
-        {
-          "prefer": "type-imports",
-          "fixStyle": "inline-type-imports"
-        }
-      ],
-      "import/newline-after-import": 2,
-      "import/order": [
-        2,
-        {
-          "groups": [
-            "builtin",
-            "external",
-            "internal",
-            [
-              "parent",
-              "sibling",
-              "index"
-            ]
-          ],
-          "pathGroups": [
-            {
-              "pattern": "@nestjs*",
-              "group": "external",
-              "position": "before"
-            }
-          ],
-          "distinctGroup": false,
-          "alphabetize": {
-            "order": "asc",
-            "orderImportKind": "asc",
-            "caseInsensitive": true
-          },
-          "newlines-between": "never",
-          "pathGroupsExcludedImportTypes": []
-        }
       ]
     }
   }

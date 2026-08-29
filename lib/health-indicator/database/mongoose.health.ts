@@ -59,7 +59,7 @@ export class MongooseHealthIndicator {
           strict: false,
         },
       );
-    } catch (err) {
+    } catch {
       return null;
     }
   }

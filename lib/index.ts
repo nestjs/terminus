@@ -10,7 +10,6 @@ export * from './errors/index.js';
 export {
   HealthCheck,
   HealthCheckService,
-  // eslint-disable-next-line deprecation/deprecation
   HealthCheckError,
   HealthCheckStatus,
   HealthCheckResult,

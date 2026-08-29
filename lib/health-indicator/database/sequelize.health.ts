@@ -56,7 +56,7 @@ export class SequelizeHealthIndicator {
       return this.moduleRef.get(getConnectionToken() as string, {
         strict: false,
       });
-    } catch (err) {
+    } catch {
       return null;
     }
   }

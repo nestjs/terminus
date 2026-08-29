@@ -82,7 +82,6 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
           throw error;
         }
 
-        // eslint-disable-next-line deprecation/deprecation
         errors.push((error as HealthCheckError).causes);
       }
     });

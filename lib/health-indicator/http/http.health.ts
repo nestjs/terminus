@@ -60,7 +60,7 @@ export class HttpHealthIndicator {
       return this.moduleRef.get(this.nestJsAxios.HttpService, {
         strict: false,
       });
-    } catch (err) {
+    } catch {
       this.logger.error(
         'It seems like "HttpService" is not available in the current context. Are you sure you imported the HttpModule from the @nestjs/axios package?',
       );
