@@ -80,7 +80,7 @@ describe('GRPCHealthIndicator', () => {
       }));
       try {
         await grpc.checkService<GrpcOptions>('grpc', 'test');
-      } catch (err) {}
+      } catch {}
     });
 
     it('should throw an error when the timeout runs out', async () => {

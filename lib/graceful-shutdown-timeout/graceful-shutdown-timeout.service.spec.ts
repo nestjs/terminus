@@ -20,7 +20,6 @@ const loggerMock: Partial<LoggerService> = {
 
 describe('GracefulShutdownService', () => {
   let service: GracefulShutdownService;
-  let logger: LoggerService;
 
   describe('when gracefulShutdownTimeoutMs is set', () => {
     beforeEach(async () => {
@@ -36,7 +35,6 @@ describe('GracefulShutdownService', () => {
         ],
       }).compile();
 
-      logger = module.get(TERMINUS_LOGGER);
       service = module.get(GracefulShutdownService);
     });
 

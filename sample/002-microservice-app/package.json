@@ -30,11 +30,6 @@
   "devDependencies": {
     "@types/jest": "catalog:",
     "@types/node": "catalog:",
-    "@typescript-eslint/eslint-plugin": "catalog:",
-    "@typescript-eslint/parser": "catalog:",
-    "eslint": "catalog:",
-    "eslint-config-prettier": "catalog:",
-    "eslint-plugin-import": "catalog:",
     "jest": "catalog:",
     "supertest": "catalog:",
     "ts-jest": "catalog:",

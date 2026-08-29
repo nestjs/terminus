@@ -10,7 +10,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "lint": "oxlint src/",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
@@ -33,11 +33,6 @@
     "@types/jest": "catalog:",
     "@types/node": "catalog:",
     "@types/supertest": "catalog:",
-    "@typescript-eslint/eslint-plugin": "catalog:",
-    "@typescript-eslint/parser": "catalog:",
-    "eslint": "catalog:",
-    "eslint-config-prettier": "catalog:",
-    "eslint-plugin-prettier": "catalog:",
     "jest": "catalog:",
     "prettier": "catalog:",
     "source-map-support": "catalog:",
@@ -46,7 +41,8 @@
     "ts-loader": "catalog:",
     "ts-node": "catalog:",
     "tsconfig-paths": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "oxlint": "catalog:"
   },
   "jest": {
     "moduleFileExtensions": [

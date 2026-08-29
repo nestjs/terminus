@@ -83,7 +83,7 @@ describe('HealthCheckService', () => {
 
     try {
       await healthCheckService.check([() => Promise.resolve({})]);
-    } catch (error) {
+    } catch {
       expect(logger.error).toHaveBeenCalledWith('error message');
     }
   });
