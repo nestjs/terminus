@@ -57,9 +57,22 @@ describe('MikroOrmHealthIndicator', () => {
       });
 
       it('should throw an error if runs into timeout error', async () => {
+        // `isConnected()` is typically a local flag check and can resolve in
+        // well under 1ms against a live MySQL, so inject a slow connection.
+        const slowConnection = {
+          isConnected: () =>
+            new Promise<boolean>((resolve) => {
+              setTimeout(() => resolve(true), 50);
+            }),
+        };
+
         app = await setHealthEndpoint(({ healthCheck, mikroOrm }) =>
           healthCheck.check([
-            async () => mikroOrm.pingCheck('mikroOrm', { timeout: 1 }),
+            async () =>
+              mikroOrm.pingCheck('mikroOrm', {
+                timeout: 1,
+                connection: slowConnection,
+              }),
           ]),
         ).start();
 

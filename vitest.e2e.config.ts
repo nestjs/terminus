@@ -11,7 +11,8 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'node',
-    setupFiles: ['reflect-metadata', './e2e/vitest.setup.ts'],
+    setupFiles: ['reflect-metadata'],
+    globalSetup: './e2e/vitest.global-setup.ts',
     include: ['e2e/**/*.e2e-spec.ts'],
     testTimeout: 300_000,
     hookTimeout: 300_000,

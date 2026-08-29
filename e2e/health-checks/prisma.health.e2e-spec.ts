@@ -4,8 +4,8 @@ import {
   bootstrapTestingModule,
   type DynamicHealthEndpointFn,
 } from '../helper/index.js';
-import { PrismaClient as MongoPrismaClient } from '../prisma/generated/mongodb.js';
-import { PrismaClient as MySQLPrismaClient } from '../prisma/generated/mysql.js';
+import { PrismaClient as MongoPrismaClient } from '../prisma/generated/mongodb/index.js';
+import { PrismaClient as MySQLPrismaClient } from '../prisma/generated/mysql/index.js';
 
 describe('PrismaHealthIndicator', () => {
   let app: INestApplication;
