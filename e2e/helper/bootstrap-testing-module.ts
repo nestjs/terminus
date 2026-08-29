@@ -14,6 +14,8 @@ import { type FastifyAdapter } from '@nestjs/platform-fastify';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Test } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { type HealthCheckOptions } from '../../lib/health-check/index.js';
+import { MikroOrmHealthIndicator } from '../../lib/health-indicator/database/mikro-orm.health.js';
 import {
   DiskHealthIndicator,
   HealthCheck,
@@ -28,9 +30,7 @@ import {
   TerminusModule,
   TypeOrmHealthIndicator,
   type TerminusModuleOptions,
-} from '../../lib';
-import { type HealthCheckOptions } from '../../lib/health-check';
-import { MikroOrmHealthIndicator } from '../../lib/health-indicator/database/mikro-orm.health';
+} from '../../lib/index.js';
 
 type TestingHealthFunc = (props: {
   healthCheck: HealthCheckService;

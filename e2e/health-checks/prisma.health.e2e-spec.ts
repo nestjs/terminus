@@ -1,13 +1,11 @@
 import { type INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
+import request from 'supertest';
 import {
   bootstrapTestingModule,
   type DynamicHealthEndpointFn,
-} from '../helper';
-import { PrismaClient as MongoPrismaClient } from '../prisma/generated/mongodb';
-import { PrismaClient as MySQLPrismaClient } from '../prisma/generated/mysql';
-
-jest.setTimeout(300_000);
+} from '../helper/index.js';
+import { PrismaClient as MongoPrismaClient } from '../prisma/generated/mongodb.js';
+import { PrismaClient as MySQLPrismaClient } from '../prisma/generated/mysql.js';
 
 describe('PrismaHealthIndicator', () => {
   let app: INestApplication;

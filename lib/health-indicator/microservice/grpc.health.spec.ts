@@ -1,26 +1,26 @@
-import { GRPCHealthIndicator } from './grpc.health';
-import { checkPackages } from '../../utils/checkPackage.util';
+import { GRPCHealthIndicator } from './grpc.health.js';
+import { checkPackages } from '../../utils/checkPackage.util.js';
 import { GrpcOptions, Transport } from '@nestjs/microservices';
-import { TimeoutError } from '../../errors';
-import { HealthCheckError } from '../../health-check/health-check.error';
+import { TimeoutError } from '../../errors/index.js';
+import { HealthCheckError } from '../../health-check/health-check.error.js';
 import { Test } from '@nestjs/testing';
-import { HealthIndicatorService } from '../health-indicator.service';
+import { HealthIndicatorService } from '../health-indicator.service.js';
 
-jest.mock('../../utils/checkPackage.util');
+vi.mock('../../utils/checkPackage.util.js');
 
 // == MOCKS ==
 const healthServiceMock = {
-  check: jest.fn().mockImplementation((): any => ({
+  check: vi.fn().mockImplementation((): any => ({
     toPromise: () => Promise.resolve({ status: 1 }),
   })),
 };
 
 const grpcClientMock = {
-  getService: jest.fn().mockImplementation((): any => healthServiceMock),
+  getService: vi.fn().mockImplementation((): any => healthServiceMock),
 };
 
 const clientProxyFactoryMock = {
-  create: jest.fn().mockImplementation((): any => grpcClientMock),
+  create: vi.fn().mockImplementation((): any => grpcClientMock),
 };
 
 const nestJSMicroservicesMock = {
@@ -30,7 +30,7 @@ const nestJSMicroservicesMock = {
 describe('GRPCHealthIndicator', () => {
   let grpc: GRPCHealthIndicator;
   beforeEach(async () => {
-    (checkPackages as jest.Mock).mockImplementation((): any => [
+    (checkPackages as ReturnType<typeof vi.fn>).mockImplementation((): any => [
       nestJSMicroservicesMock,
     ]);
 
@@ -92,7 +92,7 @@ describe('GRPCHealthIndicator', () => {
     });
 
     it('should use the custom healthServiceCheck function', async () => {
-      const healthServiceCheck = jest
+      const healthServiceCheck = vi
         .fn()
         .mockImplementation((): any => ({ status: 1 }));
 

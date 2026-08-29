@@ -3,18 +3,18 @@ import type * as NestJSAxios from '@nestjs/axios';
 import { ConsoleLogger, Inject, Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { lastValueFrom, type Observable } from 'rxjs';
-import { type HealthIndicatorResult } from '..';
+import { type HealthIndicatorResult } from '../health-indicator-result.interface.js';
 import {
   type AxiosRequestConfig,
   type AxiosResponse,
-} from './axios.interfaces';
-import { type AxiosError } from '../../errors/axios.error';
-import { TERMINUS_LOGGER } from '../../terminus.constants';
-import { checkPackages, isAxiosError } from '../../utils';
+} from './axios.interfaces.js';
+import { type AxiosError } from '../../errors/axios.error.js';
+import { TERMINUS_LOGGER } from '../../terminus.constants.js';
+import { checkPackages, isAxiosError } from '../../utils/index.js';
 import {
   HealthIndicatorService,
   type HealthIndicatorSession,
-} from '../health-indicator.service';
+} from '../health-indicator.service.js';
 
 interface HttpClientLike {
   request<T = any>(config: any): Observable<AxiosResponse<T>>;

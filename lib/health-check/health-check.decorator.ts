@@ -1,5 +1,6 @@
 import { Header } from '@nestjs/common';
-import { getHealthCheckSchema } from './health-check.schema';
+import { getHealthCheckSchema } from './health-check.schema.js';
+import { optionalRequire } from '../utils/checkPackage.util.js';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 type Swagger = typeof import('@nestjs/swagger');
@@ -43,7 +44,7 @@ export const HealthCheck = (
   if (swaggerDocumentation) {
     let swagger: Swagger | null = null;
     try {
-      swagger = require('@nestjs/swagger');
+      swagger = optionalRequire('@nestjs/swagger');
     } catch {}
 
     if (swagger) {

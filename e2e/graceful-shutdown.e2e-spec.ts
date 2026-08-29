@@ -1,16 +1,16 @@
 import { ShutdownSignal } from '@nestjs/common';
 import { type NestApplicationContext } from '@nestjs/core';
-import * as request from 'supertest';
-import { bootstrapTestingModule } from './helper';
-import { sleep } from '../lib/utils';
+import request from 'supertest';
+import { bootstrapTestingModule } from './helper/index.js';
+import { sleep } from '../lib/utils/index.js';
 
 describe('Graceful shutdown', () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should gracefully shutdown the application', async () => {
-    jest.spyOn(global, 'setTimeout');
+    vi.spyOn(global, 'setTimeout');
     const setHealthEndpoint = bootstrapTestingModule({
       gracefulShutdownTimeoutMs: 64,
     }).setHealthEndpoint;
@@ -44,7 +44,7 @@ describe('Graceful shutdown', () => {
   });
 
   it('should not delay the shutdown if the application if the timeout is 0', async () => {
-    jest.spyOn(global, 'setTimeout');
+    vi.spyOn(global, 'setTimeout');
     const setHealthEndpoint = bootstrapTestingModule({
       gracefulShutdownTimeoutMs: 0,
     }).setHealthEndpoint;

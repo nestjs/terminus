@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import {
   promiseTimeout,
   TimeoutError as PromiseTimeoutError,
-} from '../../utils';
-import { type HealthIndicatorResult } from '../health-indicator-result.interface';
-import { HealthIndicatorService } from '../health-indicator.service';
+} from '../../utils/index.js';
+import { type HealthIndicatorResult } from '../health-indicator-result.interface.js';
+import { HealthIndicatorService } from '../health-indicator.service.js';
 
 type PingCommandSignature = { [Key in string]?: number };
 

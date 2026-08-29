@@ -1,14 +1,14 @@
 import { Injectable, Scope } from '@nestjs/common';
 import type * as NestJSMicroservices from '@nestjs/microservices';
-import { type HealthIndicatorResult } from '../';
 import {
   checkPackages,
   promiseTimeout,
   TimeoutError as PromiseTimeoutError,
   type PropType,
   isError,
-} from '../../utils';
-import { HealthIndicatorService } from '../health-indicator.service';
+} from '../../utils/index.js';
+import { type HealthIndicatorResult } from '../health-indicator-result.interface.js';
+import { HealthIndicatorService } from '../health-indicator.service.js';
 
 // Since @nestjs/microservices is lazily loaded we are not able to use
 // its types. It would end up in the d.ts file if we would use the types.

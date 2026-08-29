@@ -1,6 +1,6 @@
 /* eslint-disable deprecation/deprecation */
-import { CONNECTION_NOT_FOUND } from './messages.constant';
-import { HealthCheckError } from '../health-check/health-check.error';
+import { CONNECTION_NOT_FOUND } from './messages.constant.js';
+import { HealthCheckError } from '../health-check/health-check.error.js';
 
 /**
  * Error which gets thrown when the connection

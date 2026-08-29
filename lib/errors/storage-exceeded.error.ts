@@ -1,6 +1,6 @@
 /* eslint-disable deprecation/deprecation */
-import { STORAGE_EXCEEDED } from './messages.constant';
-import { HealthCheckError } from '../health-check/health-check.error';
+import { STORAGE_EXCEEDED } from './messages.constant.js';
+import { HealthCheckError } from '../health-check/health-check.error.js';
 
 /**
  * Error which gets thrown when the given storage threshold

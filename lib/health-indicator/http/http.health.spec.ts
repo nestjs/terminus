@@ -1,17 +1,17 @@
 import { Test } from '@nestjs/testing';
 import { HttpModule, HttpService } from '@nestjs/axios';
-import { HttpHealthIndicator } from './http.health';
-import { checkPackages } from '../../utils/checkPackage.util';
+import { HttpHealthIndicator } from './http.health.js';
+import { checkPackages } from '../../utils/checkPackage.util.js';
 import { of } from 'rxjs';
-import { TERMINUS_LOGGER } from '../../terminus.constants';
+import { TERMINUS_LOGGER } from '../../terminus.constants.js';
 import { AxiosError } from 'axios';
-import { HealthCheckError } from 'lib/health-check';
-import { HealthIndicatorService } from '../health-indicator.service';
-jest.mock('../../utils/checkPackage.util');
+import { HealthCheckError } from '../../health-check/health-check.error.js';
+import { HealthIndicatorService } from '../health-indicator.service.js';
+vi.mock('../../utils/checkPackage.util.js');
 
 // == MOCKS ==
 const httpServiceMock = {
-  request: jest.fn(),
+  request: vi.fn(),
 };
 
 const nestJSAxiosMock = {
@@ -22,7 +22,7 @@ describe('Http Response Health Indicator', () => {
   let httpHealthIndicator: HttpHealthIndicator;
 
   beforeEach(async () => {
-    (checkPackages as jest.Mock).mockImplementation((): any => [
+    (checkPackages as ReturnType<typeof vi.fn>).mockImplementation((): any => [
       nestJSAxiosMock,
     ]);
   });
@@ -40,8 +40,8 @@ describe('Http Response Health Indicator', () => {
         {
           provide: TERMINUS_LOGGER,
           useValue: {
-            error: jest.fn(),
-            setContext: jest.fn(),
+            error: vi.fn(),
+            setContext: vi.fn(),
           },
         },
       ],
@@ -59,7 +59,7 @@ describe('Http Response Health Indicator', () => {
     });
     it('should make use of a custom httpClient', async () => {
       const httpClient = {
-        request: jest.fn().mockReturnValue(of([])),
+        request: vi.fn().mockReturnValue(of([])),
       } as any as HttpService;
       await httpHealthIndicator.pingCheck('key', 'url', {
         httpClient,

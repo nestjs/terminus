@@ -5,12 +5,12 @@ import {
   Injectable,
   LoggerService,
 } from '@nestjs/common';
-import { TerminusModuleOptions } from '../';
+import { type TerminusModuleOptions } from '../terminus-options.interface.js';
 import {
   TERMINUS_LOGGER,
   TERMINUS_MODULE_OPTIONS,
-} from '../terminus.constants';
-import { sleep } from '../utils';
+} from '../terminus.constants.js';
+import { sleep } from '../utils/index.js';
 
 /**
  * Handles Graceful shutdown timeout useful to await

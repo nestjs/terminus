@@ -1,13 +1,14 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import type * as NestJSSequelize from '@nestjs/sequelize';
-import { type HealthIndicatorResult } from '../..';
 import {
   promiseTimeout,
   TimeoutError as PromiseTimeoutError,
   checkPackages,
-} from '../../utils';
-import { HealthIndicatorService } from '../health-indicator.service';
+  optionalRequire,
+} from '../../utils/index.js';
+import { type HealthIndicatorResult } from '../health-indicator-result.interface.js';
+import { HealthIndicatorService } from '../health-indicator.service.js';
 
 export interface SequelizePingCheckSettings {
   /**
@@ -47,9 +48,9 @@ export class SequelizeHealthIndicator {
    * Returns the connection of the current DI context
    */
   private getContextConnection(): any | null {
-    const { getConnectionToken } =
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      require('@nestjs/sequelize/dist/common/sequelize.utils') as typeof NestJSSequelize;
+    const { getConnectionToken } = optionalRequire(
+      '@nestjs/sequelize',
+    ) as typeof NestJSSequelize;
 
     try {
       return this.moduleRef.get(getConnectionToken() as string, {

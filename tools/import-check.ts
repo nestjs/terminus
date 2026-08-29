@@ -4,6 +4,9 @@
  *
  */
 
+import { rollup } from 'rollup';
+import dts from 'rollup-plugin-dts';
+
 const allowList = [
   // Dependencies which are directly required by Terminus or NestJS itself
   '@nestjs/core',
@@ -45,10 +48,41 @@ const allowList = [
   'wasi',
   'worker',
   'zlib',
+  'node:assert',
+  'node:buffer',
+  'node:child_process',
+  'node:console',
+  'node:cluster',
+  'node:crypto',
+  'node:dgram',
+  'node:dns',
+  'node:events',
+  'node:fs',
+  'node:http',
+  'node:module',
+  'node:http2',
+  'node:https',
+  'node:net',
+  'node:os',
+  'node:path',
+  'node:perf_hooks',
+  'node:process',
+  'node:querystring',
+  'node:readline',
+  'node:repl',
+  'node:stream',
+  'node:string_decoder',
+  'node:timers',
+  'node:tls',
+  'node:tty',
+  'node:url',
+  'node:util',
+  'node:v8',
+  'node:vm',
+  'node:wasi',
+  'node:worker',
+  'node:zlib',
 ];
-
-import { rollup } from 'rollup';
-import dts from 'rollup-plugin-dts';
 
 rollup({
   input: './dist/index.d.ts',

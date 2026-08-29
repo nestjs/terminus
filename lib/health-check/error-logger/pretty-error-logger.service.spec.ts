@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { PrettyErrorLogger } from './pretty-error-logger.service';
+import { PrettyErrorLogger } from './pretty-error-logger.service.js';
 
 const GREEN = '\x1b[0m\x1b[32m';
 const RED = '\x1b[0m\x1b[31m';

@@ -5,12 +5,12 @@ import {
   type TcpClientOptions,
   Transport,
 } from '@nestjs/microservices';
-import * as request from 'supertest';
+import request from 'supertest';
 import {
   bootstrapMicroservice,
   bootstrapTestingModule,
   type DynamicHealthEndpointFn,
-} from '../helper';
+} from '../helper/index.js';
 
 describe('MicroserviceHealthIndicator', () => {
   let app: INestApplication;

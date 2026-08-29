@@ -1,16 +1,17 @@
 # source
 lib
-index.ts
 package-lock.json
 .eslintrc.js
 tsconfig.json
+tsconfig.build.json
 .prettierrc
 documentation
 sample
 .github
 e2e
 tools
-jest.json
+vitest.config.ts
+vitest.e2e.config.ts
 renovate.json
 LICENSE
 Gulpfile.js

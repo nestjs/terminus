@@ -1,4 +1,14 @@
-import { Logger } from '@nestjs/common/services/logger.service';
+import { createRequire } from 'node:module';
+import { Logger } from '@nestjs/common';
+
+/**
+ * Synchronous module loader used for optional peer dependencies.
+ * `createRequire` keeps these lookups working when this package is consumed
+ * as ESM (including via Node.js `require(esm)`).
+ *
+ * @internal
+ */
+export const optionalRequire = createRequire(import.meta.url);
 
 /**
  * Generates the string which packages are missing and
@@ -34,7 +44,7 @@ function optional<T = any>(module: string): T | null {
     if (module[0] in { '.': 1 }) {
       module = process.cwd() + module.substring(1);
     }
-    return require(`${module}`);
+    return optionalRequire(`${module}`);
   } catch (err) {}
   return null;
 }

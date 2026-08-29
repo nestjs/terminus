@@ -1,16 +1,15 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { isNil } from '@nestjs/common/utils/shared.utils';
-import type checkDiskSpace from 'check-disk-space';
+import { isNil } from '@nestjs/common/utils/shared.utils.js';
 import {
   type DiskHealthIndicatorOptions,
   type DiskOptionsWithThresholdPercent,
-} from './disk-health-options.type';
-import { type HealthIndicatorResult } from '../';
-import { STORAGE_EXCEEDED } from '../../errors/messages.constant';
-import { CHECK_DISK_SPACE_LIB } from '../../terminus.constants';
-import { HealthIndicatorService } from '../health-indicator.service';
+} from './disk-health-options.type.js';
+import { STORAGE_EXCEEDED } from '../../errors/messages.constant.js';
+import { CHECK_DISK_SPACE_LIB } from '../../terminus.constants.js';
+import { type HealthIndicatorResult } from '../health-indicator-result.interface.js';
+import { HealthIndicatorService } from '../health-indicator.service.js';
 
-type CheckDiskSpace = typeof checkDiskSpace;
+type CheckDiskSpace = (path: string) => Promise<{ free: number; size: number }>;
 
 /**
  * The DiskHealthIndicator contains checks which are related

@@ -1,12 +1,12 @@
-export { TerminusModule } from './terminus.module';
+export { TerminusModule } from './terminus.module.js';
 export {
   TerminusModuleOptions,
   TerminusAsyncModuleOptions,
   TerminusOptionsFactory,
   TerminusAsyncOptions,
-} from './terminus-options.interface';
-export * from './health-indicator';
-export * from './errors';
+} from './terminus-options.interface.js';
+export * from './health-indicator/index.js';
+export * from './errors/index.js';
 export {
   HealthCheck,
   HealthCheckService,
@@ -14,4 +14,4 @@ export {
   HealthCheckError,
   HealthCheckStatus,
   HealthCheckResult,
-} from './health-check';
+} from './health-check/index.js';

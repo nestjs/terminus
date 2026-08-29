@@ -1,4 +1,4 @@
-import { type HealthIndicatorFunction } from './health-indicator';
+import { type HealthIndicatorFunction } from './health-indicator.js';
 
 /**
  * @publicApi

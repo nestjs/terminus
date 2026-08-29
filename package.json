@@ -1,6 +1,7 @@
 {
   "name": "@nestjs/terminus",
-  "version": "11.1.1",
+  "version": "12.0.0",
+  "type": "module",
   "description": "Terminus integration provides readiness/liveness health checks for NestJS.",
   "repository": {
     "type": "git",
@@ -27,31 +28,43 @@
   ],
   "license": "MIT",
   "author": "Livio Brunner",
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": "^20.19.0 || ^22.12.0 || >=24.0.0"
+  },
   "packageManager": "pnpm@9.15.9",
   "scripts": {
-    "dev": "nest build --watch",
-    "build": "nest build",
+    "dev": "tsc -p tsconfig.build.json --watch",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json && cp -r lib/health-indicator/microservice/protos dist/health-indicator/microservice/protos",
     "build:all": "pnpm run build && pnpm run -r build",
     "test:all": "pnpm run test && pnpm run -if-present -r test --passWithNoTests",
-    "test:e2e:all": "npm run test:e2e && pnpm run --if-present -r e2e --passWithNoTests",
+    "test:e2e:all": "pnpm run test:e2e && pnpm run --if-present -r e2e --passWithNoTests",
     "format": "prettier --check \"{lib,e2e,sample,tools}/**/*.ts\"",
     "format:fix": "prettier --write \"{lib,e2e,sample,tools}/**/*.ts\"",
     "lint": "eslint \"lib/**/*.ts\"",
-    "lint:fix": "eslint \"lib/**/*.ts\" \"e2e/**/*.ts\" \"tools/**/*.ts\" --fix",
+    "lint:fix": "eslint \"lib/**/*.ts\" --fix",
     "precommit": "lint-staged",
-    "prepublish": "npm run build",
-    "prepublish:next": "npm run build",
+    "prepublish": "pnpm run build",
+    "prepublish:next": "pnpm run build",
     "publish:next": "npm publish --access public --tag next",
-    "prepublish:npm": "npm run build",
+    "prepublish:npm": "pnpm run build",
     "publish:npm": "npm publish --access public",
     "test": "pnpm run test:ut && pnpm run test:import",
-    "test:e2e": "jest --config=e2e/jest-e2e.json --detectOpenHandles --forceExit",
-    "test:ut": "jest --detectOpenHandles",
-    "test:ut:cov": "pnpm run test:ut -- --coverage",
-    "test:import": "ts-node tools/import-check.ts",
+    "test:e2e": "vitest run --config vitest.e2e.config.ts",
+    "test:ut": "vitest run",
+    "test:ut:cov": "vitest run --coverage",
+    "test:import": "tsx tools/import-check.ts",
     "release": "release-it",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "dependencies": {
     "boxen": "5.1.2",
@@ -81,7 +94,6 @@
     "@prisma/client": "catalog:",
     "@release-it/conventional-changelog": "catalog:",
     "@types/express": "catalog:",
-    "@types/jest": "catalog:",
     "@types/node": "catalog:",
     "@types/supertest": "catalog:",
     "@typescript-eslint/eslint-plugin": "catalog:",
@@ -95,12 +107,10 @@
     "eslint-import-resolver-typescript": "catalog:",
     "eslint-plugin-deprecation": "catalog:",
     "eslint-plugin-import": "catalog:",
-    "eslint-plugin-jest": "catalog:",
     "eslint-plugin-unused-imports": "catalog:",
     "fastify": "catalog:",
     "husky": "catalog:",
     "ioredis": "catalog:",
-    "jest": "catalog:",
     "kafkajs": "catalog:",
     "lint-staged": "catalog:",
     "mongoose": "catalog:",
@@ -116,10 +126,13 @@
     "sequelize": "catalog:",
     "sequelize-typescript": "catalog:",
     "supertest": "catalog:",
-    "ts-jest": "catalog:",
-    "ts-node": "catalog:",
+    "tsx": "catalog:",
     "typeorm": "catalog:",
     "typescript": "catalog:",
+    "@swc/core": "catalog:",
+    "unplugin-swc": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:",
     "wait-port": "catalog:"
   },
   "peerDependencies": {
@@ -127,13 +140,13 @@
     "@grpc/proto-loader": "*",
     "@mikro-orm/core": "*",
     "@mikro-orm/nestjs": "*",
-    "@nestjs/axios": "^2.0.0 || ^3.0.0 || ^4.0.0",
-    "@nestjs/common": "^10.0.0 || ^11.0.0",
-    "@nestjs/core": "^10.0.0 || ^11.0.0",
-    "@nestjs/microservices": "^10.0.0 || ^11.0.0",
-    "@nestjs/mongoose": "^11.0.0",
-    "@nestjs/sequelize": "^10.0.0 || ^11.0.0",
-    "@nestjs/typeorm": "^10.0.0 || ^11.0.0",
+    "@nestjs/axios": "^4.0.0 || ^12.0.0",
+    "@nestjs/common": "^11.0.0 || ^12.0.0",
+    "@nestjs/core": "^11.0.0 || ^12.0.0",
+    "@nestjs/microservices": "^11.0.0 || ^12.0.0",
+    "@nestjs/mongoose": "^11.0.0 || ^12.0.0",
+    "@nestjs/sequelize": "^11.0.0 || ^12.0.0",
+    "@nestjs/typeorm": "^11.0.0 || ^12.0.0",
     "@prisma/client": "*",
     "mongoose": "*",
     "reflect-metadata": "0.1.x || 0.2.x",
@@ -241,37 +254,10 @@
       ]
     }
   },
-  "jest": {
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "json"
-    ],
-    "transform": {
-      "^.+\\.ts$": "ts-jest",
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "setupFiles": [
-      "<rootDir>/node_modules/reflect-metadata/Reflect.js"
-    ],
-    "testRegex": "/lib/.*\\.(test|spec).(ts|tsx|js)$",
-    "collectCoverageFrom": [
-      "lib/**/*.{js,jsx,tsx,ts}",
-      "!**/node_modules/**",
-      "!**/vendor/**"
-    ],
-    "coverageReporters": [
-      "json",
-      "lcov"
-    ],
-    "coverageDirectory": "./coverage",
-    "testEnvironment": "node"
-  },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-      "project": "tsconfig.json",
+      "project": "tsconfig.eslint.json",
       "sourceType": "module"
     },
     "plugins": [
@@ -288,8 +274,7 @@
     ],
     "root": true,
     "env": {
-      "node": true,
-      "jest": true
+      "node": true
     },
     "overrides": [
       {
@@ -302,7 +287,8 @@
               "alwaysTryTypes": true,
               "project": [
                 "./tsconfig.json",
-                "./e2e/tsconfig.json"
+                "./e2e/tsconfig.json",
+                "./tsconfig.eslint.json"
               ]
             }
           }
@@ -310,14 +296,12 @@
       },
       {
         "files": [
-          "*.spec.ts"
+          "*.spec.ts",
+          "*.e2e-spec.ts"
         ],
         "env": {
-          "jest": true
-        },
-        "extends": [
-          "plugin:jest/recommended"
-        ]
+          "jest": false
+        }
       }
     ],
     "rules": {

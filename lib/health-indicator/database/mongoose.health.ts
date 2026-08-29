@@ -1,13 +1,14 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import type * as NestJSMongoose from '@nestjs/mongoose';
-import { type HealthIndicatorResult } from '../..';
 import {
   promiseTimeout,
   TimeoutError as PromiseTimeoutError,
   checkPackages,
-} from '../../utils';
-import { HealthIndicatorService } from '../health-indicator.service';
+  optionalRequire,
+} from '../../utils/index.js';
+import { type HealthIndicatorResult } from '../health-indicator-result.interface.js';
+import { HealthIndicatorService } from '../health-indicator.service.js';
 
 export interface MongoosePingCheckSettings {
   /**
@@ -47,9 +48,9 @@ export class MongooseHealthIndicator {
    * Returns the connection of the current DI context
    */
   private getContextConnection(): any | null {
-    const { getConnectionToken } =
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      require('@nestjs/mongoose') as typeof NestJSMongoose;
+    const { getConnectionToken } = optionalRequire(
+      '@nestjs/mongoose',
+    ) as typeof NestJSMongoose;
 
     try {
       return this.moduleRef.get(

@@ -1,21 +1,21 @@
 import { Test } from '@nestjs/testing';
 import { LoggerService } from '@nestjs/common';
-import { GracefulShutdownService } from './graceful-shutdown-timeout.service';
+import { GracefulShutdownService } from './graceful-shutdown-timeout.service.js';
 import {
   TERMINUS_LOGGER,
   TERMINUS_MODULE_OPTIONS,
-} from '../terminus.constants';
-import { sleep } from '../utils';
+} from '../terminus.constants.js';
+import { sleep } from '../utils/index.js';
 
-jest.mock('../utils', () => ({
-  sleep: jest.fn(),
+vi.mock('../utils/index.js', () => ({
+  sleep: vi.fn(),
 }));
 
 const loggerMock: Partial<LoggerService> = {
-  log: jest.fn(),
-  error: jest.fn(),
-  warn: jest.fn(),
-  debug: jest.fn(),
+  log: vi.fn(),
+  error: vi.fn(),
+  warn: vi.fn(),
+  debug: vi.fn(),
 };
 
 describe('GracefulShutdownService', () => {
@@ -24,7 +24,7 @@ describe('GracefulShutdownService', () => {
 
   describe('when gracefulShutdownTimeoutMs is set', () => {
     beforeEach(async () => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
       const module = await Test.createTestingModule({
         providers: [
           GracefulShutdownService,
@@ -74,7 +74,7 @@ describe('GracefulShutdownService', () => {
 
   describe('when gracefulShutdownTimeoutMs is 0', () => {
     beforeEach(async () => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
       const module = await Test.createTestingModule({
         providers: [
           GracefulShutdownService,
@@ -102,7 +102,7 @@ describe('GracefulShutdownService', () => {
 
   describe('when gracefulShutdownTimeoutMs is undefined', () => {
     beforeEach(async () => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
       const module = await Test.createTestingModule({
         providers: [
           GracefulShutdownService,

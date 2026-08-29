@@ -1,7 +1,7 @@
 import { type INestMicroservice, Module } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
-import * as waitPort from 'wait-port';
+import waitPort from 'wait-port';
 
 @Module({})
 class ApplicationModule {}

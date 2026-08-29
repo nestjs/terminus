@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "nodenext",
+        "moduleResolution": "nodenext",
         "declaration": false,
         "noImplicitAny": false,
         "removeComments": true,
@@ -11,7 +12,8 @@
         "sourceMap": true,
         "allowJs": true,
         "outDir": "./dist",
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "esModuleInterop": true
     },
     "include": [
         "src/**/*"

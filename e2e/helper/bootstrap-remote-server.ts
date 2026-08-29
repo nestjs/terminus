@@ -1,6 +1,6 @@
 import { type Server } from 'http';
-import * as express from 'express';
-import * as portfinder from 'portfinder';
+import express from 'express';
+import portfinder from 'portfinder';
 
 type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;
 export type DynamicRemoteServerFn = ThenArg<

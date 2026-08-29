@@ -1,4 +1,4 @@
-import { type HealthIndicatorResult } from './';
+import { type HealthIndicatorResult } from './health-indicator-result.interface.js';
 
 /**
  * A health indicator function for a health check

@@ -1,1 +1,1 @@
-export * from './memory.health';
+export * from './memory.health.js';

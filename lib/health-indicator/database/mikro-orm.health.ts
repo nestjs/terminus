@@ -1,14 +1,15 @@
 import type * as MikroOrm from '@mikro-orm/core';
 import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import { type HealthIndicatorResult } from '..';
-import { DatabaseNotConnectedError } from '../../errors/database-not-connected.error';
+import { DatabaseNotConnectedError } from '../../errors/database-not-connected.error.js';
 import {
   TimeoutError as PromiseTimeoutError,
   promiseTimeout,
   checkPackages,
-} from '../../utils';
-import { HealthIndicatorService } from '../health-indicator.service';
+  optionalRequire,
+} from '../../utils/index.js';
+import { type HealthIndicatorResult } from '../health-indicator-result.interface.js';
+import { HealthIndicatorService } from '../health-indicator.service.js';
 
 export interface MikroOrmPingCheckSettings {
   /**
@@ -48,8 +49,7 @@ export class MikroOrmHealthIndicator {
    * Returns the connection of the current DI context
    */
   private getContextConnection(): MikroOrm.Connection | null {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { MikroORM } = require('@mikro-orm/core') as typeof MikroOrm;
+    const { MikroORM } = optionalRequire('@mikro-orm/core') as typeof MikroOrm;
     const mikro = this.moduleRef.get(MikroORM, { strict: false });
 
     const connection: MikroOrm.Connection = mikro.em.getConnection();

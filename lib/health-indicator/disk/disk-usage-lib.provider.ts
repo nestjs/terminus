@@ -1,5 +1,5 @@
 import checkDiskSpace from 'check-disk-space';
-import { CHECK_DISK_SPACE_LIB } from '../../terminus.constants';
+import { CHECK_DISK_SPACE_LIB } from '../../terminus.constants.js';
 
 /**
  * Wrapper of the check-disk-space library.

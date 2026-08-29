@@ -1,16 +1,19 @@
-import { join } from 'path';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { Injectable, Scope } from '@nestjs/common';
 import type * as NestJSMicroservices from '@nestjs/microservices';
 import { type Observable } from 'rxjs';
-import { type HealthIndicatorResult } from '../..';
 import {
   checkPackages,
   isError,
   promiseTimeout,
   type PropType,
   TimeoutError as PromiseTimeoutError,
-} from '../../utils';
-import { HealthIndicatorService } from '../health-indicator.service';
+} from '../../utils/index.js';
+import { type HealthIndicatorResult } from '../health-indicator-result.interface.js';
+import { HealthIndicatorService } from '../health-indicator.service.js';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 /**
  * The status of the request service
