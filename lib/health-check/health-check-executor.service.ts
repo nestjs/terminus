@@ -1,4 +1,11 @@
-import { Injectable, type BeforeApplicationShutdown } from '@nestjs/common';
+import { setTimeout } from 'node:timers/promises';
+import {
+  type BeforeApplicationShutdown,
+  Inject,
+  Injectable,
+  type LoggerService,
+  ShutdownSignal,
+} from '@nestjs/common';
 import {
   type HealthCheckResult,
   type HealthCheckStatus,
@@ -9,6 +16,11 @@ import {
   type HealthIndicatorResult,
 } from '../health-indicator/index.js';
 import { HealthCheckAttempt } from '../health-indicator/health-indicator.service.js';
+import { type TerminusModuleOptions } from '../terminus-options.interface.js';
+import {
+  TERMINUS_LOGGER,
+  TERMINUS_MODULE_OPTIONS,
+} from '../terminus.constants.js';
 
 /**
  * This class is responsible for executing the health indicators and returning the result.
@@ -18,6 +30,13 @@ import { HealthCheckAttempt } from '../health-indicator/health-indicator.service
 @Injectable()
 export class HealthCheckExecutor implements BeforeApplicationShutdown {
   private isShuttingDown = false;
+
+  constructor(
+    @Inject(TERMINUS_LOGGER)
+    private readonly logger: LoggerService,
+    @Inject(TERMINUS_MODULE_OPTIONS)
+    private readonly options: TerminusModuleOptions,
+  ) {}
 
   /**
    * Executes the given health indicators.
@@ -42,8 +61,21 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
   /**
    * @internal
    */
-  beforeApplicationShutdown(): void {
+  async beforeApplicationShutdown(signal?: string) {
     this.isShuttingDown = true;
+
+    const timeoutMs = this.options.gracefulShutdownTimeoutMs ?? 0;
+    if (timeoutMs <= 0) {
+      return;
+    }
+
+    this.logger.log(`Received termination signal ${signal || ''}`);
+
+    if (signal === ShutdownSignal.SIGTERM) {
+      this.logger.log(`Awaiting ${timeoutMs}ms before shutdown`);
+      await setTimeout(timeoutMs);
+      this.logger.log(`Timeout reached, shutting down now`);
+    }
   }
 
   private async executeHealthIndicators(

@@ -5,6 +5,17 @@ import {
   HealthIndicatorService,
 } from '../health-indicator/index.js';
 import { HealthCheckResult } from './health-check-result.interface.js';
+import {
+  TERMINUS_LOGGER,
+  TERMINUS_MODULE_OPTIONS,
+} from '../terminus.constants.js';
+import { setTimeout } from 'node:timers/promises';
+
+vi.mock('node:timers/promises', () => ({
+  setTimeout: vi.fn(),
+}));
+
+const loggerMock = { log: vi.fn(), error: vi.fn(), warn: vi.fn() };
 
 ////////////////////////////////////////////////////////////////
 
@@ -23,14 +34,21 @@ describe('HealthCheckExecutorService', () => {
   let healthCheckExecutor: HealthCheckExecutor;
   let h: HealthIndicatorService;
 
-  beforeEach(async () => {
-    const module = Test.createTestingModule({
-      providers: [HealthCheckExecutor, HealthIndicatorService],
-    });
-    const context = await module.compile();
+  const bootstrap = async (options = {}) => {
+    vi.clearAllMocks();
+    const context = await Test.createTestingModule({
+      providers: [
+        HealthCheckExecutor,
+        HealthIndicatorService,
+        { provide: TERMINUS_LOGGER, useValue: loggerMock },
+        { provide: TERMINUS_MODULE_OPTIONS, useValue: options },
+      ],
+    }).compile();
     healthCheckExecutor = context.get(HealthCheckExecutor);
     h = context.get(HealthIndicatorService);
-  });
+  };
+
+  beforeEach(() => bootstrap());
 
   describe('execute', () => {
     it('should support HealthCheckAttempt in the health indicators array', async () => {
@@ -163,5 +181,48 @@ describe('HealthCheckExecutorService', () => {
         },
       });
     });
+  });
+
+  describe('beforeApplicationShutdown', () => {
+    it('should report shutting_down before the graceful timeout elapses', async () => {
+      await bootstrap({ gracefulShutdownTimeoutMs: 1000 });
+      let statusDuringWait: string | undefined;
+      vi.mocked(setTimeout).mockImplementationOnce(async () => {
+        statusDuringWait = (await healthCheckExecutor.execute([])).status;
+      });
+
+      await healthCheckExecutor.beforeApplicationShutdown('SIGTERM');
+
+      expect(setTimeout).toHaveBeenCalledWith(1000);
+      expect(statusDuringWait).toBe('shutting_down');
+      expect(loggerMock.log).toHaveBeenCalledWith(
+        'Received termination signal SIGTERM',
+      );
+      expect(loggerMock.log).toHaveBeenCalledWith(
+        'Awaiting 1000ms before shutdown',
+      );
+      expect(loggerMock.log).toHaveBeenCalledWith(
+        'Timeout reached, shutting down now',
+      );
+    });
+
+    it('should not wait if the signal is not SIGTERM', async () => {
+      await bootstrap({ gracefulShutdownTimeoutMs: 1000 });
+      await healthCheckExecutor.beforeApplicationShutdown('SIGINT');
+      expect(setTimeout).not.toHaveBeenCalled();
+      expect((await healthCheckExecutor.execute([])).status).toBe(
+        'shutting_down',
+      );
+    });
+
+    it.each([{ gracefulShutdownTimeoutMs: 0 }, {}])(
+      'should not wait nor log with options %j',
+      async (options) => {
+        await bootstrap(options);
+        await healthCheckExecutor.beforeApplicationShutdown('SIGTERM');
+        expect(setTimeout).not.toHaveBeenCalled();
+        expect(loggerMock.log).not.toHaveBeenCalled();
+      },
+    );
   });
 });

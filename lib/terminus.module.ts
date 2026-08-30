@@ -1,5 +1,4 @@
 import { type DynamicModule, Module, type Provider } from '@nestjs/common';
-import { GracefulShutdownService } from './graceful-shutdown-timeout/graceful-shutdown-timeout.service.js';
 import { HealthCheckService } from './health-check/index.js';
 import { HealthCheckExecutor } from './health-check/health-check-executor.service.js';
 import { DiskUsageLibProvider } from './health-indicator/disk/disk-usage-lib.provider.js';
@@ -20,7 +19,6 @@ const baseProviders: Provider[] = [
   DiskUsageLibProvider,
   HealthCheckExecutor,
   HealthCheckService,
-  GracefulShutdownService,
   ...HEALTH_INDICATORS,
 ];
 

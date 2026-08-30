@@ -35,10 +35,13 @@ describe('Graceful shutdown', () => {
     );
 
     await timers.setTimeout(16);
-    // 1. setTimeout is called by the `GracefulShutdownService`
+    // 1. setTimeout is called by the `HealthCheckExecutor`
     // 2. setTimeout is called above
     expect(timers.setTimeout).toHaveBeenCalledTimes(2);
     expect(isClosed).toBe(false);
+    const drain = await request(app.getHttpServer()).get('/health');
+    expect(drain.status).toBe(503);
+    expect(drain.body.status).toBe('shutting_down');
     await timers.setTimeout(16);
     expect(isClosed).toBe(false);
     await timers.setTimeout(16);
