@@ -17,15 +17,13 @@ describe('HealthModule (e2e)', () => {
 
   afterAll(() => app.close());
 
-  it('/health (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/health')
-      .expect(200)
-      .expect({
-        status: 'ok',
-        info: { dog: { status: 'up' } },
-        error: {},
-        details: { dog: { status: 'up' } },
-      });
+  it('/health (GET)', async () => {
+    const { status, body } = await request(app.getHttpServer()).get('/health');
+
+    // Whether the disk check passes depends on how full the machine running it
+    // is, so the assertion is that the response code matches the verdict.
+    const verdict = body.details['disk health'].status;
+    expect(verdict).toMatch(/^(up|down)$/);
+    expect(status).toBe(verdict === 'up' ? 200 : 503);
   });
 });

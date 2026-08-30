@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TerminusModule } from '@nestjs/terminus';
-import { HealthController } from './health.controller';
+import { HealthController } from './health.controller.js';
 
 @Module({
   imports: [
@@ -9,6 +9,7 @@ import { HealthController } from './health.controller';
       name: 'db1Connection',
       useFactory: () => ({
         type: 'mysql',
+        connectorPackage: 'mysql2',
         host: 'localhost',
         port: 3306,
         username: 'root',
@@ -21,6 +22,7 @@ import { HealthController } from './health.controller';
       name: 'db2Connection',
       useFactory: () => ({
         type: 'mysql',
+        connectorPackage: 'mysql2',
         host: 'localhost',
         port: 3307,
         username: 'root',

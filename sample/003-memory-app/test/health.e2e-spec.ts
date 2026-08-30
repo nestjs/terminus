@@ -17,15 +17,13 @@ describe('HealthModule (e2e)', () => {
 
   afterAll(() => app.close());
 
-  it('/health (GET)', () => {
-    return request(app.getHttpServer())
+  it('/health (GET)', async () => {
+    const { body } = await request(app.getHttpServer())
       .get('/health')
-      .expect(200)
-      .expect({
-        status: 'ok',
-        info: { dog: { status: 'up' } },
-        error: {},
-        details: { dog: { status: 'up' } },
-      });
+      .expect(200);
+
+    expect(body.status).toBe('ok');
+    expect(body.details.memory_heap.status).toBe('up');
+    expect(body.details.memory_rss.status).toBe('up');
   });
 });
