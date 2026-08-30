@@ -22,8 +22,6 @@ export class MemoryHealthIndicator {
    * @param key The key which will be used for the result object
    * @param options The options of the `MemoryHealthIndicator`
    *
-   * @throws {StorageExceededError} In case the heap has exceeded the given threshold
-   *
    *
    * @returns {Promise<HealthIndicatorResult>} The result of the health indicator check
    *
@@ -50,8 +48,6 @@ export class MemoryHealthIndicator {
    *
    * @param key The key which will be used for the result object
    * @param options The options of the `MemoryHealthIndicator`
-   *
-   * @throws {StorageExceededError} In case the rss has exceeded the given threshold
    *
    * @returns {Promise<HealthIndicatorResult>} The result of the health indicator check
    *

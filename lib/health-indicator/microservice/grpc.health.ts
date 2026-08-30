@@ -179,9 +179,6 @@ export class GRPCHealthIndicator {
    *   healthServiceCheck: (healthService: any, service: string) =>
    *     healthService.check({ service }).toPromise(),
    * })
-   *
-   * @throws {TimeoutError} Gets thrown in case a health check exceeded the given timeout
-   * @throws {UnhealthyResponseCodeError} Gets thrown in case the received response is unhealthy
    */
   async checkService<
     GrpcOptions extends GrpcClientOptionsLike = GrpcClientOptionsLike,

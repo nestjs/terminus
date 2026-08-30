@@ -47,8 +47,6 @@ export class DiskHealthIndicator {
    *
    * @param key The key which will be used for the result object
    *
-   * @throws {StorageExceededError} In case the disk storage has exceeded the given threshold
-   *
    * @returns {Promise<HealthIndicatorResult>} The result of the health indicator check
    *
    * @example
