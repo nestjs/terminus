@@ -65,11 +65,11 @@ export class MicroserviceHealthIndicator {
     options: MicroserviceHealthIndicatorOptions<MicroserviceClientOptions>,
   ): Promise<void> {
     const client = this.nestJsMicroservices.ClientProxyFactory.create(options);
-    const checkConnection = async () => {
+    try {
       await client.connect();
+    } finally {
       await client.close();
-    };
-    return await checkConnection();
+    }
   }
 
   /**
