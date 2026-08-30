@@ -2,7 +2,6 @@ import { createRequire } from 'node:module';
 import { Header } from '@nestjs/common';
 import { getHealthCheckSchema } from './health-check.schema.js';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 type Swagger = typeof import('@nestjs/swagger');
 const require = createRequire(import.meta.url);
 

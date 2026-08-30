@@ -1,5 +1,5 @@
 /**
- * The inject token for the third party `check-disk-space` library
+ * The inject token for the disk usage reader
  * @internal
  */
 export const CHECK_DISK_SPACE_LIB = 'TERMINUS:CHECK_DISK_SPACE_LIB';

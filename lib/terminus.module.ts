@@ -1,7 +1,6 @@
 import { type DynamicModule, Module, type Provider } from '@nestjs/common';
 import { GracefulShutdownService } from './graceful-shutdown-timeout/graceful-shutdown-timeout.service.js';
 import { HealthCheckService } from './health-check/index.js';
-import { ERROR_LOGGERS } from './health-check/error-logger/error-loggers.provider.js';
 import { HealthCheckExecutor } from './health-check/health-check-executor.service.js';
 import { DiskUsageLibProvider } from './health-indicator/disk/disk-usage-lib.provider.js';
 import { HealthIndicatorService } from './health-indicator/health-indicator.service.js';
@@ -17,7 +16,6 @@ import {
 } from './terminus.providers.js';
 
 const baseProviders: Provider[] = [
-  ...ERROR_LOGGERS,
   HealthIndicatorService,
   DiskUsageLibProvider,
   HealthCheckExecutor,

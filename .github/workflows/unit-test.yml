@@ -23,7 +23,7 @@ jobs:
 
 
     - run: pnpm i
-    - run: pnpm build:all
+    - run: pnpm build
     - run: pnpm test:all
       env:
         CI: true
