@@ -1,1 +1,1 @@
-export * from './http.health';
+export * from './http.health.js';

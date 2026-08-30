@@ -1,18 +1,18 @@
-export * from './health-indicator-result.interface';
-export * from './health-indicator';
+export * from './health-indicator-result.interface.js';
+export * from './health-indicator.js';
 export {
   HealthIndicatorService,
   HealthCheckAttempt,
-} from './health-indicator.service';
+} from './health-indicator.service.js';
 
 /** Health Indicators */
-export * from './http/http.health';
-export * from './database/mongoose.health';
-export * from './database/typeorm.health';
-export * from './database/mikro-orm.health';
-export * from './database/sequelize.health';
-export * from './database/prisma.health';
-export * from './microservice/microservice.health';
-export * from './microservice/grpc.health';
-export * from './disk';
-export * from './memory';
+export * from './http/http.health.js';
+export * from './database/mongoose.health.js';
+export * from './database/typeorm.health.js';
+export * from './database/mikro-orm.health.js';
+export * from './database/sequelize.health.js';
+export * from './database/prisma.health.js';
+export * from './microservice/microservice.health.js';
+export * from './microservice/grpc.health.js';
+export * from './disk/index.js';
+export * from './memory/index.js';

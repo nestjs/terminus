@@ -1,4 +1,4 @@
-import { DATABASE_NOT_CONNECTED } from './messages.constant';
+import { DATABASE_NOT_CONNECTED } from './messages.constant.js';
 
 /**
  * Error which gets thrown when the database is not connected

@@ -6,11 +6,11 @@ import {
   Injectable,
   type LoggerService,
 } from '@nestjs/common';
-import { type TerminusModuleOptions } from '../terminus-options.interface';
+import { type TerminusModuleOptions } from '../terminus-options.interface.js';
 import {
   TERMINUS_LOGGER,
   TERMINUS_MODULE_OPTIONS,
-} from '../terminus.constants';
+} from '../terminus.constants.js';
 
 /**
  * Handles Graceful shutdown timeout useful to await

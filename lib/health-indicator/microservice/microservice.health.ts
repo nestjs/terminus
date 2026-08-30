@@ -1,14 +1,15 @@
 import { Injectable, Scope } from '@nestjs/common';
 import type * as NestJSMicroservices from '@nestjs/microservices';
-import { type HealthIndicatorResult } from '../';
+import { type HealthIndicatorResult } from '../index.js';
 import {
-  checkPackages,
+  assertPackages,
+  loadPackage,
   promiseTimeout,
   TimeoutError as PromiseTimeoutError,
   type PropType,
   isError,
-} from '../../utils';
-import { HealthIndicatorService } from '../health-indicator.service';
+} from '../../utils/index.js';
+import { HealthIndicatorService } from '../health-indicator.service.js';
 
 // Since @nestjs/microservices is lazily loaded we are not able to use
 // its types. It would end up in the d.ts file if we would use the types.
@@ -43,20 +44,15 @@ export type MicroserviceHealthIndicatorOptions<
  */
 @Injectable({ scope: Scope.TRANSIENT })
 export class MicroserviceHealthIndicator {
-  private nestJsMicroservices!: typeof NestJSMicroservices;
-
   constructor(private readonly healthIndicatorService: HealthIndicatorService) {
-    this.checkDependantPackages();
+    assertPackages(['@nestjs/microservices'], this.constructor.name);
   }
 
   /**
-   * Checks if the dependant packages are present
+   * Loads `@nestjs/microservices`, which is only an optional peer
    */
-  private checkDependantPackages() {
-    this.nestJsMicroservices = checkPackages(
-      ['@nestjs/microservices'],
-      this.constructor.name,
-    )[0];
+  private async loadMicroservices(): Promise<typeof NestJSMicroservices> {
+    return await loadPackage('@nestjs/microservices');
   }
 
   private async pingMicroservice<
@@ -64,7 +60,8 @@ export class MicroserviceHealthIndicator {
   >(
     options: MicroserviceHealthIndicatorOptions<MicroserviceClientOptions>,
   ): Promise<void> {
-    const client = this.nestJsMicroservices.ClientProxyFactory.create(options);
+    const { ClientProxyFactory } = await this.loadMicroservices();
+    const client = ClientProxyFactory.create(options);
     try {
       await client.connect();
     } finally {
@@ -94,8 +91,9 @@ export class MicroserviceHealthIndicator {
   ): Promise<HealthIndicatorResult<Key>> {
     const check = this.healthIndicatorService.check(key);
     const timeout = options.timeout || 1000;
+    const { Transport } = await this.loadMicroservices();
 
-    if (options.transport === this.nestJsMicroservices.Transport.KAFKA) {
+    if (options.transport === Transport.KAFKA) {
       options.options = {
         // We need to set the producerOnlyMode to true in order to speed
         // up the connection process. https://github.com/nestjs/terminus/issues/1690

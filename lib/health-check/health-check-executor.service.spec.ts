@@ -1,10 +1,10 @@
 import { Test } from '@nestjs/testing';
-import { HealthCheckExecutor } from './health-check-executor.service';
+import { HealthCheckExecutor } from './health-check-executor.service.js';
 import {
   HealthIndicatorResult,
   HealthIndicatorService,
-} from '../health-indicator';
-import { HealthCheckResult } from './health-check-result.interface';
+} from '../health-indicator/index.js';
+import { HealthCheckResult } from './health-check-result.interface.js';
 
 ////////////////////////////////////////////////////////////////
 

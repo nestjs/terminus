@@ -1,13 +1,15 @@
-import { type Mock } from 'vitest';
 import { Test } from '@nestjs/testing';
 import { HttpModule, HttpService } from '@nestjs/axios';
-import { HttpHealthIndicator } from './http.health';
-import { checkPackages } from '../../utils/checkPackage.util';
+import { HttpHealthIndicator } from './http.health.js';
+import { loadPackage } from '../../utils/checkPackage.util.js';
 import { of } from 'rxjs';
-import { TERMINUS_LOGGER } from '../../terminus.constants';
+import { TERMINUS_LOGGER } from '../../terminus.constants.js';
 import { AxiosError } from 'axios';
-import { HealthIndicatorService } from '../health-indicator.service';
-vi.mock('../../utils/checkPackage.util');
+import { HealthIndicatorService } from '../health-indicator.service.js';
+vi.mock('../../utils/checkPackage.util.js', () => ({
+  assertPackages: vi.fn(),
+  loadPackage: vi.fn(),
+}));
 
 // == MOCKS ==
 const httpServiceMock = {
@@ -22,7 +24,7 @@ describe('Http Response Health Indicator', () => {
   let httpHealthIndicator: HttpHealthIndicator;
 
   beforeEach(async () => {
-    (checkPackages as Mock).mockImplementation((): any => [nestJSAxiosMock]);
+    vi.mocked(loadPackage).mockResolvedValue(nestJSAxiosMock);
   });
 
   beforeEach(async () => {

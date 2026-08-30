@@ -1,12 +1,14 @@
-import { type Mock } from 'vitest';
-import { GRPCHealthIndicator } from './grpc.health';
-import { checkPackages } from '../../utils/checkPackage.util';
+import { GRPCHealthIndicator } from './grpc.health.js';
+import { loadPackage } from '../../utils/checkPackage.util.js';
 import { GrpcOptions, Transport } from '@nestjs/microservices';
 import { Test } from '@nestjs/testing';
-import { HealthIndicatorService } from '../health-indicator.service';
+import { HealthIndicatorService } from '../health-indicator.service.js';
 import { TimeoutError } from 'rxjs';
 
-vi.mock('../../utils/checkPackage.util');
+vi.mock('../../utils/checkPackage.util.js', () => ({
+  assertPackages: vi.fn(),
+  loadPackage: vi.fn(),
+}));
 
 // == MOCKS ==
 const healthServiceMock = {
@@ -30,9 +32,7 @@ const nestJSMicroservicesMock = {
 describe('GRPCHealthIndicator', () => {
   let grpc: GRPCHealthIndicator;
   beforeEach(async () => {
-    (checkPackages as Mock).mockImplementation((): any => [
-      nestJSMicroservicesMock,
-    ]);
+    vi.mocked(loadPackage).mockResolvedValue(nestJSMicroservicesMock);
 
     const moduleRef = await Test.createTestingModule({
       providers: [GRPCHealthIndicator, HealthIndicatorService],

@@ -1,6 +1,5 @@
 # source
 lib
-index.ts
 package-lock.json
 tsconfig.json
 tsconfig.build.json
@@ -9,6 +8,9 @@ vitest.e2e.config.mts
 .oxlintrc.json
 .prettierrc
 documentation
+.scratch
+docs
+CLAUDE.md
 sample
 .github
 e2e

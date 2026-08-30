@@ -1,10 +1,10 @@
 import { type Mock } from 'vitest';
 import { Test } from '@nestjs/testing';
-import { HealthCheckService } from './health-check.service';
-import { HealthCheckExecutor } from './health-check-executor.service';
-import { ERROR_LOGGER } from './error-logger/error-logger.provider';
-import { ErrorLogger } from './error-logger/error-logger.interface';
-import { TERMINUS_LOGGER } from '../terminus.constants';
+import { HealthCheckService } from './health-check.service.js';
+import { HealthCheckExecutor } from './health-check-executor.service.js';
+import { ERROR_LOGGER } from './error-logger/error-logger.provider.js';
+import { ErrorLogger } from './error-logger/error-logger.interface.js';
+import { TERMINUS_LOGGER } from '../terminus.constants.js';
 import { LoggerService } from '@nestjs/common';
 
 const healthCheckExecutorMock: Partial<HealthCheckExecutor> = {

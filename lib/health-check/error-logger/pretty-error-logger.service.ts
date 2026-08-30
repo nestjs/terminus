@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import boxen from 'boxen';
-import { type ErrorLogger } from './error-logger.interface';
-import { type HealthIndicatorResult } from '../../health-indicator';
+import { type ErrorLogger } from './error-logger.interface.js';
+import { type HealthIndicatorResult } from '../../health-indicator/index.js';
 
 const GREEN = '\x1b[0m\x1b[32m';
 const RED = '\x1b[0m\x1b[31m';
@@ -43,24 +42,10 @@ export class PrettyErrorLogger implements ErrorLogger {
       const summary = this.printIndicatorSummary(value);
 
       if (value.status === 'up') {
-        message +=
-          GREEN +
-          boxen(summary, {
-            padding: 1,
-            title: `✅ ${key}`,
-          }) +
-          STOP_COLOR +
-          '\n';
+        message += `${GREEN}✅ ${key}\n${summary}${STOP_COLOR}\n`;
       }
       if (value.status === 'down') {
-        message +=
-          RED +
-          boxen(summary, {
-            padding: 1,
-            title: `❌ ${key}`,
-          }) +
-          STOP_COLOR +
-          '\n';
+        message += `${RED}❌ ${key}\n${summary}${STOP_COLOR}\n`;
       }
     }
     return message;

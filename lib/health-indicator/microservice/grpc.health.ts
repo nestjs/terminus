@@ -1,16 +1,17 @@
-import { join } from 'path';
+import { join } from 'node:path';
 import { Injectable, Scope } from '@nestjs/common';
 import type * as NestJSMicroservices from '@nestjs/microservices';
 import { type Observable } from 'rxjs';
-import { type HealthIndicatorResult } from '../..';
+import { type HealthIndicatorResult } from '../../index.js';
 import {
-  checkPackages,
+  assertPackages,
   isError,
+  loadPackage,
   promiseTimeout,
   type PropType,
   TimeoutError as PromiseTimeoutError,
-} from '../../utils';
-import { HealthIndicatorService } from '../health-indicator.service';
+} from '../../utils/index.js';
+import { HealthIndicatorService } from '../health-indicator.service.js';
 
 /**
  * The status of the request service
@@ -90,13 +91,14 @@ export type CheckGRPCServiceOptions<
  */
 @Injectable({ scope: Scope.TRANSIENT })
 export class GRPCHealthIndicator {
-  private nestJsMicroservices!: typeof NestJSMicroservices;
-
   /**
    * Initializes the health indicator
    */
   constructor(private readonly healthIndicatorService: HealthIndicatorService) {
-    this.checkDependantPackages();
+    assertPackages(
+      ['@nestjs/microservices', '@grpc/grpc-js', '@grpc/proto-loader'],
+      this.constructor.name,
+    );
   }
 
   /**
@@ -106,22 +108,14 @@ export class GRPCHealthIndicator {
   private readonly openChannels = new Map<string, GRPCHealthService>();
 
   /**
-   * Checks if the dependant packages are present
-   */
-  private checkDependantPackages() {
-    this.nestJsMicroservices = checkPackages(
-      ['@nestjs/microservices', '@grpc/grpc-js', '@grpc/proto-loader'],
-      this.constructor.name,
-    )[0];
-  }
-
-  /**
    * Creates a GRPC client from the given options
    * @private
    */
-  private createClient<GrpcOptions extends GrpcClientOptionsLike>(
+  private async createClient<GrpcOptions extends GrpcClientOptionsLike>(
     options: CheckGRPCServiceOptions<GrpcOptions>,
-  ): NestJSMicroservices.ClientGrpc {
+  ): Promise<NestJSMicroservices.ClientGrpc> {
+    const { ClientProxyFactory }: typeof NestJSMicroservices =
+      await loadPackage('@nestjs/microservices');
     const {
       // Remove the options which are not needed for the client
       timeout: _t,
@@ -130,13 +124,13 @@ export class GRPCHealthIndicator {
 
       ...grpcOptions
     } = options;
-    return this.nestJsMicroservices.ClientProxyFactory.create({
+    return ClientProxyFactory.create({
       transport: 4,
       options: grpcOptions as any,
     });
   }
 
-  getHealthService(
+  async getHealthService(
     service: string,
     settings: CheckGRPCServiceOptions<GrpcClientOptionsLike>,
   ) {
@@ -144,7 +138,8 @@ export class GRPCHealthIndicator {
       return this.openChannels.get(service)!;
     }
 
-    const client = this.createClient<NestJSMicroservices.GrpcOptions>(settings);
+    const client =
+      await this.createClient<NestJSMicroservices.GrpcOptions>(settings);
     const healthService = client.getService<GRPCHealthService>(
       settings.healthServiceName as string,
     );
@@ -177,7 +172,7 @@ export class GRPCHealthIndicator {
    * grpc.checkService<GrpcOptions>('hero_service', 'hero.health.v1', {
    *   timeout: 500,
    *   package: 'grpc.health.v2',
-   *   protoPath: join(__dirname, './protos/my-custom-health.v1'),
+   *   protoPath: join(import.meta.dirname, './protos/my-custom-health.v1'),
    *   // The name of the service you need for the health check
    *   healthServiceName: 'Health',
    *   // Your custom function which checks the service
@@ -201,7 +196,7 @@ export class GRPCHealthIndicator {
 
     const defaultOptions: CheckGRPCServiceOptions<GrpcOptions> = {
       package: 'grpc.health.v1',
-      protoPath: join(__dirname, './protos/health.proto'),
+      protoPath: join(import.meta.dirname, './protos/health.proto'),
       healthServiceCheck: (healthService: GRPCHealthService, service: string) =>
         // eslint-disable-next-line deprecation/deprecation
         healthService.check({ service }).toPromise(),
@@ -213,7 +208,7 @@ export class GRPCHealthIndicator {
 
     let healthService: GRPCHealthService;
     try {
-      healthService = this.getHealthService(service, settings);
+      healthService = await this.getHealthService(service, settings);
     } catch (err) {
       if (err instanceof TypeError) {
         throw err;

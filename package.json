@@ -2,6 +2,18 @@
   "name": "@nestjs/terminus",
   "version": "11.1.1",
   "description": "Terminus integration provides readiness/liveness health checks for NestJS.",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": "^20.19.0 || ^22.12.0 || >=24.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/nestjs/terminus"
@@ -27,14 +39,13 @@
   ],
   "license": "MIT",
   "author": "Livio Brunner",
-  "main": "dist/index.js",
   "packageManager": "pnpm@9.15.9",
   "scripts": {
     "dev": "tsc -p tsconfig.build.json --watch",
     "build": "rimraf dist && tsc -p tsconfig.build.json && cp -R lib/health-indicator/microservice/protos dist/health-indicator/microservice/",
     "build:all": "pnpm run build && pnpm run -r build",
-    "test:all": "pnpm run test && pnpm run -if-present -r test --passWithNoTests",
-    "test:e2e:all": "npm run test:e2e && pnpm run --if-present -r e2e --passWithNoTests",
+    "test:all": "pnpm run test && pnpm run -r --if-present test",
+    "test:e2e:all": "pnpm run test:e2e && pnpm run -r --if-present test:e2e",
     "format": "prettier --check \"{lib,e2e,sample,tools}/**/*.ts\"",
     "format:fix": "prettier --write \"{lib,e2e,sample,tools}/**/*.ts\"",
     "lint": "oxlint lib e2e tools",
@@ -51,12 +62,9 @@
     "test:ut": "vitest run",
     "test:ut:cov": "vitest run --coverage",
     "test:import": "node tools/import-check.mjs",
+    "test:pack": "pnpm run build && node tools/pack-check.mjs",
     "release": "release-it",
     "prepare": "husky"
-  },
-  "dependencies": {
-    "boxen": "5.1.2",
-    "check-disk-space": "3.4.0"
   },
   "devDependencies": {
     "@commitlint/cli": "catalog:",
@@ -100,11 +108,12 @@
     "reflect-metadata": "catalog:",
     "release-it": "catalog:",
     "rimraf": "catalog:",
+    "rxjs": "catalog:",
     "sequelize": "catalog:",
     "sequelize-typescript": "catalog:",
     "supertest": "catalog:",
     "typeorm": "catalog:",
-    "typescript": "7.0.2",
+    "typescript": "catalog:",
     "vite": "catalog:",
     "vitest": "catalog:",
     "wait-port": "catalog:"
@@ -114,37 +123,38 @@
     "@grpc/proto-loader": "*",
     "@mikro-orm/core": "*",
     "@mikro-orm/nestjs": "*",
-    "@nestjs/axios": "^2.0.0 || ^3.0.0 || ^4.0.0",
-    "@nestjs/common": "^10.0.0 || ^11.0.0",
-    "@nestjs/core": "^10.0.0 || ^11.0.0",
-    "@nestjs/microservices": "^10.0.0 || ^11.0.0",
-    "@nestjs/mongoose": "^11.0.0",
-    "@nestjs/sequelize": "^10.0.0 || ^11.0.0",
-    "@nestjs/typeorm": "^10.0.0 || ^11.0.0",
+    "@nestjs/axios": "^4.0.0",
+    "@nestjs/common": "^11.0.0 || ^12.0.0",
+    "@nestjs/core": "^11.0.0 || ^12.0.0",
+    "@nestjs/microservices": "^11.0.0 || ^12.0.0",
+    "@nestjs/mongoose": "^11.0.0 || ^12.0.0",
+    "@nestjs/sequelize": "^11.0.0 || ^12.0.0",
+    "@nestjs/swagger": "^11.0.0 || ^12.0.0",
+    "@nestjs/typeorm": "^11.0.0 || ^12.0.0",
     "@prisma/client": "*",
     "mongoose": "*",
-    "reflect-metadata": "0.1.x || 0.2.x",
-    "rxjs": "7.x",
+    "reflect-metadata": "^0.1.12 || ^0.2.0",
+    "rxjs": "^7.1.0",
     "sequelize": "*",
     "typeorm": "*"
   },
   "peerDependenciesMeta": {
-    "@nestjs/microservices": {
-      "optional": true
-    },
     "@grpc/grpc-js": {
       "optional": true
     },
     "@grpc/proto-loader": {
       "optional": true
     },
-    "@nestjs/axios": {
+    "@mikro-orm/core": {
       "optional": true
     },
     "@mikro-orm/nestjs": {
       "optional": true
     },
-    "@mikro-orm/core": {
+    "@nestjs/axios": {
+      "optional": true
+    },
+    "@nestjs/microservices": {
       "optional": true
     },
     "@nestjs/mongoose": {
@@ -153,7 +163,13 @@
     "@nestjs/sequelize": {
       "optional": true
     },
+    "@nestjs/swagger": {
+      "optional": true
+    },
     "@nestjs/typeorm": {
+      "optional": true
+    },
+    "@prisma/client": {
       "optional": true
     },
     "mongoose": {
@@ -163,9 +179,6 @@
       "optional": true
     },
     "typeorm": {
-      "optional": true
-    },
-    "@prisma/client": {
       "optional": true
     }
   },
@@ -227,5 +240,6 @@
         ]
       ]
     }
-  }
+  },
+  "main": "./dist/index.js"
 }

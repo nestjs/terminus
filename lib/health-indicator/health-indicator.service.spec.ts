@@ -2,7 +2,7 @@ import {
   HealthCheckAttempt,
   HealthIndicatorService,
   HealthIndicatorSession,
-} from './health-indicator.service';
+} from './health-indicator.service.js';
 
 describe('HealthIndicatorService', () => {
   let service: HealthIndicatorService;

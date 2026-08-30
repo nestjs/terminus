@@ -1,14 +1,15 @@
 import type * as MikroOrm from '@mikro-orm/core';
 import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import { type HealthIndicatorResult } from '..';
-import { DatabaseNotConnectedError } from '../../errors/database-not-connected.error';
+import { type HealthIndicatorResult } from '../index.js';
+import { DatabaseNotConnectedError } from '../../errors/database-not-connected.error.js';
 import {
   TimeoutError as PromiseTimeoutError,
   promiseTimeout,
-  checkPackages,
-} from '../../utils';
-import { HealthIndicatorService } from '../health-indicator.service';
+  assertPackages,
+  loadPackage,
+} from '../../utils/index.js';
+import { HealthIndicatorService } from '../health-indicator.service.js';
 
 export interface MikroOrmPingCheckSettings {
   /**
@@ -38,7 +39,7 @@ export class MikroOrmHealthIndicator {
   }
 
   private checkDependantPackages() {
-    checkPackages(
+    assertPackages(
       ['@mikro-orm/nestjs', '@mikro-orm/core'],
       this.constructor.name,
     );
@@ -47,9 +48,8 @@ export class MikroOrmHealthIndicator {
   /**
    * Returns the connection of the current DI context
    */
-  private getContextConnection(): MikroOrm.Connection | null {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { MikroORM } = require('@mikro-orm/core') as typeof MikroOrm;
+  private async getContextConnection(): Promise<MikroOrm.Connection | null> {
+    const { MikroORM } = await loadPackage('@mikro-orm/core');
     const mikro = this.moduleRef.get(MikroORM, { strict: false });
 
     const connection: MikroOrm.Connection = mikro.em.getConnection();
@@ -91,11 +91,11 @@ export class MikroOrmHealthIndicator {
     key: Key,
     options: MikroOrmPingCheckSettings = {},
   ): Promise<HealthIndicatorResult<Key>> {
-    this.checkDependantPackages();
     const check = this.healthIndicatorService.check(key);
 
     const timeout = options.timeout || 1000;
-    const connection = options.connection || this.getContextConnection();
+    const connection =
+      options.connection || (await this.getContextConnection());
 
     if (!connection) {
       return check.down();

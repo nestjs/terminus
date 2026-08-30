@@ -1,13 +1,13 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import type * as NestJSMongoose from '@nestjs/mongoose';
-import { type HealthIndicatorResult } from '../..';
+import { type HealthIndicatorResult } from '../../index.js';
 import {
   promiseTimeout,
   TimeoutError as PromiseTimeoutError,
-  checkPackages,
-} from '../../utils';
-import { HealthIndicatorService } from '../health-indicator.service';
+  assertPackages,
+  loadPackage,
+} from '../../utils/index.js';
+import { HealthIndicatorService } from '../health-indicator.service.js';
 
 export interface MongoosePingCheckSettings {
   /**
@@ -40,16 +40,14 @@ export class MongooseHealthIndicator {
    * Checks if the dependant packages are present
    */
   private checkDependantPackages() {
-    checkPackages(['@nestjs/mongoose', 'mongoose'], this.constructor.name);
+    assertPackages(['@nestjs/mongoose', 'mongoose'], this.constructor.name);
   }
 
   /**
    * Returns the connection of the current DI context
    */
-  private getContextConnection(): any | null {
-    const { getConnectionToken } =
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      require('@nestjs/mongoose') as typeof NestJSMongoose;
+  private async getContextConnection(): Promise<any | null> {
+    const { getConnectionToken } = await loadPackage('@nestjs/mongoose');
 
     try {
       return this.moduleRef.get(
@@ -88,10 +86,10 @@ export class MongooseHealthIndicator {
     key: Key,
     options: MongoosePingCheckSettings = {},
   ): Promise<HealthIndicatorResult<Key>> {
-    this.checkDependantPackages();
     const check = this.healthIndicatorService.check(key);
 
-    const connection = options.connection || this.getContextConnection();
+    const connection =
+      options.connection || (await this.getContextConnection());
     const timeout = options.timeout || 1000;
 
     if (!connection) {

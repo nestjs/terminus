@@ -1,16 +1,13 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { isNil } from '@nestjs/common/utils/shared.utils';
-import type checkDiskSpace from 'check-disk-space';
 import {
   type DiskHealthIndicatorOptions,
   type DiskOptionsWithThresholdPercent,
-} from './disk-health-options.type';
-import { type HealthIndicatorResult } from '../';
-import { STORAGE_EXCEEDED } from '../../errors/messages.constant';
-import { CHECK_DISK_SPACE_LIB } from '../../terminus.constants';
-import { HealthIndicatorService } from '../health-indicator.service';
-
-type CheckDiskSpace = typeof checkDiskSpace;
+} from './disk-health-options.type.js';
+import { type HealthIndicatorResult } from '../index.js';
+import { STORAGE_EXCEEDED } from '../../errors/messages.constant.js';
+import { CHECK_DISK_SPACE_LIB } from '../../terminus.constants.js';
+import { type CheckDiskSpace } from './disk-usage-lib.provider.js';
+import { HealthIndicatorService } from '../health-indicator.service.js';
 
 /**
  * The DiskHealthIndicator contains checks which are related
@@ -39,8 +36,8 @@ export class DiskHealthIndicator {
   private isOptionThresholdPercent(
     options: DiskHealthIndicatorOptions,
   ): options is DiskOptionsWithThresholdPercent {
-    return !isNil(
-      (options as DiskOptionsWithThresholdPercent).thresholdPercent,
+    return (
+      (options as DiskOptionsWithThresholdPercent).thresholdPercent != null
     );
   }
 

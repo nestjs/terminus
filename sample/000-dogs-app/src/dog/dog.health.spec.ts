@@ -1,22 +1,22 @@
 import { Test } from '@nestjs/testing';
-import { DogHealthIndicator } from './dog.health';
-import { DogService } from './dog.service';
+import { DogHealthIndicator } from './dog.health.js';
+import { DogService } from './dog.service.js';
 import { HealthIndicatorService } from '@nestjs/terminus';
-import { DogState } from './interfaces/dog.interface';
+import { DogState } from './interfaces/dog.interface.js';
 
 ///////////////////////////////////////////////////////////
 
 const dogServiceMock = {
-  getDogs: jest.fn(),
+  getDogs: vi.fn(),
 };
 
 const healthIndicatorSessionMock = {
-  up: jest.fn(),
-  down: jest.fn(),
+  up: vi.fn(),
+  down: vi.fn(),
 };
 
 const healthIndicatorServiceMock = {
-  check: jest.fn().mockImplementation(() => healthIndicatorSessionMock),
+  check: vi.fn().mockImplementation(() => healthIndicatorSessionMock),
 };
 
 ///////////////////////////////////////////////////////////

@@ -1,6 +1,6 @@
-import * as request from 'supertest';
+import request from 'supertest';
 import { Test } from '@nestjs/testing';
-import { HealthModule } from '../src/health/health.module';
+import { HealthModule } from '../src/health/health.module.js';
 import { INestApplication } from '@nestjs/common';
 
 describe('HealthModule (e2e)', () => {
@@ -14,6 +14,8 @@ describe('HealthModule (e2e)', () => {
     app = moduleFixture.createNestApplication();
     await app.init();
   });
+
+  afterAll(() => app.close());
 
   it('/health (GET)', () => {
     return request(app.getHttpServer())

@@ -1,8 +1,8 @@
 import { type Provider } from '@nestjs/common';
-import { type ErrorLogger } from './error-logger.interface';
-import { JsonErrorLogger } from './json-error-logger.service';
-import { PrettyErrorLogger } from './pretty-error-logger.service';
-import { type ErrorLogStyle } from '../../terminus-options.interface';
+import { type ErrorLogger } from './error-logger.interface.js';
+import { JsonErrorLogger } from './json-error-logger.service.js';
+import { PrettyErrorLogger } from './pretty-error-logger.service.js';
+import { type ErrorLogStyle } from '../../terminus-options.interface.js';
 
 export const ERROR_LOGGER = 'TERMINUS_ERROR_LOGGER';
 

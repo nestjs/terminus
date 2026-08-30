@@ -3,9 +3,9 @@ import request from 'supertest';
 import {
   bootstrapTestingModule,
   type DynamicHealthEndpointFn,
-} from '../helper';
-import { PrismaClient as MongoPrismaClient } from '../prisma/generated/mongodb';
-import { PrismaClient as MySQLPrismaClient } from '../prisma/generated/mysql';
+} from '../helper/index.js';
+import { PrismaClient as MongoPrismaClient } from '../prisma/generated/mongodb/index.js';
+import { PrismaClient as MySQLPrismaClient } from '../prisma/generated/mysql/index.js';
 
 vi.setConfig({ testTimeout: 300_000 });
 

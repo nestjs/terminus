@@ -10,7 +10,7 @@ import {
   bootstrapMicroservice,
   bootstrapTestingModule,
   type DynamicHealthEndpointFn,
-} from '../helper';
+} from '../helper/index.js';
 
 describe('MicroserviceHealthIndicator', () => {
   let app: INestApplication;

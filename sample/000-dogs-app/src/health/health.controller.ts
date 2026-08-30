@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { DogHealthIndicator } from '../dog/dog.health';
+import { DogHealthIndicator } from '../dog/dog.health.js';
 import { HealthCheck, HealthCheckService } from '@nestjs/terminus';
 
 @Controller('health')

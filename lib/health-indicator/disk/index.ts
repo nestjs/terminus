@@ -1,2 +1,2 @@
-export * from './disk.health';
-export { DiskHealthIndicatorOptions } from './disk-health-options.type';
+export * from './disk.health.js';
+export { DiskHealthIndicatorOptions } from './disk-health-options.type.js';
