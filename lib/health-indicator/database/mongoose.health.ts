@@ -66,6 +66,7 @@ export class MongooseHealthIndicator {
     if (connection.readyState !== 1) {
       throw new DatabaseNotConnectedError();
     }
+    await connection.db.command({ ping: 1 });
   }
 
   /**
