@@ -23,7 +23,7 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
    * Executes the given health indicators.
    * Implementation for v6 compatibility.
    *
-   * @throws {Error} All errors which are not inherited by the `HealthCheckError`-class
+   * @throws {Error} Any error thrown by a health indicator
    *
    * @returns the result of given health indicators
    * @param healthIndicators The health indicators which should get executed
