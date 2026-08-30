@@ -16,7 +16,7 @@ const clientMock = {
 
 const nestJSMicroservicesMock = {
   Transport,
-  ClientProxyFactory: { create: vi.fn((): any => clientMock) },
+  ClientProxyFactory: { create: vi.fn((_: any): any => clientMock) },
 };
 
 describe('MicroserviceHealthIndicator', () => {
@@ -27,6 +27,7 @@ describe('MicroserviceHealthIndicator', () => {
     vi.mocked(loadPackage).mockResolvedValue(nestJSMicroservicesMock);
     clientMock.connect.mockReset();
     clientMock.close.mockReset();
+    nestJSMicroservicesMock.ClientProxyFactory.create.mockClear();
 
     const moduleRef = await Test.createTestingModule({
       providers: [MicroserviceHealthIndicator, HealthIndicatorService],
@@ -52,5 +53,82 @@ describe('MicroserviceHealthIndicator', () => {
       tcp: { status: 'down', message: 'ECONNREFUSED' },
     });
     expect(clientMock.close).toHaveBeenCalledTimes(1);
+  });
+
+  it('falls back to "<key> is not available" when connect rejects with a non-Error', async () => {
+    clientMock.connect.mockRejectedValue({
+      err: 'connectFailed',
+      url: 'amqp://x',
+    });
+
+    const result = await microservice.pingCheck('rmq', options);
+
+    expect(result).toEqual({
+      rmq: { status: 'down', message: 'rmq is not available' },
+    });
+  });
+
+  describe('probe defaults', () => {
+    const createdOptions = () =>
+      nestJSMicroservicesMock.ClientProxyFactory.create.mock.calls[0][0]
+        .options;
+
+    it('connects to Kafka in producerOnlyMode', async () => {
+      await microservice.pingCheck('kafka', {
+        transport: Transport.KAFKA,
+        options: { client: { brokers: ['localhost:9092'] } },
+      });
+
+      expect(createdOptions()).toEqual({
+        producerOnlyMode: true,
+        client: { brokers: ['localhost:9092'] },
+      });
+    });
+
+    it('does not assert a queue for RMQ when none is configured', async () => {
+      await microservice.pingCheck('rmq', {
+        transport: Transport.RMQ,
+        options: { urls: ['amqp://localhost:5672'] },
+      });
+
+      expect(createdOptions()).toEqual({
+        noAssert: true,
+        urls: ['amqp://localhost:5672'],
+      });
+    });
+
+    it('asserts the queue for RMQ when one is configured', async () => {
+      await microservice.pingCheck('rmq', {
+        transport: Transport.RMQ,
+        options: { urls: ['amqp://localhost:5672'], queue: 'health' },
+      });
+
+      expect(createdOptions()).toEqual({
+        urls: ['amqp://localhost:5672'],
+        queue: 'health',
+      });
+    });
+
+    it('lets the caller override a default', async () => {
+      await microservice.pingCheck('rmq', {
+        transport: Transport.RMQ,
+        options: { urls: ['amqp://localhost:5672'], noAssert: false },
+      });
+
+      expect(createdOptions()).toEqual({
+        urls: ['amqp://localhost:5672'],
+        noAssert: false,
+      });
+    });
+
+    it('does not mutate the given options', async () => {
+      const given = {
+        transport: Transport.RMQ,
+        options: { urls: ['amqp://localhost:5672'] },
+      };
+      await microservice.pingCheck('rmq', given);
+
+      expect(given.options).toEqual({ urls: ['amqp://localhost:5672'] });
+    });
   });
 });

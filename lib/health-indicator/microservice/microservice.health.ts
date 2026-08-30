@@ -89,19 +89,27 @@ export class MicroserviceHealthIndicator {
     const timeout = options.timeout || 1000;
     const { Transport } = await this.loadMicroservices();
 
-    if (options.transport === Transport.KAFKA) {
-      options.options = {
-        // We need to set the producerOnlyMode to true in order to speed
-        // up the connection process. https://github.com/nestjs/terminus/issues/1690
-        producerOnlyMode: true,
-        ...options.options,
+    // A probe only connects, so it must be cheap and leave nothing behind:
+    // https://github.com/nestjs/terminus/issues/1690
+    // https://github.com/nestjs/terminus/issues/2680
+    const probeDefaults: Record<number, object> = {
+      [Transport.KAFKA]: { producerOnlyMode: true },
+      [Transport.RMQ]:
+        'queue' in (options.options ?? {}) ? {} : { noAssert: true },
+    };
+    const clientOptions: MicroserviceHealthIndicatorOptions<MicroserviceClientOptions> =
+      {
+        ...options,
+        options: {
+          ...probeDefaults[options.transport as number],
+          ...options.options,
+        },
       };
-    }
 
     return check
       .attempt(async () => {
         try {
-          await this.pingMicroservice(options);
+          await this.pingMicroservice(clientOptions);
         } catch (err) {
           throw isError(err) ? err : new Error(`${key} is not available`);
         }
