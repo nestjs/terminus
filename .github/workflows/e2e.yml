@@ -21,7 +21,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'pnpm'
 
-    - run: docker compose up -d
+    - run: docker compose up -d --wait
     - run: pnpm i
     - run: pnpm build:all
     - run: pnpm test:e2e:all
