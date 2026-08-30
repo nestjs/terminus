@@ -28,6 +28,7 @@
     "rxjs": "catalog:"
   },
   "devDependencies": {
+    "@nestjs/cli": "catalog:",
     "@types/jest": "catalog:",
     "@types/node": "catalog:",
     "@typescript-eslint/eslint-plugin": "catalog:",

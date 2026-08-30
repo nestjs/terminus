@@ -1,16 +1,20 @@
 import * as timers from 'node:timers/promises';
 import { ShutdownSignal } from '@nestjs/common';
 import { type NestApplicationContext } from '@nestjs/core';
-import * as request from 'supertest';
+import request from 'supertest';
 import { bootstrapTestingModule } from './helper';
+
+vi.mock('node:timers/promises', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('node:timers/promises')>();
+  return { ...actual, setTimeout: vi.fn(actual.setTimeout) };
+});
 
 describe('Graceful shutdown', () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should gracefully shutdown the application', async () => {
-    jest.spyOn(timers, 'setTimeout');
     const setHealthEndpoint = bootstrapTestingModule({
       gracefulShutdownTimeoutMs: 64,
     }).setHealthEndpoint;
@@ -44,7 +48,6 @@ describe('Graceful shutdown', () => {
   });
 
   it('should not delay the shutdown if the application if the timeout is 0', async () => {
-    jest.spyOn(timers, 'setTimeout');
     const setHealthEndpoint = bootstrapTestingModule({
       gracefulShutdownTimeoutMs: 0,
     }).setHealthEndpoint;

@@ -7,15 +7,15 @@ import {
 } from '../terminus.constants';
 import { setTimeout } from 'node:timers/promises';
 
-jest.mock('node:timers/promises', () => ({
-  setTimeout: jest.fn(),
+vi.mock('node:timers/promises', () => ({
+  setTimeout: vi.fn(),
 }));
 
 const loggerMock: Partial<LoggerService> = {
-  log: jest.fn(),
-  error: jest.fn(),
-  warn: jest.fn(),
-  debug: jest.fn(),
+  log: vi.fn(),
+  error: vi.fn(),
+  warn: vi.fn(),
+  debug: vi.fn(),
 };
 
 describe('GracefulShutdownService', () => {
@@ -24,7 +24,7 @@ describe('GracefulShutdownService', () => {
 
   describe('when gracefulShutdownTimeoutMs is set', () => {
     beforeEach(async () => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
       const module = await Test.createTestingModule({
         providers: [
           GracefulShutdownService,
@@ -74,7 +74,7 @@ describe('GracefulShutdownService', () => {
 
   describe('when gracefulShutdownTimeoutMs is 0', () => {
     beforeEach(async () => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
       const module = await Test.createTestingModule({
         providers: [
           GracefulShutdownService,
@@ -102,7 +102,7 @@ describe('GracefulShutdownService', () => {
 
   describe('when gracefulShutdownTimeoutMs is undefined', () => {
     beforeEach(async () => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
       const module = await Test.createTestingModule({
         providers: [
           GracefulShutdownService,

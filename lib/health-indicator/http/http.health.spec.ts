@@ -1,3 +1,4 @@
+import { type Mock } from 'vitest';
 import { Test } from '@nestjs/testing';
 import { HttpModule, HttpService } from '@nestjs/axios';
 import { HttpHealthIndicator } from './http.health';
@@ -6,11 +7,11 @@ import { of } from 'rxjs';
 import { TERMINUS_LOGGER } from '../../terminus.constants';
 import { AxiosError } from 'axios';
 import { HealthIndicatorService } from '../health-indicator.service';
-jest.mock('../../utils/checkPackage.util');
+vi.mock('../../utils/checkPackage.util');
 
 // == MOCKS ==
 const httpServiceMock = {
-  request: jest.fn(),
+  request: vi.fn(),
 };
 
 const nestJSAxiosMock = {
@@ -21,9 +22,7 @@ describe('Http Response Health Indicator', () => {
   let httpHealthIndicator: HttpHealthIndicator;
 
   beforeEach(async () => {
-    (checkPackages as jest.Mock).mockImplementation((): any => [
-      nestJSAxiosMock,
-    ]);
+    (checkPackages as Mock).mockImplementation((): any => [nestJSAxiosMock]);
   });
 
   beforeEach(async () => {
@@ -39,8 +38,8 @@ describe('Http Response Health Indicator', () => {
         {
           provide: TERMINUS_LOGGER,
           useValue: {
-            error: jest.fn(),
-            setContext: jest.fn(),
+            error: vi.fn(),
+            setContext: vi.fn(),
           },
         },
       ],
@@ -58,7 +57,7 @@ describe('Http Response Health Indicator', () => {
     });
     it('should make use of a custom httpClient', async () => {
       const httpClient = {
-        request: jest.fn().mockReturnValue(of([])),
+        request: vi.fn().mockReturnValue(of([])),
       } as any as HttpService;
       await httpHealthIndicator.pingCheck('key', 'url', {
         httpClient,

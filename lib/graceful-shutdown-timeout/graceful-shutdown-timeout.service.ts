@@ -4,9 +4,9 @@ import {
   ConsoleLogger,
   Inject,
   Injectable,
-  LoggerService,
+  type LoggerService,
 } from '@nestjs/common';
-import { TerminusModuleOptions } from '../';
+import { type TerminusModuleOptions } from '../terminus-options.interface';
 import {
   TERMINUS_LOGGER,
   TERMINUS_MODULE_OPTIONS,
