@@ -1,5 +1,21 @@
 {
-  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2022",
+    "strict": true,
+    "noImplicitAny": true,
+    "declaration": true,
+    "removeComments": false,
+    "noLib": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "types": ["node", "vitest/globals"]
+  },
   "include": ["lib/**/*", "e2e/**/*", "tools/**/*"],
-  "exclude": ["node_modules", "sample/**/*.ts"]
+  "exclude": ["node_modules", "dist", "sample", "e2e/prisma/generated"]
 }

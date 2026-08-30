@@ -1,5 +1,12 @@
 {
-  "extends": "./tsconfig.base.json",
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": "./dist",
+    "rootDir": "./lib",
+    "sourceMap": false,
+    "types": ["node"]
+  },
   "include": ["lib/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts", "sample/**/*.ts", "e2e/**/*"]
+  "exclude": ["node_modules", "dist", "sample", "e2e", "**/*.spec.ts"]
 }

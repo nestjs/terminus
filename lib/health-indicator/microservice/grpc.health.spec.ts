@@ -1,3 +1,4 @@
+import { type Mock } from 'vitest';
 import { GRPCHealthIndicator } from './grpc.health';
 import { checkPackages } from '../../utils/checkPackage.util';
 import { GrpcOptions, Transport } from '@nestjs/microservices';
@@ -5,21 +6,21 @@ import { Test } from '@nestjs/testing';
 import { HealthIndicatorService } from '../health-indicator.service';
 import { TimeoutError } from 'rxjs';
 
-jest.mock('../../utils/checkPackage.util');
+vi.mock('../../utils/checkPackage.util');
 
 // == MOCKS ==
 const healthServiceMock = {
-  check: jest.fn().mockImplementation((): any => ({
+  check: vi.fn().mockImplementation((): any => ({
     toPromise: () => Promise.resolve({ status: 1 }),
   })),
 };
 
 const grpcClientMock = {
-  getService: jest.fn().mockImplementation((): any => healthServiceMock),
+  getService: vi.fn().mockImplementation((): any => healthServiceMock),
 };
 
 const clientProxyFactoryMock = {
-  create: jest.fn().mockImplementation((): any => grpcClientMock),
+  create: vi.fn().mockImplementation((): any => grpcClientMock),
 };
 
 const nestJSMicroservicesMock = {
@@ -29,7 +30,7 @@ const nestJSMicroservicesMock = {
 describe('GRPCHealthIndicator', () => {
   let grpc: GRPCHealthIndicator;
   beforeEach(async () => {
-    (checkPackages as jest.Mock).mockImplementation((): any => [
+    (checkPackages as Mock).mockImplementation((): any => [
       nestJSMicroservicesMock,
     ]);
 
@@ -91,7 +92,7 @@ describe('GRPCHealthIndicator', () => {
     });
 
     it('should use the custom healthServiceCheck function', async () => {
-      const healthServiceCheck = jest
+      const healthServiceCheck = vi
         .fn()
         .mockImplementation((): any => ({ status: 1 }));
 

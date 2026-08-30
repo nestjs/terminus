@@ -1,6 +1,6 @@
 import { type Server } from 'http';
-import * as express from 'express';
-import * as portfinder from 'portfinder';
+import express from 'express';
+import portfinder from 'portfinder';
 
 type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;
 export type DynamicRemoteServerFn = ThenArg<
@@ -11,12 +11,12 @@ export async function bootstrapRemoteServer(port?: number) {
   const app = express();
   let server: Server;
 
-  if (!port) {
-    port = await portfinder.getPortPromise({
+  const listenPort =
+    port ??
+    (await portfinder.getPortPromise({
       port: 3000,
       stopPort: 8888,
-    });
-  }
+    }));
 
   function close() {
     server?.close?.();
@@ -30,7 +30,7 @@ export async function bootstrapRemoteServer(port?: number) {
     return {
       start: async () => {
         if (!server) {
-          server = app.listen(port, '0.0.0.0');
+          server = app.listen(listenPort, '0.0.0.0');
         }
       },
     };
@@ -39,6 +39,6 @@ export async function bootstrapRemoteServer(port?: number) {
   return {
     get,
     close,
-    url: `http://0.0.0.0:${port}`,
+    url: `http://0.0.0.0:${listenPort}`,
   };
 }

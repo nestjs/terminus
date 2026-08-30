@@ -174,7 +174,7 @@ describe('HealthCheckAttempt', () => {
       expect(result).toEqual({
         test: {
           status: 'down',
-          error: expect.stringContaining('TimeoutError'),
+          error: 'The operation was aborted due to timeout',
         },
       });
     });

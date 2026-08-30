@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import * as boxen from 'boxen';
+import boxen from 'boxen';
 import { type ErrorLogger } from './error-logger.interface';
 import { type HealthIndicatorResult } from '../../health-indicator';
 
@@ -45,7 +45,7 @@ export class PrettyErrorLogger implements ErrorLogger {
       if (value.status === 'up') {
         message +=
           GREEN +
-          (boxen as any)(summary, {
+          boxen(summary, {
             padding: 1,
             title: `✅ ${key}`,
           }) +
@@ -55,7 +55,7 @@ export class PrettyErrorLogger implements ErrorLogger {
       if (value.status === 'down') {
         message +=
           RED +
-          (boxen as any)(summary, {
+          boxen(summary, {
             padding: 1,
             title: `❌ ${key}`,
           }) +

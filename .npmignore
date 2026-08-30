@@ -2,15 +2,17 @@
 lib
 index.ts
 package-lock.json
-.eslintrc.js
 tsconfig.json
+tsconfig.build.json
+vitest.config.mts
+vitest.e2e.config.mts
+.oxlintrc.json
 .prettierrc
 documentation
 sample
 .github
 e2e
 tools
-jest.json
 renovate.json
 LICENSE
 Gulpfile.js
@@ -18,7 +20,6 @@ Dockerfile
 CONTRIBUTING.md
 .release-it.json
 .commitlintrc.json
-.eslintignore
 docker-compose.yml
 .nvmrc
 .husky

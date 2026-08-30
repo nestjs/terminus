@@ -1,5 +1,5 @@
 import { type INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
+import request from 'supertest';
 import { type HealthIndicatorResult } from '../../lib';
 import {
   type DynamicHealthEndpointFn,
