@@ -74,8 +74,6 @@ export class MicroserviceHealthIndicator {
    * @param key The key which will be used for the result object
    * @param options The options of the microservice
    *
-   * @throws {HealthCheckError} If the microservice is not reachable
-   *
    * @example
    * microservice.pingCheck<TcpClientOptions>('tcp', {
    *   transport: Transport.TCP,

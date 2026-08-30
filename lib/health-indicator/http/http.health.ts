@@ -66,11 +66,9 @@ export class HttpHealthIndicator {
   }
 
   /**
-   * Prepares and throw a HealthCheckError
+   * Builds the `down` result for a failed request
    * @param key The key which will be used for the result object
    * @param error The thrown error
-   *
-   * @throws {HealthCheckError}
    */
   private generateHttpError(
     check: HealthIndicatorSession,
@@ -94,8 +92,6 @@ export class HttpHealthIndicator {
    * @param key The key which will be used for the result object
    * @param url The url which should be request
    * @param options Optional axios options
-   *
-   * @throws {HealthCheckError} In case the health indicator failed
    *
    * @example
    * httpHealthIndicator.pingCheck('google', 'https://google.com', { timeout: 800 })
