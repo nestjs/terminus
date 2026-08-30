@@ -29,6 +29,7 @@
     "rxjs": "catalog:"
   },
   "devDependencies": {
+    "@nestjs/cli": "catalog:",
     "@nestjs/testing": "catalog:",
     "@types/express": "catalog:",
     "@types/jest": "catalog:",
