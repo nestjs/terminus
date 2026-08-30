@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { AppModule } from './app.module.js';
 import { join } from 'path';
 import { Transport } from '@nestjs/microservices';
 
@@ -8,7 +8,7 @@ async function bootstrap() {
     transport: Transport.GRPC,
     options: {
       package: 'grpc.health.v1',
-      protoPath: join(__dirname, '../protos/health.proto'),
+      protoPath: join(import.meta.dirname, '../protos/health.proto'),
     },
   });
   app.listen();

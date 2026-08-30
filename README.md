@@ -111,17 +111,18 @@ pnpm i
 pnpm dev
 ```
 
-In order to test the library against a sample, simply go to a sample and run
-`pnpm start:dev`
+In order to test the library against a sample, go to a sample, build it and
+start it:
 
-```typescript
+```bash
 cd sample/000-dogs-app
-pnpm start:dev
+pnpm build
+pnpm start
 ```
 
-> [!NOTE] 
-> Once the library is rebuilt, the `pnpm start:dev` within a sample
-> needs to be restarted in order to pick up the changes.
+> [!NOTE]
+> Once the library is rebuilt, the sample needs to be rebuilt and restarted
+> in order to pick up the changes.
 
 ### Test
 

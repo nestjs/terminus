@@ -3,59 +3,28 @@
   "version": "1.0.0",
   "description": "Disk Health Check sample app",
   "license": "MIT",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "start": "ts-node src/main.ts",
-    "prestart:prod": "tsc",
-    "start:prod": "node dist/main.js",
-    "build": "rm -rf dist && tsc -p tsconfig.json",
-    "test": "jest",
-    "test:watch": "jest --watch --config=jest.json",
-    "test:coverage": "jest --config=jest.json --coverage --coverageDirectory=coverage",
-    "e2e": "echo 'No e2e tests implemented yet.'",
-    "e2e:watch": "jest --watch --config=e2e/jest-e2e.json"
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "start": "node dist/main.js",
+    "test:e2e": "vitest run --config vitest.e2e.config.mts"
   },
   "dependencies": {
     "@nestjs/axios": "catalog:",
-    "@nestjs/terminus": "link:../../",
     "@nestjs/common": "catalog:",
     "@nestjs/core": "catalog:",
     "@nestjs/platform-express": "catalog:",
+    "@nestjs/terminus": "link:../../",
     "reflect-metadata": "catalog:",
     "rxjs": "catalog:"
   },
   "devDependencies": {
     "@nestjs/testing": "catalog:",
-    "@types/express": "catalog:",
-    "@types/jest": "catalog:",
     "@types/node": "catalog:",
     "@types/supertest": "catalog:",
-    "@typescript-eslint/eslint-plugin": "catalog:",
-    "@typescript-eslint/parser": "catalog:",
-    "eslint": "catalog:",
-    "eslint-config-prettier": "catalog:",
-    "eslint-plugin-import": "catalog:",
-    "jest": "catalog:",
-    "nodemon": "catalog:",
-    "prettier": "catalog:",
     "supertest": "catalog:",
-    "ts-jest": "catalog:",
-    "ts-loader": "catalog:",
-    "ts-node": "catalog:",
-    "tsconfig-paths": "catalog:",
-    "typescript": "catalog:"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": "src",
-    "testRegex": ".spec.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }

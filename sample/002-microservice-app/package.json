@@ -3,23 +3,19 @@
   "version": "1.0.0",
   "description": "Microservice ping check app",
   "license": "MIT",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "start": "ts-node src/main.ts",
-    "prestart:prod": "tsc",
-    "start:prod": "node dist/main.js",
-    "build": "rm -rf dist && tsc -p tsconfig.json",
-    "test": "jest",
-    "test:watch": "jest --watch --config=jest.json",
-    "test:coverage": "jest --config=jest.json --coverage --coverageDirectory=coverage",
-    "e2e": "echo 'No e2e tests implemented yet.'",
-    "e2e:watch": "jest --watch --config=e2e/jest-e2e.json"
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "start": "node dist/main.js",
+    "test:e2e": "echo 'No e2e tests implemented yet.'"
   },
   "dependencies": {
-    "@nestjs/terminus": "link:../../",
     "@nestjs/common": "catalog:",
     "@nestjs/core": "catalog:",
     "@nestjs/microservices": "catalog:",
     "@nestjs/platform-express": "catalog:",
+    "@nestjs/terminus": "link:../../",
     "class-transformer": "catalog:",
     "class-validator": "catalog:",
     "ioredis": "catalog:",
@@ -28,17 +24,7 @@
     "rxjs": "catalog:"
   },
   "devDependencies": {
-    "@types/jest": "catalog:",
     "@types/node": "catalog:",
-    "@typescript-eslint/eslint-plugin": "catalog:",
-    "@typescript-eslint/parser": "catalog:",
-    "eslint": "catalog:",
-    "eslint-config-prettier": "catalog:",
-    "eslint-plugin-import": "catalog:",
-    "jest": "catalog:",
-    "supertest": "catalog:",
-    "ts-jest": "catalog:",
-    "ts-node": "catalog:",
     "typescript": "catalog:"
   }
 }

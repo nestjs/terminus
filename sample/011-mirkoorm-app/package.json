@@ -3,68 +3,26 @@
   "version": "1.0.0",
   "description": "Mirkoorm Health Check sample app",
   "license": "MIT",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "build": "rm -rf dist && tsc -p tsconfig.json",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "ts-node src/main.ts",
-    "start:dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "e2e": "echo 'No e2e tests implemented yet.'"
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "start": "node dist/main.js",
+    "test:e2e": "echo 'No e2e tests implemented yet.'"
   },
   "dependencies": {
     "@mikro-orm/core": "catalog:",
     "@mikro-orm/mysql": "catalog:",
     "@mikro-orm/nestjs": "catalog:",
-    "@nestjs/terminus": "link:../../",
     "@nestjs/common": "catalog:",
     "@nestjs/core": "catalog:",
     "@nestjs/platform-express": "catalog:",
+    "@nestjs/terminus": "link:../../",
     "reflect-metadata": "catalog:",
     "rxjs": "catalog:"
   },
   "devDependencies": {
-    "@nestjs/cli": "catalog:",
-    "@nestjs/testing": "catalog:",
-    "@types/express": "catalog:",
-    "@types/jest": "catalog:",
     "@types/node": "catalog:",
-    "@types/supertest": "catalog:",
-    "@typescript-eslint/eslint-plugin": "catalog:",
-    "@typescript-eslint/parser": "catalog:",
-    "eslint": "catalog:",
-    "eslint-config-prettier": "catalog:",
-    "eslint-plugin-prettier": "catalog:",
-    "jest": "catalog:",
-    "prettier": "catalog:",
-    "source-map-support": "catalog:",
-    "supertest": "catalog:",
-    "ts-jest": "catalog:",
-    "ts-loader": "catalog:",
-    "ts-node": "catalog:",
-    "tsconfig-paths": "catalog:",
     "typescript": "catalog:"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": "src",
-    "testRegex": ".*\\.spec\\.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
-    ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
   }
 }
