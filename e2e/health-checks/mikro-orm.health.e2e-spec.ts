@@ -57,9 +57,13 @@ describe('MikroOrmHealthIndicator', () => {
       });
 
       it('should throw an error if runs into timeout error', async () => {
+        // A real `select 1` against localhost can finish inside 1ms, so
+        // race the timer against a ping that never resolves instead.
+        const connection = { isConnected: () => new Promise(() => {}) };
         app = await setHealthEndpoint(({ healthCheck, mikroOrm }) =>
           healthCheck.check([
-            async () => mikroOrm.pingCheck('mikroOrm', { timeout: 1 }),
+            async () =>
+              mikroOrm.pingCheck('mikroOrm', { timeout: 1, connection }),
           ]),
         ).start();
 
