@@ -3,18 +3,22 @@ import type * as NestJSAxios from '@nestjs/axios';
 import { ConsoleLogger, Inject, Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { lastValueFrom, type Observable } from 'rxjs';
-import { type HealthIndicatorResult } from '..';
+import { type HealthIndicatorResult } from '../index.js';
 import {
   type AxiosRequestConfig,
   type AxiosResponse,
-} from './axios.interfaces';
-import { type AxiosError } from '../../errors/axios.error';
-import { TERMINUS_LOGGER } from '../../terminus.constants';
-import { checkPackages, isAxiosError } from '../../utils';
+} from './axios.interfaces.js';
+import { type AxiosError } from '../../errors/axios.error.js';
+import { TERMINUS_LOGGER } from '../../terminus.constants.js';
+import {
+  assertPackages,
+  isAxiosError,
+  loadPackage,
+} from '../../utils/index.js';
 import {
   HealthIndicatorService,
   type HealthIndicatorSession,
-} from '../health-indicator.service';
+} from '../health-indicator.service.js';
 
 interface HttpClientLike {
   request<T = any>(config: any): Observable<AxiosResponse<T>>;
@@ -31,8 +35,6 @@ interface HttpClientLike {
   scope: Scope.TRANSIENT,
 })
 export class HttpHealthIndicator {
-  private nestJsAxios!: typeof NestJSAxios;
-
   constructor(
     private readonly moduleRef: ModuleRef,
     @Inject(TERMINUS_LOGGER)
@@ -42,22 +44,15 @@ export class HttpHealthIndicator {
     if (this.logger instanceof ConsoleLogger) {
       this.logger.setContext(HttpHealthIndicator.name);
     }
-    this.checkDependantPackages();
+    assertPackages(['@nestjs/axios'], this.constructor.name);
   }
 
-  /**
-   * Checks if the dependant packages are present
-   */
-  private checkDependantPackages() {
-    this.nestJsAxios = checkPackages(
-      ['@nestjs/axios'],
-      this.constructor.name,
-    )[0];
-  }
+  private async getHttpService() {
+    const { HttpService }: typeof NestJSAxios =
+      await loadPackage('@nestjs/axios');
 
-  private getHttpService() {
     try {
-      return this.moduleRef.get(this.nestJsAxios.HttpService, {
+      return this.moduleRef.get(HttpService, {
         strict: false,
       });
     } catch (err) {
@@ -119,7 +114,7 @@ export class HttpHealthIndicator {
     // we just let him/her pass in this HttpService so that he/she does not need to
     // reconfigure it.
     // https://github.com/nestjs/terminus/issues/1151
-    const httpService = httpClient || this.getHttpService();
+    const httpService = httpClient || (await this.getHttpService());
 
     try {
       await lastValueFrom(httpService.request({ url, ...options }));
@@ -144,7 +139,7 @@ export class HttpHealthIndicator {
     }: AxiosRequestConfig & { httpClient?: HttpClientLike } = {},
   ): Promise<HealthIndicatorResult<Key>> {
     const check = this.healthIndicatorService.check(key);
-    const httpService = httpClient || this.getHttpService();
+    const httpService = httpClient || (await this.getHttpService());
 
     let response: AxiosResponse;
     let axiosError: AxiosError | null = null;

@@ -5,7 +5,7 @@ import request from 'supertest';
 import {
   bootstrapTestingModule,
   type DynamicHealthEndpointFn,
-} from '../helper';
+} from '../helper/index.js';
 
 describe('MikroOrmHealthIndicator', () => {
   let app: INestApplication;

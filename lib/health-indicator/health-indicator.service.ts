@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { type HealthIndicatorResult } from './health-indicator-result.interface';
-import { rejectOnAbort } from '../utils/rejectOnAbort';
+import { type HealthIndicatorResult } from './health-indicator-result.interface.js';
+import { rejectOnAbort } from '../utils/rejectOnAbort.js';
 
 /**
  * Helper service which can be used to create health indicator results

@@ -1,5 +1,5 @@
-import { type HealthIndicatorFunction } from './health-indicator';
-import { type HealthCheckAttempt } from './health-indicator.service';
+import { type HealthIndicatorFunction } from './health-indicator.js';
+import { type HealthCheckAttempt } from './health-indicator.service.js';
 
 /**
  * @publicApi

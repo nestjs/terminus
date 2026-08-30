@@ -2,7 +2,7 @@ import * as timers from 'node:timers/promises';
 import { ShutdownSignal } from '@nestjs/common';
 import { type NestApplicationContext } from '@nestjs/core';
 import request from 'supertest';
-import { bootstrapTestingModule } from './helper';
+import { bootstrapTestingModule } from './helper/index.js';
 
 vi.mock('node:timers/promises', async (importOriginal) => {
   const actual = await importOriginal<typeof import('node:timers/promises')>();

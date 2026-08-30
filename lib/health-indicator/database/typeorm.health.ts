@@ -1,14 +1,14 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import type * as NestJSTypeOrm from '@nestjs/typeorm';
 import type * as TypeOrm from 'typeorm';
-import { type HealthIndicatorResult } from '../';
+import { type HealthIndicatorResult } from '../index.js';
 import {
   TimeoutError as PromiseTimeoutError,
   promiseTimeout,
-  checkPackages,
-} from '../../utils';
-import { HealthIndicatorService } from '../health-indicator.service';
+  assertPackages,
+  loadPackage,
+} from '../../utils/index.js';
+import { HealthIndicatorService } from '../health-indicator.service.js';
 
 export interface TypeOrmPingCheckSettings {
   /**
@@ -42,16 +42,14 @@ export class TypeOrmHealthIndicator {
    * Checks if the dependant packages are present
    */
   private checkDependantPackages() {
-    checkPackages(['@nestjs/typeorm', 'typeorm'], this.constructor.name);
+    assertPackages(['@nestjs/typeorm', 'typeorm'], this.constructor.name);
   }
 
   /**
    * Returns the connection of the current DI context
    */
-  private getContextConnection(): TypeOrm.DataSource | null {
-    const { getDataSourceToken } =
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      require('@nestjs/typeorm/dist/common/typeorm.utils') as typeof NestJSTypeOrm;
+  private async getContextConnection(): Promise<TypeOrm.DataSource | null> {
+    const { getDataSourceToken } = await loadPackage('@nestjs/typeorm');
 
     try {
       return this.moduleRef.get(getDataSourceToken() as string, {
@@ -104,10 +102,9 @@ export class TypeOrmHealthIndicator {
     options: TypeOrmPingCheckSettings = {},
   ): Promise<HealthIndicatorResult<Key>> {
     const check = this.healthIndicatorService.check(key);
-    this.checkDependantPackages();
 
     const connection: TypeOrm.DataSource | null =
-      options.connection || this.getContextConnection();
+      options.connection || (await this.getContextConnection());
     const timeout = options.timeout || 1000;
 
     if (!connection) {

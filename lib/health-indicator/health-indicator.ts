@@ -1,5 +1,5 @@
-import { type HealthIndicatorResult } from './';
-import { type HealthCheckAttempt } from './health-indicator.service';
+import { type HealthIndicatorResult } from './index.js';
+import { type HealthCheckAttempt } from './health-indicator.service.js';
 
 /**
  * A health indicator function for a health check

@@ -1,4 +1,4 @@
-import { type AxiosError } from '../errors/axios.error';
+import { type AxiosError } from '../errors/axios.error.js';
 
 export function isAxiosError(err: any): err is AxiosError {
   return err?.isAxiosError;

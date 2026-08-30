@@ -1,11 +1,13 @@
-import { type Mock } from 'vitest';
 import { Transport } from '@nestjs/microservices';
 import { Test } from '@nestjs/testing';
-import { MicroserviceHealthIndicator } from './microservice.health';
-import { checkPackages } from '../../utils/checkPackage.util';
-import { HealthIndicatorService } from '../health-indicator.service';
+import { MicroserviceHealthIndicator } from './microservice.health.js';
+import { loadPackage } from '../../utils/checkPackage.util.js';
+import { HealthIndicatorService } from '../health-indicator.service.js';
 
-vi.mock('../../utils/checkPackage.util');
+vi.mock('../../utils/checkPackage.util.js', () => ({
+  assertPackages: vi.fn(),
+  loadPackage: vi.fn(),
+}));
 
 const clientMock = {
   connect: vi.fn(),
@@ -22,9 +24,7 @@ describe('MicroserviceHealthIndicator', () => {
   const options = { transport: Transport.TCP, options: {} } as const;
 
   beforeEach(async () => {
-    (checkPackages as Mock).mockImplementation((): any => [
-      nestJSMicroservicesMock,
-    ]);
+    vi.mocked(loadPackage).mockResolvedValue(nestJSMicroservicesMock);
     clientMock.connect.mockReset();
     clientMock.close.mockReset();
 

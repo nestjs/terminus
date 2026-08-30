@@ -1,10 +1,10 @@
 import { Test } from '@nestjs/testing';
 import { LoggerService } from '@nestjs/common';
-import { GracefulShutdownService } from './graceful-shutdown-timeout.service';
+import { GracefulShutdownService } from './graceful-shutdown-timeout.service.js';
 import {
   TERMINUS_LOGGER,
   TERMINUS_MODULE_OPTIONS,
-} from '../terminus.constants';
+} from '../terminus.constants.js';
 import { setTimeout } from 'node:timers/promises';
 
 vi.mock('node:timers/promises', () => ({

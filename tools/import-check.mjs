@@ -14,7 +14,6 @@ const allowList = [
   '@nestjs/core',
   '@nestjs/common',
   'rxjs',
-  'check-disk-space',
 
   // NodeJS std
   ...builtinModules,

@@ -1,5 +1,3 @@
-import { Logger } from '@nestjs/common/services/logger.service';
-
 /**
  * Generates the string which packages are missing and
  * how to install them
@@ -17,54 +15,71 @@ const MISSING_REQUIRED_DEPENDENCY = (names: string[], reason: string): string =>
   } ($ npm install ${names.join(' ')}) to take advantage of ${reason}.`;
 
 /**
+ * Cache of already-loaded packages, keyed by package name, so that a health
+ * check does not pay for a dynamic import on every probe.
+ *
  * @internal
  */
-const logger = new Logger('PackageLoader');
+const packageCache = new Map<string, any>();
 
 /**
- * Loads an optional module
+ * Asserts that the given optional peer packages are installed, without loading
+ * them. Meant for indicator constructors, which are synchronous.
  *
- * @param module The module name
- * @internal
+ * `import.meta.resolve` resolves a specifier without evaluating the module and
+ * honours an `import`-only `exports` condition, which the ESM-only siblings
+ * publish.
  *
- * @returns {T | null} The module or null if has not found
- */
-function optional<T = any>(module: string): T | null {
-  try {
-    if (module[0] in { '.': 1 }) {
-      module = process.cwd() + module.substring(1);
-    }
-    return require(`${module}`);
-  } catch (err) {}
-  return null;
-}
-
-/**
- * Checks if the given packages are available and logs using the Nest Logger
- * which packages are not available
  * @param packageNames The package names
  * @param reason The reason why these packages are important
  *
+ * @throws {Error} If one of the packages cannot be resolved. A missing peer is
+ * a wiring mistake that can never recover, so it aborts the bootstrap instead
+ * of surfacing later as a failing probe.
+ *
+ * @internal
+ */
+export function assertPackages(packageNames: string[], reason: string): void {
+  const missing = packageNames.filter((packageName) => {
+    try {
+      import.meta.resolve(packageName);
+      return false;
+    } catch {
+      return true;
+    }
+  });
+
+  if (missing.length) {
+    throw new Error(MISSING_REQUIRED_DEPENDENCY(missing, reason));
+  }
+}
+
+/**
+ * Loads the given optional peer packages, caching each one after its first
+ * load. Meant for the (already asynchronous) check methods.
+ *
+ * @param packageNames The package names
+ *
  * @internal
  *
- * @example
- * //  The "no_package" package is missing. Please, make sure to install the library ($ npm install no_package) to take advantage of TEST.
- * checkPackages(['process', 'no_package'], 'TEST')
+ * @returns The loaded modules, in the order they were requested
  */
-export function checkPackages(packageNames: string[], reason: string): any[] {
-  const packages = packageNames.map((packageName, index) => ({
-    pkg: optional(packageName),
-    index,
-  }));
+export async function loadPackages(packageNames: string[]): Promise<any[]> {
+  return await Promise.all(packageNames.map(loadPackage));
+}
 
-  const missingDependenciesNames = packages
-    .filter((pkg) => pkg.pkg === null)
-    .map((pkg) => packageNames[pkg.index]);
-
-  if (missingDependenciesNames.length) {
-    logger.error(MISSING_REQUIRED_DEPENDENCY(missingDependenciesNames, reason));
-    Logger.flush();
-    process.exit(1);
+/**
+ * Loads a single optional peer package, caching it after its first load.
+ *
+ * @internal
+ */
+export async function loadPackage(packageName: string): Promise<any> {
+  const cached = packageCache.get(packageName);
+  if (cached) {
+    return cached;
   }
-  return packages.map((pkg) => pkg.pkg);
+
+  const pkg = await import(packageName);
+  packageCache.set(packageName, pkg);
+  return pkg;
 }

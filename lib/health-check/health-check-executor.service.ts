@@ -2,13 +2,13 @@ import { Injectable, type BeforeApplicationShutdown } from '@nestjs/common';
 import {
   type HealthCheckResult,
   type HealthCheckStatus,
-} from './health-check-result.interface';
+} from './health-check-result.interface.js';
 import {
   type InferHealthIndicatorResults,
   type HealthIndicatorFunction,
   type HealthIndicatorResult,
-} from '../health-indicator';
-import { HealthCheckAttempt } from '../health-indicator/health-indicator.service';
+} from '../health-indicator/index.js';
+import { HealthCheckAttempt } from '../health-indicator/health-indicator.service.js';
 
 /**
  * This class is responsible for executing the health indicators and returning the result.
