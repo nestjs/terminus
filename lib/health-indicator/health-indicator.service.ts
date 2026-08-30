@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { type HealthIndicatorResult } from './health-indicator-result.interface.js';
+import { isError } from '../utils/is-error.js';
 import { rejectOnAbort } from '../utils/rejectOnAbort.js';
 
 /**
@@ -174,14 +175,14 @@ export class HealthCheckAttempt<Key extends Readonly<string> = string> {
    * @returns A promise that resolves to the health indicator result
    */
   async execute(): Promise<HealthIndicatorResult<Key>> {
-    const signals: AbortSignal[] = [];
-
-    if (this.timeoutMs !== undefined) {
-      signals.push(AbortSignal.timeout(this.timeoutMs));
-    }
-
     const controller = new AbortController();
-    const signal = AbortSignal.any([controller.signal, ...signals]);
+    const timeout =
+      this.timeoutMs === undefined
+        ? undefined
+        : AbortSignal.timeout(this.timeoutMs);
+    const signal = timeout
+      ? AbortSignal.any([controller.signal, timeout])
+      : controller.signal;
 
     try {
       const promise = Promise.resolve(this.fn({ signal }));
@@ -189,9 +190,11 @@ export class HealthCheckAttempt<Key extends Readonly<string> = string> {
 
       return this.session.up(result as AdditionalData | undefined);
     } catch (err) {
-      return this.session.down({
-        error: err instanceof Error ? err.message : String(err),
-      });
+      if (timeout?.aborted) {
+        return this.session.down(`timeout of ${this.timeoutMs}ms exceeded`);
+      }
+
+      return this.session.down(isError(err) ? err.message : String(err));
     } finally {
       controller.abort();
     }

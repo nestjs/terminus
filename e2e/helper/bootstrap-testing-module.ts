@@ -16,6 +16,7 @@ import { Test } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {
   DiskHealthIndicator,
+  GRPCHealthIndicator,
   HealthCheck,
   type HealthCheckResult,
   HealthCheckService,
@@ -38,6 +39,7 @@ type TestingHealthFunc = (props: {
   disk: DiskHealthIndicator;
   memory: MemoryHealthIndicator;
   microservice: MicroserviceHealthIndicator;
+  grpc: GRPCHealthIndicator;
   mongoose: MongooseHealthIndicator;
   sequelize: SequelizeHealthIndicator;
   typeorm: TypeOrmHealthIndicator;
@@ -57,6 +59,7 @@ function createHealthController(
       private readonly disk: DiskHealthIndicator,
       private readonly memoryHealthIndicator: MemoryHealthIndicator,
       private readonly microservice: MicroserviceHealthIndicator,
+      private readonly grpc: GRPCHealthIndicator,
       private readonly mongoose: MongooseHealthIndicator,
       private readonly sequelize: SequelizeHealthIndicator,
       private readonly typeorm: TypeOrmHealthIndicator,
@@ -72,6 +75,7 @@ function createHealthController(
         disk: this.disk,
         memory: this.memoryHealthIndicator,
         microservice: this.microservice,
+        grpc: this.grpc,
         mongoose: this.mongoose,
         sequelize: this.sequelize,
         typeorm: this.typeorm,

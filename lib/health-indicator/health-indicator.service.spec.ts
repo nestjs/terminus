@@ -123,7 +123,7 @@ describe('HealthCheckAttempt', () => {
       });
       const result = await attempt.execute();
       expect(result).toEqual({
-        test: { status: 'down', error: 'Something broke' },
+        test: { status: 'down', message: 'Something broke' },
       });
     });
 
@@ -133,7 +133,7 @@ describe('HealthCheckAttempt', () => {
       });
       const result = await attempt.execute();
       expect(result).toEqual({
-        test: { status: 'down', error: 'Connection refused' },
+        test: { status: 'down', message: 'Connection refused' },
       });
     });
 
@@ -143,7 +143,7 @@ describe('HealthCheckAttempt', () => {
       });
       const result = await attempt.execute();
       expect(result).toEqual({
-        test: { status: 'down', error: 'string error' },
+        test: { status: 'down', message: 'string error' },
       });
     });
   });
@@ -174,7 +174,7 @@ describe('HealthCheckAttempt', () => {
       expect(result).toEqual({
         test: {
           status: 'down',
-          error: 'The operation was aborted due to timeout',
+          message: 'timeout of 50ms exceeded',
         },
       });
     });

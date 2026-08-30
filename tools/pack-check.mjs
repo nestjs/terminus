@@ -3,7 +3,7 @@
  * imports it from real Node - as ESM and, through `require(esm)`, as CJS.
  *
  * A tarball rather than `dist/` on purpose: the two failure modes worth
- * catching, an `.npmignore` mistake and the proto copy step not running, are
+ * catching, a `files` whitelist mistake and the proto copy step not running, are
  * both invisible to an import out of the source tree.
  */
 import { execFileSync } from 'node:child_process';

@@ -52,8 +52,8 @@ describe('HealthCheckExecutorService', () => {
       expect(result).toEqual<HealthCheckResult>({
         status: 'error',
         info: {},
-        error: { db: { status: 'down', error: 'Connection refused' } },
-        details: { db: { status: 'down', error: 'Connection refused' } },
+        error: { db: { status: 'down', message: 'Connection refused' } },
+        details: { db: { status: 'down', message: 'Connection refused' } },
       });
     });
 

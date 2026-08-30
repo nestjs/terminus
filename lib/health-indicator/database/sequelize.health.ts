@@ -1,12 +1,7 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { type HealthIndicatorResult } from '../../index.js';
-import {
-  promiseTimeout,
-  TimeoutError as PromiseTimeoutError,
-  assertPackages,
-  loadPackage,
-} from '../../utils/index.js';
+import { assertPackages, loadPackage } from '../../utils/index.js';
 import { HealthIndicatorService } from '../health-indicator.service.js';
 
 export interface SequelizePingCheckSettings {
@@ -61,12 +56,10 @@ export class SequelizeHealthIndicator {
   /**
    * Pings a sequelize connection
    * @param connection The connection which the ping should get executed
-   * @param timeout The timeout how long the ping should maximum take
    *
    */
-  private async pingDb(connection: any, timeout: number) {
-    const check: Promise<any> = connection.query('SELECT 1');
-    return await promiseTimeout(timeout, check);
+  private async pingDb(connection: any) {
+    await connection.query('SELECT 1');
   }
 
   /**
@@ -92,16 +85,9 @@ export class SequelizeHealthIndicator {
       return check.down('Connection provider not found in application context');
     }
 
-    try {
-      await this.pingDb(connection, timeout);
-    } catch (err) {
-      if (err instanceof PromiseTimeoutError) {
-        return check.down(`timeout of ${timeout}ms exceeded`);
-      }
-
-      return check.down();
-    }
-
-    return check.up();
+    return check
+      .attempt(() => this.pingDb(connection))
+      .withTimeout(timeout)
+      .execute();
   }
 }

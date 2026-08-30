@@ -4,8 +4,6 @@ import { type HealthIndicatorResult } from '../index.js';
 import {
   assertPackages,
   loadPackage,
-  promiseTimeout,
-  TimeoutError as PromiseTimeoutError,
   type PropType,
   isError,
 } from '../../utils/index.js';
@@ -100,19 +98,15 @@ export class MicroserviceHealthIndicator {
       };
     }
 
-    try {
-      await promiseTimeout(timeout, this.pingMicroservice(options));
-    } catch (err) {
-      if (err instanceof PromiseTimeoutError) {
-        return check.down(`timeout of ${timeout}ms exceeded`);
-      }
-      if (isError(err)) {
-        return check.down(err.message);
-      }
-
-      return check.down(`${key} is not available`);
-    }
-
-    return check.up();
+    return check
+      .attempt(async () => {
+        try {
+          await this.pingMicroservice(options);
+        } catch (err) {
+          throw isError(err) ? err : new Error(`${key} is not available`);
+        }
+      })
+      .withTimeout(timeout)
+      .execute();
   }
 }

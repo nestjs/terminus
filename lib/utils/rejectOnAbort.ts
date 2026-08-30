@@ -8,6 +8,9 @@ export function rejectOnAbort<T>(
   promise: Promise<T>,
   signal: AbortSignal,
 ): Promise<T> {
+  if (signal.aborted) {
+    return Promise.reject(signal.reason);
+  }
   return Promise.race([
     promise,
     new Promise<never>((_, reject) =>

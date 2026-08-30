@@ -3,12 +3,7 @@ import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { type HealthIndicatorResult } from '../index.js';
 import { DatabaseNotConnectedError } from '../../errors/database-not-connected.error.js';
-import {
-  TimeoutError as PromiseTimeoutError,
-  promiseTimeout,
-  assertPackages,
-  loadPackage,
-} from '../../utils/index.js';
+import { assertPackages, loadPackage } from '../../utils/index.js';
 import { HealthIndicatorService } from '../health-indicator.service.js';
 
 export interface MikroOrmPingCheckSettings {
@@ -64,18 +59,12 @@ export class MikroOrmHealthIndicator {
    * Pings a mikro-orm connection
    *
    * @param connection The connection which the ping should get executed
-   * @param timeout The timeout how long the ping should maximum take
    *
    */
-  private async pingDb(connection: MikroOrm.Connection, timeout: number) {
-    const checker = async () => {
-      const isConnected = await connection.isConnected();
-      if (!isConnected) {
-        throw new DatabaseNotConnectedError();
-      }
-    };
-
-    return await promiseTimeout(timeout, checker());
+  private async pingDb(connection: MikroOrm.Connection) {
+    if (!(await connection.isConnected())) {
+      throw new DatabaseNotConnectedError();
+    }
   }
 
   /**
@@ -101,20 +90,9 @@ export class MikroOrmHealthIndicator {
       return check.down();
     }
 
-    try {
-      await this.pingDb(connection, timeout);
-    } catch (error) {
-      // Check if the error is a timeout error
-      if (error instanceof PromiseTimeoutError) {
-        return check.down(`timeout of ${timeout}ms exceeded`);
-      }
-      if (error instanceof DatabaseNotConnectedError) {
-        return check.down(error.message);
-      }
-
-      return check.down();
-    }
-
-    return check.up();
+    return check
+      .attempt(() => this.pingDb(connection))
+      .withTimeout(timeout)
+      .execute();
   }
 }

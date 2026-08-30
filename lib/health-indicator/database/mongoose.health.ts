@@ -1,12 +1,8 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { type HealthIndicatorResult } from '../../index.js';
-import {
-  promiseTimeout,
-  TimeoutError as PromiseTimeoutError,
-  assertPackages,
-  loadPackage,
-} from '../../utils/index.js';
+import { DatabaseNotConnectedError } from '../../errors/database-not-connected.error.js';
+import { assertPackages, loadPackage } from '../../utils/index.js';
 import { HealthIndicatorService } from '../health-indicator.service.js';
 
 export interface MongoosePingCheckSettings {
@@ -64,13 +60,12 @@ export class MongooseHealthIndicator {
   /**
    * Pings a mongoose connection
    * @param connection The connection which the ping should get executed
-   * @param timeout The timeout how long the ping should maximum take
    *
    */
-  private async pingDb(connection: any, timeout: number) {
-    const promise =
-      connection.readyState === 1 ? Promise.resolve() : Promise.reject();
-    return await promiseTimeout(timeout, promise);
+  private async pingDb(connection: any) {
+    if (connection.readyState !== 1) {
+      throw new DatabaseNotConnectedError();
+    }
   }
 
   /**
@@ -96,16 +91,9 @@ export class MongooseHealthIndicator {
       return check.down('Connection provider not found in application context');
     }
 
-    try {
-      await this.pingDb(connection, timeout);
-    } catch (err) {
-      if (err instanceof PromiseTimeoutError) {
-        return check.down(`timeout of ${timeout}ms exceeded`);
-      }
-
-      return check.down();
-    }
-
-    return check.up();
+    return check
+      .attempt(() => this.pingDb(connection))
+      .withTimeout(timeout)
+      .execute();
   }
 }

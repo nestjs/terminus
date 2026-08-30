@@ -2,12 +2,7 @@ import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import type * as TypeOrm from 'typeorm';
 import { type HealthIndicatorResult } from '../index.js';
-import {
-  TimeoutError as PromiseTimeoutError,
-  promiseTimeout,
-  assertPackages,
-  loadPackage,
-} from '../../utils/index.js';
+import { assertPackages, loadPackage } from '../../utils/index.js';
 import { HealthIndicatorService } from '../health-indicator.service.js';
 
 export interface TypeOrmPingCheckSettings {
@@ -64,10 +59,9 @@ export class TypeOrmHealthIndicator {
    * Pings a typeorm connection
    *
    * @param connection The connection which the ping should get executed
-   * @param timeout The timeout how long the ping should maximum take
    *
    */
-  private async pingDb(connection: TypeOrm.DataSource, timeout: number) {
+  private async pingDb(connection: TypeOrm.DataSource) {
     let check: Promise<any>;
     switch (connection.options.type) {
       case 'mongodb':
@@ -85,7 +79,7 @@ export class TypeOrmHealthIndicator {
         check = connection.query('SELECT 1');
         break;
     }
-    return await promiseTimeout(timeout, check);
+    await check;
   }
 
   /**
@@ -111,16 +105,9 @@ export class TypeOrmHealthIndicator {
       return check.down('Connection provider not found in application context');
     }
 
-    try {
-      await this.pingDb(connection, timeout);
-    } catch (err) {
-      if (err instanceof PromiseTimeoutError) {
-        return check.down(`timeout of ${timeout}ms exceeded`);
-      }
-
-      return check.down();
-    }
-
-    return check.up();
+    return check
+      .attempt(() => this.pingDb(connection))
+      .withTimeout(timeout)
+      .execute();
   }
 }
