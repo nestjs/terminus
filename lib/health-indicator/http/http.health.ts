@@ -1,7 +1,6 @@
 import { type URL } from 'url';
 import type * as NestJSAxios from '@nestjs/axios';
 import { ConsoleLogger, Inject, Injectable, Scope } from '@nestjs/common';
-import { ModuleRef } from '@nestjs/core';
 import { lastValueFrom, type Observable } from 'rxjs';
 import { type HealthIndicatorResult } from '../index.js';
 import {
@@ -36,7 +35,6 @@ interface HttpClientLike {
 })
 export class HttpHealthIndicator {
   constructor(
-    private readonly moduleRef: ModuleRef,
     @Inject(TERMINUS_LOGGER)
     private readonly logger: ConsoleLogger,
     private readonly healthIndicatorService: HealthIndicatorService,
@@ -47,22 +45,10 @@ export class HttpHealthIndicator {
     assertPackages(['@nestjs/axios'], this.constructor.name);
   }
 
-  private async getHttpService() {
+  private async getHttpService(): Promise<HttpClientLike> {
     const { HttpService }: typeof NestJSAxios =
       await loadPackage('@nestjs/axios');
-
-    try {
-      return this.moduleRef.get(HttpService, {
-        strict: false,
-      });
-    } catch (err) {
-      this.logger.error(
-        'It seems like "HttpService" is not available in the current context. Are you sure you imported the HttpModule from the @nestjs/axios package?',
-      );
-      throw new Error(
-        'It seems like "HttpService" is not available in the current context. Are you sure you imported the HttpModule from the @nestjs/axios package?',
-      );
-    }
+    return new HttpService();
   }
 
   /**
@@ -106,10 +92,6 @@ export class HttpHealthIndicator {
   ): Promise<HealthIndicatorResult<Key>> {
     const check = this.healthIndicatorService.check(key);
 
-    // In case the user has a preconfigured HttpService (see `HttpModule.register`)
-    // we just let him/her pass in this HttpService so that he/she does not need to
-    // reconfigure it.
-    // https://github.com/nestjs/terminus/issues/1151
     const httpService = httpClient || (await this.getHttpService());
 
     try {

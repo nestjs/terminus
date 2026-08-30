@@ -1,7 +1,6 @@
 import { MongoDriver } from '@mikro-orm/mongodb';
 import { MySqlDriver } from '@mikro-orm/mysql';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { HttpModule } from '@nestjs/axios';
 import {
   Controller,
   Get,
@@ -212,16 +211,10 @@ export function bootstrapTestingModule(
     };
   }
 
-  function withHttp() {
-    imports.push(HttpModule);
-    return { setHealthEndpoint };
-  }
-
   return {
     withMongoose,
     withTypeOrm,
     withSequelize,
-    withHttp,
     withPrisma,
     withMikroOrm,
     setHealthEndpoint,

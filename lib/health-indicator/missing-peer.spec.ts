@@ -42,7 +42,7 @@ const indicators: Array<[string, () => unknown, string[]]> = [
   ],
   [
     'HttpHealthIndicator',
-    () => new HttpHealthIndicator(moduleRef, logger, healthIndicatorService),
+    () => new HttpHealthIndicator(logger, healthIndicatorService),
     ['@nestjs/axios'],
   ],
   [

@@ -14,9 +14,7 @@ describe(`HttpHealthIndicator`, () => {
 
   beforeEach(async () => (remoteServer = await bootstrapRemoteServer()));
   beforeEach(
-    () =>
-      (setHealthEndpoint =
-        bootstrapTestingModule().withHttp().setHealthEndpoint),
+    () => (setHealthEndpoint = bootstrapTestingModule().setHealthEndpoint),
   );
 
   describe('#pingCheck', () => {
