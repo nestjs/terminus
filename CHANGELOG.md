@@ -1,5 +1,14 @@
 # Changelog
 
+# [12.0.0-next.1](https://github.com/nestjs/terminus/compare/12.0.0-next.0...12.0.0-next.1) (2026-08-31)
+
+
+### Features
+
+* add .cacheFor() builder ([ba59644](https://github.com/nestjs/terminus/commit/ba59644ddfb0d49939490e34d7c5f06e314ad75b))
+* add `degraded` status for health indicator ([1cfb8af](https://github.com/nestjs/terminus/commit/1cfb8afb04fcc7a8ffe48e431242f351f3fcfb7d))
+* add responseTime to the HealthCheckResponse ([a0434ae](https://github.com/nestjs/terminus/commit/a0434aed8f95e38cadd9e0c34dbe7412aa66e298))
+
 # [12.0.0-next.0](https://github.com/nestjs/terminus/compare/11.1.1...12.0.0-next.0) (2026-08-30)
 
 
