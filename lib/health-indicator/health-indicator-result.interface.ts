@@ -1,9 +1,10 @@
-import { type HealthIndicatorFunction } from './health-indicator';
+import { type HealthIndicatorFunction } from './health-indicator.js';
+import { type HealthCheckAttempt } from './health-indicator.service.js';
 
 /**
  * @publicApi
  */
-export type HealthIndicatorStatus = 'up' | 'down';
+export type HealthIndicatorStatus = 'up' | 'degraded' | 'down';
 
 /**
  * The result object of a health indicator
@@ -20,7 +21,12 @@ export type HealthIndicatorResult<
  */
 export type InferHealthIndicatorResult<
   Fn extends HealthIndicatorFunction = HealthIndicatorFunction,
-> = Awaited<ReturnType<Fn>>;
+> =
+  Fn extends HealthCheckAttempt<infer Key>
+    ? HealthIndicatorResult<Key>
+    : Fn extends (...args: any) => any
+      ? Awaited<ReturnType<Fn>>
+      : HealthIndicatorResult;
 
 /**
  * @internal

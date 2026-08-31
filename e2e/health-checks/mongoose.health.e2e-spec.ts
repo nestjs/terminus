@@ -1,9 +1,9 @@
 import { type INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
+import request from 'supertest';
 import {
   bootstrapTestingModule,
   type DynamicHealthEndpointFn,
-} from '../helper';
+} from '../helper/index.js';
 
 describe('MongooseHealthIndicator', () => {
   let app: INestApplication;
@@ -20,13 +20,20 @@ describe('MongooseHealthIndicator', () => {
       app = await setHealthEndpoint(({ healthCheck, mongoose }) =>
         healthCheck.check([async () => mongoose.pingCheck('mongo')]),
       ).start();
-      const details = { mongo: { status: 'up' } };
-      return request(app.getHttpServer()).get('/health').expect(200).expect({
-        status: 'ok',
-        info: details,
-        error: {},
-        details,
-      });
+      const details = {
+        mongo: { status: 'up', responseTime: expect.any(Number) },
+      };
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(200)
+        .expect(({ body }) =>
+          expect(body).toEqual({
+            status: 'ok',
+            info: details,
+            error: {},
+            details,
+          }),
+        );
     });
   });
 

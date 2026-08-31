@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { PrettyErrorLogger } from './pretty-error-logger.service';
+import { PrettyErrorLogger } from './pretty-error-logger.service.js';
 
 const GREEN = '\x1b[0m\x1b[32m';
 const RED = '\x1b[0m\x1b[31m';
@@ -26,11 +26,8 @@ describe('PrettyErrorLogger', () => {
 
     expect(message).toBe(`message
 
-${GREEN}┌ ✅ dog ────────┐
-│                │
-│   status: up   │
-│                │
-└────────────────┘${STOP_COLOR}
+${GREEN}✅ dog
+status: up${STOP_COLOR}
 `);
   });
 
@@ -43,11 +40,8 @@ ${GREEN}┌ ✅ dog ────────┐
 
     expect(message).toBe(`message
 
-${RED}┌ ❌ dog ──────────┐
-│                  │
-│   status: down   │
-│                  │
-└──────────────────┘${STOP_COLOR}
+${RED}❌ dog
+status: down${STOP_COLOR}
 `);
   });
 
@@ -63,16 +57,10 @@ ${RED}┌ ❌ dog ──────────┐
 
     expect(message).toBe(`message
 
-${GREEN}┌ ✅ dog ────────┐
-│                │
-│   status: up   │
-│                │
-└────────────────┘${STOP_COLOR}
-${RED}┌ ❌ pug ──────────┐
-│                  │
-│   status: down   │
-│                  │
-└──────────────────┘${STOP_COLOR}
+${GREEN}✅ dog
+status: up${STOP_COLOR}
+${RED}❌ pug
+status: down${STOP_COLOR}
 `);
   });
 
@@ -86,12 +74,9 @@ ${RED}┌ ❌ pug ──────────┐
 
     expect(message).toBe(`message
 
-${GREEN}┌ ✅ dog ────────┐
-│                │
-│   status: up   │
-│   foo: bar     │
-│                │
-└────────────────┘${STOP_COLOR}
+${GREEN}✅ dog
+status: up
+foo: bar${STOP_COLOR}
 `);
   });
 
@@ -107,13 +92,10 @@ ${GREEN}┌ ✅ dog ────────┐
 
     expect(message).toBe(`message
 
-${GREEN}┌ ✅ dog ──────────┐
-│                  │
-│   status: up     │
-│   foo:           │
-│     - bar: baz   │
-│                  │
-└──────────────────┘${STOP_COLOR}
+${GREEN}✅ dog
+status: up
+foo:
+  - bar: baz${STOP_COLOR}
 `);
   });
 
@@ -127,14 +109,11 @@ ${GREEN}┌ ✅ dog ──────────┐
 
     expect(message).toBe(`message
 
-${GREEN}┌ ✅ dog ────────┐
-│                │
-│   status: up   │
-│   foo:         │
-│     - 0: bar   │
-│     - 1: baz   │
-│                │
-└────────────────┘${STOP_COLOR}
+${GREEN}✅ dog
+status: up
+foo:
+  - 0: bar
+  - 1: baz${STOP_COLOR}
 `);
   });
 
@@ -148,12 +127,9 @@ ${GREEN}┌ ✅ dog ────────┐
 
     expect(message).toBe(`message
 
-${GREEN}┌ ✅ dog ───────────────┐
-│                       │
-│   status: up          │
-│   foo: Symbol(TEST)   │
-│                       │
-└───────────────────────┘${STOP_COLOR}
+${GREEN}✅ dog
+status: up
+foo: Symbol(TEST)${STOP_COLOR}
 `);
   });
 });

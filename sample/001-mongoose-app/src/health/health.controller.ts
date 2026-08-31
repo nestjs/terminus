@@ -15,6 +15,8 @@ export class HealthController {
   @Get()
   @HealthCheck()
   check() {
-    return this.health.check([async () => this.mongoose.pingCheck('mongoose')]);
+    return this.health.check([
+      async () => await this.mongoose.pingCheck('mongoose'),
+    ]);
   }
 }

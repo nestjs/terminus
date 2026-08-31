@@ -1,24 +1,25 @@
+import { type Mock } from 'vitest';
 import { Test } from '@nestjs/testing';
-import { HealthCheckService } from './health-check.service';
-import { HealthCheckExecutor } from './health-check-executor.service';
-import { ERROR_LOGGER } from './error-logger/error-logger.provider';
-import { ErrorLogger } from './error-logger/error-logger.interface';
-import { TERMINUS_LOGGER } from '../terminus.constants';
+import { HealthCheckService } from './health-check.service.js';
+import { HealthCheckExecutor } from './health-check-executor.service.js';
+import { ERROR_LOGGER } from './error-logger/error-logger.provider.js';
+import { ErrorLogger } from './error-logger/error-logger.interface.js';
+import { TERMINUS_LOGGER } from '../terminus.constants.js';
 import { LoggerService } from '@nestjs/common';
 
 const healthCheckExecutorMock: Partial<HealthCheckExecutor> = {
-  execute: jest.fn(),
+  execute: vi.fn(),
 };
 
 const errorLoggerMock: ErrorLogger = {
-  getErrorMessage: jest.fn(),
+  getErrorMessage: vi.fn(),
 };
 
 const loggerMock: Partial<LoggerService> = {
-  log: jest.fn(),
-  error: jest.fn(),
-  warn: jest.fn(),
-  debug: jest.fn(),
+  log: vi.fn(),
+  error: vi.fn(),
+  warn: vi.fn(),
+  debug: vi.fn(),
 };
 
 describe('HealthCheckService', () => {
@@ -54,15 +55,23 @@ describe('HealthCheckService', () => {
   });
 
   it('should return the result', async () => {
-    (healthCheckExecutor.execute as jest.Mock).mockReturnValue({
+    (healthCheckExecutor.execute as Mock).mockReturnValue({
       status: 'ok',
     });
     const result = await healthCheckService.check([() => Promise.resolve({})]);
     expect(result).toEqual({ status: 'ok' });
   });
 
+  it('should return the result when degraded', async () => {
+    (healthCheckExecutor.execute as Mock).mockReturnValue({
+      status: 'degraded',
+    });
+    const result = await healthCheckService.check([() => Promise.resolve({})]);
+    expect(result).toEqual({ status: 'degraded' });
+  });
+
   it('should throw a ServiceUnavailableException', async () => {
-    (healthCheckExecutor.execute as jest.Mock).mockReturnValue({
+    (healthCheckExecutor.execute as Mock).mockReturnValue({
       status: 'error',
     });
     try {
@@ -74,10 +83,10 @@ describe('HealthCheckService', () => {
   });
 
   it('should print an error message', async () => {
-    (healthCheckExecutor.execute as jest.Mock).mockReturnValue({
+    (healthCheckExecutor.execute as Mock).mockReturnValue({
       status: 'error',
     });
-    (errorLogger.getErrorMessage as jest.Mock).mockReturnValue('error message');
+    (errorLogger.getErrorMessage as Mock).mockReturnValue('error message');
 
     try {
       await healthCheckService.check([() => Promise.resolve({})]);

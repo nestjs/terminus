@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { DogService } from './dog.service';
-import { DogHealthIndicator } from './dog.health';
+import { DogService } from './dog.service.js';
+import { DogHealthIndicator } from './dog.health.js';
 import { TerminusModule } from '@nestjs/terminus';
 
 @Module({

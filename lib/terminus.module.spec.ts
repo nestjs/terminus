@@ -6,20 +6,23 @@ import {
   Module,
 } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { GracefulShutdownService } from './graceful-shutdown-timeout/graceful-shutdown-timeout.service';
-import { HealthCheckService } from './health-check';
-import { ERROR_LOGGER } from './health-check/error-logger/error-logger.provider';
-import { JsonErrorLogger } from './health-check/error-logger/json-error-logger.service';
-import { PrettyErrorLogger } from './health-check/error-logger/pretty-error-logger.service';
-import { NOOP_LOGGER } from './health-check/logger/noop-logger';
-import { HealthIndicatorService } from './health-indicator/health-indicator.service';
+import { HealthCheckService } from './health-check/index.js';
+import { HealthCheckExecutor } from './health-check/health-check-executor.service.js';
+import { ERROR_LOGGER } from './health-check/error-logger/error-logger.provider.js';
+import { JsonErrorLogger } from './health-check/error-logger/json-error-logger.service.js';
+import { PrettyErrorLogger } from './health-check/error-logger/pretty-error-logger.service.js';
+import { NOOP_LOGGER } from './health-check/logger/noop-logger.js';
+import { HealthIndicatorService } from './health-indicator/health-indicator.service.js';
 import {
   TerminusModuleOptions,
   TerminusAsyncModuleOptions,
   TerminusOptionsFactory,
-} from './terminus-options.interface';
-import { TERMINUS_LOGGER, TERMINUS_MODULE_OPTIONS } from './terminus.constants';
-import { TerminusModule } from './terminus.module';
+} from './terminus-options.interface.js';
+import {
+  TERMINUS_LOGGER,
+  TERMINUS_MODULE_OPTIONS,
+} from './terminus.constants.js';
+import { TerminusModule } from './terminus.module.js';
 
 @Injectable()
 class TerminusConfigService implements TerminusOptionsFactory {
@@ -269,12 +272,12 @@ describe('TerminusModule', () => {
       expect(options).toEqual(opts);
     });
 
-    it('should resolve GracefulShutdownService', async () => {
+    it('should resolve HealthCheckExecutor', async () => {
       const module = await Test.createTestingModule({
         imports: [TerminusModule.forRoot()],
       }).compile();
 
-      const service = module.get(GracefulShutdownService);
+      const service = module.get(HealthCheckExecutor);
       expect(service).toBeDefined();
     });
 
@@ -424,7 +427,7 @@ describe('TerminusModule', () => {
       expect(logger.dep).toBe(dependencyValue);
     });
 
-    it('should resolve GracefulShutdownService with async options', async () => {
+    it('should resolve HealthCheckExecutor with async options', async () => {
       const module = await Test.createTestingModule({
         imports: [
           TerminusModule.forRootAsync({
@@ -433,7 +436,7 @@ describe('TerminusModule', () => {
         ],
       }).compile();
 
-      const service = module.get(GracefulShutdownService);
+      const service = module.get(HealthCheckExecutor);
       expect(service).toBeDefined();
     });
   });

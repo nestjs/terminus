@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { type HealthIndicatorResult } from '../';
-import { STORAGE_EXCEEDED } from '../../errors/messages.constant';
-import { HealthIndicatorService } from '../health-indicator.service';
+import { type HealthIndicatorResult } from '../index.js';
+import { STORAGE_EXCEEDED } from '../../errors/messages.constant.js';
+import { HealthIndicatorService } from '../health-indicator.service.js';
 
 /**
  * The MemoryHealthIndicator contains checks which are related
@@ -21,8 +21,6 @@ export class MemoryHealthIndicator {
    *
    * @param key The key which will be used for the result object
    * @param options The options of the `MemoryHealthIndicator`
-   *
-   * @throws {StorageExceededError} In case the heap has exceeded the given threshold
    *
    *
    * @returns {Promise<HealthIndicatorResult>} The result of the health indicator check
@@ -50,8 +48,6 @@ export class MemoryHealthIndicator {
    *
    * @param key The key which will be used for the result object
    * @param options The options of the `MemoryHealthIndicator`
-   *
-   * @throws {StorageExceededError} In case the rss has exceeded the given threshold
    *
    * @returns {Promise<HealthIndicatorResult>} The result of the health indicator check
    *

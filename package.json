@@ -1,7 +1,23 @@
 {
   "name": "@nestjs/terminus",
-  "version": "11.1.1",
+  "version": "12.0.0-next.1",
   "description": "Terminus integration provides readiness/liveness health checks for NestJS.",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": "^20.19.0 || ^22.12.0 || >=24.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/nestjs/terminus"
@@ -27,35 +43,30 @@
   ],
   "license": "MIT",
   "author": "Livio Brunner",
-  "main": "dist/index.js",
   "packageManager": "pnpm@9.15.9",
   "scripts": {
-    "dev": "nest build --watch",
-    "build": "nest build",
+    "dev": "tsc -p tsconfig.build.json --watch",
+    "build": "rimraf dist && tsc -p tsconfig.build.json && cp -R lib/health-indicator/microservice/protos dist/health-indicator/microservice/",
     "build:all": "pnpm run build && pnpm run -r build",
-    "test:all": "pnpm run test && pnpm run -if-present -r test --passWithNoTests",
-    "test:e2e:all": "npm run test:e2e && pnpm run --if-present -r e2e --passWithNoTests",
+    "test:all": "pnpm run test && pnpm run -r --if-present test",
+    "test:e2e:all": "pnpm run test:e2e && pnpm run -r --if-present test:e2e",
     "format": "prettier --check \"{lib,e2e,sample,tools}/**/*.ts\"",
     "format:fix": "prettier --write \"{lib,e2e,sample,tools}/**/*.ts\"",
-    "lint": "eslint \"lib/**/*.ts\"",
-    "lint:fix": "eslint \"lib/**/*.ts\" \"e2e/**/*.ts\" \"tools/**/*.ts\" --fix",
+    "lint": "oxlint lib e2e tools",
+    "lint:fix": "oxlint --fix lib e2e tools",
+    "typecheck": "tsc -p tsconfig.json",
     "precommit": "lint-staged",
-    "prepublish": "npm run build",
     "prepublish:next": "npm run build",
     "publish:next": "npm publish --access public --tag next",
     "prepublish:npm": "npm run build",
     "publish:npm": "npm publish --access public",
     "test": "pnpm run test:ut && pnpm run test:import",
-    "test:e2e": "jest --config=e2e/jest-e2e.json --detectOpenHandles --forceExit",
-    "test:ut": "jest --detectOpenHandles",
-    "test:ut:cov": "pnpm run test:ut -- --coverage",
-    "test:import": "ts-node tools/import-check.ts",
+    "test:e2e": "vitest run --config vitest.e2e.config.mts",
+    "test:ut": "vitest run",
+    "test:import": "node tools/import-check.mjs",
+    "test:pack": "pnpm run build && node tools/pack-check.mjs",
     "release": "release-it",
-    "prepare": "husky install"
-  },
-  "dependencies": {
-    "boxen": "5.1.2",
-    "check-disk-space": "3.4.0"
+    "prepare": "husky"
   },
   "devDependencies": {
     "@commitlint/cli": "catalog:",
@@ -67,7 +78,6 @@
     "@mikro-orm/mysql": "catalog:",
     "@mikro-orm/nestjs": "catalog:",
     "@nestjs/axios": "catalog:",
-    "@nestjs/cli": "catalog:",
     "@nestjs/common": "catalog:",
     "@nestjs/core": "catalog:",
     "@nestjs/microservices": "catalog:",
@@ -81,45 +91,33 @@
     "@prisma/client": "catalog:",
     "@release-it/conventional-changelog": "catalog:",
     "@types/express": "catalog:",
-    "@types/jest": "catalog:",
     "@types/node": "catalog:",
     "@types/supertest": "catalog:",
-    "@typescript-eslint/eslint-plugin": "catalog:",
-    "@typescript-eslint/parser": "catalog:",
     "amqp-connection-manager": "catalog:",
     "amqplib": "catalog:",
     "axios": "catalog:",
-    "cli-color": "catalog:",
-    "eslint": "catalog:",
-    "eslint-config-prettier": "catalog:",
-    "eslint-import-resolver-typescript": "catalog:",
-    "eslint-plugin-deprecation": "catalog:",
-    "eslint-plugin-import": "catalog:",
-    "eslint-plugin-jest": "catalog:",
-    "eslint-plugin-unused-imports": "catalog:",
+    "express": "catalog:",
     "fastify": "catalog:",
     "husky": "catalog:",
-    "ioredis": "catalog:",
-    "jest": "catalog:",
     "kafkajs": "catalog:",
     "lint-staged": "catalog:",
     "mongoose": "catalog:",
     "mysql2": "catalog:",
-    "nats": "catalog:",
+    "oxlint": "catalog:",
     "portfinder": "catalog:",
     "prettier": "catalog:",
     "prisma": "catalog:",
     "reflect-metadata": "catalog:",
     "release-it": "catalog:",
-    "rollup": "catalog:",
-    "rollup-plugin-dts": "catalog:",
+    "rimraf": "catalog:",
+    "rxjs": "catalog:",
     "sequelize": "catalog:",
     "sequelize-typescript": "catalog:",
     "supertest": "catalog:",
-    "ts-jest": "catalog:",
-    "ts-node": "catalog:",
     "typeorm": "catalog:",
     "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:",
     "wait-port": "catalog:"
   },
   "peerDependencies": {
@@ -127,37 +125,38 @@
     "@grpc/proto-loader": "*",
     "@mikro-orm/core": "*",
     "@mikro-orm/nestjs": "*",
-    "@nestjs/axios": "^2.0.0 || ^3.0.0 || ^4.0.0",
-    "@nestjs/common": "^10.0.0 || ^11.0.0",
-    "@nestjs/core": "^10.0.0 || ^11.0.0",
-    "@nestjs/microservices": "^10.0.0 || ^11.0.0",
-    "@nestjs/mongoose": "^11.0.0",
-    "@nestjs/sequelize": "^10.0.0 || ^11.0.0",
-    "@nestjs/typeorm": "^10.0.0 || ^11.0.0",
+    "@nestjs/axios": "^4.0.0 || ^12.0.0",
+    "@nestjs/common": "^11.0.0 || ^12.0.0",
+    "@nestjs/core": "^11.0.0 || ^12.0.0",
+    "@nestjs/microservices": "^11.0.0 || ^12.0.0",
+    "@nestjs/mongoose": "^11.0.0 || ^12.0.0",
+    "@nestjs/sequelize": "^11.0.0 || ^12.0.0",
+    "@nestjs/swagger": "^11.0.0 || ^12.0.0",
+    "@nestjs/typeorm": "^11.0.0 || ^12.0.0",
     "@prisma/client": "*",
     "mongoose": "*",
-    "reflect-metadata": "0.1.x || 0.2.x",
-    "rxjs": "7.x",
+    "reflect-metadata": "^0.1.12 || ^0.2.0",
+    "rxjs": "^7.1.0",
     "sequelize": "*",
     "typeorm": "*"
   },
   "peerDependenciesMeta": {
-    "@nestjs/microservices": {
-      "optional": true
-    },
     "@grpc/grpc-js": {
       "optional": true
     },
     "@grpc/proto-loader": {
       "optional": true
     },
-    "@nestjs/axios": {
+    "@mikro-orm/core": {
       "optional": true
     },
     "@mikro-orm/nestjs": {
       "optional": true
     },
-    "@mikro-orm/core": {
+    "@nestjs/axios": {
+      "optional": true
+    },
+    "@nestjs/microservices": {
       "optional": true
     },
     "@nestjs/mongoose": {
@@ -166,7 +165,13 @@
     "@nestjs/sequelize": {
       "optional": true
     },
+    "@nestjs/swagger": {
+      "optional": true
+    },
     "@nestjs/typeorm": {
+      "optional": true
+    },
+    "@prisma/client": {
       "optional": true
     },
     "mongoose": {
@@ -176,9 +181,6 @@
       "optional": true
     },
     "typeorm": {
-      "optional": true
-    },
-    "@prisma/client": {
       "optional": true
     }
   },
@@ -195,14 +197,14 @@
     "semanticCommits": true,
     "packageRules": [
       {
-        "depTypeList": [
+        "matchDepTypes": [
           "devDependencies"
         ],
         "automerge": true
       }
     ],
     "extends": [
-      "config:base"
+      "config:recommended"
     ]
   },
   "commitlint": {
@@ -210,17 +212,6 @@
       "@commitlint/config-angular"
     ],
     "rules": {
-      "subject-case": [
-        2,
-        "always",
-        [
-          "sentence-case",
-          "start-case",
-          "pascal-case",
-          "upper-case",
-          "lower-case"
-        ]
-      ],
       "type-enum": [
         2,
         "always",
@@ -241,146 +232,5 @@
       ]
     }
   },
-  "jest": {
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "json"
-    ],
-    "transform": {
-      "^.+\\.ts$": "ts-jest",
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "setupFiles": [
-      "<rootDir>/node_modules/reflect-metadata/Reflect.js"
-    ],
-    "testRegex": "/lib/.*\\.(test|spec).(ts|tsx|js)$",
-    "collectCoverageFrom": [
-      "lib/**/*.{js,jsx,tsx,ts}",
-      "!**/node_modules/**",
-      "!**/vendor/**"
-    ],
-    "coverageReporters": [
-      "json",
-      "lcov"
-    ],
-    "coverageDirectory": "./coverage",
-    "testEnvironment": "node"
-  },
-  "eslintConfig": {
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-      "project": "tsconfig.json",
-      "sourceType": "module"
-    },
-    "plugins": [
-      "@typescript-eslint/eslint-plugin",
-      "unused-imports"
-    ],
-    "extends": [
-      "plugin:deprecation/recommended",
-      "plugin:@typescript-eslint/eslint-recommended",
-      "plugin:@typescript-eslint/recommended",
-      "plugin:import/recommended",
-      "plugin:import/typescript",
-      "prettier"
-    ],
-    "root": true,
-    "env": {
-      "node": true,
-      "jest": true
-    },
-    "overrides": [
-      {
-        "files": [
-          "*.{js,ts}"
-        ],
-        "settings": {
-          "import/resolver": {
-            "typescript": {
-              "alwaysTryTypes": true,
-              "project": [
-                "./tsconfig.json",
-                "./e2e/tsconfig.json"
-              ]
-            }
-          }
-        }
-      },
-      {
-        "files": [
-          "*.spec.ts"
-        ],
-        "env": {
-          "jest": true
-        },
-        "extends": [
-          "plugin:jest/recommended"
-        ]
-      }
-    ],
-    "rules": {
-      "curly": 1,
-      "prefer-const": 1,
-      "no-console": 1,
-      "strict": 1,
-      "no-debugger": 1,
-      "@typescript-eslint/interface-name-prefix": "off",
-      "@typescript-eslint/explicit-function-return-type": "off",
-      "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-use-before-define": "off",
-      "@typescript-eslint/no-non-null-assertion": "off",
-      "@typescript-eslint/prefer-optional-chain": 1,
-      "@typescript-eslint/no-unused-vars": "off",
-      "unused-imports/no-unused-imports": "error",
-      "unused-imports/no-unused-vars": [
-        "warn",
-        {
-          "vars": "all",
-          "varsIgnorePattern": "^_",
-          "args": "after-used",
-          "argsIgnorePattern": "^_"
-        }
-      ],
-      "@typescript-eslint/consistent-type-imports": [
-        2,
-        {
-          "prefer": "type-imports",
-          "fixStyle": "inline-type-imports"
-        }
-      ],
-      "import/newline-after-import": 2,
-      "import/order": [
-        2,
-        {
-          "groups": [
-            "builtin",
-            "external",
-            "internal",
-            [
-              "parent",
-              "sibling",
-              "index"
-            ]
-          ],
-          "pathGroups": [
-            {
-              "pattern": "@nestjs*",
-              "group": "external",
-              "position": "before"
-            }
-          ],
-          "distinctGroup": false,
-          "alphabetize": {
-            "order": "asc",
-            "orderImportKind": "asc",
-            "caseInsensitive": true
-          },
-          "newlines-between": "never",
-          "pathGroupsExcludedImportTypes": []
-        }
-      ]
-    }
-  }
+  "main": "./dist/index.js"
 }

@@ -1,0 +1,25 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript"],
+  "categories": {
+    "correctness": "error"
+  },
+  "env": {
+    "node": true
+  },
+  "ignorePatterns": [
+    "node_modules",
+    "dist",
+    "sample",
+    "e2e/prisma/generated",
+    "**/*.js",
+    "**/*.d.ts"
+  ],
+  "rules": {
+    "no-unused-vars": "off",
+    "no-unused-expressions": "off",
+    "typescript/no-explicit-any": "off",
+    "typescript/no-non-null-asserted-optional-chain": "warn",
+    "typescript/no-require-imports": "off"
+  }
+}

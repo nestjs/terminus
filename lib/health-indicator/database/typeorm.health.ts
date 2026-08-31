@@ -1,15 +1,11 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import type * as NestJSTypeOrm from '@nestjs/typeorm';
 import type * as TypeOrm from 'typeorm';
-import { type HealthIndicatorResult } from '../';
-import { MongoConnectionError } from '../../errors';
+import { assertPackages, loadPackage } from '../../utils/index.js';
 import {
-  TimeoutError as PromiseTimeoutError,
-  promiseTimeout,
-  checkPackages,
-} from '../../utils';
-import { HealthIndicatorService } from '../health-indicator.service';
+  type HealthCheckAttempt,
+  HealthIndicatorService,
+} from '../health-indicator.service.js';
 
 export interface TypeOrmPingCheckSettings {
   /**
@@ -19,6 +15,8 @@ export interface TypeOrmPingCheckSettings {
   connection?: any;
   /**
    * The amount of time the check should require in ms
+   * @deprecated Chain `.withTimeout(ms)` on the returned attempt instead,
+   * e.g. `indicator.pingCheck('database').withTimeout(1500)`
    */
   timeout?: number;
 }
@@ -43,16 +41,14 @@ export class TypeOrmHealthIndicator {
    * Checks if the dependant packages are present
    */
   private checkDependantPackages() {
-    checkPackages(['@nestjs/typeorm', 'typeorm'], this.constructor.name);
+    assertPackages(['@nestjs/typeorm', 'typeorm'], this.constructor.name);
   }
 
   /**
    * Returns the connection of the current DI context
    */
-  private getContextConnection(): TypeOrm.DataSource | null {
-    const { getDataSourceToken } =
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      require('@nestjs/typeorm/dist/common/typeorm.utils') as typeof NestJSTypeOrm;
+  private async getContextConnection(): Promise<TypeOrm.DataSource | null> {
+    const { getDataSourceToken } = await loadPackage('@nestjs/typeorm');
 
     try {
       return this.moduleRef.get(getDataSourceToken() as string, {
@@ -67,10 +63,9 @@ export class TypeOrmHealthIndicator {
    * Pings a typeorm connection
    *
    * @param connection The connection which the ping should get executed
-   * @param timeout The timeout how long the ping should maximum take
    *
    */
-  private async pingDb(connection: TypeOrm.DataSource, timeout: number) {
+  private async pingDb(connection: TypeOrm.DataSource) {
     let check: Promise<any>;
     switch (connection.options.type) {
       case 'mongodb':
@@ -88,7 +83,7 @@ export class TypeOrmHealthIndicator {
         check = connection.query('SELECT 1');
         break;
     }
-    return await promiseTimeout(timeout, check);
+    await check;
   }
 
   /**
@@ -98,36 +93,26 @@ export class TypeOrmHealthIndicator {
    * @param options The options for the ping
    *
    * @example
-   * typeOrmHealthIndicator.pingCheck('database', { timeout: 1500 });
+   * typeOrmHealthIndicator.pingCheck('database').withTimeout(1500);
    */
-  async pingCheck<Key extends string>(
+  pingCheck<Key extends string>(
     key: Key,
     options: TypeOrmPingCheckSettings = {},
-  ): Promise<HealthIndicatorResult<Key>> {
-    const check = this.healthIndicatorService.check(key);
-    this.checkDependantPackages();
+  ): HealthCheckAttempt<Key> {
+    return this.healthIndicatorService
+      .check(key)
+      .attempt(async () => {
+        const connection: TypeOrm.DataSource | null =
+          options.connection || (await this.getContextConnection());
 
-    const connection: TypeOrm.DataSource | null =
-      options.connection || this.getContextConnection();
-    const timeout = options.timeout || 1000;
+        if (!connection) {
+          throw new Error(
+            'Connection provider not found in application context',
+          );
+        }
 
-    if (!connection) {
-      return check.down('Connection provider not found in application context');
-    }
-
-    try {
-      await this.pingDb(connection, timeout);
-    } catch (err) {
-      if (err instanceof PromiseTimeoutError) {
-        return check.down(`timeout of ${timeout}ms exceeded`);
-      }
-      if (err instanceof MongoConnectionError) {
-        return check.down(err.message);
-      }
-
-      return check.down();
-    }
-
-    return check.up();
+        await this.pingDb(connection);
+      })
+      .withTimeout(options.timeout ?? 1000);
   }
 }

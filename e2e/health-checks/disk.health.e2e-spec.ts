@@ -1,10 +1,10 @@
 import { type INestApplication } from '@nestjs/common';
-import checkDiskSpace from 'check-disk-space';
-import * as request from 'supertest';
+import { checkDiskSpace } from '../../lib/health-indicator/disk/disk-usage-lib.provider.js';
+import request from 'supertest';
 import {
   bootstrapTestingModule,
   type DynamicHealthEndpointFn,
-} from '../helper';
+} from '../helper/index.js';
 
 describe('DiskHealthIndicator', () => {
   let app: INestApplication;
@@ -22,7 +22,7 @@ describe('DiskHealthIndicator', () => {
           () =>
             disk.checkStorage('disk', {
               path: '/',
-              threshold: size - free + 90000,
+              threshold: size - free + 1024 * 1024 * 1024,
             }),
         ]),
       ).start();

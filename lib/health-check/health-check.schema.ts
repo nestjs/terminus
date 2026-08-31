@@ -1,11 +1,13 @@
-import { type HealthCheckStatus } from './health-check-result.interface';
-import { type HealthIndicatorResult } from '../health-indicator';
+import { type HealthCheckStatus } from './health-check-result.interface.js';
+import { type HealthIndicatorResult } from '../health-indicator/index.js';
 import type {} from '@nestjs/swagger';
 
 // These examples will be displayed on Swagger
-const DB_EXAMPLE: HealthIndicatorResult = { database: { status: 'up' } };
+const DB_EXAMPLE: HealthIndicatorResult = {
+  database: { status: 'up', responseTime: 12 },
+};
 const REDIS_EXAMPLE: HealthIndicatorResult = {
-  redis: { status: 'down', message: 'Could not connect' },
+  redis: { status: 'down', message: 'Could not connect', responseTime: 3005 },
 };
 const COMBINED_EXAMPLE: HealthIndicatorResult = {
   ...DB_EXAMPLE,
@@ -21,6 +23,11 @@ const healthIndicatorSchema = (example: HealthIndicatorResult) => ({
     properties: {
       status: {
         type: 'string',
+        enum: ['up', 'degraded', 'down'],
+      },
+      responseTime: {
+        type: 'number',
+        description: 'Time the health indicator took to respond, in ms',
       },
     },
     additionalProperties: true,
@@ -33,6 +40,8 @@ export function getHealthCheckSchema(status: HealthCheckStatus) {
     properties: {
       status: {
         type: 'string',
+        enum:
+          status === 'error' ? ['error', 'shutting_down'] : ['ok', 'degraded'],
         example: status,
       },
       info: {

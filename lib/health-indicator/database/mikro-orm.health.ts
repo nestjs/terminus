@@ -1,14 +1,12 @@
 import type * as MikroOrm from '@mikro-orm/core';
 import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import { type HealthIndicatorResult } from '..';
-import { DatabaseNotConnectedError } from '../../errors/database-not-connected.error';
+import { DatabaseNotConnectedError } from '../../errors/database-not-connected.error.js';
+import { assertPackages, loadPackage } from '../../utils/index.js';
 import {
-  TimeoutError as PromiseTimeoutError,
-  promiseTimeout,
-  checkPackages,
-} from '../../utils';
-import { HealthIndicatorService } from '../health-indicator.service';
+  type HealthCheckAttempt,
+  HealthIndicatorService,
+} from '../health-indicator.service.js';
 
 export interface MikroOrmPingCheckSettings {
   /**
@@ -17,6 +15,8 @@ export interface MikroOrmPingCheckSettings {
   connection?: any;
   /**
    * The amount of time the check should require in ms
+   * @deprecated Chain `.withTimeout(ms)` on the returned attempt instead,
+   * e.g. `indicator.pingCheck('database').withTimeout(1500)`
    */
   timeout?: number;
 }
@@ -38,7 +38,7 @@ export class MikroOrmHealthIndicator {
   }
 
   private checkDependantPackages() {
-    checkPackages(
+    assertPackages(
       ['@mikro-orm/nestjs', '@mikro-orm/core'],
       this.constructor.name,
     );
@@ -47,9 +47,8 @@ export class MikroOrmHealthIndicator {
   /**
    * Returns the connection of the current DI context
    */
-  private getContextConnection(): MikroOrm.Connection | null {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { MikroORM } = require('@mikro-orm/core') as typeof MikroOrm;
+  private async getContextConnection(): Promise<MikroOrm.Connection | null> {
+    const { MikroORM } = await loadPackage('@mikro-orm/core');
     const mikro = this.moduleRef.get(MikroORM, { strict: false });
 
     const connection: MikroOrm.Connection = mikro.em.getConnection();
@@ -64,18 +63,12 @@ export class MikroOrmHealthIndicator {
    * Pings a mikro-orm connection
    *
    * @param connection The connection which the ping should get executed
-   * @param timeout The timeout how long the ping should maximum take
    *
    */
-  private async pingDb(connection: MikroOrm.Connection, timeout: number) {
-    const checker = async () => {
-      const isConnected = await connection.isConnected();
-      if (!isConnected) {
-        throw new DatabaseNotConnectedError();
-      }
-    };
-
-    return await promiseTimeout(timeout, checker());
+  private async pingDb(connection: MikroOrm.Connection) {
+    if (!(await connection.isConnected())) {
+      throw new DatabaseNotConnectedError();
+    }
   }
 
   /**
@@ -85,36 +78,26 @@ export class MikroOrmHealthIndicator {
    * @param options The options for the ping
    *
    * @example
-   * MikroOrmHealthIndicator.pingCheck('database', { timeout: 1500 });
+   * MikroOrmHealthIndicator.pingCheck('database').withTimeout(1500);
    */
-  public async pingCheck<Key extends string = string>(
+  public pingCheck<Key extends string = string>(
     key: Key,
     options: MikroOrmPingCheckSettings = {},
-  ): Promise<HealthIndicatorResult<Key>> {
-    this.checkDependantPackages();
-    const check = this.healthIndicatorService.check(key);
+  ): HealthCheckAttempt<Key> {
+    return this.healthIndicatorService
+      .check(key)
+      .attempt(async () => {
+        const connection =
+          options.connection || (await this.getContextConnection());
 
-    const timeout = options.timeout || 1000;
-    const connection = options.connection || this.getContextConnection();
+        if (!connection) {
+          throw new Error(
+            'Connection provider not found in application context',
+          );
+        }
 
-    if (!connection) {
-      return check.down();
-    }
-
-    try {
-      await this.pingDb(connection, timeout);
-    } catch (error) {
-      // Check if the error is a timeout error
-      if (error instanceof PromiseTimeoutError) {
-        return check.down(`timeout of ${timeout}ms exceeded`);
-      }
-      if (error instanceof DatabaseNotConnectedError) {
-        return check.down(error.message);
-      }
-
-      return check.down();
-    }
-
-    return check.up();
+        await this.pingDb(connection);
+      })
+      .withTimeout(options.timeout ?? 1000);
   }
 }

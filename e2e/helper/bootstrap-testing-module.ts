@@ -1,7 +1,6 @@
 import { MongoDriver } from '@mikro-orm/mongodb';
 import { MySqlDriver } from '@mikro-orm/mysql';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { HttpModule } from '@nestjs/axios';
 import {
   Controller,
   Get,
@@ -16,6 +15,7 @@ import { Test } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {
   DiskHealthIndicator,
+  GRPCHealthIndicator,
   HealthCheck,
   type HealthCheckResult,
   HealthCheckService,
@@ -28,9 +28,9 @@ import {
   TerminusModule,
   TypeOrmHealthIndicator,
   type TerminusModuleOptions,
-} from '../../lib';
-import { type HealthCheckOptions } from '../../lib/health-check';
-import { MikroOrmHealthIndicator } from '../../lib/health-indicator/database/mikro-orm.health';
+} from '../../lib/index.js';
+import { type HealthCheckOptions } from '../../lib/health-check/index.js';
+import { MikroOrmHealthIndicator } from '../../lib/health-indicator/database/mikro-orm.health.js';
 
 type TestingHealthFunc = (props: {
   healthCheck: HealthCheckService;
@@ -38,6 +38,7 @@ type TestingHealthFunc = (props: {
   disk: DiskHealthIndicator;
   memory: MemoryHealthIndicator;
   microservice: MicroserviceHealthIndicator;
+  grpc: GRPCHealthIndicator;
   mongoose: MongooseHealthIndicator;
   sequelize: SequelizeHealthIndicator;
   typeorm: TypeOrmHealthIndicator;
@@ -57,6 +58,7 @@ function createHealthController(
       private readonly disk: DiskHealthIndicator,
       private readonly memoryHealthIndicator: MemoryHealthIndicator,
       private readonly microservice: MicroserviceHealthIndicator,
+      private readonly grpc: GRPCHealthIndicator,
       private readonly mongoose: MongooseHealthIndicator,
       private readonly sequelize: SequelizeHealthIndicator,
       private readonly typeorm: TypeOrmHealthIndicator,
@@ -72,6 +74,7 @@ function createHealthController(
         disk: this.disk,
         memory: this.memoryHealthIndicator,
         microservice: this.microservice,
+        grpc: this.grpc,
         mongoose: this.mongoose,
         sequelize: this.sequelize,
         typeorm: this.typeorm,
@@ -208,16 +211,10 @@ export function bootstrapTestingModule(
     };
   }
 
-  function withHttp() {
-    imports.push(HttpModule);
-    return { setHealthEndpoint };
-  }
-
   return {
     withMongoose,
     withTypeOrm,
     withSequelize,
-    withHttp,
     withPrisma,
     withMikroOrm,
     setHealthEndpoint,

@@ -1,15 +1,18 @@
 import { Logger, type Provider } from '@nestjs/common';
-import { ERROR_LOGGER } from './health-check/error-logger/error-logger.provider';
-import { JsonErrorLogger } from './health-check/error-logger/json-error-logger.service';
-import { PrettyErrorLogger } from './health-check/error-logger/pretty-error-logger.service';
-import { NOOP_LOGGER } from './health-check/logger/noop-logger';
+import { ERROR_LOGGER } from './health-check/error-logger/error-logger.provider.js';
+import { JsonErrorLogger } from './health-check/error-logger/json-error-logger.service.js';
+import { PrettyErrorLogger } from './health-check/error-logger/pretty-error-logger.service.js';
+import { NOOP_LOGGER } from './health-check/logger/noop-logger.js';
 import {
   type TerminusAsyncModuleOptions,
   type TerminusAsyncOptions,
   type TerminusModuleOptions,
   type TerminusOptionsFactory,
-} from './terminus-options.interface';
-import { TERMINUS_LOGGER, TERMINUS_MODULE_OPTIONS } from './terminus.constants';
+} from './terminus-options.interface.js';
+import {
+  TERMINUS_LOGGER,
+  TERMINUS_MODULE_OPTIONS,
+} from './terminus.constants.js';
 
 export const createOptionsProvider = (
   options: TerminusModuleOptions = {},

@@ -1,4 +1,4 @@
-name: Format
+name: Lint
 
 on: [push, pull_request]
 
@@ -22,3 +22,4 @@ jobs:
 
     - run: pnpm i
     - run: pnpm lint
+    - run: pnpm typecheck

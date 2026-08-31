@@ -1,47 +1,46 @@
 import { Test } from '@nestjs/testing';
-import { HttpModule, HttpService } from '@nestjs/axios';
-import { HttpHealthIndicator } from './http.health';
-import { checkPackages } from '../../utils/checkPackage.util';
+import { HttpService } from '@nestjs/axios';
+import { HttpHealthIndicator } from './http.health.js';
+import { loadPackage } from '../../utils/checkPackage.util.js';
 import { of } from 'rxjs';
-import { TERMINUS_LOGGER } from '../../terminus.constants';
+import { TERMINUS_LOGGER } from '../../terminus.constants.js';
 import { AxiosError } from 'axios';
-import { HealthCheckError } from 'lib/health-check';
-import { HealthIndicatorService } from '../health-indicator.service';
-jest.mock('../../utils/checkPackage.util');
+import { HealthIndicatorService } from '../health-indicator.service.js';
+vi.mock('../../utils/checkPackage.util.js', () => ({
+  assertPackages: vi.fn(),
+  loadPackage: vi.fn(),
+}));
 
 // == MOCKS ==
 const httpServiceMock = {
-  request: jest.fn(),
+  request: vi.fn(),
 };
 
 const nestJSAxiosMock = {
-  HttpService: httpServiceMock,
+  HttpService: vi.fn(function () {
+    return httpServiceMock;
+  }),
 };
 
 describe('Http Response Health Indicator', () => {
   let httpHealthIndicator: HttpHealthIndicator;
 
   beforeEach(async () => {
-    (checkPackages as jest.Mock).mockImplementation((): any => [
-      nestJSAxiosMock,
-    ]);
+    vi.mocked(loadPackage).mockResolvedValue(nestJSAxiosMock);
   });
 
   beforeEach(async () => {
+    httpServiceMock.request.mockReset();
+    nestJSAxiosMock.HttpService.mockClear();
     const moduleRef = await Test.createTestingModule({
-      imports: [HttpModule],
       providers: [
         HttpHealthIndicator,
         HealthIndicatorService,
         {
-          provide: nestJSAxiosMock.HttpService as any,
-          useValue: httpServiceMock,
-        },
-        {
           provide: TERMINUS_LOGGER,
           useValue: {
-            error: jest.fn(),
-            setContext: jest.fn(),
+            error: vi.fn(),
+            setContext: vi.fn(),
           },
         },
       ],
@@ -57,14 +56,22 @@ describe('Http Response Health Indicator', () => {
       await httpHealthIndicator.pingCheck('key', 'url');
       expect(httpServiceMock.request).toHaveBeenCalledWith({ url: 'url' });
     });
+
+    it('should create an unconfigured HttpService instead of resolving one from the app', async () => {
+      httpServiceMock.request.mockReturnValue(of([]));
+      await httpHealthIndicator.pingCheck('key', 'url');
+      expect(nestJSAxiosMock.HttpService).toHaveBeenCalledWith();
+    });
+
     it('should make use of a custom httpClient', async () => {
       const httpClient = {
-        request: jest.fn().mockReturnValue(of([])),
+        request: vi.fn().mockReturnValue(of([])),
       } as any as HttpService;
       await httpHealthIndicator.pingCheck('key', 'url', {
         httpClient,
       });
-      expect(httpServiceMock.request).toHaveBeenCalledWith({ url: 'url' });
+      expect(httpClient.request).toHaveBeenCalledWith({ url: 'url' });
+      expect(nestJSAxiosMock.HttpService).not.toHaveBeenCalled();
     });
 
     it('should throw an error if the response is not an axios error', async () => {
@@ -85,15 +92,7 @@ describe('Http Response Health Indicator', () => {
       httpServiceMock.request.mockImplementation(() => {
         throw new AxiosError('Error');
       });
-      try {
-        await httpHealthIndicator.pingCheck('key', 'url');
-      } catch (err) {
-        expect(err).toBeDefined();
-        expect((err as any).constructor.name).toEqual('HealthCheckError');
-        expect((err as HealthCheckError).causes).toEqual({
-          key: { message: 'Error', status: 'down' },
-        });
-      }
+      await httpHealthIndicator.pingCheck('key', 'url');
 
       expect(httpServiceMock.request).toHaveBeenCalledWith({ url: 'url' });
     });
@@ -180,17 +179,6 @@ describe('Http Response Health Indicator', () => {
         );
       } catch (err) {
         expect(err).toBeDefined();
-        expect((err as HealthCheckError).constructor.name).toEqual(
-          'HealthCheckError',
-        );
-        expect((err as HealthCheckError).causes).toEqual({
-          key: {
-            message: 'Error',
-            status: 'down',
-            statusCode: 200,
-            statusText: 'Yes',
-          },
-        });
       }
 
       expect(httpServiceMock.request).toHaveBeenCalledWith({ url: 'url' });

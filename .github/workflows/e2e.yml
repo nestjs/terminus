@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        node-version: [20.x, 22.x, 24.x]
 
     steps:
     - uses: actions/checkout@v4
@@ -21,7 +21,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'pnpm'
 
-    - run: docker compose up -d
+    - run: docker compose up -d --wait
     - run: pnpm i
     - run: pnpm build:all
     - run: pnpm test:e2e:all

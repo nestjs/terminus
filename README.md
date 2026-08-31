@@ -22,9 +22,7 @@ This module contains integrated healthchecks for [Nest](https://github.com/nestj
 
 ## Installation
 
-`@nestjs/terminus` integrates with a lot of cool technologies, such as `typeorm`, `grpc`, `mongodb`, and many more!
-In case you have missed a dependency, `@nestjs/terminus` will throw an error and prompt you to install the required dependency.
-So you will only install what is actually required!
+`@nestjs/terminus` integrates with a lot of technologies, such as `typeorm`, `grpc`, `mongodb`, and many more!
 
 ```bash
 
@@ -68,7 +66,7 @@ export class HealthController {
   @HealthCheck()
   readiness() {
     return this.health.check([
-      async () => this.db.pingCheck('database', { timeout: 300 }),
+      async () => this.db.pingCheck('database').withTimeout(1000),
     ]);
   }
 }
@@ -111,17 +109,18 @@ pnpm i
 pnpm dev
 ```
 
-In order to test the library against a sample, simply go to a sample and run
-`pnpm start:dev`
+In order to test the library against a sample, go to a sample, build it and
+start it:
 
-```typescript
+```bash
 cd sample/000-dogs-app
-pnpm start:dev
+pnpm build
+pnpm start
 ```
 
-> [!NOTE] 
-> Once the library is rebuilt, the `pnpm start:dev` within a sample
-> needs to be restarted in order to pick up the changes.
+> [!NOTE]
+> Once the library is rebuilt, the sample needs to be rebuilt and restarted
+> in order to pick up the changes.
 
 ### Test
 

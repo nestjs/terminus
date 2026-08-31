@@ -8,8 +8,8 @@ import {
   MicroserviceHealthIndicator,
   GRPCHealthIndicator,
   PrismaHealthIndicator,
-} from '.';
-import { MikroOrmHealthIndicator } from './database/mikro-orm.health';
+} from './index.js';
+import { MikroOrmHealthIndicator } from './database/mikro-orm.health.js';
 
 /**
  * All the health indicators terminus provides as array

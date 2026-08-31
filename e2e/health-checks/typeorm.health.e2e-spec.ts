@@ -1,9 +1,11 @@
+import { setTimeout } from 'node:timers/promises';
 import { type INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
+import { DataSource } from 'typeorm';
+import request from 'supertest';
 import {
   bootstrapTestingModule,
   type DynamicHealthEndpointFn,
-} from '../helper';
+} from '../helper/index.js';
 
 describe('TypeOrmHealthIndicator', () => {
   let app: INestApplication;
@@ -21,38 +23,59 @@ describe('TypeOrmHealthIndicator', () => {
         healthCheck.check([async () => typeorm.pingCheck('typeorm')]),
       ).start();
 
-      const details = { typeorm: { status: 'up' } };
-      return request(app.getHttpServer()).get('/health').expect(200).expect({
-        status: 'ok',
-        info: details,
-        error: {},
-        details,
-      });
+      const details = {
+        typeorm: { status: 'up', responseTime: expect.any(Number) },
+      };
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(200)
+        .expect(({ body }) =>
+          expect(body).toEqual({
+            status: 'ok',
+            info: details,
+            error: {},
+            details,
+          }),
+        );
     });
 
-    // FIXME: Find a better way to test timeout errors
-    // This test has been disabled because it is flaky
-    //   it('should throw an error if runs into timeout error', async () => {
-    //     app = await setHealthEndpoint(({ healthCheck, typeorm }) =>
-    //       healthCheck.check([
-    //         async () => typeorm.pingCheck('typeorm', { timeout: 1 }),
-    //       ]),
-    //     ).start();
+    it('should throw an error if runs into timeout error', async () => {
+      app = await setHealthEndpoint(({ healthCheck, typeorm }) =>
+        healthCheck.check([
+          async () => {
+            // A real `SELECT 1` on localhost can finish inside 1ms, so keep
+            // the real data source but hold its answer until the timer wins.
+            const real = app.get(DataSource);
+            const connection = Object.create(real);
+            connection.query = (...args: unknown[]) =>
+              real
+                .query(...(args as [string]))
+                .then((result) => setTimeout(50, result));
+            return typeorm.pingCheck('typeorm', { timeout: 1, connection });
+          },
+        ]),
+      ).start();
 
-    //     const details = {
-    //       typeorm: {
-    //         status: 'down',
-    //         message: 'timeout of 1ms exceeded',
-    //       },
-    //     };
+      const details = {
+        typeorm: {
+          status: 'down',
+          message: 'timeout of 1ms exceeded',
+          responseTime: expect.any(Number),
+        },
+      };
 
-    //     return request(app.getHttpServer()).get('/health').expect(503).expect({
-    //       status: 'error',
-    //       info: {},
-    //       error: details,
-    //       details,
-    //     });
-    //   });
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(503)
+        .expect(({ body }) =>
+          expect(body).toEqual({
+            status: 'error',
+            info: {},
+            error: details,
+            details,
+          }),
+        );
+    });
   });
 
   afterEach(async () => await app.close());

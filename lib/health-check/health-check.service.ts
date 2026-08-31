@@ -6,11 +6,11 @@ import {
   LoggerService,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { ErrorLogger } from './error-logger/error-logger.interface';
-import { ERROR_LOGGER } from './error-logger/error-logger.provider';
-import { HealthCheckExecutor } from './health-check-executor.service';
-import { type HealthIndicatorFunction } from '../health-indicator';
-import { TERMINUS_LOGGER } from '../terminus.constants';
+import { type HealthIndicatorFunction } from '../health-indicator/index.js';
+import { TERMINUS_LOGGER } from '../terminus.constants.js';
+import { ErrorLogger } from './error-logger/error-logger.interface.js';
+import { ERROR_LOGGER } from './error-logger/error-logger.provider.js';
+import { HealthCheckExecutor } from './health-check-executor.service.js';
 
 /**
  * Handles Health Checks which can be used in
@@ -50,6 +50,7 @@ export class HealthCheckService {
 
     switch (result.status) {
       case 'ok':
+      case 'degraded':
         return result;
 
       case 'error':
@@ -65,7 +66,6 @@ export class HealthCheckService {
 
       default:
         // Ensure that we have exhaustively checked all cases
-        // eslint-disable-next-line unused-imports/no-unused-vars
         const exhaustiveCheck: never = result.status;
         throw new InternalServerErrorException();
     }

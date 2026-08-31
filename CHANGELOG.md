@@ -1,5 +1,37 @@
 # Changelog
 
+# [12.0.0-next.1](https://github.com/nestjs/terminus/compare/12.0.0-next.0...12.0.0-next.1) (2026-08-31)
+
+
+### Features
+
+* add .cacheFor() builder ([ba59644](https://github.com/nestjs/terminus/commit/ba59644ddfb0d49939490e34d7c5f06e314ad75b))
+* add `degraded` status for health indicator ([1cfb8af](https://github.com/nestjs/terminus/commit/1cfb8afb04fcc7a8ffe48e431242f351f3fcfb7d))
+* add responseTime to the HealthCheckResponse ([a0434ae](https://github.com/nestjs/terminus/commit/a0434aed8f95e38cadd9e0c34dbe7412aa66e298))
+
+# [12.0.0-next.0](https://github.com/nestjs/terminus/compare/11.1.1...12.0.0-next.0) (2026-08-30)
+
+
+### Bug Fixes
+
+* close the microservice client when the ping fails ([8826bc6](https://github.com/nestjs/terminus/commit/8826bc61624b229e4cb3c011b9a4e8fea5ee3611))
+* **http:** create a dedicated HttpService instead of resolving from DI ([163bfef](https://github.com/nestjs/terminus/commit/163bfefeeb3e1dae301b2507082cc5cc6122172f)), closes [#2667](https://github.com/nestjs/terminus/issues/2667)
+* **microservice:** stop RMQ pingCheck from asserting a queue per probe ([9afc532](https://github.com/nestjs/terminus/commit/9afc532a615bac192bc1cf82017505dae33bbb1d)), closes [#2680](https://github.com/nestjs/terminus/issues/2680)
+* **mongoose:** ping the database instead of checking readyState ([e1c6486](https://github.com/nestjs/terminus/commit/e1c64867d19c2419883fa19261cae9b063c7a7b8)), closes [#2661](https://github.com/nestjs/terminus/issues/2661)
+* set shutting_down before awaiting the graceful shutdown timeout ([1615c29](https://github.com/nestjs/terminus/commit/1615c29a2a73d22244e47b25e0f8d66fb8599294))
+
+
+### Features
+
+* add `attempt()` function ([ef9ab99](https://github.com/nestjs/terminus/commit/ef9ab99cbe9b529891cc04f81222d6dd889c95e9))
+* Ship the package as ESM ([fae6663](https://github.com/nestjs/terminus/commit/fae66631fac84d7dd34865fd90724d2a25cfb8bf))
+
+
+### BREAKING CHANGES
+
+* the package is now ESM-only and requires Node
+^20.19.0 || ^22.12.0 || >=24.0.0.
+
 # [11.1.0](https://github.com/nestjs/terminus/compare/11.0.0...11.1.0) (2026-02-17)
 
 

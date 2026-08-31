@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { DogService } from './dog.service';
-import { DogState } from './interfaces/dog.interface';
+import { DogService } from './dog.service.js';
+import { DogState } from './interfaces/dog.interface.js';
 import { HealthIndicatorService } from '@nestjs/terminus';
 
 @Injectable()

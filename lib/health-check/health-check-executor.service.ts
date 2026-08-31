@@ -1,27 +1,29 @@
-import { Injectable, type BeforeApplicationShutdown } from '@nestjs/common';
+import { setTimeout } from 'node:timers/promises';
+import {
+  type BeforeApplicationShutdown,
+  Inject,
+  Injectable,
+  type LoggerService,
+  ShutdownSignal,
+} from '@nestjs/common';
 import {
   type HealthCheckResult,
   type HealthCheckStatus,
-} from './health-check-result.interface';
-import { type HealthCheckError } from '../health-check/health-check.error';
+} from './health-check-result.interface.js';
 import {
   type InferHealthIndicatorResults,
   type HealthIndicatorFunction,
   type HealthIndicatorResult,
-} from '../health-indicator';
-import { isHealthCheckError } from '../utils';
+} from '../health-indicator/index.js';
+import { HealthCheckAttempt } from '../health-indicator/health-indicator.service.js';
+import { type TerminusModuleOptions } from '../terminus-options.interface.js';
+import {
+  TERMINUS_LOGGER,
+  TERMINUS_MODULE_OPTIONS,
+} from '../terminus.constants.js';
 
 /**
- * Takes care of the execution of health indicators.
- *
- * @description
- * The HealthCheckExecutor is standalone, so it can be used for
- * the legacy TerminusBootstrapService and the HealthCheckService.
- *
- * On top of that, the HealthCheckExecutor uses the `BeforeApplicationShutdown`
- * hook, therefore it must implement the `beforeApplicationShutdown`
- * method as public. We do not want to expose that
- * to the end-user.
+ * This class is responsible for executing the health indicators and returning the result.
  *
  * @internal
  */
@@ -29,11 +31,18 @@ import { isHealthCheckError } from '../utils';
 export class HealthCheckExecutor implements BeforeApplicationShutdown {
   private isShuttingDown = false;
 
+  constructor(
+    @Inject(TERMINUS_LOGGER)
+    private readonly logger: LoggerService,
+    @Inject(TERMINUS_MODULE_OPTIONS)
+    private readonly options: TerminusModuleOptions,
+  ) {}
+
   /**
    * Executes the given health indicators.
    * Implementation for v6 compatibility.
    *
-   * @throws {Error} All errors which are not inherited by the `HealthCheckError`-class
+   * @throws {Error} Any error thrown by a health indicator
    *
    * @returns the result of given health indicators
    * @param healthIndicators The health indicators which should get executed
@@ -52,8 +61,21 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
   /**
    * @internal
    */
-  beforeApplicationShutdown(): void {
+  async beforeApplicationShutdown(signal?: string) {
     this.isShuttingDown = true;
+
+    const timeoutMs = this.options.gracefulShutdownTimeoutMs ?? 0;
+    if (timeoutMs <= 0) {
+      return;
+    }
+
+    this.logger.log(`Received termination signal ${signal || ''}`);
+
+    if (signal === ShutdownSignal.SIGTERM) {
+      this.logger.log(`Awaiting ${timeoutMs}ms before shutdown`);
+      await setTimeout(timeoutMs);
+      this.logger.log(`Timeout reached, shutting down now`);
+    }
   }
 
   private async executeHealthIndicators(
@@ -63,13 +85,15 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
     const errors: HealthIndicatorResult[] = [];
 
     const result = await Promise.allSettled(
-      healthIndicators.map(async (h) => h()),
+      healthIndicators.map(async (h) =>
+        h instanceof HealthCheckAttempt ? h : h(),
+      ),
     );
 
     result.forEach((res) => {
       if (res.status === 'fulfilled') {
         Object.entries(res.value).forEach(([key, value]) => {
-          if (value.status === 'up') {
+          if (value.status === 'up' || value.status === 'degraded') {
             results.push({ [key]: value });
           } else if (value.status === 'down') {
             errors.push({ [key]: value });
@@ -77,13 +101,7 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
         });
       } else {
         const error = res.reason;
-        // Is not an expected error. Throw further!
-        if (!isHealthCheckError(error)) {
-          throw error;
-        }
-
-        // eslint-disable-next-line deprecation/deprecation
-        errors.push((error as HealthCheckError).causes);
+        throw error;
       }
     });
 
@@ -107,7 +125,12 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
     const error = this.getSummary(errors);
     const details = this.getSummary(infoErrorCombined);
 
+    const hasDegraded = results.some((result) =>
+      Object.values(result).some((value) => value.status === 'degraded'),
+    );
+
     let status: HealthCheckStatus = 'ok';
+    status = hasDegraded ? 'degraded' : status;
     status = errors.length > 0 ? 'error' : status;
     status = this.isShuttingDown ? 'shutting_down' : status;
 

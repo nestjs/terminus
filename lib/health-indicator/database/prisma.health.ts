@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import {
-  promiseTimeout,
-  TimeoutError as PromiseTimeoutError,
-} from '../../utils';
-import { type HealthIndicatorResult } from '../health-indicator-result.interface';
-import { HealthIndicatorService } from '../health-indicator.service';
+  type HealthCheckAttempt,
+  HealthIndicatorService,
+} from '../health-indicator.service.js';
 
 type PingCommandSignature = { [Key in string]?: number };
 
@@ -21,6 +19,8 @@ type PrismaClient = PrismaClientDocument | PrismaClientSQL;
 export interface PrismaClientPingCheckSettings {
   /**
    * The amount of time the check should require in ms
+   * @deprecated Chain `.withTimeout(ms)` on the returned attempt instead,
+   * e.g. `indicator.pingCheck('database').withTimeout(1500)`
    */
   timeout?: number;
 }
@@ -38,7 +38,7 @@ export class PrismaHealthIndicator {
     private readonly healthIndicatorService: HealthIndicatorService,
   ) {}
 
-  private async pingDb(timeout: number, prismaClientSQLOrMongo: PrismaClient) {
+  private async pingDb(prismaClientSQLOrMongo: PrismaClient) {
     // The prisma client generates two different typescript types for different databases
     // but inside they've the same methods
     // But they will fail when using a document method on sql database, that's why we do the try catch down below
@@ -46,13 +46,13 @@ export class PrismaHealthIndicator {
       PrismaClientDocument;
 
     try {
-      await promiseTimeout(timeout, prismaClient.$runCommandRaw({ ping: 1 }));
+      await prismaClient.$runCommandRaw({ ping: 1 });
     } catch (error) {
       if (
         error instanceof Error &&
         error.toString().includes('Use the mongodb provider')
       ) {
-        await promiseTimeout(timeout, prismaClient.$queryRawUnsafe('SELECT 1'));
+        await prismaClient.$queryRawUnsafe('SELECT 1');
         return;
       }
 
@@ -68,24 +68,14 @@ export class PrismaHealthIndicator {
    * @param prismaClient PrismaClient
    * @param options The options for the ping
    */
-  public async pingCheck<Key extends string = string>(
+  public pingCheck<Key extends string = string>(
     key: Key,
     prismaClient: PrismaClient,
     options: PrismaClientPingCheckSettings = {},
-  ): Promise<HealthIndicatorResult<Key>> {
-    const check = this.healthIndicatorService.check(key);
-    const timeout = options.timeout || 1000;
-
-    try {
-      await this.pingDb(timeout, prismaClient);
-    } catch (error) {
-      if (error instanceof PromiseTimeoutError) {
-        return check.down(`timeout of ${timeout}ms exceeded`);
-      }
-
-      return check.down();
-    }
-
-    return check.up();
+  ): HealthCheckAttempt<Key> {
+    return this.healthIndicatorService
+      .check(key)
+      .attempt(() => this.pingDb(prismaClient))
+      .withTimeout(options.timeout ?? 1000);
   }
 }

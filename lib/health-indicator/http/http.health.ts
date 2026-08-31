@@ -1,20 +1,23 @@
 import { type URL } from 'url';
 import type * as NestJSAxios from '@nestjs/axios';
 import { ConsoleLogger, Inject, Injectable, Scope } from '@nestjs/common';
-import { ModuleRef } from '@nestjs/core';
 import { lastValueFrom, type Observable } from 'rxjs';
-import { type HealthIndicatorResult } from '..';
+import { type HealthIndicatorResult } from '../index.js';
 import {
   type AxiosRequestConfig,
   type AxiosResponse,
-} from './axios.interfaces';
-import { type AxiosError } from '../../errors/axios.error';
-import { TERMINUS_LOGGER } from '../../terminus.constants';
-import { checkPackages, isAxiosError } from '../../utils';
+} from './axios.interfaces.js';
+import { type AxiosError } from '../../errors/axios.error.js';
+import { TERMINUS_LOGGER } from '../../terminus.constants.js';
+import {
+  assertPackages,
+  isAxiosError,
+  loadPackage,
+} from '../../utils/index.js';
 import {
   HealthIndicatorService,
   type HealthIndicatorSession,
-} from '../health-indicator.service';
+} from '../health-indicator.service.js';
 
 interface HttpClientLike {
   request<T = any>(config: any): Observable<AxiosResponse<T>>;
@@ -31,10 +34,7 @@ interface HttpClientLike {
   scope: Scope.TRANSIENT,
 })
 export class HttpHealthIndicator {
-  private nestJsAxios!: typeof NestJSAxios;
-
   constructor(
-    private readonly moduleRef: ModuleRef,
     @Inject(TERMINUS_LOGGER)
     private readonly logger: ConsoleLogger,
     private readonly healthIndicatorService: HealthIndicatorService,
@@ -42,40 +42,19 @@ export class HttpHealthIndicator {
     if (this.logger instanceof ConsoleLogger) {
       this.logger.setContext(HttpHealthIndicator.name);
     }
-    this.checkDependantPackages();
+    assertPackages(['@nestjs/axios'], this.constructor.name);
+  }
+
+  private async getHttpService(): Promise<HttpClientLike> {
+    const { HttpService }: typeof NestJSAxios =
+      await loadPackage('@nestjs/axios');
+    return new HttpService();
   }
 
   /**
-   * Checks if the dependant packages are present
-   */
-  private checkDependantPackages() {
-    this.nestJsAxios = checkPackages(
-      ['@nestjs/axios'],
-      this.constructor.name,
-    )[0];
-  }
-
-  private getHttpService() {
-    try {
-      return this.moduleRef.get(this.nestJsAxios.HttpService, {
-        strict: false,
-      });
-    } catch (err) {
-      this.logger.error(
-        'It seems like "HttpService" is not available in the current context. Are you sure you imported the HttpModule from the @nestjs/axios package?',
-      );
-      throw new Error(
-        'It seems like "HttpService" is not available in the current context. Are you sure you imported the HttpModule from the @nestjs/axios package?',
-      );
-    }
-  }
-
-  /**
-   * Prepares and throw a HealthCheckError
+   * Builds the `down` result for a failed request
    * @param key The key which will be used for the result object
    * @param error The thrown error
-   *
-   * @throws {HealthCheckError}
    */
   private generateHttpError(
     check: HealthIndicatorSession,
@@ -100,8 +79,6 @@ export class HttpHealthIndicator {
    * @param url The url which should be request
    * @param options Optional axios options
    *
-   * @throws {HealthCheckError} In case the health indicator failed
-   *
    * @example
    * httpHealthIndicator.pingCheck('google', 'https://google.com', { timeout: 800 })
    */
@@ -115,11 +92,7 @@ export class HttpHealthIndicator {
   ): Promise<HealthIndicatorResult<Key>> {
     const check = this.healthIndicatorService.check(key);
 
-    // In case the user has a preconfigured HttpService (see `HttpModule.register`)
-    // we just let him/her pass in this HttpService so that he/she does not need to
-    // reconfigure it.
-    // https://github.com/nestjs/terminus/issues/1151
-    const httpService = httpClient || this.getHttpService();
+    const httpService = httpClient || (await this.getHttpService());
 
     try {
       await lastValueFrom(httpService.request({ url, ...options }));
@@ -144,7 +117,7 @@ export class HttpHealthIndicator {
     }: AxiosRequestConfig & { httpClient?: HttpClientLike } = {},
   ): Promise<HealthIndicatorResult<Key>> {
     const check = this.healthIndicatorService.check(key);
-    const httpService = httpClient || this.getHttpService();
+    const httpService = httpClient || (await this.getHttpService());
 
     let response: AxiosResponse;
     let axiosError: AxiosError | null = null;

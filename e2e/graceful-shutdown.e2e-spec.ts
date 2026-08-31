@@ -1,16 +1,20 @@
+import * as timers from 'node:timers/promises';
 import { ShutdownSignal } from '@nestjs/common';
 import { type NestApplicationContext } from '@nestjs/core';
-import * as request from 'supertest';
-import { bootstrapTestingModule } from './helper';
-import { sleep } from '../lib/utils';
+import request from 'supertest';
+import { bootstrapTestingModule } from './helper/index.js';
+
+vi.mock('node:timers/promises', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('node:timers/promises')>();
+  return { ...actual, setTimeout: vi.fn(actual.setTimeout) };
+});
 
 describe('Graceful shutdown', () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should gracefully shutdown the application', async () => {
-    jest.spyOn(global, 'setTimeout');
     const setHealthEndpoint = bootstrapTestingModule({
       gracefulShutdownTimeoutMs: 64,
     }).setHealthEndpoint;
@@ -30,21 +34,23 @@ describe('Graceful shutdown', () => {
       },
     );
 
-    await sleep(16);
-    // 1. setTimeout is called by the `GracefulShutdownService`
+    await timers.setTimeout(16);
+    // 1. setTimeout is called by the `HealthCheckExecutor`
     // 2. setTimeout is called above
-    expect(setTimeout).toHaveBeenCalledTimes(2);
+    expect(timers.setTimeout).toHaveBeenCalledTimes(2);
     expect(isClosed).toBe(false);
-    await sleep(16);
+    const drain = await request(app.getHttpServer()).get('/health');
+    expect(drain.status).toBe(503);
+    expect(drain.body.status).toBe('shutting_down');
+    await timers.setTimeout(16);
     expect(isClosed).toBe(false);
-    await sleep(16);
+    await timers.setTimeout(16);
     expect(isClosed).toBe(false);
-    await sleep(64);
+    await timers.setTimeout(64);
     expect(isClosed).toBe(true);
   });
 
   it('should not delay the shutdown if the application if the timeout is 0', async () => {
-    jest.spyOn(global, 'setTimeout');
     const setHealthEndpoint = bootstrapTestingModule({
       gracefulShutdownTimeoutMs: 0,
     }).setHealthEndpoint;
@@ -61,6 +67,6 @@ describe('Graceful shutdown', () => {
       ShutdownSignal.SIGTERM,
     );
 
-    expect(setTimeout).not.toHaveBeenCalled();
+    expect(timers.setTimeout).not.toHaveBeenCalled();
   });
 });

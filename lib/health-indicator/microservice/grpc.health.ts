@@ -1,16 +1,16 @@
-import { join } from 'path';
-import { Injectable, Scope } from '@nestjs/common';
+import { join } from 'node:path';
+import { Injectable, type OnApplicationShutdown, Scope } from '@nestjs/common';
 import type * as NestJSMicroservices from '@nestjs/microservices';
-import { type Observable } from 'rxjs';
-import { type HealthIndicatorResult } from '../..';
+import { lastValueFrom, type Observable } from 'rxjs';
 import {
-  checkPackages,
-  isError,
-  promiseTimeout,
+  assertPackages,
+  loadPackage,
   type PropType,
-  TimeoutError as PromiseTimeoutError,
-} from '../../utils';
-import { HealthIndicatorService } from '../health-indicator.service';
+} from '../../utils/index.js';
+import {
+  type HealthCheckAttempt,
+  HealthIndicatorService,
+} from '../health-indicator.service.js';
 
 /**
  * The status of the request service
@@ -20,6 +20,7 @@ enum ServingStatus {
   UNKNOWN = 0,
   SERVING = 1,
   NOT_SERVING = 2,
+  SERVICE_UNKNOWN = 3,
 }
 
 /**
@@ -76,6 +77,11 @@ type GrpcOptionsLike<
 export type CheckGRPCServiceOptions<
   GrpcOptions extends GrpcClientOptionsLike = GrpcClientOptionsLike,
 > = Partial<GrpcOptionsLike<GrpcOptions>> & {
+  /**
+   * The amount of time the check should require in ms
+   * @deprecated Chain `.withTimeout(ms)` on the returned attempt instead,
+   * e.g. `grpc.checkService('hero_service', 'hero.health.v1').withTimeout(300)`
+   */
   timeout?: number;
   healthServiceName?: string;
   healthServiceCheck?: HealthServiceCheck;
@@ -89,68 +95,51 @@ export type CheckGRPCServiceOptions<
  * @module TerminusModule
  */
 @Injectable({ scope: Scope.TRANSIENT })
-export class GRPCHealthIndicator {
-  private nestJsMicroservices!: typeof NestJSMicroservices;
-
+export class GRPCHealthIndicator implements OnApplicationShutdown {
   /**
-   * Initializes the health indicator
+   * One client per result key, kept open across probes: a gRPC channel
+   * references itself through its timers, so a new one per check leaks.
    */
+  private readonly clients = new Map<
+    string,
+    NestJSMicroservices.ClientGrpcProxy
+  >();
+
   constructor(private readonly healthIndicatorService: HealthIndicatorService) {
-    this.checkDependantPackages();
-  }
-
-  /**
-   * A cache of open channels for the health indicator
-   * This is used to prevent opening new channels for every health check
-   */
-  private readonly openChannels = new Map<string, GRPCHealthService>();
-
-  /**
-   * Checks if the dependant packages are present
-   */
-  private checkDependantPackages() {
-    this.nestJsMicroservices = checkPackages(
+    assertPackages(
       ['@nestjs/microservices', '@grpc/grpc-js', '@grpc/proto-loader'],
       this.constructor.name,
-    )[0];
-  }
-
-  /**
-   * Creates a GRPC client from the given options
-   * @private
-   */
-  private createClient<GrpcOptions extends GrpcClientOptionsLike>(
-    options: CheckGRPCServiceOptions<GrpcOptions>,
-  ): NestJSMicroservices.ClientGrpc {
-    const {
-      // Remove the options which are not needed for the client
-      timeout: _t,
-      healthServiceName: _hS,
-      healthServiceCheck: _hSC,
-
-      ...grpcOptions
-    } = options;
-    return this.nestJsMicroservices.ClientProxyFactory.create({
-      transport: 4,
-      options: grpcOptions as any,
-    });
-  }
-
-  getHealthService(
-    service: string,
-    settings: CheckGRPCServiceOptions<GrpcClientOptionsLike>,
-  ) {
-    if (this.openChannels.has(service)) {
-      return this.openChannels.get(service)!;
-    }
-
-    const client = this.createClient<NestJSMicroservices.GrpcOptions>(settings);
-    const healthService = client.getService<GRPCHealthService>(
-      settings.healthServiceName as string,
     );
+  }
 
-    this.openChannels.set(service, healthService);
-    return healthService;
+  onApplicationShutdown() {
+    for (const client of this.clients.values()) {
+      client.close();
+    }
+    this.clients.clear();
+  }
+
+  private async getClient(
+    key: string,
+    options: CheckGRPCServiceOptions,
+  ): Promise<NestJSMicroservices.ClientGrpcProxy> {
+    let client = this.clients.get(key);
+    if (!client) {
+      const { ClientProxyFactory, Transport }: typeof NestJSMicroservices =
+        await loadPackage('@nestjs/microservices');
+      const {
+        timeout: _t,
+        healthServiceName: _hS,
+        healthServiceCheck: _hSC,
+        ...grpcOptions
+      } = options;
+      client = ClientProxyFactory.create({
+        transport: Transport.GRPC,
+        options: grpcOptions as NestJSMicroservices.GrpcOptions['options'],
+      });
+      this.clients.set(key, client);
+    }
+    return client;
   }
 
   /**
@@ -177,93 +166,49 @@ export class GRPCHealthIndicator {
    * grpc.checkService<GrpcOptions>('hero_service', 'hero.health.v1', {
    *   timeout: 500,
    *   package: 'grpc.health.v2',
-   *   protoPath: join(__dirname, './protos/my-custom-health.v1'),
+   *   protoPath: join(import.meta.dirname, './protos/my-custom-health.v1'),
    *   // The name of the service you need for the health check
    *   healthServiceName: 'Health',
    *   // Your custom function which checks the service
    *   healthServiceCheck: (healthService: any, service: string) =>
-   *     healthService.check({ service }).toPromise(),
+   *     lastValueFrom(healthService.check({ service })),
    * })
-   *
-   * @throws {HealthCheckError} Gets thrown in case a health check failed
-   * @throws {TimeoutError} Gets thrown in case a health check exceeded the given timeout
-   * @throws {UnhealthyResponseCodeError} Gets thrown in case the received response is unhealthy
    */
-  async checkService<
+  checkService<
     GrpcOptions extends GrpcClientOptionsLike = GrpcClientOptionsLike,
     Key extends string = string,
   >(
     key: Key,
     service: string,
     options: CheckGRPCServiceOptions<GrpcOptions> = {},
-  ): Promise<HealthIndicatorResult<Key>> {
-    const check = this.healthIndicatorService.check(key);
-
-    const defaultOptions: CheckGRPCServiceOptions<GrpcOptions> = {
+  ): HealthCheckAttempt<Key> {
+    const settings: Required<CheckGRPCServiceOptions> = {
       package: 'grpc.health.v1',
-      protoPath: join(__dirname, './protos/health.proto'),
+      protoPath: join(import.meta.dirname, './protos/health.proto'),
       healthServiceCheck: (healthService: GRPCHealthService, service: string) =>
-        // eslint-disable-next-line deprecation/deprecation
-        healthService.check({ service }).toPromise(),
+        lastValueFrom(healthService.check({ service })),
       timeout: 1000,
       healthServiceName: 'Health',
+      ...options,
     };
 
-    const settings = { ...defaultOptions, ...options };
-
-    let healthService: GRPCHealthService;
-    try {
-      healthService = this.getHealthService(service, settings);
-    } catch (err) {
-      if (err instanceof TypeError) {
-        throw err;
-      }
-      if (isError(err)) {
-        return check.down(err.message);
-      }
-      if (typeof err === 'string') {
-        return check.down(err);
-      }
-
-      return check.down();
-    }
-
-    let response: HealthCheckResponse;
-
-    try {
-      response = await promiseTimeout(
-        settings.timeout as number,
-        (settings.healthServiceCheck as HealthServiceCheck)(
+    return this.healthIndicatorService
+      .check(key)
+      .attempt(async () => {
+        const client = await this.getClient(key, settings);
+        const healthService = client.getService<GRPCHealthService>(
+          settings.healthServiceName,
+        );
+        const response: HealthCheckResponse = await settings.healthServiceCheck(
           healthService,
           service,
-        ),
-      );
-    } catch (err) {
-      if (err instanceof PromiseTimeoutError) {
-        return check.down(`timeout of ${settings.timeout}ms exceeded`);
-      }
-      if (isError(err)) {
-        return check.down(err.message);
-      }
-      if (typeof err === 'string') {
-        return check.down(err);
-      }
-
-      return check.down();
-    }
-
-    const isHealthy = response.status === ServingStatus.SERVING;
-
-    if (!isHealthy) {
-      return check.down({
-        statusCode: response.status,
-        servingStatus: ServingStatus[response.status],
-      });
-    }
-
-    return check.up({
-      statusCode: response.status,
-      servingStatus: ServingStatus[response.status],
-    });
+        );
+        const servingStatus = ServingStatus[response.status] ?? response.status;
+        if (response.status !== ServingStatus.SERVING) {
+          throw new Error(`serving status: ${servingStatus}`);
+        }
+        return { statusCode: response.status, servingStatus };
+      })
+      .withTimeout(settings.timeout);
   }
 }

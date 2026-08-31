@@ -1,14 +1,15 @@
 import { Injectable, Scope } from '@nestjs/common';
 import type * as NestJSMicroservices from '@nestjs/microservices';
-import { type HealthIndicatorResult } from '../';
 import {
-  checkPackages,
-  promiseTimeout,
-  TimeoutError as PromiseTimeoutError,
+  assertPackages,
+  loadPackage,
   type PropType,
   isError,
-} from '../../utils';
-import { HealthIndicatorService } from '../health-indicator.service';
+} from '../../utils/index.js';
+import {
+  type HealthCheckAttempt,
+  HealthIndicatorService,
+} from '../health-indicator.service.js';
 
 // Since @nestjs/microservices is lazily loaded we are not able to use
 // its types. It would end up in the d.ts file if we would use the types.
@@ -19,7 +20,7 @@ import { HealthIndicatorService } from '../health-indicator.service';
 // That is why the user has to pass the options as Type Param.
 interface MicroserviceOptionsLike {
   transport?: number;
-  options?: object;
+  options?: object & { queue?: string };
 }
 
 /**
@@ -31,6 +32,11 @@ export type MicroserviceHealthIndicatorOptions<
   // The transport option is in the `MicroserviceOptionsLike` (e.g. RedisOptions)
   // optional. We need to use this information, therefore it is required
   transport: Required<PropType<MicroserviceOptionsLike, 'transport'>>;
+  /**
+   * The amount of time the check should require in ms
+   * @deprecated Chain `.withTimeout(ms)` on the returned attempt instead,
+   * e.g. `microservice.pingCheck('tcp', options).withTimeout(1500)`
+   */
   timeout?: number;
 } & Partial<T>;
 
@@ -43,20 +49,15 @@ export type MicroserviceHealthIndicatorOptions<
  */
 @Injectable({ scope: Scope.TRANSIENT })
 export class MicroserviceHealthIndicator {
-  private nestJsMicroservices!: typeof NestJSMicroservices;
-
   constructor(private readonly healthIndicatorService: HealthIndicatorService) {
-    this.checkDependantPackages();
+    assertPackages(['@nestjs/microservices'], this.constructor.name);
   }
 
   /**
-   * Checks if the dependant packages are present
+   * Loads `@nestjs/microservices`, which is only an optional peer
    */
-  private checkDependantPackages() {
-    this.nestJsMicroservices = checkPackages(
-      ['@nestjs/microservices'],
-      this.constructor.name,
-    )[0];
+  private async loadMicroservices(): Promise<typeof NestJSMicroservices> {
+    return await loadPackage('@nestjs/microservices');
   }
 
   private async pingMicroservice<
@@ -64,12 +65,13 @@ export class MicroserviceHealthIndicator {
   >(
     options: MicroserviceHealthIndicatorOptions<MicroserviceClientOptions>,
   ): Promise<void> {
-    const client = this.nestJsMicroservices.ClientProxyFactory.create(options);
-    const checkConnection = async () => {
+    const { ClientProxyFactory } = await this.loadMicroservices();
+    const client = ClientProxyFactory.create(options);
+    try {
       await client.connect();
+    } finally {
       await client.close();
-    };
-    return await checkConnection();
+    }
   }
 
   /**
@@ -77,46 +79,46 @@ export class MicroserviceHealthIndicator {
    * @param key The key which will be used for the result object
    * @param options The options of the microservice
    *
-   * @throws {HealthCheckError} If the microservice is not reachable
-   *
    * @example
    * microservice.pingCheck<TcpClientOptions>('tcp', {
    *   transport: Transport.TCP,
    *   options: { host: 'localhost', port: 3001 },
    * })
    */
-  async pingCheck<
+  pingCheck<
     MicroserviceClientOptions extends MicroserviceOptionsLike,
     Key extends string = string,
   >(
     key: Key,
     options: MicroserviceHealthIndicatorOptions<MicroserviceClientOptions>,
-  ): Promise<HealthIndicatorResult<Key>> {
-    const check = this.healthIndicatorService.check(key);
-    const timeout = options.timeout || 1000;
+  ): HealthCheckAttempt<Key> {
+    return this.healthIndicatorService
+      .check(key)
+      .attempt(async () => {
+        const { Transport } = await this.loadMicroservices();
 
-    if (options.transport === this.nestJsMicroservices.Transport.KAFKA) {
-      options.options = {
-        // We need to set the producerOnlyMode to true in order to speed
-        // up the connection process. https://github.com/nestjs/terminus/issues/1690
-        producerOnlyMode: true,
-        ...options.options,
-      };
-    }
+        // A probe only connects, so it must be cheap and leave nothing behind:
+        // https://github.com/nestjs/terminus/issues/1690
+        // https://github.com/nestjs/terminus/issues/2680
+        const probeDefaults: Record<number, object> = {
+          [Transport.KAFKA]: { producerOnlyMode: true },
+          [Transport.RMQ]: { noAssert: options.options?.queue == null },
+        };
+        const clientOptions: MicroserviceHealthIndicatorOptions<MicroserviceClientOptions> =
+          {
+            ...options,
+            options: {
+              ...probeDefaults[options.transport as number],
+              ...options.options,
+            },
+          };
 
-    try {
-      await promiseTimeout(timeout, this.pingMicroservice(options));
-    } catch (err) {
-      if (err instanceof PromiseTimeoutError) {
-        return check.down(`timeout of ${timeout}ms exceeded`);
-      }
-      if (isError(err)) {
-        return check.down(err.message);
-      }
-
-      return check.down(`${key} is not available`);
-    }
-
-    return check.up();
+        try {
+          await this.pingMicroservice(clientOptions);
+        } catch (err) {
+          throw isError(err) ? err : new Error(`${key} is not available`);
+        }
+      })
+      .withTimeout(options.timeout ?? 1000);
   }
 }

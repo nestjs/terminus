@@ -1,10 +1,4 @@
-import { type HealthCheckError } from '../';
-import { type AxiosError } from '../errors/axios.error';
-
-// eslint-disable-next-line deprecation/deprecation
-export function isHealthCheckError(err: any): err is HealthCheckError {
-  return err?.isHealthCheckError;
-}
+import { type AxiosError } from '../errors/axios.error.js';
 
 export function isAxiosError(err: any): err is AxiosError {
   return err?.isAxiosError;
