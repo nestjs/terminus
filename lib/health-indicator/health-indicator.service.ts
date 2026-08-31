@@ -29,7 +29,7 @@ type WithoutStatus<T> = {
 type AdditionalData = Record<string, unknown>;
 
 type AttemptOutcome = {
-  status: 'up' | 'down';
+  status: HealthIndicatorStatus;
   data: AdditionalData;
   responseTime: number;
 };
@@ -38,6 +38,16 @@ type CacheEntry = {
   promise: Promise<AttemptOutcome>;
   expiresAt: number;
 };
+
+function assertNotReserved(data: AdditionalData, keys: readonly string[]) {
+  for (const key of keys) {
+    if (key in data) {
+      throw new Error(
+        `"${key}" is a reserved key and cannot be used in additional data`,
+      );
+    }
+  }
+}
 
 /**
  * Indicate the health of a health indicator with the given key
@@ -62,11 +72,7 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
       additionalData = data;
     }
 
-    if ('status' in additionalData) {
-      throw new Error(
-        '"status" is a reserved key and cannot be used in additional data',
-      );
-    }
+    assertNotReserved(additionalData, ['status']);
 
     const detail = { ...additionalData, status };
 
@@ -131,6 +137,7 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
    *
    * @param fn The function to execute
    * @returns A `HealthCheckAttempt` builder
+   * @remarks The `status`, `responseTime` and `cachedResponse` keys are reserved and cannot be used in the returned data.
    *
    * @example
    * ```typescript
@@ -178,6 +185,8 @@ export class HealthCheckAttempt<Key extends Readonly<string> = string>
     outcome: AttemptOutcome,
     cachedResponse = false,
   ): HealthIndicatorResult<Key> {
+    assertNotReserved(outcome.data, ['responseTime', 'cachedResponse']);
+
     const data = {
       ...outcome.data,
       responseTime: outcome.responseTime,

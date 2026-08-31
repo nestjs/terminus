@@ -48,6 +48,12 @@ describe('HealthIndicatorSession', () => {
         '"status" is a reserved key',
       );
     });
+
+    it('should allow responseTime as additional data key (only reserved within attempt)', () => {
+      expect(session.up({ responseTime: 5 })).toEqual({
+        test: { status: 'up', responseTime: 5 },
+      });
+    });
   });
 
   describe('degraded', () => {
@@ -146,6 +152,14 @@ describe('HealthCheckAttempt', () => {
         },
       });
     });
+
+    it.each(['status', 'responseTime', 'cachedResponse'])(
+      'should throw if the function returns the reserved key "%s"',
+      async (key) => {
+        const attempt = session.attempt(() => ({ [key]: 'foo' }));
+        await expect(attempt).rejects.toThrow(`"${key}" is a reserved key`);
+      },
+    );
 
     it.each([null, 'ok', 42, true, [1, 2]])(
       'should ignore a non-object return value (%p)',
