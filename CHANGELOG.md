@@ -1,5 +1,7 @@
 # Changelog
 
+# [12.0.0](https://github.com/nestjs/terminus/compare/12.0.0-next.1...12.0.0) (2026-08-31)
+
 # [12.0.0-next.1](https://github.com/nestjs/terminus/compare/12.0.0-next.0...12.0.0-next.1) (2026-08-31)
 
 
