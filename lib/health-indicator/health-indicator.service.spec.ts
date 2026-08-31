@@ -333,6 +333,20 @@ describe('HealthCheckAttempt cacheFor', () => {
     expect(second).toEqual(first);
   });
 
+  it('should abandon a hung run after the TTL instead of joining it forever', async () => {
+    vi.useFakeTimers();
+    const hung = vi.fn(() => new Promise<void>(() => {}));
+    void h.check('db').attempt(hung).cacheFor(1000).then();
+    vi.setSystemTime(Date.now() + 1001);
+    const fn = vi.fn(async () => {});
+    const result = await h.check('db').attempt(fn).cacheFor(1000);
+    expect(hung).toHaveBeenCalledTimes(1);
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(result).toEqual({
+      db: { status: 'up', responseTime: expect.any(Number) },
+    });
+  });
+
   it('should not share the cache between different keys', async () => {
     const fn = vi.fn(async () => {});
     await h.check('a').attempt(fn).cacheFor(1000);

@@ -37,6 +37,7 @@ type AttemptOutcome = {
 type CacheEntry = {
   promise: Promise<AttemptOutcome>;
   expiresAt: number;
+  settled: boolean;
 };
 
 function assertNotReserved(data: AdditionalData, keys: readonly string[]) {
@@ -206,22 +207,22 @@ export class HealthCheckAttempt<Key extends Readonly<string> = string>
 
     const cached = this.cacheStore.get(this.cacheKey);
     if (cached && cached.expiresAt > Date.now()) {
-      // An in-flight entry (expiresAt: Infinity) is a shared fresh run, not a cache hit.
-      const isCacheHit = Number.isFinite(cached.expiresAt);
+      const isCacheHit = cached.settled;
       return this.toResult(await cached.promise, isCacheHit);
     }
 
-    const entry: CacheEntry = { promise: this.run(), expiresAt: Infinity };
+    const entry: CacheEntry = {
+      promise: this.run(),
+      expiresAt: Date.now() + ttl,
+      settled: false,
+    };
     this.cacheStore.set(this.cacheKey, entry);
 
-    try {
-      await entry.promise;
-      entry.expiresAt = Date.now() + ttl;
-    } catch {
-      this.cacheStore.delete(this.cacheKey);
-    }
+    const outcome = await entry.promise;
+    entry.expiresAt = Date.now() + ttl;
+    entry.settled = true;
 
-    return this.toResult(await entry.promise);
+    return this.toResult(outcome);
   }
 
   private async run(): Promise<AttemptOutcome> {
