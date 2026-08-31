@@ -97,6 +97,19 @@ describe('MicroserviceHealthIndicator', () => {
       });
     });
 
+    it('does not assert a queue for RMQ when queue is undefined', async () => {
+      await microservice.pingCheck('rmq', {
+        transport: Transport.RMQ,
+        options: { urls: ['amqp://localhost:5672'], queue: undefined },
+      });
+
+      expect(createdOptions()).toEqual({
+        noAssert: true,
+        urls: ['amqp://localhost:5672'],
+        queue: undefined,
+      });
+    });
+
     it('asserts the queue for RMQ when one is configured', async () => {
       await microservice.pingCheck('rmq', {
         transport: Transport.RMQ,
@@ -104,6 +117,7 @@ describe('MicroserviceHealthIndicator', () => {
       });
 
       expect(createdOptions()).toEqual({
+        noAssert: false,
         urls: ['amqp://localhost:5672'],
         queue: 'health',
       });

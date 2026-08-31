@@ -117,6 +117,15 @@ describe('HealthCheckAttempt', () => {
       expect(result).toEqual({ test: { status: 'up', version: '1.0' } });
     });
 
+    it.each([null, 'ok', 42, true, [1, 2]])(
+      'should ignore a non-object return value (%p)',
+      async (value) => {
+        const attempt = session.attempt(() => value as never);
+        const result = await attempt.execute();
+        expect(result).toEqual({ test: { status: 'up' } });
+      },
+    );
+
     it('should return down when the function throws', async () => {
       const attempt = session.attempt(() => {
         throw new Error('Something broke');
@@ -177,6 +186,12 @@ describe('HealthCheckAttempt', () => {
           message: 'timeout of 50ms exceeded',
         },
       });
+    });
+
+    it.each([-1, Infinity, 2 ** 40])('should reject a timeout of %p', (ms) => {
+      expect(() => session.attempt(() => {}).withTimeout(ms)).toThrow(
+        'Timeout must be between 0 and 4294967295 milliseconds',
+      );
     });
 
     it('should abort the signal when timeout fires', async () => {

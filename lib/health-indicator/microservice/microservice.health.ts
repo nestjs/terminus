@@ -18,7 +18,7 @@ import { HealthIndicatorService } from '../health-indicator.service.js';
 // That is why the user has to pass the options as Type Param.
 interface MicroserviceOptionsLike {
   transport?: number;
-  options?: object;
+  options?: object & { queue?: string };
 }
 
 /**
@@ -94,8 +94,7 @@ export class MicroserviceHealthIndicator {
     // https://github.com/nestjs/terminus/issues/2680
     const probeDefaults: Record<number, object> = {
       [Transport.KAFKA]: { producerOnlyMode: true },
-      [Transport.RMQ]:
-        'queue' in (options.options ?? {}) ? {} : { noAssert: true },
+      [Transport.RMQ]: { noAssert: options.options?.queue == null },
     };
     const clientOptions: MicroserviceHealthIndicatorOptions<MicroserviceClientOptions> =
       {

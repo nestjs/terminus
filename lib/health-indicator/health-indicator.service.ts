@@ -164,7 +164,14 @@ export class HealthCheckAttempt<Key extends Readonly<string> = string> {
    * @returns this (for chaining)
    */
   withTimeout(ms: number): this {
+    if (ms < 0 || ms > 2 ** 32 - 1) {
+      throw new Error(
+        `Timeout must be between 0 and ${2 ** 32 - 1} milliseconds`,
+      );
+    }
+
     this.timeoutMs = ms;
+
     return this;
   }
 
@@ -176,27 +183,42 @@ export class HealthCheckAttempt<Key extends Readonly<string> = string> {
    */
   async execute(): Promise<HealthIndicatorResult<Key>> {
     const controller = new AbortController();
-    const timeout =
-      this.timeoutMs === undefined
-        ? undefined
-        : AbortSignal.timeout(this.timeoutMs);
-    const signal = timeout
-      ? AbortSignal.any([controller.signal, timeout])
-      : controller.signal;
+    const signals = [controller.signal];
+    let timeout: AbortSignal | undefined;
+
+    if (this.timeoutMs !== undefined) {
+      timeout = AbortSignal.timeout(this.timeoutMs);
+      signals.push(timeout);
+    }
+    const signal = AbortSignal.any(signals);
 
     try {
       const promise = Promise.resolve(this.fn({ signal }));
       const result = await rejectOnAbort(promise, signal);
 
-      return this.session.up(result as AdditionalData | undefined);
+      return this.session.up(toAdditionalData(result));
     } catch (err) {
       if (timeout?.aborted) {
         return this.session.down(`timeout of ${this.timeoutMs}ms exceeded`);
       }
 
-      return this.session.down(isError(err) ? err.message : String(err));
+      return this.session.down(errorMessage(err));
     } finally {
       controller.abort();
     }
   }
+}
+
+function toAdditionalData(value: unknown): AdditionalData | undefined {
+  if (value === null || typeof value !== 'object' || Array.isArray(value)) {
+    return undefined;
+  }
+  return value as AdditionalData;
+}
+
+function errorMessage(err: unknown): string {
+  if (isError(err)) {
+    return err.message;
+  }
+  return String(err);
 }
