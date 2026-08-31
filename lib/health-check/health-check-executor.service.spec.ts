@@ -188,6 +188,35 @@ describe('HealthCheckExecutorService', () => {
     });
   });
 
+  describe('degraded indicators', () => {
+    it('should aggregate a degraded indicator into a degraded status with HTTP-safe buckets', async () => {
+      const result = await healthCheckExecutor.execute([
+        () => h.check('db').degraded('slow'),
+        () => h.check('redis').up(),
+      ]);
+      expect(result).toEqual<HealthCheckResult>({
+        status: 'degraded',
+        info: {
+          db: { status: 'degraded', message: 'slow' },
+          redis: { status: 'up' },
+        },
+        error: {},
+        details: {
+          db: { status: 'degraded', message: 'slow' },
+          redis: { status: 'up' },
+        },
+      });
+    });
+
+    it('should report error when a down indicator accompanies a degraded one', async () => {
+      const result = await healthCheckExecutor.execute([
+        () => h.check('db').degraded(),
+        () => h.check('redis').down(),
+      ]);
+      expect(result.status).toBe('error');
+    });
+  });
+
   describe('beforeApplicationShutdown', () => {
     it('should report shutting_down before the graceful timeout elapses', async () => {
       await bootstrap({ gracefulShutdownTimeoutMs: 1000 });

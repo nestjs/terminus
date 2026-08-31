@@ -50,6 +50,24 @@ describe('HealthIndicatorSession', () => {
     });
   });
 
+  describe('degraded', () => {
+    it('should return a degraded result', () => {
+      expect(session.degraded()).toEqual({ test: { status: 'degraded' } });
+    });
+
+    it('should return a degraded result with a message string', () => {
+      expect(session.degraded('slow')).toEqual({
+        test: { status: 'degraded', message: 'slow' },
+      });
+    });
+
+    it('should throw if status is used as additional data key', () => {
+      expect(() => session.degraded({ status: 'foo' } as any)).toThrow(
+        '"status" is a reserved key',
+      );
+    });
+  });
+
   describe('down', () => {
     it('should return a down result', () => {
       expect(session.down()).toEqual({ test: { status: 'down' } });

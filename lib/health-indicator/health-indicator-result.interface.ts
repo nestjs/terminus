@@ -4,7 +4,7 @@ import { type HealthCheckAttempt } from './health-indicator.service.js';
 /**
  * @publicApi
  */
-export type HealthIndicatorStatus = 'up' | 'down';
+export type HealthIndicatorStatus = 'up' | 'degraded' | 'down';
 
 /**
  * The result object of a health indicator

@@ -93,7 +93,7 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
     result.forEach((res) => {
       if (res.status === 'fulfilled') {
         Object.entries(res.value).forEach(([key, value]) => {
-          if (value.status === 'up') {
+          if (value.status === 'up' || value.status === 'degraded') {
             results.push({ [key]: value });
           } else if (value.status === 'down') {
             errors.push({ [key]: value });
@@ -125,7 +125,12 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
     const error = this.getSummary(errors);
     const details = this.getSummary(infoErrorCombined);
 
+    const hasDegraded = results.some((result) =>
+      Object.values(result).some((value) => value.status === 'degraded'),
+    );
+
     let status: HealthCheckStatus = 'ok';
+    status = hasDegraded ? 'degraded' : status;
     status = errors.length > 0 ? 'error' : status;
     status = this.isShuttingDown ? 'shutting_down' : status;
 

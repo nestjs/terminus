@@ -50,6 +50,7 @@ export class HealthCheckService {
 
     switch (result.status) {
       case 'ok':
+      case 'degraded':
         return result;
 
       case 'error':

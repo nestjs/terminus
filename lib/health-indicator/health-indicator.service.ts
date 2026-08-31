@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { type HealthIndicatorResult } from './health-indicator-result.interface.js';
+import {
+  type HealthIndicatorResult,
+  type HealthIndicatorStatus,
+} from './health-indicator-result.interface.js';
 import { isError } from '../utils/is-error.js';
 import { rejectOnAbort } from '../utils/rejectOnAbort.js';
 
@@ -41,6 +44,32 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
     private readonly cache: Map<string, CacheEntry> = new Map(),
   ) {}
 
+  private compose<S extends HealthIndicatorStatus>(
+    status: S,
+    data?: AdditionalData | string,
+  ): HealthIndicatorResult<Key, S> {
+    let additionalData: AdditionalData = {};
+
+    if (typeof data === 'string') {
+      additionalData = { message: data };
+    } else if (typeof data === 'object' && data !== null) {
+      additionalData = data;
+    }
+
+    if ('status' in additionalData) {
+      throw new Error(
+        '"status" is a reserved key and cannot be used in additional data',
+      );
+    }
+
+    const detail = { ...additionalData, status };
+
+    return {
+      [this.key]: detail,
+      // TypeScript does not infer this.key as Key correctly.
+    } as Record<Key, typeof detail>;
+  }
+
   /**
    * Mark the health indicator as `down`
    * @param data additional data which will get appended to the result object
@@ -52,32 +81,27 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
   down<T extends string>(
     data?: T,
   ): HealthIndicatorResult<Key, 'down', { message: T }>;
-  down<T extends AdditionalData | string>(
+  down(data?: AdditionalData | string): HealthIndicatorResult<Key, 'down'> {
+    return this.compose('down', data);
+  }
+
+  /**
+   * Mark the health indicator as `degraded`: still serving, but impaired.
+   * A degraded indicator does not fail the health check; the overall status
+   * becomes `degraded` and the HTTP status stays 200.
+   * @param data additional data which will get appended to the result object
+   * @remarks The `status` key is reserved and cannot be used in additional data.
+   */
+  degraded<T extends AdditionalData>(
+    data?: T & WithoutStatus<T>,
+  ): HealthIndicatorResult<Key, 'degraded', T>;
+  degraded<T extends string>(
     data?: T,
-  ): HealthIndicatorResult<Key, 'down'> {
-    let additionalData: AdditionalData = {};
-
-    if (typeof data === 'string') {
-      additionalData = { message: data };
-    } else if (typeof data === 'object') {
-      additionalData = data;
-    }
-
-    if ('status' in additionalData) {
-      throw new Error(
-        '"status" is a reserved key and cannot be used in additional data',
-      );
-    }
-
-    const detail = {
-      ...additionalData,
-      status: 'down' as const,
-    };
-
-    return {
-      [this.key]: detail,
-      // TypeScript does not infer this.key as Key correctly.
-    } as Record<Key, typeof detail>;
+  ): HealthIndicatorResult<Key, 'degraded', { message: T }>;
+  degraded(
+    data?: AdditionalData | string,
+  ): HealthIndicatorResult<Key, 'degraded'> {
+    return this.compose('degraded', data);
   }
 
   /**
@@ -91,32 +115,8 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
   up<T extends string>(
     data?: T,
   ): HealthIndicatorResult<Key, 'up', { message: T }>;
-  up<T extends AdditionalData | string>(
-    data?: T,
-  ): HealthIndicatorResult<Key, 'up'> {
-    let additionalData: AdditionalData = {};
-
-    if (typeof data === 'string') {
-      additionalData = { message: data };
-    } else if (typeof data === 'object') {
-      additionalData = data;
-    }
-
-    if ('status' in additionalData) {
-      throw new Error(
-        '"status" is a reserved key and cannot be used in additional data',
-      );
-    }
-
-    const detail = {
-      ...additionalData,
-      status: 'up' as const,
-    };
-
-    return {
-      [this.key]: detail,
-      // TypeScript does not infer this.key as Key correctly.
-    } as Record<Key, typeof detail>;
+  up(data?: AdditionalData | string): HealthIndicatorResult<Key, 'up'> {
+    return this.compose('up', data);
   }
 
   /**

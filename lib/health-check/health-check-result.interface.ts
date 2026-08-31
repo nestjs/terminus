@@ -3,7 +3,7 @@ import { type HealthIndicatorResult } from '../health-indicator/index.js';
 /**
  * @publicApi
  */
-export type HealthCheckStatus = 'error' | 'ok' | 'shutting_down';
+export type HealthCheckStatus = 'error' | 'ok' | 'degraded' | 'shutting_down';
 
 /**
  * The result of a health check
@@ -24,7 +24,7 @@ export type HealthCheckResult<
   status: HealthCheckStatus;
   /**
    * The info object contains information of each health indicator
-   * which is of status "up"
+   * which is of status "up" or "degraded"
    */
   info?: TInfo;
   /**

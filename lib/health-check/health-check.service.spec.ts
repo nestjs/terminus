@@ -62,6 +62,14 @@ describe('HealthCheckService', () => {
     expect(result).toEqual({ status: 'ok' });
   });
 
+  it('should return the result when degraded', async () => {
+    (healthCheckExecutor.execute as Mock).mockReturnValue({
+      status: 'degraded',
+    });
+    const result = await healthCheckService.check([() => Promise.resolve({})]);
+    expect(result).toEqual({ status: 'degraded' });
+  });
+
   it('should throw a ServiceUnavailableException', async () => {
     (healthCheckExecutor.execute as Mock).mockReturnValue({
       status: 'error',
