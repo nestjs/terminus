@@ -9,8 +9,10 @@ import { rejectOnAbort } from '../utils/rejectOnAbort.js';
  */
 @Injectable()
 export class HealthIndicatorService {
+  private readonly cache = new Map<string, CacheEntry>();
+
   check<const Key extends string>(key: Key) {
-    return new HealthIndicatorSession(key);
+    return new HealthIndicatorSession(key, this.cache);
   }
 }
 
@@ -23,13 +25,21 @@ type WithoutStatus<T> = {
 
 type AdditionalData = Record<string, unknown>;
 
+type CacheEntry = {
+  promise: Promise<HealthIndicatorResult>;
+  expiresAt: number;
+};
+
 /**
  * Indicate the health of a health indicator with the given key
  *
  * @publicApi
  */
 export class HealthIndicatorSession<Key extends Readonly<string> = string> {
-  constructor(private readonly key: Key) {}
+  constructor(
+    private readonly key: Key,
+    private readonly cache: Map<string, CacheEntry> = new Map(),
+  ) {}
 
   /**
    * Mark the health indicator as `down`
@@ -133,7 +143,7 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
       signal: AbortSignal;
     }) => Promise<AdditionalData | void> | AdditionalData | void,
   ): HealthCheckAttempt<Key> {
-    return new HealthCheckAttempt(this, fn);
+    return new HealthCheckAttempt(this, fn, this.key, this.cache);
   }
 }
 
@@ -147,15 +157,42 @@ export class HealthCheckAttempt<Key extends Readonly<string> = string>
   implements PromiseLike<HealthIndicatorResult<Key>>
 {
   private timeoutMs?: number;
+  private cacheTtlMs?: number;
 
   constructor(
     private readonly session: HealthIndicatorSession<Key>,
     private readonly fn: (options: {
       signal: AbortSignal;
     }) => Promise<AdditionalData | void> | AdditionalData | void,
+    private readonly cacheKey: string = '',
+    private readonly cacheStore: Map<string, CacheEntry> = new Map(),
   ) {}
 
   private async execute(): Promise<HealthIndicatorResult<Key>> {
+    const ttl = this.cacheTtlMs;
+    if (ttl === undefined) {
+      return this.run();
+    }
+
+    const cached = this.cacheStore.get(this.cacheKey);
+    if (cached && cached.expiresAt > Date.now()) {
+      return cached.promise as Promise<HealthIndicatorResult<Key>>;
+    }
+
+    const entry: CacheEntry = { promise: this.run(), expiresAt: Infinity };
+    this.cacheStore.set(this.cacheKey, entry);
+
+    try {
+      await entry.promise;
+      entry.expiresAt = Date.now() + ttl;
+    } catch {
+      this.cacheStore.delete(this.cacheKey);
+    }
+
+    return entry.promise as Promise<HealthIndicatorResult<Key>>;
+  }
+
+  private async run(): Promise<HealthIndicatorResult<Key>> {
     const controller = new AbortController();
     const signals = [controller.signal];
     let timeout: AbortSignal | undefined;
@@ -198,6 +235,30 @@ export class HealthCheckAttempt<Key extends Readonly<string> = string>
     }
 
     this.timeoutMs = ms;
+
+    return this;
+  }
+
+  /**
+   * Cache the result of this attempt for the given time.
+   *
+   * The cache is shared across requests and keyed by the indicator key:
+   * while a fresh result exists, executing the attempt returns it without
+   * running the function again, and concurrent executions share a single
+   * in-flight run. Both `up` and `down` results are cached, so a recovery
+   * or an outage can be reported up to `ttlMs` late.
+   *
+   * @param ttlMs Time to live in milliseconds
+   * @returns this (for chaining)
+   */
+  cacheFor(ttlMs: number): this {
+    if (ttlMs < 0 || ttlMs > 2 ** 32 - 1) {
+      throw new Error(
+        `Cache TTL must be between 0 and ${2 ** 32 - 1} milliseconds`,
+      );
+    }
+
+    this.cacheTtlMs = ttlMs;
 
     return this;
   }

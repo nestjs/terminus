@@ -207,3 +207,75 @@ describe('HealthCheckAttempt', () => {
     });
   });
 });
+
+describe('HealthCheckAttempt cacheFor', () => {
+  let h: HealthIndicatorService;
+
+  beforeEach(() => {
+    h = new HealthIndicatorService();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('should return the cached result within the TTL without re-running', async () => {
+    const fn = vi.fn(async () => {});
+    const first = await h.check('db').attempt(fn).cacheFor(1000);
+    const second = await h.check('db').attempt(fn).cacheFor(1000);
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(second).toEqual(first);
+  });
+
+  it('should re-run after the TTL expired', async () => {
+    vi.useFakeTimers();
+    const fn = vi.fn(async () => {});
+    await h.check('db').attempt(fn).cacheFor(1000);
+    vi.setSystemTime(Date.now() + 1001);
+    await h.check('db').attempt(fn).cacheFor(1000);
+    expect(fn).toHaveBeenCalledTimes(2);
+  });
+
+  it('should cache down results', async () => {
+    const fn = vi.fn(async () => {
+      throw new Error('nope');
+    });
+    await h.check('db').attempt(fn).cacheFor(1000);
+    const second = await h.check('db').attempt(fn).cacheFor(1000);
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(second).toEqual({ db: { status: 'down', message: 'nope' } });
+  });
+
+  it('should share a single in-flight run between concurrent executions', async () => {
+    const fn = vi.fn(async () => {});
+    const [first, second] = await Promise.all([
+      h.check('db').attempt(fn).cacheFor(1000),
+      h.check('db').attempt(fn).cacheFor(1000),
+    ]);
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(second).toEqual(first);
+  });
+
+  it('should not share the cache between different keys', async () => {
+    const fn = vi.fn(async () => {});
+    await h.check('a').attempt(fn).cacheFor(1000);
+    await h.check('b').attempt(fn).cacheFor(1000);
+    expect(fn).toHaveBeenCalledTimes(2);
+  });
+
+  it('should not cache without cacheFor', async () => {
+    const fn = vi.fn(async () => {});
+    await h.check('db').attempt(fn);
+    await h.check('db').attempt(fn);
+    expect(fn).toHaveBeenCalledTimes(2);
+  });
+
+  it.each([-1, Infinity, 2 ** 40])('should reject a TTL of %p', (ms) => {
+    expect(() =>
+      new HealthIndicatorService()
+        .check('db')
+        .attempt(() => {})
+        .cacheFor(ms),
+    ).toThrow('Cache TTL must be between 0 and 4294967295 milliseconds');
+  });
+});
