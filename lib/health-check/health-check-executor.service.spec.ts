@@ -1,8 +1,10 @@
+import { expectTypeOf } from 'vitest';
 import { Test } from '@nestjs/testing';
 import { HealthCheckExecutor } from './health-check-executor.service.js';
 import {
   HealthIndicatorResult,
   HealthIndicatorService,
+  type InferHealthIndicatorResult,
 } from '../health-indicator/index.js';
 import { HealthCheckResult } from './health-check-result.interface.js';
 import {
@@ -54,6 +56,9 @@ describe('HealthCheckExecutorService', () => {
     it('should support HealthCheckAttempt in the health indicators array', async () => {
       const attempt = h.check('db').attempt(async () => {});
       const result = await healthCheckExecutor.execute([attempt]);
+      expectTypeOf<
+        keyof InferHealthIndicatorResult<typeof attempt>
+      >().toEqualTypeOf<'db'>();
       expect(result).toEqual<HealthCheckResult>({
         status: 'ok',
         info: { db: { status: 'up' } },

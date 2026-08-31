@@ -21,11 +21,12 @@ export type HealthIndicatorResult<
  */
 export type InferHealthIndicatorResult<
   Fn extends HealthIndicatorFunction = HealthIndicatorFunction,
-> = Fn extends HealthCheckAttempt
-  ? HealthIndicatorResult
-  : Fn extends (...args: any) => any
-    ? Awaited<ReturnType<Fn>>
-    : HealthIndicatorResult;
+> =
+  Fn extends HealthCheckAttempt<infer Key>
+    ? HealthIndicatorResult<Key>
+    : Fn extends (...args: any) => any
+      ? Awaited<ReturnType<Fn>>
+      : HealthIndicatorResult;
 
 /**
  * @internal
