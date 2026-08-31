@@ -51,7 +51,12 @@ describe('GRPCHealthIndicator', () => {
     it('should return a healthy result', async () => {
       const result = await grpc.checkService<GrpcOptions>('grpc', 'test');
       expect(result).toEqual({
-        grpc: { servingStatus: 'SERVING', status: 'up', statusCode: 1 },
+        grpc: {
+          servingStatus: 'SERVING',
+          status: 'up',
+          statusCode: 1,
+          responseTime: expect.any(Number),
+        },
       });
     });
 
@@ -94,7 +99,11 @@ describe('GRPCHealthIndicator', () => {
       );
       const result = await grpc.checkService<GrpcOptions>('grpc', 'test');
       expect(result).toEqual({
-        grpc: { status: 'down', message: 'serving status: NOT_SERVING' },
+        grpc: {
+          status: 'down',
+          message: 'serving status: NOT_SERVING',
+          responseTime: expect.any(Number),
+        },
       });
     });
 
@@ -104,7 +113,11 @@ describe('GRPCHealthIndicator', () => {
         timeout: 10,
       });
       expect(result).toEqual({
-        grpc: { status: 'down', message: 'timeout of 10ms exceeded' },
+        grpc: {
+          status: 'down',
+          message: 'timeout of 10ms exceeded',
+          responseTime: expect.any(Number),
+        },
       });
     });
 

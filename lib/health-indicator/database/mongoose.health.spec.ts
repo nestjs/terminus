@@ -28,7 +28,9 @@ describe('MongooseHealthIndicator', () => {
 
     const result = await mongoose.pingCheck('mongo', { connection });
 
-    expect(result).toEqual({ mongo: { status: 'up' } });
+    expect(result).toEqual({
+      mongo: { status: 'up', responseTime: expect.any(Number) },
+    });
     expect(command).toHaveBeenCalledWith({ ping: 1 });
   });
 
@@ -38,7 +40,11 @@ describe('MongooseHealthIndicator', () => {
     const result = await mongoose.pingCheck('mongo', { connection });
 
     expect(result).toEqual({
-      mongo: { status: 'down', message: 'server selection failed' },
+      mongo: {
+        status: 'down',
+        message: 'server selection failed',
+        responseTime: expect.any(Number),
+      },
     });
   });
 
@@ -48,7 +54,11 @@ describe('MongooseHealthIndicator', () => {
     const result = await mongoose.pingCheck('mongo', { connection });
 
     expect(result).toEqual({
-      mongo: { status: 'down', message: DATABASE_NOT_CONNECTED },
+      mongo: {
+        status: 'down',
+        message: DATABASE_NOT_CONNECTED,
+        responseTime: expect.any(Number),
+      },
     });
     expect(command).not.toHaveBeenCalled();
   });
@@ -62,7 +72,11 @@ describe('MongooseHealthIndicator', () => {
     });
 
     expect(result).toEqual({
-      mongo: { status: 'down', message: 'timeout of 10ms exceeded' },
+      mongo: {
+        status: 'down',
+        message: 'timeout of 10ms exceeded',
+        responseTime: expect.any(Number),
+      },
     });
   });
 });

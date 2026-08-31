@@ -33,12 +33,18 @@ describe('PrismaHealthIndicator', () => {
         return request(app.getHttpServer())
           .get('/health')
           .expect(200)
-          .expect({
-            status: 'ok',
-            info: { prismamongo: { status: 'up' } },
-            error: {},
-            details: { prismamongo: { status: 'up' } },
-          });
+          .expect(({ body }) =>
+            expect(body).toEqual({
+              status: 'ok',
+              info: {
+                prismamongo: { status: 'up', responseTime: expect.any(Number) },
+              },
+              error: {},
+              details: {
+                prismamongo: { status: 'up', responseTime: expect.any(Number) },
+              },
+            }),
+          );
       });
 
       it('should throw an error if runs into timeout error', async () => {
@@ -54,22 +60,26 @@ describe('PrismaHealthIndicator', () => {
         return request(app.getHttpServer())
           .get('/health')
           .expect(503)
-          .expect({
-            status: 'error',
-            info: {},
-            error: {
-              prismamongo: {
-                status: 'down',
-                message: 'timeout of 1ms exceeded',
+          .expect(({ body }) =>
+            expect(body).toEqual({
+              status: 'error',
+              info: {},
+              error: {
+                prismamongo: {
+                  status: 'down',
+                  message: 'timeout of 1ms exceeded',
+                  responseTime: expect.any(Number),
+                },
               },
-            },
-            details: {
-              prismamongo: {
-                status: 'down',
-                message: 'timeout of 1ms exceeded',
+              details: {
+                prismamongo: {
+                  status: 'down',
+                  message: 'timeout of 1ms exceeded',
+                  responseTime: expect.any(Number),
+                },
               },
-            },
-          });
+            }),
+          );
       });
     });
   });
@@ -92,12 +102,18 @@ describe('PrismaHealthIndicator', () => {
 
         return request(app.getHttpServer())
           .get('/health')
-          .expect({
-            status: 'ok',
-            info: { prisma: { status: 'up' } },
-            error: {},
-            details: { prisma: { status: 'up' } },
-          });
+          .expect(({ body }) =>
+            expect(body).toEqual({
+              status: 'ok',
+              info: {
+                prisma: { status: 'up', responseTime: expect.any(Number) },
+              },
+              error: {},
+              details: {
+                prisma: { status: 'up', responseTime: expect.any(Number) },
+              },
+            }),
+          );
       });
 
       it('should throw an error if runs into timeout error', async () => {
@@ -113,16 +129,26 @@ describe('PrismaHealthIndicator', () => {
         return request(app.getHttpServer())
           .get('/health')
           .expect(503)
-          .expect({
-            status: 'error',
-            error: {
-              prisma: { status: 'down', message: 'timeout of 1ms exceeded' },
-            },
-            info: {},
-            details: {
-              prisma: { status: 'down', message: 'timeout of 1ms exceeded' },
-            },
-          });
+          .expect(({ body }) =>
+            expect(body).toEqual({
+              status: 'error',
+              error: {
+                prisma: {
+                  status: 'down',
+                  message: 'timeout of 1ms exceeded',
+                  responseTime: expect.any(Number),
+                },
+              },
+              info: {},
+              details: {
+                prisma: {
+                  status: 'down',
+                  message: 'timeout of 1ms exceeded',
+                  responseTime: expect.any(Number),
+                },
+              },
+            }),
+          );
       });
     });
   });

@@ -40,13 +40,20 @@ describe('MicroserviceHealthIndicator', () => {
         ]),
       ).start();
 
-      const details = { tcp: { status: 'up' } };
-      return request(app.getHttpServer()).get('/health').expect(200).expect({
-        status: 'ok',
-        info: details,
-        error: {},
-        details,
-      });
+      const details = {
+        tcp: { status: 'up', responseTime: expect.any(Number) },
+      };
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(200)
+        .expect(({ body }) =>
+          expect(body).toEqual({
+            status: 'ok',
+            info: details,
+            error: {},
+            details,
+          }),
+        );
     });
 
     it('should throw an error if is not reachable', async () => {
@@ -66,14 +73,23 @@ describe('MicroserviceHealthIndicator', () => {
       await microservice.close();
 
       const details = {
-        tcp: { status: 'down', message: 'connect ECONNREFUSED 0.0.0.0:8889' },
+        tcp: {
+          status: 'down',
+          message: 'connect ECONNREFUSED 0.0.0.0:8889',
+          responseTime: expect.any(Number),
+        },
       };
-      return request(app.getHttpServer()).get('/health').expect(503).expect({
-        status: 'error',
-        info: {},
-        error: details,
-        details,
-      });
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(503)
+        .expect(({ body }) =>
+          expect(body).toEqual({
+            status: 'error',
+            info: {},
+            error: details,
+            details,
+          }),
+        );
     });
   });
 
@@ -91,13 +107,20 @@ describe('MicroserviceHealthIndicator', () => {
         ]),
       ).start();
 
-      const details = { rmq: { status: 'up' } };
-      return request(app.getHttpServer()).get('/health').expect(200).expect({
-        status: 'ok',
-        info: details,
-        error: {},
-        details,
-      });
+      const details = {
+        rmq: { status: 'up', responseTime: expect.any(Number) },
+      };
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(200)
+        .expect(({ body }) =>
+          expect(body).toEqual({
+            status: 'ok',
+            info: details,
+            error: {},
+            details,
+          }),
+        );
     });
 
     it('should throw an error if is not reachable', async () => {
@@ -116,14 +139,23 @@ describe('MicroserviceHealthIndicator', () => {
       await microservice.close();
 
       const details = {
-        rmq: { status: 'down', message: 'rmq is not available' },
+        rmq: {
+          status: 'down',
+          message: 'rmq is not available',
+          responseTime: expect.any(Number),
+        },
       };
-      return request(app.getHttpServer()).get('/health').expect(503).expect({
-        status: 'error',
-        info: {},
-        error: details,
-        details,
-      });
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(503)
+        .expect(({ body }) =>
+          expect(body).toEqual({
+            status: 'error',
+            info: {},
+            error: details,
+            details,
+          }),
+        );
     });
   });
 
@@ -143,13 +175,20 @@ describe('MicroserviceHealthIndicator', () => {
         ]),
       ).start();
 
-      const details = { kafka: { status: 'up' } };
-      return request(app.getHttpServer()).get('/health').expect(200).expect({
-        status: 'ok',
-        info: details,
-        error: {},
-        details,
-      });
+      const details = {
+        kafka: { status: 'up', responseTime: expect.any(Number) },
+      };
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(200)
+        .expect(({ body }) =>
+          expect(body).toEqual({
+            status: 'ok',
+            info: details,
+            error: {},
+            details,
+          }),
+        );
     });
   });
 

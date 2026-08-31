@@ -61,9 +61,9 @@ describe('HealthCheckExecutorService', () => {
       >().toEqualTypeOf<'db'>();
       expect(result).toEqual<HealthCheckResult>({
         status: 'ok',
-        info: { db: { status: 'up' } },
+        info: { db: { status: 'up', responseTime: expect.any(Number) } },
         error: {},
-        details: { db: { status: 'up' } },
+        details: { db: { status: 'up', responseTime: expect.any(Number) } },
       });
     });
 
@@ -75,8 +75,20 @@ describe('HealthCheckExecutorService', () => {
       expect(result).toEqual<HealthCheckResult>({
         status: 'error',
         info: {},
-        error: { db: { status: 'down', message: 'Connection refused' } },
-        details: { db: { status: 'down', message: 'Connection refused' } },
+        error: {
+          db: {
+            status: 'down',
+            message: 'Connection refused',
+            responseTime: expect.any(Number),
+          },
+        },
+        details: {
+          db: {
+            status: 'down',
+            message: 'Connection refused',
+            responseTime: expect.any(Number),
+          },
+        },
       });
     });
 
@@ -90,12 +102,12 @@ describe('HealthCheckExecutorService', () => {
         status: 'ok',
         info: {
           healthy: { status: 'up' },
-          db: { status: 'up' },
+          db: { status: 'up', responseTime: expect.any(Number) },
         },
         error: {},
         details: {
           healthy: { status: 'up' },
-          db: { status: 'up' },
+          db: { status: 'up', responseTime: expect.any(Number) },
         },
       });
     });

@@ -38,14 +38,24 @@ describe('GRPCHealthIndicator', () => {
     app = await startApp();
 
     const details = {
-      grpc: { status: 'up', statusCode: 1, servingStatus: 'SERVING' },
+      grpc: {
+        status: 'up',
+        statusCode: 1,
+        servingStatus: 'SERVING',
+        responseTime: expect.any(Number),
+      },
     };
-    return request(app.getHttpServer()).get('/health').expect(200).expect({
-      status: 'ok',
-      info: details,
-      error: {},
-      details,
-    });
+    return request(app.getHttpServer())
+      .get('/health')
+      .expect(200)
+      .expect(({ body }) =>
+        expect(body).toEqual({
+          status: 'ok',
+          info: details,
+          error: {},
+          details,
+        }),
+      );
   });
 
   it('should be down when the service is NOT_SERVING', async () => {
@@ -53,14 +63,23 @@ describe('GRPCHealthIndicator', () => {
     app = await startApp();
 
     const details = {
-      grpc: { status: 'down', message: 'serving status: NOT_SERVING' },
+      grpc: {
+        status: 'down',
+        message: 'serving status: NOT_SERVING',
+        responseTime: expect.any(Number),
+      },
     };
-    return request(app.getHttpServer()).get('/health').expect(503).expect({
-      status: 'error',
-      info: {},
-      error: details,
-      details,
-    });
+    return request(app.getHttpServer())
+      .get('/health')
+      .expect(503)
+      .expect(({ body }) =>
+        expect(body).toEqual({
+          status: 'error',
+          info: {},
+          error: details,
+          details,
+        }),
+      );
   });
 
   it('should be down when it runs into the timeout', async () => {
@@ -68,14 +87,23 @@ describe('GRPCHealthIndicator', () => {
     app = await startApp({ timeout: 1 } as any);
 
     const details = {
-      grpc: { status: 'down', message: 'timeout of 1ms exceeded' },
+      grpc: {
+        status: 'down',
+        message: 'timeout of 1ms exceeded',
+        responseTime: expect.any(Number),
+      },
     };
-    return request(app.getHttpServer()).get('/health').expect(503).expect({
-      status: 'error',
-      info: {},
-      error: details,
-      details,
-    });
+    return request(app.getHttpServer())
+      .get('/health')
+      .expect(503)
+      .expect(({ body }) =>
+        expect(body).toEqual({
+          status: 'error',
+          info: {},
+          error: details,
+          details,
+        }),
+      );
   });
 
   it('should be down when the service is not reachable', async () => {

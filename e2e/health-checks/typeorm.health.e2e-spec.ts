@@ -23,13 +23,20 @@ describe('TypeOrmHealthIndicator', () => {
         healthCheck.check([async () => typeorm.pingCheck('typeorm')]),
       ).start();
 
-      const details = { typeorm: { status: 'up' } };
-      return request(app.getHttpServer()).get('/health').expect(200).expect({
-        status: 'ok',
-        info: details,
-        error: {},
-        details,
-      });
+      const details = {
+        typeorm: { status: 'up', responseTime: expect.any(Number) },
+      };
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(200)
+        .expect(({ body }) =>
+          expect(body).toEqual({
+            status: 'ok',
+            info: details,
+            error: {},
+            details,
+          }),
+        );
     });
 
     it('should throw an error if runs into timeout error', async () => {
@@ -53,15 +60,21 @@ describe('TypeOrmHealthIndicator', () => {
         typeorm: {
           status: 'down',
           message: 'timeout of 1ms exceeded',
+          responseTime: expect.any(Number),
         },
       };
 
-      return request(app.getHttpServer()).get('/health').expect(503).expect({
-        status: 'error',
-        info: {},
-        error: details,
-        details,
-      });
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(503)
+        .expect(({ body }) =>
+          expect(body).toEqual({
+            status: 'error',
+            info: {},
+            error: details,
+            details,
+          }),
+        );
     });
   });
 

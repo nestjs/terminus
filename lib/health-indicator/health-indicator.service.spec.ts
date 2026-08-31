@@ -114,25 +114,37 @@ describe('HealthCheckAttempt', () => {
     it('should return up when the function succeeds (void)', async () => {
       const attempt = session.attempt(() => {});
       const result = await attempt;
-      expect(result).toEqual({ test: { status: 'up' } });
+      expect(result).toEqual({
+        test: { status: 'up', responseTime: expect.any(Number) },
+      });
     });
 
     it('should return up when the async function succeeds (void)', async () => {
       const attempt = session.attempt(async () => {});
       const result = await attempt;
-      expect(result).toEqual({ test: { status: 'up' } });
+      expect(result).toEqual({
+        test: { status: 'up', responseTime: expect.any(Number) },
+      });
     });
 
     it('should return up with additional data when function returns data', async () => {
       const attempt = session.attempt(() => ({ foo: 'bar' }));
       const result = await attempt;
-      expect(result).toEqual({ test: { status: 'up', foo: 'bar' } });
+      expect(result).toEqual({
+        test: { status: 'up', foo: 'bar', responseTime: expect.any(Number) },
+      });
     });
 
     it('should return up with additional data when async function returns data', async () => {
       const attempt = session.attempt(async () => ({ version: '1.0' }));
       const result = await attempt;
-      expect(result).toEqual({ test: { status: 'up', version: '1.0' } });
+      expect(result).toEqual({
+        test: {
+          status: 'up',
+          version: '1.0',
+          responseTime: expect.any(Number),
+        },
+      });
     });
 
     it.each([null, 'ok', 42, true, [1, 2]])(
@@ -140,7 +152,9 @@ describe('HealthCheckAttempt', () => {
       async (value) => {
         const attempt = session.attempt(() => value as never);
         const result = await attempt;
-        expect(result).toEqual({ test: { status: 'up' } });
+        expect(result).toEqual({
+          test: { status: 'up', responseTime: expect.any(Number) },
+        });
       },
     );
 
@@ -150,7 +164,11 @@ describe('HealthCheckAttempt', () => {
       });
       const result = await attempt;
       expect(result).toEqual({
-        test: { status: 'down', message: 'Something broke' },
+        test: {
+          status: 'down',
+          message: 'Something broke',
+          responseTime: expect.any(Number),
+        },
       });
     });
 
@@ -160,7 +178,11 @@ describe('HealthCheckAttempt', () => {
       });
       const result = await attempt;
       expect(result).toEqual({
-        test: { status: 'down', message: 'Connection refused' },
+        test: {
+          status: 'down',
+          message: 'Connection refused',
+          responseTime: expect.any(Number),
+        },
       });
     });
 
@@ -170,7 +192,11 @@ describe('HealthCheckAttempt', () => {
       });
       const result = await attempt;
       expect(result).toEqual({
-        test: { status: 'down', message: 'string error' },
+        test: {
+          status: 'down',
+          message: 'string error',
+          responseTime: expect.any(Number),
+        },
       });
     });
   });
@@ -188,7 +214,9 @@ describe('HealthCheckAttempt', () => {
         )
         .withTimeout(1000);
       const result = await attempt;
-      expect(result).toEqual({ test: { status: 'up' } });
+      expect(result).toEqual({
+        test: { status: 'up', responseTime: expect.any(Number) },
+      });
     });
 
     it('should return down when function exceeds timeout', async () => {
@@ -202,6 +230,7 @@ describe('HealthCheckAttempt', () => {
         test: {
           status: 'down',
           message: 'timeout of 50ms exceeded',
+          responseTime: expect.any(Number),
         },
       });
     });
@@ -242,7 +271,16 @@ describe('HealthCheckAttempt cacheFor', () => {
     const first = await h.check('db').attempt(fn).cacheFor(1000);
     const second = await h.check('db').attempt(fn).cacheFor(1000);
     expect(fn).toHaveBeenCalledTimes(1);
-    expect(second).toEqual(first);
+    expect(second).toEqual({
+      db: {
+        status: 'up',
+        responseTime: expect.any(Number),
+        cachedResponse: true,
+      },
+    });
+    expect(first).toEqual({
+      db: { status: 'up', responseTime: expect.any(Number) },
+    });
   });
 
   it('should re-run after the TTL expired', async () => {
@@ -261,7 +299,14 @@ describe('HealthCheckAttempt cacheFor', () => {
     await h.check('db').attempt(fn).cacheFor(1000);
     const second = await h.check('db').attempt(fn).cacheFor(1000);
     expect(fn).toHaveBeenCalledTimes(1);
-    expect(second).toEqual({ db: { status: 'down', message: 'nope' } });
+    expect(second).toEqual({
+      db: {
+        status: 'down',
+        message: 'nope',
+        responseTime: expect.any(Number),
+        cachedResponse: true,
+      },
+    });
   });
 
   it('should share a single in-flight run between concurrent executions', async () => {

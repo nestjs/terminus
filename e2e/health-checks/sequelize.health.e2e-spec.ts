@@ -20,13 +20,20 @@ describe('SequelizeHealthIndicator', () => {
       app = await setHealthEndpoint(({ healthCheck, sequelize }) =>
         healthCheck.check([async () => sequelize.pingCheck('sequelize')]),
       ).start();
-      const details = { sequelize: { status: 'up' } };
-      return request(app.getHttpServer()).get('/health').expect(200).expect({
-        status: 'ok',
-        info: details,
-        error: {},
-        details,
-      });
+      const details = {
+        sequelize: { status: 'up', responseTime: expect.any(Number) },
+      };
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(200)
+        .expect(({ body }) =>
+          expect(body).toEqual({
+            status: 'ok',
+            info: details,
+            error: {},
+            details,
+          }),
+        );
     });
 
     it('should throw an error if runs into timeout error', async () => {
@@ -40,15 +47,21 @@ describe('SequelizeHealthIndicator', () => {
         sequelize: {
           status: 'down',
           message: 'timeout of 1ms exceeded',
+          responseTime: expect.any(Number),
         },
       };
 
-      return request(app.getHttpServer()).get('/health').expect(503).expect({
-        status: 'error',
-        info: {},
-        error: details,
-        details,
-      });
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(503)
+        .expect(({ body }) =>
+          expect(body).toEqual({
+            status: 'error',
+            info: {},
+            error: details,
+            details,
+          }),
+        );
     });
   });
 

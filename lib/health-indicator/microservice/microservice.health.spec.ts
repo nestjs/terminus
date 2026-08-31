@@ -40,7 +40,9 @@ describe('MicroserviceHealthIndicator', () => {
 
     const result = await microservice.pingCheck('tcp', options);
 
-    expect(result).toEqual({ tcp: { status: 'up' } });
+    expect(result).toEqual({
+      tcp: { status: 'up', responseTime: expect.any(Number) },
+    });
     expect(clientMock.close).toHaveBeenCalledTimes(1);
   });
 
@@ -50,7 +52,11 @@ describe('MicroserviceHealthIndicator', () => {
     const result = await microservice.pingCheck('tcp', options);
 
     expect(result).toEqual({
-      tcp: { status: 'down', message: 'ECONNREFUSED' },
+      tcp: {
+        status: 'down',
+        message: 'ECONNREFUSED',
+        responseTime: expect.any(Number),
+      },
     });
     expect(clientMock.close).toHaveBeenCalledTimes(1);
   });
@@ -64,7 +70,11 @@ describe('MicroserviceHealthIndicator', () => {
     const result = await microservice.pingCheck('rmq', options);
 
     expect(result).toEqual({
-      rmq: { status: 'down', message: 'rmq is not available' },
+      rmq: {
+        status: 'down',
+        message: 'rmq is not available',
+        responseTime: expect.any(Number),
+      },
     });
   });
 

@@ -28,8 +28,14 @@ type WithoutStatus<T> = {
 
 type AdditionalData = Record<string, unknown>;
 
+type AttemptOutcome = {
+  status: 'up' | 'down';
+  data: AdditionalData;
+  responseTime: number;
+};
+
 type CacheEntry = {
-  promise: Promise<HealthIndicatorResult>;
+  promise: Promise<AttemptOutcome>;
   expiresAt: number;
 };
 
@@ -168,15 +174,32 @@ export class HealthCheckAttempt<Key extends Readonly<string> = string>
     private readonly cacheStore: Map<string, CacheEntry> = new Map(),
   ) {}
 
+  private toResult(
+    outcome: AttemptOutcome,
+    cachedResponse = false,
+  ): HealthIndicatorResult<Key> {
+    const data = {
+      ...outcome.data,
+      responseTime: outcome.responseTime,
+      ...(cachedResponse && { cachedResponse: true }),
+    };
+
+    return outcome.status === 'up'
+      ? this.session.up(data)
+      : this.session.down(data);
+  }
+
   private async execute(): Promise<HealthIndicatorResult<Key>> {
     const ttl = this.cacheTtlMs;
     if (ttl === undefined) {
-      return this.run();
+      return this.toResult(await this.run());
     }
 
     const cached = this.cacheStore.get(this.cacheKey);
     if (cached && cached.expiresAt > Date.now()) {
-      return cached.promise as Promise<HealthIndicatorResult<Key>>;
+      // An in-flight entry (expiresAt: Infinity) is a shared fresh run, not a cache hit.
+      const isCacheHit = Number.isFinite(cached.expiresAt);
+      return this.toResult(await cached.promise, isCacheHit);
     }
 
     const entry: CacheEntry = { promise: this.run(), expiresAt: Infinity };
@@ -189,10 +212,11 @@ export class HealthCheckAttempt<Key extends Readonly<string> = string>
       this.cacheStore.delete(this.cacheKey);
     }
 
-    return entry.promise as Promise<HealthIndicatorResult<Key>>;
+    return this.toResult(await entry.promise);
   }
 
-  private async run(): Promise<HealthIndicatorResult<Key>> {
+  private async run(): Promise<AttemptOutcome> {
+    const start = performance.now();
     const controller = new AbortController();
     const signals = [controller.signal];
     let timeout: AbortSignal | undefined;
@@ -207,13 +231,21 @@ export class HealthCheckAttempt<Key extends Readonly<string> = string>
       const promise = Promise.resolve(this.fn({ signal }));
       const result = await rejectOnAbort(promise, signal);
 
-      return this.session.up(toAdditionalData(result));
+      return {
+        status: 'up',
+        data: toAdditionalData(result),
+        responseTime: Math.round(performance.now() - start),
+      };
     } catch (err) {
-      if (timeout?.aborted) {
-        return this.session.down(`timeout of ${this.timeoutMs}ms exceeded`);
-      }
+      const message = timeout?.aborted
+        ? `timeout of ${this.timeoutMs}ms exceeded`
+        : errorMessage(err);
 
-      return this.session.down(errorMessage(err));
+      return {
+        status: 'down',
+        data: { message },
+        responseTime: Math.round(performance.now() - start),
+      };
     } finally {
       controller.abort();
     }
@@ -245,8 +277,8 @@ export class HealthCheckAttempt<Key extends Readonly<string> = string>
    * The cache is shared across requests and keyed by the indicator key:
    * while a fresh result exists, executing the attempt returns it without
    * running the function again, and concurrent executions share a single
-   * in-flight run. Both `up` and `down` results are cached, so a recovery
-   * or an outage can be reported up to `ttlMs` late.
+   * in-flight run. Results served from the cache are marked with
+   * `cachedResponse: true`.
    *
    * @param ttlMs Time to live in milliseconds
    * @returns this (for chaining)
@@ -269,9 +301,9 @@ export class HealthCheckAttempt<Key extends Readonly<string> = string>
   ) => this.execute().then(onfulfilled, onrejected);
 }
 
-function toAdditionalData(value: unknown): AdditionalData | undefined {
+function toAdditionalData(value: unknown) {
   if (value === null || typeof value !== 'object' || Array.isArray(value)) {
-    return undefined;
+    return {};
   }
   return value as AdditionalData;
 }
