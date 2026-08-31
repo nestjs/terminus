@@ -141,11 +141,11 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
  * A builder that describes a health check attempt.
  * Use `.withTimeout()` to configure a timeout.
  *
- * Can be passed directly into `health.check([...])` and will be executed by the `HealthCheckExecutor`.
- *
  * @publicApi
  */
-export class HealthCheckAttempt<Key extends Readonly<string> = string> {
+export class HealthCheckAttempt<Key extends Readonly<string> = string>
+  implements PromiseLike<HealthIndicatorResult<Key>>
+{
   private timeoutMs?: number;
 
   constructor(
@@ -155,33 +155,7 @@ export class HealthCheckAttempt<Key extends Readonly<string> = string> {
     }) => Promise<AdditionalData | void> | AdditionalData | void,
   ) {}
 
-  /**
-   * Set a timeout for the health check attempt.
-   * If the function does not resolve within the given time, the health indicator will be marked as `down`.
-   * An `AbortSignal` is passed to the callback so the underlying operation can be cancelled.
-   *
-   * @param ms The timeout in milliseconds
-   * @returns this (for chaining)
-   */
-  withTimeout(ms: number): this {
-    if (ms < 0 || ms > 2 ** 32 - 1) {
-      throw new Error(
-        `Timeout must be between 0 and ${2 ** 32 - 1} milliseconds`,
-      );
-    }
-
-    this.timeoutMs = ms;
-
-    return this;
-  }
-
-  /**
-   * Execute the health check attempt.
-   *
-   * @internal
-   * @returns A promise that resolves to the health indicator result
-   */
-  async execute(): Promise<HealthIndicatorResult<Key>> {
+  private async execute(): Promise<HealthIndicatorResult<Key>> {
     const controller = new AbortController();
     const signals = [controller.signal];
     let timeout: AbortSignal | undefined;
@@ -207,6 +181,31 @@ export class HealthCheckAttempt<Key extends Readonly<string> = string> {
       controller.abort();
     }
   }
+
+  /**
+   * Set a timeout for the health check attempt.
+   * If the function does not resolve within the given time, the health indicator will be marked as `down`.
+   * An `AbortSignal` is passed to the callback so the underlying operation can be cancelled.
+   *
+   * @param ms The timeout in milliseconds
+   * @returns this (for chaining)
+   */
+  withTimeout(ms: number): this {
+    if (ms < 0 || ms > 2 ** 32 - 1) {
+      throw new Error(
+        `Timeout must be between 0 and ${2 ** 32 - 1} milliseconds`,
+      );
+    }
+
+    this.timeoutMs = ms;
+
+    return this;
+  }
+
+  then: PromiseLike<HealthIndicatorResult<Key>>['then'] = (
+    onfulfilled,
+    onrejected,
+  ) => this.execute().then(onfulfilled, onrejected);
 }
 
 function toAdditionalData(value: unknown): AdditionalData | undefined {

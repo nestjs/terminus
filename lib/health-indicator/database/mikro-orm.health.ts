@@ -90,9 +90,6 @@ export class MikroOrmHealthIndicator {
       return check.down();
     }
 
-    return check
-      .attempt(() => this.pingDb(connection))
-      .withTimeout(timeout)
-      .execute();
+    return check.attempt(() => this.pingDb(connection)).withTimeout(timeout);
   }
 }

@@ -214,7 +214,6 @@ export class GRPCHealthIndicator implements OnApplicationShutdown {
         }
         return { statusCode: response.status, servingStatus };
       })
-      .withTimeout(settings.timeout)
-      .execute();
+      .withTimeout(settings.timeout);
   }
 }

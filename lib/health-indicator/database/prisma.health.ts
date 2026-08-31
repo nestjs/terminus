@@ -72,9 +72,6 @@ export class PrismaHealthIndicator {
     const check = this.healthIndicatorService.check(key);
     const timeout = options.timeout || 1000;
 
-    return check
-      .attempt(() => this.pingDb(prismaClient))
-      .withTimeout(timeout)
-      .execute();
+    return check.attempt(() => this.pingDb(prismaClient)).withTimeout(timeout);
   }
 }

@@ -89,31 +89,31 @@ describe('HealthCheckAttempt', () => {
       const attempt = session.attempt(({ signal }) => {
         receivedSignal = signal;
       });
-      await attempt.execute();
+      await attempt;
       expect(receivedSignal).toBeInstanceOf(AbortSignal);
     });
 
     it('should return up when the function succeeds (void)', async () => {
       const attempt = session.attempt(() => {});
-      const result = await attempt.execute();
+      const result = await attempt;
       expect(result).toEqual({ test: { status: 'up' } });
     });
 
     it('should return up when the async function succeeds (void)', async () => {
       const attempt = session.attempt(async () => {});
-      const result = await attempt.execute();
+      const result = await attempt;
       expect(result).toEqual({ test: { status: 'up' } });
     });
 
     it('should return up with additional data when function returns data', async () => {
       const attempt = session.attempt(() => ({ foo: 'bar' }));
-      const result = await attempt.execute();
+      const result = await attempt;
       expect(result).toEqual({ test: { status: 'up', foo: 'bar' } });
     });
 
     it('should return up with additional data when async function returns data', async () => {
       const attempt = session.attempt(async () => ({ version: '1.0' }));
-      const result = await attempt.execute();
+      const result = await attempt;
       expect(result).toEqual({ test: { status: 'up', version: '1.0' } });
     });
 
@@ -121,7 +121,7 @@ describe('HealthCheckAttempt', () => {
       'should ignore a non-object return value (%p)',
       async (value) => {
         const attempt = session.attempt(() => value as never);
-        const result = await attempt.execute();
+        const result = await attempt;
         expect(result).toEqual({ test: { status: 'up' } });
       },
     );
@@ -130,7 +130,7 @@ describe('HealthCheckAttempt', () => {
       const attempt = session.attempt(() => {
         throw new Error('Something broke');
       });
-      const result = await attempt.execute();
+      const result = await attempt;
       expect(result).toEqual({
         test: { status: 'down', message: 'Something broke' },
       });
@@ -140,7 +140,7 @@ describe('HealthCheckAttempt', () => {
       const attempt = session.attempt(async () => {
         throw new Error('Connection refused');
       });
-      const result = await attempt.execute();
+      const result = await attempt;
       expect(result).toEqual({
         test: { status: 'down', message: 'Connection refused' },
       });
@@ -150,7 +150,7 @@ describe('HealthCheckAttempt', () => {
       const attempt = session.attempt(() => {
         throw 'string error';
       });
-      const result = await attempt.execute();
+      const result = await attempt;
       expect(result).toEqual({
         test: { status: 'down', message: 'string error' },
       });
@@ -169,7 +169,7 @@ describe('HealthCheckAttempt', () => {
           async () => new Promise<void>((resolve) => setTimeout(resolve, 10)),
         )
         .withTimeout(1000);
-      const result = await attempt.execute();
+      const result = await attempt;
       expect(result).toEqual({ test: { status: 'up' } });
     });
 
@@ -179,7 +179,7 @@ describe('HealthCheckAttempt', () => {
           async () => new Promise<void>((resolve) => setTimeout(resolve, 5000)),
         )
         .withTimeout(50);
-      const result = await attempt.execute();
+      const result = await attempt;
       expect(result).toEqual({
         test: {
           status: 'down',
@@ -202,7 +202,7 @@ describe('HealthCheckAttempt', () => {
           return new Promise<void>((resolve) => setTimeout(resolve, 5000));
         })
         .withTimeout(50);
-      await attempt.execute();
+      await attempt;
       expect(receivedSignal?.aborted).toBe(true);
     });
   });

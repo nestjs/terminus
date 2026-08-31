@@ -105,9 +105,6 @@ export class TypeOrmHealthIndicator {
       return check.down('Connection provider not found in application context');
     }
 
-    return check
-      .attempt(() => this.pingDb(connection))
-      .withTimeout(timeout)
-      .execute();
+    return check.attempt(() => this.pingDb(connection)).withTimeout(timeout);
   }
 }

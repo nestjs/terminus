@@ -113,7 +113,6 @@ export class MicroserviceHealthIndicator {
           throw isError(err) ? err : new Error(`${key} is not available`);
         }
       })
-      .withTimeout(timeout)
-      .execute();
+      .withTimeout(timeout);
   }
 }
