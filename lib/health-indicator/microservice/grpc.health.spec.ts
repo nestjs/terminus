@@ -127,7 +127,11 @@ describe('GRPCHealthIndicator', () => {
       });
       const result = await grpc.checkService<GrpcOptions>('grpc', 'test');
       expect(result).toEqual({
-        grpc: { status: 'down', message: 'ENOENT: no such file or directory' },
+        grpc: {
+          status: 'down',
+          message: 'ENOENT: no such file or directory',
+          responseTime: expect.any(Number),
+        },
       });
     });
 
@@ -150,14 +154,18 @@ describe('GRPCHealthIndicator', () => {
       expect(grpcClientMock.getService.mock.calls[0][0]).toBe('health2');
     });
 
-    it('should throw TypeError further in client.getService', async () => {
-      const error = new TypeError('test');
+    it('should be down when client.getService throws a TypeError', async () => {
       grpcClientMock.getService.mockImplementationOnce((): any => {
-        throw error;
+        throw new TypeError('test');
       });
-      await expect(grpc.checkService<GrpcOptions>('grpc', 'test')).rejects.toBe(
-        error,
-      );
+      const result = await grpc.checkService<GrpcOptions>('grpc', 'test');
+      expect(result).toEqual({
+        grpc: {
+          status: 'down',
+          message: 'test',
+          responseTime: expect.any(Number),
+        },
+      });
     });
   });
 });

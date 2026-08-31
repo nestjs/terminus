@@ -2,14 +2,15 @@ import { join } from 'node:path';
 import { Injectable, type OnApplicationShutdown, Scope } from '@nestjs/common';
 import type * as NestJSMicroservices from '@nestjs/microservices';
 import { lastValueFrom, type Observable } from 'rxjs';
-import { type HealthIndicatorResult } from '../../index.js';
 import {
   assertPackages,
-  isError,
   loadPackage,
   type PropType,
 } from '../../utils/index.js';
-import { HealthIndicatorService } from '../health-indicator.service.js';
+import {
+  type HealthCheckAttempt,
+  HealthIndicatorService,
+} from '../health-indicator.service.js';
 
 /**
  * The status of the request service
@@ -76,6 +77,11 @@ type GrpcOptionsLike<
 export type CheckGRPCServiceOptions<
   GrpcOptions extends GrpcClientOptionsLike = GrpcClientOptionsLike,
 > = Partial<GrpcOptionsLike<GrpcOptions>> & {
+  /**
+   * The amount of time the check should require in ms
+   * @deprecated Chain `.withTimeout(ms)` on the returned attempt instead,
+   * e.g. `grpc.checkService('hero_service', 'hero.health.v1').withTimeout(300)`
+   */
   timeout?: number;
   healthServiceName?: string;
   healthServiceCheck?: HealthServiceCheck;
@@ -168,16 +174,14 @@ export class GRPCHealthIndicator implements OnApplicationShutdown {
    *     lastValueFrom(healthService.check({ service })),
    * })
    */
-  async checkService<
+  checkService<
     GrpcOptions extends GrpcClientOptionsLike = GrpcClientOptionsLike,
     Key extends string = string,
   >(
     key: Key,
     service: string,
     options: CheckGRPCServiceOptions<GrpcOptions> = {},
-  ): Promise<HealthIndicatorResult<Key>> {
-    const check = this.healthIndicatorService.check(key);
-
+  ): HealthCheckAttempt<Key> {
     const settings: Required<CheckGRPCServiceOptions> = {
       package: 'grpc.health.v1',
       protoPath: join(import.meta.dirname, './protos/health.proto'),
@@ -188,22 +192,13 @@ export class GRPCHealthIndicator implements OnApplicationShutdown {
       ...options,
     };
 
-    let healthService: GRPCHealthService;
-    try {
-      const client = await this.getClient(key, settings);
-      healthService = client.getService<GRPCHealthService>(
-        settings.healthServiceName,
-      );
-    } catch (err) {
-      // A TypeError here is a wiring mistake in the options, not an unhealthy upstream
-      if (err instanceof TypeError) {
-        throw err;
-      }
-      return check.down(isError(err) ? err.message : String(err));
-    }
-
-    return check
+    return this.healthIndicatorService
+      .check(key)
       .attempt(async () => {
+        const client = await this.getClient(key, settings);
+        const healthService = client.getService<GRPCHealthService>(
+          settings.healthServiceName,
+        );
         const response: HealthCheckResponse = await settings.healthServiceCheck(
           healthService,
           service,

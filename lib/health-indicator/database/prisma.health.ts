@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { type HealthIndicatorResult } from '../health-indicator-result.interface.js';
-import { HealthIndicatorService } from '../health-indicator.service.js';
+import {
+  type HealthCheckAttempt,
+  HealthIndicatorService,
+} from '../health-indicator.service.js';
 
 type PingCommandSignature = { [Key in string]?: number };
 
@@ -17,6 +19,8 @@ type PrismaClient = PrismaClientDocument | PrismaClientSQL;
 export interface PrismaClientPingCheckSettings {
   /**
    * The amount of time the check should require in ms
+   * @deprecated Chain `.withTimeout(ms)` on the returned attempt instead,
+   * e.g. `indicator.pingCheck('database').withTimeout(1500)`
    */
   timeout?: number;
 }
@@ -64,14 +68,14 @@ export class PrismaHealthIndicator {
    * @param prismaClient PrismaClient
    * @param options The options for the ping
    */
-  public async pingCheck<Key extends string = string>(
+  public pingCheck<Key extends string = string>(
     key: Key,
     prismaClient: PrismaClient,
     options: PrismaClientPingCheckSettings = {},
-  ): Promise<HealthIndicatorResult<Key>> {
-    const check = this.healthIndicatorService.check(key);
-    const timeout = options.timeout || 1000;
-
-    return check.attempt(() => this.pingDb(prismaClient)).withTimeout(timeout);
+  ): HealthCheckAttempt<Key> {
+    return this.healthIndicatorService
+      .check(key)
+      .attempt(() => this.pingDb(prismaClient))
+      .withTimeout(options.timeout ?? 1000);
   }
 }

@@ -1,8 +1,10 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import { type HealthIndicatorResult } from '../../index.js';
 import { assertPackages, loadPackage } from '../../utils/index.js';
-import { HealthIndicatorService } from '../health-indicator.service.js';
+import {
+  type HealthCheckAttempt,
+  HealthIndicatorService,
+} from '../health-indicator.service.js';
 
 export interface SequelizePingCheckSettings {
   /**
@@ -11,6 +13,8 @@ export interface SequelizePingCheckSettings {
   connection?: any;
   /**
    * The amount of time the check should require in ms
+   * @deprecated Chain `.withTimeout(ms)` on the returned attempt instead,
+   * e.g. `indicator.pingCheck('database').withTimeout(1500)`
    */
   timeout?: number;
 }
@@ -69,22 +73,26 @@ export class SequelizeHealthIndicator {
    * @param key The key which will be used for the result object
    * @param options The options for the ping
    * @example
-   * sequelizeHealthIndicator.pingCheck('database', { timeout: 1500 });
+   * sequelizeHealthIndicator.pingCheck('database').withTimeout(1500);
    */
-  public async pingCheck<Key extends string = string>(
+  public pingCheck<Key extends string = string>(
     key: Key,
     options: SequelizePingCheckSettings = {},
-  ): Promise<HealthIndicatorResult<Key>> {
-    const check = this.healthIndicatorService.check(key);
+  ): HealthCheckAttempt<Key> {
+    return this.healthIndicatorService
+      .check(key)
+      .attempt(async () => {
+        const connection =
+          options.connection || (await this.getContextConnection());
 
-    const connection =
-      options.connection || (await this.getContextConnection());
-    const timeout = options.timeout || 1000;
+        if (!connection) {
+          throw new Error(
+            'Connection provider not found in application context',
+          );
+        }
 
-    if (!connection) {
-      return check.down('Connection provider not found in application context');
-    }
-
-    return check.attempt(() => this.pingDb(connection)).withTimeout(timeout);
+        await this.pingDb(connection);
+      })
+      .withTimeout(options.timeout ?? 1000);
   }
 }

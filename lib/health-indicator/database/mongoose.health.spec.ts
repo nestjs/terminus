@@ -63,6 +63,24 @@ describe('MongooseHealthIndicator', () => {
     expect(command).not.toHaveBeenCalled();
   });
 
+  it('lets a chained withTimeout override the deprecated timeout option', async () => {
+    connection.db.command = vi.fn(
+      () => new Promise((resolve) => setTimeout(resolve, 5000)),
+    );
+
+    const result = await mongoose
+      .pingCheck('mongo', { connection, timeout: 10000 })
+      .withTimeout(10);
+
+    expect(result).toEqual({
+      mongo: {
+        status: 'down',
+        message: 'timeout of 10ms exceeded',
+        responseTime: expect.any(Number),
+      },
+    });
+  });
+
   it('reports down when the ping exceeds the timeout', async () => {
     command.mockImplementation(() => new Promise(() => undefined));
 

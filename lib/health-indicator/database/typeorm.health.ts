@@ -1,9 +1,11 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import type * as TypeOrm from 'typeorm';
-import { type HealthIndicatorResult } from '../index.js';
 import { assertPackages, loadPackage } from '../../utils/index.js';
-import { HealthIndicatorService } from '../health-indicator.service.js';
+import {
+  type HealthCheckAttempt,
+  HealthIndicatorService,
+} from '../health-indicator.service.js';
 
 export interface TypeOrmPingCheckSettings {
   /**
@@ -13,6 +15,8 @@ export interface TypeOrmPingCheckSettings {
   connection?: any;
   /**
    * The amount of time the check should require in ms
+   * @deprecated Chain `.withTimeout(ms)` on the returned attempt instead,
+   * e.g. `indicator.pingCheck('database').withTimeout(1500)`
    */
   timeout?: number;
 }
@@ -89,22 +93,26 @@ export class TypeOrmHealthIndicator {
    * @param options The options for the ping
    *
    * @example
-   * typeOrmHealthIndicator.pingCheck('database', { timeout: 1500 });
+   * typeOrmHealthIndicator.pingCheck('database').withTimeout(1500);
    */
-  async pingCheck<Key extends string>(
+  pingCheck<Key extends string>(
     key: Key,
     options: TypeOrmPingCheckSettings = {},
-  ): Promise<HealthIndicatorResult<Key>> {
-    const check = this.healthIndicatorService.check(key);
+  ): HealthCheckAttempt<Key> {
+    return this.healthIndicatorService
+      .check(key)
+      .attempt(async () => {
+        const connection: TypeOrm.DataSource | null =
+          options.connection || (await this.getContextConnection());
 
-    const connection: TypeOrm.DataSource | null =
-      options.connection || (await this.getContextConnection());
-    const timeout = options.timeout || 1000;
+        if (!connection) {
+          throw new Error(
+            'Connection provider not found in application context',
+          );
+        }
 
-    if (!connection) {
-      return check.down('Connection provider not found in application context');
-    }
-
-    return check.attempt(() => this.pingDb(connection)).withTimeout(timeout);
+        await this.pingDb(connection);
+      })
+      .withTimeout(options.timeout ?? 1000);
   }
 }
