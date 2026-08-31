@@ -24,7 +24,7 @@ test('GET /health reports the typeorm indicator as up', async () => {
   const response = await fetch(`${await app.getUrl()}/health`);
 
   assert.equal(response.status, 200);
-  assert.deepEqual((await response.json()).details, {
-    typeorm: { status: 'up' },
-  });
+  const { typeorm } = (await response.json()).details;
+  assert.equal(typeorm.status, 'up');
+  assert.equal(typeof typeorm.responseTime, 'number');
 });
