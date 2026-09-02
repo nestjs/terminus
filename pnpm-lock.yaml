@@ -84,6 +84,9 @@ catalogs:
     amqplib:
       specifier: 0.10.7
       version: 0.10.7
+    axios:
+      specifier: ^1.7.9
+      version: 1.18.0
     class-transformer:
       specifier: 0.5.1
       version: 0.5.1
@@ -112,8 +115,8 @@ catalogs:
       specifier: 15.4.3
       version: 15.4.3
     lodash:
-      specifier: 4.17.23
-      version: 4.17.23
+      specifier: 4.18.1
+      version: 4.18.1
     mongoose:
       specifier: 8.10.1
       version: 8.10.1
@@ -432,7 +435,7 @@ importers:
         version: 5.9.3
       lodash:
         specifier: 'catalog:'
-        version: 4.17.23
+        version: 4.18.1
       reflect-metadata:
         specifier: 'catalog:'
         version: 0.2.2
@@ -469,7 +472,7 @@ importers:
         version: 0.14.2
       lodash:
         specifier: 'catalog:'
-        version: 4.17.23
+        version: 4.18.1
       reflect-metadata:
         specifier: 'catalog:'
         version: 0.2.2
@@ -527,7 +530,7 @@ importers:
         version: 0.14.2
       lodash:
         specifier: 'catalog:'
-        version: 4.17.23
+        version: 4.18.1
       redis:
         specifier: 'catalog:'
         version: 5.8.2
@@ -3380,6 +3383,9 @@ packages:
 
   lodash@4.17.23:
     resolution: {integrity: sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==}
+
+  lodash@4.18.1:
+    resolution: {integrity: sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==}
 
   log-symbols@6.0.0:
     resolution: {integrity: sha512-i24m8rpwhmPIS4zscNzK6MSEhk0DUWa/8iYQWxhffV8jkI4Phvs3F+quL5xvS0gdQR0FyTCMMH33Y78dDTzzIw==}
@@ -7190,6 +7196,8 @@ snapshots:
   lodash@4.17.21: {}
 
   lodash@4.17.23: {}
+
+  lodash@4.18.1: {}
 
   log-symbols@6.0.0:
     dependencies:
