@@ -84,6 +84,9 @@ catalogs:
     amqplib:
       specifier: 0.10.7
       version: 0.10.7
+    axios:
+      specifier: ^1.7.9
+      version: 1.18.0
     class-transformer:
       specifier: 0.5.1
       version: 0.5.1
@@ -97,8 +100,8 @@ catalogs:
       specifier: 5.1.0
       version: 5.1.0
     fastify:
-      specifier: 5.7.4
-      version: 5.7.4
+      specifier: 5.12.1
+      version: 5.12.1
     husky:
       specifier: 9.1.7
       version: 9.1.7
@@ -262,7 +265,7 @@ importers:
         version: 5.1.0
       fastify:
         specifier: 'catalog:'
-        version: 5.7.4
+        version: 5.12.1
       husky:
         specifier: 'catalog:'
         version: 9.1.7
@@ -2699,9 +2702,6 @@ packages:
 
   fastify@5.12.1:
     resolution: {integrity: sha512-FWi+tQvwxR/PeRX7Z2mhfEF5ozJ3jn9asiiclzKXNSzJRHAYcU924aIOKAdHFJ+YIKieh3cqr1IwCOvTr41B3Q==}
-
-  fastify@5.7.4:
-    resolution: {integrity: sha512-e6l5NsRdaEP8rdD8VR0ErJASeyaRbzXYpmkrpr2SuvuMq6Si3lvsaVy5C+7gLanEkvjpMDzBXWE5HPeb/hgTxA==}
 
   fastq@1.18.0:
     resolution: {integrity: sha512-QKHXPW0hD8g4UET03SdOdunzSouc9N4AuHdsX8XNcTsuz+yYFILVNIX4l9yHABMhiEI9Db0JTTIpu0wB+Y1QQw==}
@@ -6512,24 +6512,6 @@ snapshots:
       abstract-logging: 2.0.1
       avvio: 9.1.0
       fast-json-stringify: 7.0.1
-      find-my-way: 9.9.0
-      light-my-request: 6.6.0
-      pino: 10.3.0
-      process-warning: 5.1.0
-      rfdc: 1.4.1
-      secure-json-parse: 4.1.0
-      semver: 7.7.4
-      toad-cache: 3.7.0
-
-  fastify@5.7.4:
-    dependencies:
-      '@fastify/ajv-compiler': 4.0.5
-      '@fastify/error': 4.0.0
-      '@fastify/fast-json-stringify-compiler': 5.0.2
-      '@fastify/proxy-addr': 5.0.0
-      abstract-logging: 2.0.1
-      avvio: 9.1.0
-      fast-json-stringify: 6.0.1
       find-my-way: 9.9.0
       light-my-request: 6.6.0
       pino: 10.3.0
