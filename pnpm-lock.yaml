@@ -112,8 +112,8 @@ catalogs:
       specifier: ^2.2.4
       version: 2.2.4
     lint-staged:
-      specifier: 15.4.3
-      version: 15.4.3
+      specifier: 15.5.2
+      version: 15.5.2
     lodash:
       specifier: 4.18.1
       version: 4.18.1
@@ -274,7 +274,7 @@ importers:
         version: 2.2.4
       lint-staged:
         specifier: 'catalog:'
-        version: 15.4.3
+        version: 15.5.2
       mongoose:
         specifier: 'catalog:'
         version: 8.24.4(socks@2.8.4)
@@ -3309,8 +3309,8 @@ packages:
   lines-and-columns@1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
 
-  lint-staged@15.4.3:
-    resolution: {integrity: sha512-FoH1vOeouNh1pw+90S+cnuoFwRfUD9ijY2GKy5h7HS3OR7JVir2N2xrsa0+Twc1B7cW72L+88geG5cW4wIhn7g==}
+  lint-staged@15.5.2:
+    resolution: {integrity: sha512-YUSOLq9VeRNAo/CTaVmhGDKG+LBtA8KF1X4K5+ykMSwWST1vDxJRB2kv2COgLb1fvpCo+A/y9A0G0znNVmdx4w==}
     engines: {node: '>=18.12.0'}
     hasBin: true
 
@@ -7103,7 +7103,7 @@ snapshots:
 
   lines-and-columns@1.2.4: {}
 
-  lint-staged@15.4.3:
+  lint-staged@15.5.2:
     dependencies:
       chalk: 5.4.1
       commander: 13.1.0

@@ -34,7 +34,7 @@ catalog:
   "husky": "9.1.7"
   "ioredis": "5.9.3"
   "kafkajs": "^2.2.4"
-  "lint-staged": "15.4.3"
+  "lint-staged": "15.5.2"
   "mongoose": "8.24.4"
   "mysql2": "3.22.0"
   "portfinder": "1.0.38"
