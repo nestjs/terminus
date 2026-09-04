@@ -4,7 +4,7 @@ packages:
 catalog:
   "@commitlint/cli": "19.8.1"
   "@commitlint/config-angular": "19.8.1"
-  "@grpc/grpc-js": "1.12.6"
+  "@grpc/grpc-js": "1.14.4"
   "@grpc/proto-loader": "0.8.1"
   "@mikro-orm/core": "6.6.7"
   "@mikro-orm/mongodb": "6.6.7"
