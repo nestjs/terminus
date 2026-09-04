@@ -55,7 +55,7 @@ catalog:
   "oxlint": "1.79.0"
   "class-transformer": "0.5.1"
   "class-validator": "0.14.2"
-  "lodash": "4.17.23"
+  "lodash": "4.18.1"
   "concurrently": "9.2.1"
   "redis": "5.8.2"
   "@types/sequelize": "6.12.0"
