@@ -64,8 +64,8 @@ catalogs:
       specifier: 12.0.1
       version: 12.0.1
     '@prisma/client':
-      specifier: 6.3.1
-      version: 6.3.1
+      specifier: 6.19.3
+      version: 6.19.3
     '@release-it/conventional-changelog':
       specifier: 10.0.6
       version: 10.0.6
@@ -238,7 +238,7 @@ importers:
         version: 12.0.1(@nestjs/common@12.0.1(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.0.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(ioredis@5.9.3)(mongodb@6.20.0(socks@2.8.4))(mysql2@3.22.0(@types/node@22.13.10))(redis@5.8.2))
       '@prisma/client':
         specifier: 'catalog:'
-        version: 6.3.1(prisma@6.3.1(typescript@7.0.2))(typescript@7.0.2)
+        version: 6.19.3(prisma@6.3.1(typescript@7.0.2))(typescript@7.0.2)
       '@release-it/conventional-changelog':
         specifier: 'catalog:'
         version: 10.0.6(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.3.0)(release-it@18.1.2(@types/node@22.13.10)(typescript@7.0.2))
@@ -832,7 +832,7 @@ importers:
         version: link:../..
       '@prisma/client':
         specifier: 'catalog:'
-        version: 6.3.1(prisma@6.3.1(typescript@7.0.2))(typescript@7.0.2)
+        version: 6.19.3(prisma@6.3.1(typescript@7.0.2))(typescript@7.0.2)
       prisma:
         specifier: 'catalog:'
         version: 6.3.1(typescript@7.0.2)
@@ -1555,8 +1555,8 @@ packages:
     resolution: {integrity: sha512-c83qWb22rNRuB0UaVCI0uRPNRr8Z0FWnEIvT47jiHAmOIUHbBOg5XvV7pM5x+rKn9HRpjxquDbXYSXr3fAKFcw==}
     engines: {node: '>=12'}
 
-  '@prisma/client@6.3.1':
-    resolution: {integrity: sha512-ARAJaPs+eBkemdky/XU3cvGRl+mIPHCN2lCXsl5Vlb0E2gV+R6IN7aCI8CisRGszEZondwIsW9Iz8EJkTdykyA==}
+  '@prisma/client@6.19.3':
+    resolution: {integrity: sha512-mKq3jQFhjvko5LTJFHGilsuQs+W+T3Gm451NzuTDGQxwCzwXHYnIu2zGkRoW+Exq3Rob7yp2MfzSrdIiZVhrBg==}
     engines: {node: '>=18.18'}
     peerDependencies:
       prisma: '*'
@@ -5418,7 +5418,7 @@ snapshots:
       '@pnpm/network.ca-file': 1.0.2
       config-chain: 1.1.13
 
-  '@prisma/client@6.3.1(prisma@6.3.1(typescript@7.0.2))(typescript@7.0.2)':
+  '@prisma/client@6.19.3(prisma@6.3.1(typescript@7.0.2))(typescript@7.0.2)':
     optionalDependencies:
       prisma: 6.3.1(typescript@7.0.2)
       typescript: 7.0.2
