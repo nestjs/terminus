@@ -52,7 +52,7 @@ catalog:
   "vitest": "4.1.11"
   "wait-port": "1.1.0"
   "rxjs": "7.8.2"
-  "oxlint": "1.79.0"
+  "oxlint": "1.81.0"
   "class-transformer": "0.5.1"
   "class-validator": "0.14.2"
   "lodash": "4.18.1"
