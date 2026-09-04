@@ -67,8 +67,8 @@ catalogs:
       specifier: 6.3.1
       version: 6.3.1
     '@release-it/conventional-changelog':
-      specifier: 10.0.5
-      version: 10.0.5
+      specifier: 10.0.6
+      version: 10.0.6
     '@types/express':
       specifier: 5.0.6
       version: 5.0.6
@@ -84,6 +84,9 @@ catalogs:
     amqplib:
       specifier: 0.10.7
       version: 0.10.7
+    axios:
+      specifier: ^1.7.9
+      version: 1.18.0
     class-transformer:
       specifier: 0.5.1
       version: 0.5.1
@@ -238,7 +241,7 @@ importers:
         version: 6.3.1(prisma@6.3.1(typescript@7.0.2))(typescript@7.0.2)
       '@release-it/conventional-changelog':
         specifier: 'catalog:'
-        version: 10.0.5(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.3.0)(release-it@18.1.2(@types/node@22.13.10)(typescript@7.0.2))
+        version: 10.0.6(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.3.0)(release-it@18.1.2(@types/node@22.13.10)(typescript@7.0.2))
       '@types/express':
         specifier: 'catalog:'
         version: 5.0.6
@@ -1637,8 +1640,8 @@ packages:
     peerDependencies:
       '@redis/client': ^5.8.2
 
-  '@release-it/conventional-changelog@10.0.5':
-    resolution: {integrity: sha512-Dxul3YlUsDLbIg+aR6T0QR/VyKwuJNR3GZM8mKVEwFO8GpH2H5vgnN7kacEvq/Qk5puDadOVbhbUq/KBjraemQ==}
+  '@release-it/conventional-changelog@10.0.6':
+    resolution: {integrity: sha512-aUb0IkcsBTMcOH5PPQ9Jv9lEOOVu2+rSgkE1ny+dzsTziQm2BhDRAtaFK/dw/HflthuXMWrqhhyfJhAV1AOEPQ==}
     engines: {node: ^20.12.0 || >=22.0.0}
     peerDependencies:
       release-it: ^18.0.0 || ^19.0.0
@@ -5504,7 +5507,7 @@ snapshots:
     dependencies:
       '@redis/client': 5.8.2
 
-  '@release-it/conventional-changelog@10.0.5(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.3.0)(release-it@18.1.2(@types/node@22.13.10)(typescript@7.0.2))':
+  '@release-it/conventional-changelog@10.0.6(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.3.0)(release-it@18.1.2(@types/node@22.13.10)(typescript@7.0.2))':
     dependencies:
       '@conventional-changelog/git-client': 2.6.0(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.3.0)
       concat-stream: 2.0.0
