@@ -38,7 +38,7 @@ catalog:
   "mongoose": "8.24.4"
   "mysql2": "3.22.0"
   "portfinder": "1.0.38"
-  "prettier": "3.5.3"
+  "prettier": "3.9.6"
   "prisma": "6.3.1"
   "reflect-metadata": "0.2.2"
   "release-it": "18.1.2"
