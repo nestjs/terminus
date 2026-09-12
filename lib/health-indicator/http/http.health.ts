@@ -84,7 +84,7 @@ export class HttpHealthIndicator {
    */
   async pingCheck<Key extends string>(
     key: Key,
-    url: string,
+    url: URL | string,
     {
       httpClient,
       ...options
@@ -95,7 +95,9 @@ export class HttpHealthIndicator {
     const httpService = httpClient || (await this.getHttpService());
 
     try {
-      await lastValueFrom(httpService.request({ url, ...options }));
+      await lastValueFrom(
+        httpService.request({ url: url.toString(), ...options }),
+      );
     } catch (err) {
       if (isAxiosError(err)) {
         return this.generateHttpError(check, err);
