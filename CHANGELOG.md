@@ -1,5 +1,17 @@
 # Changelog
 
+# [12.1.0](https://github.com/nestjs/terminus/compare/12.0.0...12.1.0) (2026-09-20)
+
+
+### Bug Fixes
+
+* memory leak in `attempt().withTimeout()` caused by `AbortSignal.any()` ([7843ef3](https://github.com/nestjs/terminus/commit/7843ef3563f32b45e76375b2f38cda10c46bb4a9)), closes [#2767](https://github.com/nestjs/terminus/issues/2767)
+
+
+### Features
+
+* **http:** accept URL object in HttpHealthIndicator.pingCheck ([7bc43cd](https://github.com/nestjs/terminus/commit/7bc43cd196f36c091b353e7358debbe714431f11))
+
 # [12.0.0](https://github.com/nestjs/terminus/compare/12.0.0-next.1...12.0.0) (2026-08-31)
 
 # [12.0.0-next.1](https://github.com/nestjs/terminus/compare/12.0.0-next.0...12.0.0-next.1) (2026-08-31)
