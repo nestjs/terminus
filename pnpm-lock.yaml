@@ -31,8 +31,8 @@ catalogs:
       specifier: 6.1.2
       version: 6.1.2
     '@nestjs/axios':
-      specifier: 12.0.0
-      version: 12.0.0
+      specifier: 12.0.1
+      version: 12.0.1
     '@nestjs/common':
       specifier: 12.0.1
       version: 12.0.1
@@ -205,7 +205,7 @@ importers:
         version: 6.1.2(@mikro-orm/core@6.6.7)(@nestjs/common@12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.0.1)
       '@nestjs/axios':
         specifier: 'catalog:'
-        version: 12.0.0(@nestjs/common@12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.20.0)(rxjs@7.8.2)
+        version: 12.0.1(@nestjs/common@12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.20.0)(rxjs@7.8.2)
       '@nestjs/common':
         specifier: 'catalog:'
         version: 12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -706,7 +706,7 @@ importers:
     dependencies:
       '@nestjs/axios':
         specifier: 'catalog:'
-        version: 12.0.0(@nestjs/common@12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.20.0)(rxjs@7.8.2)
+        version: 12.0.1(@nestjs/common@12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.20.0)(rxjs@7.8.2)
       '@nestjs/common':
         specifier: 'catalog:'
         version: 12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -740,7 +740,7 @@ importers:
     dependencies:
       '@nestjs/axios':
         specifier: 'catalog:'
-        version: 12.0.0(@nestjs/common@12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.20.0)(rxjs@7.8.2)
+        version: 12.0.1(@nestjs/common@12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.20.0)(rxjs@7.8.2)
       '@nestjs/common':
         specifier: 'catalog:'
         version: 12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -1181,8 +1181,8 @@ packages:
   '@mongodb-js/saslprep@1.4.6':
     resolution: {integrity: sha512-y+x3H1xBZd38n10NZF/rEBlvDOOMQ6LKUTHqr8R9VkJ+mmQOYtJFxIlkkK8fZrtOiL6VixbOBWMbZGBdal3Z1g==}
 
-  '@nestjs/axios@12.0.0':
-    resolution: {integrity: sha512-FvCnxS7nvJB/AbRKlXWTx07k5m13fjjTosAVeeD4QHIQIeyquJiIp+/w69NKol928Ww4btxzSRiLi3XA9CT9eA==}
+  '@nestjs/axios@12.0.1':
+    resolution: {integrity: sha512-Sqp14ZDrsNT96S9obtmQVzN1PLZ+FL0hnUEUjpOOtjYcGW30Knr9vV4goky/bPYPUxSCCFoXp+biRUyafkLFLA==}
     engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
     peerDependencies:
       '@nestjs/common': ^10.0.0 || ^11.0.0 || ^12.0.0
@@ -5132,7 +5132,7 @@ snapshots:
     dependencies:
       sparse-bitfield: 3.0.3
 
-  '@nestjs/axios@12.0.0(@nestjs/common@12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.20.0)(rxjs@7.8.2)':
+  '@nestjs/axios@12.0.1(@nestjs/common@12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.20.0)(rxjs@7.8.2)':
     dependencies:
       '@nestjs/common': 12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       axios: 1.20.0
