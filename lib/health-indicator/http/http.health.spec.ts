@@ -57,6 +57,14 @@ describe('Http Response Health Indicator', () => {
       expect(httpServiceMock.request).toHaveBeenCalledWith({ url: 'url' });
     });
 
+    it('should support standard URL object for pingCheck', async () => {
+      httpServiceMock.request.mockReturnValue(of([]));
+      await httpHealthIndicator.pingCheck('key', new URL('https://nestjs.com'));
+      expect(httpServiceMock.request).toHaveBeenCalledWith({
+        url: 'https://nestjs.com/',
+      });
+    });
+
     it('should create an unconfigured HttpService instead of resolving one from the app', async () => {
       httpServiceMock.request.mockReturnValue(of([]));
       await httpHealthIndicator.pingCheck('key', 'url');
