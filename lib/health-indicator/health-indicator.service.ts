@@ -5,6 +5,7 @@ import {
 } from './health-indicator-result.interface.js';
 import { isError } from '../utils/is-error.js';
 import { rejectOnAbort } from '../utils/rejectOnAbort.js';
+import { anySignal } from '../utils/anySignal.js';
 
 /**
  * Helper service which can be used to create health indicator results
@@ -235,7 +236,7 @@ export class HealthCheckAttempt<Key extends Readonly<string> = string>
       timeout = AbortSignal.timeout(this.timeoutMs);
       signals.push(timeout);
     }
-    const signal = AbortSignal.any(signals);
+    const signal = anySignal(signals);
 
     try {
       const promise = Promise.resolve(this.fn({ signal }));
