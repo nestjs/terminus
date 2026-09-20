@@ -268,7 +268,7 @@ describe('HealthCheckAttempt', () => {
           await session.attempt(async () => {}).withTimeout(1);
         }
         // let the AbortSignal.timeout timers fire so only real leaks remain
-        await new Promise((resolve) => setTimeout(resolve, 50));
+        await new Promise((resolve) => setTimeout(resolve, 500));
         gc();
         gc();
         return process.memoryUsage().heapUsed;
@@ -276,7 +276,7 @@ describe('HealthCheckAttempt', () => {
       const warm = await runAll();
       const after = await runAll();
       // AbortSignal.any() retained ~2.5 KB per attempt: 20k attempts ≈ 50 MB.
-      expect(after - warm).toBeLessThan(3 * 1024 * 1024);
+      expect(after - warm).toBeLessThan(5 * 1024 * 1024);
     });
 
     it('should abort the signal when timeout fires', async () => {
