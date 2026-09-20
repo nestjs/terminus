@@ -1,3 +1,5 @@
+import v8 from 'node:v8';
+import vm from 'node:vm';
 import {
   HealthCheckAttempt,
   HealthIndicatorService,
@@ -253,6 +255,28 @@ describe('HealthCheckAttempt', () => {
       expect(() => session.attempt(() => {}).withTimeout(ms)).toThrow(
         'Timeout must be between 0 and 4294967295 milliseconds',
       );
+    });
+
+    // Test for https://github.com/nestjs/terminus/issues/2767
+    // More info: https://github.com/nodejs/node/issues/54614
+    it('should not retain memory across attempts (nodejs/node#54614)', async () => {
+      v8.setFlagsFromString('--expose-gc');
+      const gc: () => void = vm.runInNewContext('gc');
+      const attempts = 20_000;
+      const runAll = async () => {
+        for (let i = 0; i < attempts; i++) {
+          await session.attempt(async () => {}).withTimeout(1);
+        }
+        // let the AbortSignal.timeout timers fire so only real leaks remain
+        await new Promise((resolve) => setTimeout(resolve, 50));
+        gc();
+        gc();
+        return process.memoryUsage().heapUsed;
+      };
+      const warm = await runAll();
+      const after = await runAll();
+      // AbortSignal.any() retained ~2.5 KB per attempt: 20k attempts ≈ 50 MB.
+      expect(after - warm).toBeLessThan(3 * 1024 * 1024);
     });
 
     it('should abort the signal when timeout fires', async () => {

@@ -229,6 +229,11 @@
           "test",
           "sample"
         ]
+      ],
+      "header-max-length": [
+        2,
+        "always",
+        92
       ]
     }
   },
