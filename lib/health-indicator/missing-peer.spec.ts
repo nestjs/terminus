@@ -1,4 +1,5 @@
 import { assertPackages } from '../utils/checkPackage.util.js';
+import { DrizzleHealthIndicator } from './database/drizzle.health.js';
 import { MikroOrmHealthIndicator } from './database/mikro-orm.health.js';
 import { MongooseHealthIndicator } from './database/mongoose.health.js';
 import { SequelizeHealthIndicator } from './database/sequelize.health.js';
@@ -39,6 +40,11 @@ const indicators: Array<[string, () => unknown, string[]]> = [
     'MikroOrmHealthIndicator',
     () => new MikroOrmHealthIndicator(moduleRef, healthIndicatorService),
     ['@mikro-orm/nestjs', '@mikro-orm/core'],
+  ],
+  [
+    'DrizzleHealthIndicator',
+    () => new DrizzleHealthIndicator(moduleRef, healthIndicatorService),
+    ['@nestjs/drizzle', 'drizzle-orm'],
   ],
   [
     'HttpHealthIndicator',
