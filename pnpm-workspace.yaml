@@ -39,7 +39,7 @@ catalog:
   "mysql2": "3.24.4"
   "portfinder": "1.0.38"
   "prettier": "3.5.3"
-  "prisma": "6.3.1"
+  "prisma": "6.19.3"
   "reflect-metadata": "0.2.2"
   "release-it": "18.1.2"
   "rimraf": "6.1.3"
