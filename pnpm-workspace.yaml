@@ -48,7 +48,7 @@ catalog:
   "supertest": "7.0.0"
   "typeorm": "0.3.31"
   "typescript": "7.0.2"
-  "vite": "8.2.2"
+  "vite": "8.2.4"
   "vitest": "4.1.11"
   "wait-port": "1.1.0"
   "rxjs": "7.8.2"
