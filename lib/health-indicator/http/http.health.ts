@@ -46,8 +46,10 @@ export class HttpHealthIndicator {
   }
 
   private async getHttpService(): Promise<HttpClientLike> {
-    const { HttpService }: typeof NestJSAxios =
-      await loadPackage('@nestjs/axios');
+    const { HttpService }: typeof NestJSAxios = await loadPackage(
+      '@nestjs/axios',
+      () => import('@nestjs/axios'),
+    );
     return new HttpService();
   }
 

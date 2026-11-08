@@ -46,7 +46,10 @@ export class SequelizeHealthIndicator {
    * Returns the connection of the current DI context
    */
   private async getContextConnection(): Promise<any | null> {
-    const { getConnectionToken } = await loadPackage('@nestjs/sequelize');
+    const { getConnectionToken } = await loadPackage(
+      '@nestjs/sequelize',
+      () => import('@nestjs/sequelize'),
+    );
 
     try {
       return this.moduleRef.get(getConnectionToken() as string, {
