@@ -57,7 +57,10 @@ export class MicroserviceHealthIndicator {
    * Loads `@nestjs/microservices`, which is only an optional peer
    */
   private async loadMicroservices(): Promise<typeof NestJSMicroservices> {
-    return await loadPackage('@nestjs/microservices');
+    return await loadPackage(
+      '@nestjs/microservices',
+      () => import('@nestjs/microservices'),
+    );
   }
 
   private async pingMicroservice<

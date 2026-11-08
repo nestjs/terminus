@@ -48,7 +48,10 @@ export class MikroOrmHealthIndicator {
    * Returns the connection of the current DI context
    */
   private async getContextConnection(): Promise<MikroOrm.Connection | null> {
-    const { MikroORM } = await loadPackage('@mikro-orm/core');
+    const { MikroORM } = await loadPackage(
+      '@mikro-orm/core',
+      () => import('@mikro-orm/core'),
+    );
     const mikro = this.moduleRef.get(MikroORM, { strict: false });
 
     const connection: MikroOrm.Connection = mikro.em.getConnection();

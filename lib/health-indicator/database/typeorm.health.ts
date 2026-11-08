@@ -48,7 +48,10 @@ export class TypeOrmHealthIndicator {
    * Returns the connection of the current DI context
    */
   private async getContextConnection(): Promise<TypeOrm.DataSource | null> {
-    const { getDataSourceToken } = await loadPackage('@nestjs/typeorm');
+    const { getDataSourceToken } = await loadPackage(
+      '@nestjs/typeorm',
+      () => import('@nestjs/typeorm'),
+    );
 
     try {
       return this.moduleRef.get(getDataSourceToken() as string, {
