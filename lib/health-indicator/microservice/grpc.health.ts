@@ -126,7 +126,10 @@ export class GRPCHealthIndicator implements OnApplicationShutdown {
     let client = this.clients.get(key);
     if (!client) {
       const { ClientProxyFactory, Transport }: typeof NestJSMicroservices =
-        await loadPackage('@nestjs/microservices');
+        await loadPackage(
+          '@nestjs/microservices',
+          () => import('@nestjs/microservices'),
+        );
       const {
         timeout: _t,
         healthServiceName: _hS,

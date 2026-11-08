@@ -47,7 +47,10 @@ export class MongooseHealthIndicator {
    * Returns the connection of the current DI context
    */
   private async getContextConnection(): Promise<any | null> {
-    const { getConnectionToken } = await loadPackage('@nestjs/mongoose');
+    const { getConnectionToken } = await loadPackage(
+      '@nestjs/mongoose',
+      () => import('@nestjs/mongoose'),
+    );
 
     try {
       return this.moduleRef.get(

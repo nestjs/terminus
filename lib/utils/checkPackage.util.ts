@@ -44,8 +44,10 @@ export function assertPackages(packageNames: string[], reason: string): void {
     try {
       import.meta.resolve(packageName);
       return false;
-    } catch {
-      return true;
+    } catch (error) {
+      // Bundlers inline the peers and compile `import.meta.resolve` away, so
+      // only a resolve that ran and found nothing means the package is missing
+      return (error as { code?: string })?.code === 'ERR_MODULE_NOT_FOUND';
     }
   });
 
@@ -55,31 +57,25 @@ export function assertPackages(packageNames: string[], reason: string): void {
 }
 
 /**
- * Loads the given optional peer packages, caching each one after its first
- * load. Meant for the (already asynchronous) check methods.
- *
- * @param packageNames The package names
- *
- * @internal
- *
- * @returns The loaded modules, in the order they were requested
- */
-export async function loadPackages(packageNames: string[]): Promise<any[]> {
-  return await Promise.all(packageNames.map(loadPackage));
-}
-
-/**
  * Loads a single optional peer package, caching it after its first load.
+ * Meant for the (already asynchronous) check methods.
+ *
+ * @param packageName The package name, used as the cache key
+ * @param loader Imports the package with a literal specifier, which bundlers
+ * can follow unlike an import of a variable
  *
  * @internal
  */
-export async function loadPackage(packageName: string): Promise<any> {
+export async function loadPackage(
+  packageName: string,
+  loader: () => Promise<any>,
+): Promise<any> {
   const cached = packageCache.get(packageName);
   if (cached) {
     return cached;
   }
 
-  const pkg = await import(packageName);
+  const pkg = await loader();
   packageCache.set(packageName, pkg);
   return pkg;
 }
