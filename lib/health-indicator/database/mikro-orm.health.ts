@@ -49,14 +49,12 @@ export class MikroOrmHealthIndicator {
    */
   private async getContextConnection(): Promise<MikroOrm.Connection | null> {
     const { MikroORM } = await loadPackage('@mikro-orm/core');
-    const mikro = this.moduleRef.get(MikroORM, { strict: false });
-
-    const connection: MikroOrm.Connection = mikro.em.getConnection();
-
-    if (!connection) {
+    try {
+      const mikro = this.moduleRef.get(MikroORM, { strict: false });
+      return mikro?.em?.getConnection() ?? null;
+    } catch {
       return null;
     }
-    return connection;
   }
 
   /**
