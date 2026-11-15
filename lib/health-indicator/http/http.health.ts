@@ -25,9 +25,15 @@ interface HttpClientLike {
   request<T = any>(config: any): Observable<AxiosResponse<T>>;
 }
 
+// FIXME: Delete the HttpHealthIndicator in v13, use the FetchHealthIndicator instead (#2778)
 /**
  * The HTTPHealthIndicator contains health indicators
  * which are used for health checks related to HTTP requests
+ *
+ * @deprecated Use `FetchHealthIndicator`, which works with native `fetch`,
+ * `@nestjs/http-client` and `@nestjs/axios` and returns a `HealthCheckAttempt`
+ * (`.withTimeout()`, `.cacheFor()`). Removed in v13. See
+ * https://github.com/nestjs/terminus/issues/2778
  *
  * @publicApi
  * @module TerminusModule
@@ -97,6 +103,10 @@ export class HttpHealthIndicator implements OnModuleInit {
    *
    * @example
    * httpHealthIndicator.pingCheck('google', 'https://google.com', { timeout: 800 })
+   *
+   * @deprecated Use `FetchHealthIndicator.pingCheck()` instead, e.g.
+   * `fetchHealthIndicator.pingCheck('google', 'https://google.com').withTimeout(800)`.
+   * Removed in v13.
    */
   async pingCheck<Key extends string>(
     key: Key,
@@ -125,6 +135,14 @@ export class HttpHealthIndicator implements OnModuleInit {
     return check.up();
   }
 
+  /**
+   * Checks the response of the given url with `callback`
+   *
+   * @deprecated Use `FetchHealthIndicator.pingCheck()` with the `verify`
+   * option instead, e.g.
+   * `fetchHealthIndicator.pingCheck('api', url, { verify: (res) => res.status === 204 })`.
+   * Removed in v13.
+   */
   async responseCheck<T, Key extends string>(
     key: Key,
     url: URL | string,

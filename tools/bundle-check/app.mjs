@@ -8,6 +8,7 @@ import { Controller, Get, Module } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   HealthCheck,
+  FetchHealthIndicator,
   HealthCheckService,
   HttpHealthIndicator,
   MemoryHealthIndicator,
@@ -18,8 +19,8 @@ const upstream = createServer((_, res) => res.end('ok')).listen(0);
 const upstreamUrl = `http://127.0.0.1:${upstream.address().port}`;
 
 class HealthController {
-  constructor(health, http, memory) {
-    Object.assign(this, { health, http, memory });
+  constructor(health, http, memory, fetch) {
+    Object.assign(this, { health, http, memory, fetch });
   }
 
   check() {
@@ -27,6 +28,7 @@ class HealthController {
       // Loads the optional `@nestjs/axios` peer
       () => this.http.pingCheck('http', upstreamUrl),
       () => this.memory.checkHeap('heap', 4 * 1024 ** 3),
+      () => this.fetch.pingCheck('fetch', upstreamUrl),
     ]);
   }
 }
@@ -35,7 +37,7 @@ Get()(HealthController.prototype, 'check', check);
 HealthCheck()(HealthController.prototype, 'check', check);
 Reflect.defineMetadata(
   'design:paramtypes',
-  [HealthCheckService, HttpHealthIndicator, MemoryHealthIndicator],
+  [HealthCheckService, HttpHealthIndicator, MemoryHealthIndicator, FetchHealthIndicator],
   HealthController,
 );
 Controller('health')(HealthController);

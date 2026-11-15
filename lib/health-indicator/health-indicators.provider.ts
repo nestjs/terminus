@@ -1,6 +1,7 @@
 import {
   TypeOrmHealthIndicator,
   HttpHealthIndicator,
+  FetchHealthIndicator,
   MongooseHealthIndicator,
   SequelizeHealthIndicator,
   DiskHealthIndicator,
@@ -17,6 +18,7 @@ import { MikroOrmHealthIndicator } from './database/mikro-orm.health.js';
 export const HEALTH_INDICATORS = [
   TypeOrmHealthIndicator,
   HttpHealthIndicator,
+  FetchHealthIndicator,
   MongooseHealthIndicator,
   SequelizeHealthIndicator,
   DiskHealthIndicator,

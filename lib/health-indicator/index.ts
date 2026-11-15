@@ -7,6 +7,7 @@ export {
 
 /** Health Indicators */
 export * from './http/http.health.js';
+export * from './http/fetch.health.js';
 export * from './database/mongoose.health.js';
 export * from './database/typeorm.health.js';
 export * from './database/mikro-orm.health.js';
