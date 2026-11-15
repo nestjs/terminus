@@ -447,3 +447,55 @@ describe('HealthCheckAttempt', () => {
     });
   });
 });
+
+describe('HealthCheckAttempt as a promise', () => {
+  let session: HealthIndicatorSession<'test'>;
+
+  beforeEach(() => {
+    session = new HealthIndicatorSession('test');
+  });
+
+  it('should be assignable to a Promise', async () => {
+    const promise: Promise<{ test: { status: string } }> = session.attempt(
+      () => {},
+    );
+
+    expect((await promise).test.status).toBe('up');
+    expect(Object.prototype.toString.call(promise)).toBe(
+      '[object HealthCheckAttempt]',
+    );
+  });
+
+  it('should resolve through catch() without calling the handler', async () => {
+    const onRejected = vi.fn();
+
+    const result = await session
+      .attempt(() => {
+        throw new Error('boom');
+      })
+      .catch(onRejected);
+
+    // A failing check is a `down` result, not a rejection
+    expect(result).toMatchObject({ test: { status: 'down', message: 'boom' } });
+    expect(onRejected).not.toHaveBeenCalled();
+  });
+
+  it('should call the finally() handler and keep the result', async () => {
+    const onFinally = vi.fn();
+
+    const result = await session.attempt(() => {}).finally(onFinally);
+
+    expect(result.test.status).toBe('up');
+    expect(onFinally).toHaveBeenCalledTimes(1);
+  });
+
+  it('should work with Promise.all', async () => {
+    const [first, second] = await Promise.all([
+      session.attempt(() => {}),
+      session.attempt(() => {}).catch(() => null),
+    ]);
+
+    expect(first.test.status).toBe('up');
+    expect(second?.test.status).toBe('up');
+  });
+});

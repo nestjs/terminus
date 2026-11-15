@@ -3,11 +3,13 @@ import {
   type DiskHealthIndicatorOptions,
   type DiskOptionsWithThresholdPercent,
 } from './disk-health-options.type.js';
-import { type HealthIndicatorResult } from '../index.js';
 import { STORAGE_EXCEEDED } from '../../errors/messages.constant.js';
 import { CHECK_DISK_SPACE_LIB } from '../../terminus.constants.js';
 import { type CheckDiskSpace } from './disk-usage-lib.provider.js';
-import { HealthIndicatorService } from '../service/health-indicator.service.js';
+import {
+  type HealthCheckAttempt,
+  HealthIndicatorService,
+} from '../service/health-indicator.service.js';
 
 /**
  * The DiskHealthIndicator contains checks which are related
@@ -42,43 +44,48 @@ export class DiskHealthIndicator {
   }
 
   /**
-   * Checks if the size of the given size has exceeded the
-   * given threshold
+   * Checks if the used disk storage has exceeded the given threshold.
+   * `down` when it has, or when the disk usage of `path` cannot be read
+   * (for example, the path does not exist).
+   *
+   * Returns a `HealthCheckAttempt`, so you can chain `.degradedOnFailure()`,
+   * `.withTimeout()`, `.cacheFor()`, `.withData()` and `.degradedAfter()`.
    *
    * @param key The key which will be used for the result object
-   *
-   * @returns {Promise<HealthIndicatorResult>} The result of the health indicator check
+   * @param options The path to check and the threshold in bytes or in percent
    *
    * @example
    * // The used disk storage should not exceed 250 GB
    * diskHealthIndicator.checkStorage('storage', { threshold: 250 * 1024 * 1024 * 1024, path: '/' });
-   * @example
-   * // The used disk storage should not exceed 50% of the full disk size
-   * diskHealthIndicator.checkStorage('storage', { thresholdPercent: 0.5, path: 'C:\\' });
+   * // A full disk is a warning, not an outage; give up after 2 seconds
+   * diskHealthIndicator
+   *   .checkStorage('storage', { thresholdPercent: 0.9, path: '/' })
+   *   .degradedOnFailure()
+   *   .withTimeout(2000);
    */
-  public async checkStorage<Key extends string = string>(
+  public checkStorage<Key extends string = string>(
     key: Key,
     options: DiskHealthIndicatorOptions,
-  ): Promise<HealthIndicatorResult<Key>> {
-    const check = this.healthIndicatorService.check(key);
-    const { free, size } = await this.checkDiskSpace(options.path);
-    const used = size - free;
+  ): HealthCheckAttempt<Key> {
+    return this.healthIndicatorService.check(key).attempt(async () => {
+      const { free, size } = await this.checkDiskSpace(options.path);
+      const used = size - free;
 
-    // Prevent division by zero
-    if (isNaN(size) || size === 0) {
-      return check.down(STORAGE_EXCEEDED('disk storage'));
-    }
+      // Prevent division by zero
+      if (isNaN(size) || size === 0) {
+        throw new Error(STORAGE_EXCEEDED('disk storage'));
+      }
 
-    let isHealthy = false;
-    if (this.isOptionThresholdPercent(options)) {
-      isHealthy = options.thresholdPercent >= used / size;
-    } else {
-      isHealthy = options.threshold >= used;
-    }
+      let isHealthy = false;
+      if (this.isOptionThresholdPercent(options)) {
+        isHealthy = options.thresholdPercent >= used / size;
+      } else {
+        isHealthy = options.threshold >= used;
+      }
 
-    if (!isHealthy) {
-      return check.down(STORAGE_EXCEEDED('disk storage'));
-    }
-    return check.up();
+      if (!isHealthy) {
+        throw new Error(STORAGE_EXCEEDED('disk storage'));
+      }
+    });
   }
 }

@@ -75,7 +75,7 @@ export class HealthCheckAttempt<
   TSuccess extends object | undefined = undefined,
   /** The data of `withFailureData()`, added to a failed result */
   TFailure extends object = {},
-> implements PromiseLike<
+> implements Promise<
   HealthCheckAttemptResult<Key, TStatic, TSuccess, TFailure>
 > {
   private timeoutMs?: number;
@@ -375,8 +375,20 @@ export class HealthCheckAttempt<
     return this;
   }
 
-  then: PromiseLike<
+  // `then`, `catch` and `finally` make the attempt usable wherever a promise
+  // is expected. Each call runs the attempt, like awaiting it does.
+  then: Promise<
     HealthCheckAttemptResult<Key, TStatic, TSuccess, TFailure>
   >['then'] = (onfulfilled, onrejected) =>
     this.execute().then(onfulfilled, onrejected);
+
+  catch: Promise<
+    HealthCheckAttemptResult<Key, TStatic, TSuccess, TFailure>
+  >['catch'] = (onrejected) => this.execute().catch(onrejected);
+
+  finally: Promise<
+    HealthCheckAttemptResult<Key, TStatic, TSuccess, TFailure>
+  >['finally'] = (onfinally) => this.execute().finally(onfinally);
+
+  readonly [Symbol.toStringTag] = 'HealthCheckAttempt';
 }

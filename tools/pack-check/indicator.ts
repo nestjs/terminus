@@ -2,8 +2,10 @@
 // `declaration: true`. Not part of the repo's own typecheck (see tsconfig.json),
 // because `@nestjs/terminus` must resolve to the installed package.
 import {
+  DiskHealthIndicator,
   HealthCheckService,
   HealthIndicatorService,
+  MemoryHealthIndicator,
   TypeOrmHealthIndicator,
 } from '@nestjs/terminus';
 
@@ -12,6 +14,8 @@ export class Indicators {
     private readonly health: HealthCheckService,
     private readonly indicator: HealthIndicatorService,
     private readonly db: TypeOrmHealthIndicator,
+    private readonly memory: MemoryHealthIndicator,
+    private readonly disk: DiskHealthIndicator,
   ) {}
 
   upOrDown(up: boolean) {
@@ -48,6 +52,27 @@ export class Indicators {
   }
   builtIn() {
     return this.db.pingCheck('database').degradedOnFailure().cacheFor(100);
+  }
+  memoryAndDisk() {
+    return this.health.check([
+      () => this.memory.checkHeap('heap', 1024).degradedOnFailure(),
+      this.memory
+        .checkRSS('rss', 1024)
+        .withData({ unit: 'bytes' })
+        .cacheFor(100),
+      () =>
+        this.disk
+          .checkStorage('disk', { path: '/', thresholdPercent: 0.9 })
+          .withTimeout(100),
+    ]);
+  }
+  caught() {
+    return this.builders()
+      .catch(() => null)
+      .finally(() => {});
+  }
+  asPromise(): Promise<unknown> {
+    return this.builtIn();
   }
   async awaited() {
     return await this.builders();
