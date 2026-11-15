@@ -156,12 +156,41 @@ describe('HealthCheckAttempt', () => {
     });
 
     it.each(['status', 'responseTime', 'cachedResponse'])(
-      'should throw if the function returns the reserved key "%s"',
+      'should ignore the reserved key "%s" in the returned value',
       async (key) => {
-        const attempt = session.attempt(() => ({ [key]: 'foo' }));
-        await expect(attempt).rejects.toThrow(`"${key}" is a reserved key`);
+        const attempt = session.attempt(() => ({ [key]: 'foo', foo: 'bar' }));
+        const result = await attempt;
+        expect(result).toEqual({
+          test: { status: 'up', foo: 'bar', responseTime: expect.any(Number) },
+        });
       },
     );
+
+    it('should stay up when returning an object with a circular reference and a reserved key (e.g. an axios response)', async () => {
+      const response: Record<string, unknown> = { status: 200, data: 'ok' };
+      response.request = { res: response };
+      const result = await session.attempt(async () => response);
+      expect(result.test).toMatchObject({ status: 'up', data: 'ok' });
+      expect(result.test.responseTime).toEqual(expect.any(Number));
+    });
+
+    it('should warn only once per process about ignored reserved keys', async () => {
+      vi.resetModules();
+      const { Logger } = await import('@nestjs/common');
+      const warn = vi
+        .spyOn(Logger.prototype, 'warn')
+        .mockImplementation(() => {});
+      const { HealthIndicatorSession: FreshSession } = await import(
+        './health-indicator.service.js'
+      );
+
+      await new FreshSession('a').attempt(() => ({ status: 200 }));
+      await new FreshSession('b').attempt(() => ({ cachedResponse: 1 }));
+
+      expect(warn).toHaveBeenCalledTimes(1);
+      expect(warn.mock.calls[0][0]).toContain('"status"');
+      warn.mockRestore();
+    });
 
     it.each([null, 'ok', 42, true, [1, 2]])(
       'should ignore a non-object return value (%p)',
