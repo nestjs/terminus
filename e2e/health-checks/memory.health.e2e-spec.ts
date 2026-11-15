@@ -24,14 +24,21 @@ describe('MemoryHealthIndicator', () => {
         ]),
       ).start();
 
-      const details = { memory_rss: { status: 'up' } };
+      const details = {
+        memory_rss: { status: 'up', responseTime: expect.any(Number) },
+      };
 
-      return request(app.getHttpServer()).get('/health').expect(200).expect({
-        status: 'ok',
-        info: details,
-        error: {},
-        details,
-      });
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(200)
+        .expect(({ body }) =>
+          expect(body).toEqual({
+            status: 'ok',
+            info: details,
+            error: {},
+            details,
+          }),
+        );
     });
 
     it('should check if the heap threshold is not exceeded', async () => {
@@ -41,13 +48,20 @@ describe('MemoryHealthIndicator', () => {
             memory.checkHeap('memory_heap', 1 * 1024 * 1024 * 1024 * 1024),
         ]),
       ).start();
-      const details = { memory_heap: { status: 'up' } };
-      return request(app.getHttpServer()).get('/health').expect(200).expect({
-        status: 'ok',
-        info: details,
-        error: {},
-        details,
-      });
+      const details = {
+        memory_heap: { status: 'up', responseTime: expect.any(Number) },
+      };
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(200)
+        .expect(({ body }) =>
+          expect(body).toEqual({
+            status: 'ok',
+            info: details,
+            error: {},
+            details,
+          }),
+        );
     });
 
     it('should check if correctly displays a heap exceeded error', async () => {
@@ -59,15 +73,71 @@ describe('MemoryHealthIndicator', () => {
         memory_heap: {
           status: 'down',
           message: 'Used heap exceeded the set threshold',
+          responseTime: expect.any(Number),
         },
       };
 
-      return request(app.getHttpServer()).get('/health').expect(503).expect({
-        status: 'error',
-        info: {},
-        error: details,
-        details,
-      });
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(503)
+        .expect(({ body }) =>
+          expect(body).toEqual({
+            status: 'error',
+            info: {},
+            error: details,
+            details,
+          }),
+        );
+    });
+  });
+
+  describe('#checkHeap builders', () => {
+    it('should be up when the heap threshold is not exceeded', async () => {
+      app = await setHealthEndpoint(({ healthCheck, memory }) =>
+        healthCheck.check([() => memory.checkHeap('memory_heap', 1024 ** 4)]),
+      ).start();
+
+      const details = {
+        memory_heap: { status: 'up', responseTime: expect.any(Number) },
+      };
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(200)
+        .expect(({ body }) =>
+          expect(body).toEqual({
+            status: 'ok',
+            info: details,
+            error: {},
+            details,
+          }),
+        );
+    });
+
+    it('should be degraded, not down, with degradedOnFailure()', async () => {
+      app = await setHealthEndpoint(({ healthCheck, memory }) =>
+        healthCheck.check([
+          () => memory.checkHeap('memory_heap', 0).degradedOnFailure(),
+        ]),
+      ).start();
+
+      const details = {
+        memory_heap: {
+          status: 'degraded',
+          message: 'Used heap exceeded the set threshold',
+          responseTime: expect.any(Number),
+        },
+      };
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(200)
+        .expect(({ body }) =>
+          expect(body).toEqual({
+            status: 'degraded',
+            info: details,
+            error: {},
+            details,
+          }),
+        );
     });
   });
 

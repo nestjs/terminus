@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { type HealthIndicatorResult } from '../index.js';
 import { STORAGE_EXCEEDED } from '../../errors/messages.constant.js';
-import { HealthIndicatorService } from '../service/health-indicator.service.js';
+import {
+  type HealthCheckAttempt,
+  HealthIndicatorService,
+} from '../service/health-indicator.service.js';
 
 /**
  * The MemoryHealthIndicator contains checks which are related
@@ -17,55 +19,60 @@ export class MemoryHealthIndicator {
   ) {}
 
   /**
-   * Checks the heap space and returns the status
+   * Checks the heap space. `down` when the process uses more than
+   * `heapUsedThreshold` bytes of heap.
+   *
+   * Returns a `HealthCheckAttempt`, so you can chain `.degradedOnFailure()`,
+   * `.cacheFor()`, `.withData()`, `.degradedAfter()` and `.withTimeout()`.
    *
    * @param key The key which will be used for the result object
-   * @param options The options of the `MemoryHealthIndicator`
-   *
-   *
-   * @returns {Promise<HealthIndicatorResult>} The result of the health indicator check
+   * @param heapUsedThreshold The most heap the process may use, in bytes
    *
    * @example
-   * // The process should not use more than 150MB memory
+   * // The process should not use more than 150MB heap
    * memoryHealthIndicator.checkHeap('memory_heap', 150 * 1024 * 1024);
+   * // More heap is a warning, not an outage
+   * memoryHealthIndicator
+   *   .checkHeap('memory_heap', 150 * 1024 * 1024)
+   *   .degradedOnFailure();
    */
-  public async checkHeap<Key extends string = string>(
+  public checkHeap<Key extends string = string>(
     key: Key,
     heapUsedThreshold: number,
-  ): Promise<HealthIndicatorResult<Key>> {
-    const check = this.healthIndicatorService.check(key);
-    const { heapUsed } = process.memoryUsage();
-
-    if (heapUsedThreshold < heapUsed) {
-      return check.down(STORAGE_EXCEEDED('heap'));
-    }
-
-    return check.up();
+  ): HealthCheckAttempt<Key> {
+    return this.healthIndicatorService.check(key).attempt(() => {
+      if (heapUsedThreshold < process.memoryUsage().heapUsed) {
+        throw new Error(STORAGE_EXCEEDED('heap'));
+      }
+    });
   }
 
   /**
-   * Checks the rss space and returns the status
+   * Checks the RSS (all memory the process has allocated). `down` when it is
+   * more than `rssThreshold` bytes.
+   *
+   * Returns a `HealthCheckAttempt`, so you can chain `.degradedOnFailure()`,
+   * `.cacheFor()`, `.withData()`, `.degradedAfter()` and `.withTimeout()`.
    *
    * @param key The key which will be used for the result object
-   * @param options The options of the `MemoryHealthIndicator`
+   * @param rssThreshold The most memory the process may have allocated, in bytes
    *
-   * @returns {Promise<HealthIndicatorResult>} The result of the health indicator check
-   *
-   *  @example
-   * // The process should not have more than 150MB allocated
-   * memoryHealthIndicator.checkRSS('memory_rss', 150 * 1024 * 1024);
+   * @example
+   * // The process should not have more than 300MB allocated
+   * memoryHealthIndicator.checkRSS('memory_rss', 300 * 1024 * 1024);
+   * // More memory is a warning, not an outage
+   * memoryHealthIndicator
+   *   .checkRSS('memory_rss', 300 * 1024 * 1024)
+   *   .degradedOnFailure();
    */
-  public async checkRSS<Key extends string = string>(
+  public checkRSS<Key extends string = string>(
     key: Key,
     rssThreshold: number,
-  ): Promise<HealthIndicatorResult<Key>> {
-    const check = this.healthIndicatorService.check(key);
-    const { rss } = process.memoryUsage();
-
-    if (rssThreshold < rss) {
-      return check.down(STORAGE_EXCEEDED('rss'));
-    }
-
-    return check.up();
+  ): HealthCheckAttempt<Key> {
+    return this.healthIndicatorService.check(key).attempt(() => {
+      if (rssThreshold < process.memoryUsage().rss) {
+        throw new Error(STORAGE_EXCEEDED('rss'));
+      }
+    });
   }
 }

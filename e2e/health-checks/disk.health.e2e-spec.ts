@@ -27,14 +27,21 @@ describe('DiskHealthIndicator', () => {
         ]),
       ).start();
 
-      const details = { disk: { status: 'up' } };
+      const details = {
+        disk: { status: 'up', responseTime: expect.any(Number) },
+      };
 
-      return request(app.getHttpServer()).get('/health').expect(200).expect({
-        status: 'ok',
-        info: details,
-        error: {},
-        details,
-      });
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(200)
+        .expect(({ body }) =>
+          expect(body).toEqual({
+            status: 'ok',
+            info: details,
+            error: {},
+            details,
+          }),
+        );
     });
 
     it('should check if correctly displays a threshold exceeded error', async () => {
@@ -48,15 +55,21 @@ describe('DiskHealthIndicator', () => {
         disk: {
           status: 'down',
           message: 'Used disk storage exceeded the set threshold',
+          responseTime: expect.any(Number),
         },
       };
 
-      return request(app.getHttpServer()).get('/health').expect(503).expect({
-        status: 'error',
-        info: {},
-        error: details,
-        details,
-      });
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(503)
+        .expect(({ body }) =>
+          expect(body).toEqual({
+            status: 'error',
+            info: {},
+            error: details,
+            details,
+          }),
+        );
     });
 
     it('should check if the disk thresholdPercent has not exceeded', async () => {
@@ -75,12 +88,16 @@ describe('DiskHealthIndicator', () => {
       return request(app.getHttpServer())
         .get('/health')
         .expect(200)
-        .expect({
-          status: 'ok',
-          info: { disk: { status: 'up' } },
-          error: {},
-          details: { disk: { status: 'up' } },
-        });
+        .expect(({ body }) =>
+          expect(body).toEqual({
+            status: 'ok',
+            info: { disk: { status: 'up', responseTime: expect.any(Number) } },
+            error: {},
+            details: {
+              disk: { status: 'up', responseTime: expect.any(Number) },
+            },
+          }),
+        );
     });
 
     it('should check if correctly displays a thresholdPercent exceeded error', async () => {
@@ -100,15 +117,74 @@ describe('DiskHealthIndicator', () => {
         disk: {
           status: 'down',
           message: 'Used disk storage exceeded the set threshold',
+          responseTime: expect.any(Number),
         },
       };
 
-      return request(app.getHttpServer()).get('/health').expect(503).expect({
-        status: 'error',
-        info: {},
-        error: details,
-        details,
-      });
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(503)
+        .expect(({ body }) =>
+          expect(body).toEqual({
+            status: 'error',
+            info: {},
+            error: details,
+            details,
+          }),
+        );
+    });
+  });
+
+  describe('#checkStorage builders', () => {
+    it('should be up when the disk threshold is not exceeded', async () => {
+      const { free, size } = await checkDiskSpace('/');
+      app = await setHealthEndpoint(({ healthCheck, disk }) =>
+        healthCheck.check([
+          () =>
+            disk.checkStorage('disk', {
+              path: '/',
+              threshold: size - free + 1024 * 1024 * 1024,
+            }),
+        ]),
+      ).start();
+
+      const details = {
+        disk: { status: 'up', responseTime: expect.any(Number) },
+      };
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(200)
+        .expect(({ body }) =>
+          expect(body).toEqual({
+            status: 'ok',
+            info: details,
+            error: {},
+            details,
+          }),
+        );
+    });
+
+    it('should be down, not a 500, when the path does not exist', async () => {
+      app = await setHealthEndpoint(({ healthCheck, disk }) =>
+        healthCheck.check([
+          () =>
+            disk.checkStorage('disk', {
+              path: '/does/not/exist',
+              threshold: 1,
+            }),
+        ]),
+      ).start();
+
+      return request(app.getHttpServer())
+        .get('/health')
+        .expect(503)
+        .expect(({ body }) =>
+          expect(body.details.disk).toEqual({
+            status: 'down',
+            message: expect.stringContaining('ENOENT'),
+            responseTime: expect.any(Number),
+          }),
+        );
     });
   });
 
