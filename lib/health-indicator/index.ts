@@ -1,4 +1,4 @@
-export * from './health-indicator-result.interface.js';
+export type * from './health-indicator-result.interface.js';
 export * from './health-indicator.js';
 export {
   HealthIndicatorService,

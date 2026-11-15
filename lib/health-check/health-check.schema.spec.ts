@@ -79,8 +79,10 @@ describe('HealthCheck swagger schema', () => {
     const result: any = document.components?.schemas?.TerminusHealthCheckResult;
 
     expect(result.properties.details.additionalProperties).toEqual({
-      allOf: [{ $ref: '#/components/schemas/TerminusHealthIndicatorResult' }],
-      additionalProperties: true,
+      allOf: [
+        { $ref: '#/components/schemas/TerminusHealthIndicatorResult' },
+        { type: 'object', additionalProperties: true },
+      ],
     });
   });
 });

@@ -84,7 +84,7 @@ describe('HealthCheckAttempt', () => {
     });
 
     // FIXME: Rewrite in v13 to use withData(), the returned value is ignored (#2796)
-    it('should warn only once per process about ignored reserved keys', async () => {
+    it('should warn once per indicator about ignored reserved keys', async () => {
       vi.resetModules();
       const { Logger } = await import('@nestjs/common');
       const warn = vi
@@ -94,13 +94,15 @@ describe('HealthCheckAttempt', () => {
         await import('./health-indicator.service.js');
 
       await new FreshSession('a').attempt(() => ({ status: 200 }));
+      await new FreshSession('a').attempt(() => ({ status: 200 }));
       await new FreshSession('b').attempt(() => ({ cachedResponse: 1 }));
 
       const reservedWarnings = warn.mock.calls.filter(([msg]) =>
         String(msg).includes('reserved key'),
       );
-      expect(reservedWarnings).toHaveLength(1);
+      expect(reservedWarnings).toHaveLength(2);
       expect(reservedWarnings[0][0]).toContain('"status"');
+      expect(reservedWarnings[1][0]).toContain('indicator "b"');
       warn.mockRestore();
     });
 
@@ -192,11 +194,14 @@ describe('HealthCheckAttempt', () => {
       });
     });
 
-    it.each([-1, Infinity, 2 ** 40])('should reject a timeout of %p', (ms) => {
-      expect(() => session.attempt(() => {}).withTimeout(ms)).toThrow(
-        'Timeout must be between 0 and 4294967295 milliseconds',
-      );
-    });
+    it.each([-1, Infinity, 2 ** 40, NaN, 1.5])(
+      'should reject a timeout of %p',
+      (ms) => {
+        expect(() => session.attempt(() => {}).withTimeout(ms)).toThrow(
+          'Timeout must be a whole number between 0 and 4294967295 milliseconds',
+        );
+      },
+    );
 
     // Test for https://github.com/nestjs/terminus/issues/2767
     // More info: https://github.com/nodejs/node/issues/54614
@@ -509,17 +514,19 @@ describe('HealthCheckAttempt withData', () => {
   });
 
   // FIXME: Remove this in v13, the returned value is ignored (#2796)
-  it('should log a deprecation warning once when data is returned without withData', async () => {
+  it('should log a deprecation warning once per indicator when data is returned without withData', async () => {
     const { FreshSession, deprecationWarnings } =
       await freshSessionWithWarnSpy();
 
     const first = await new FreshSession('a').attempt(() => ({ ok: 1 }));
+    await new FreshSession('a').attempt(() => ({ ok: 1 }));
     await new FreshSession('b').attempt(() => ({ ok: 1 }));
 
     // v12: the returned value is still merged
     expect(first.a).toMatchObject({ status: 'up', ok: 1 });
-    expect(deprecationWarnings()).toHaveLength(1);
+    expect(deprecationWarnings()).toHaveLength(2);
     expect(deprecationWarnings()[0][0]).toContain('"a"');
+    expect(deprecationWarnings()[1][0]).toContain('"b"');
     vi.restoreAllMocks();
   });
 
@@ -557,6 +564,37 @@ describe('HealthCheckAttempt cacheFor', () => {
 
   afterEach(() => {
     vi.useRealTimers();
+  });
+
+  it('should not share the degraded settings between attempts with the same key', async () => {
+    const fail = async () => {
+      throw new Error('boom');
+    };
+    const lenient = await h
+      .check('db')
+      .attempt(fail)
+      .degradedOnFailure()
+      .cacheFor(1000);
+    const strict = await h.check('db').attempt(fail).cacheFor(1000);
+
+    expect(lenient.db.status).toBe('degraded');
+    expect(strict.db).toMatchObject({ status: 'down', cachedResponse: true });
+
+    const slow = await h
+      .check('api')
+      .attempt(async () => {})
+      .cacheFor(1000);
+    const picky = await h
+      .check('api')
+      .attempt(async () => {})
+      .degradedAfter(0)
+      .cacheFor(1000);
+
+    expect(slow.api.status).toBe('up');
+    expect(picky.api).toMatchObject({
+      status: 'degraded',
+      cachedResponse: true,
+    });
   });
 
   it('should return the cached result within the TTL without re-running', async () => {
@@ -646,7 +684,9 @@ describe('HealthCheckAttempt cacheFor', () => {
         .check('db')
         .attempt(() => {})
         .cacheFor(ms),
-    ).toThrow('Cache TTL must be between 0 and 4294967295 milliseconds');
+    ).toThrow(
+      'Cache TTL must be a whole number between 0 and 4294967295 milliseconds',
+    );
   });
 });
 
@@ -728,7 +768,7 @@ describe('HealthCheckAttempt degraded', () => {
       'should reject a threshold of %p',
       (ms) => {
         expect(() => session.attempt(() => {}).degradedAfter(ms)).toThrow(
-          'Degraded threshold must be between 0 and 4294967295 milliseconds',
+          'Degraded threshold must be a whole number between 0 and 4294967295 milliseconds',
         );
       },
     );

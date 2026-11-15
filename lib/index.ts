@@ -9,6 +9,6 @@ export * from './health-indicator/index.js';
 export {
   HealthCheck,
   HealthCheckService,
-  HealthCheckStatus,
   HealthCheckResult,
 } from './health-check/index.js';
+export type { HealthCheckStatus } from './health-check/index.js';

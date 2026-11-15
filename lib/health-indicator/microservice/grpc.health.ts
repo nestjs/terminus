@@ -118,6 +118,27 @@ export class GRPCHealthIndicator
    */
   async onModuleInit(): Promise<void> {
     await this.loadMicroservices();
+    await this.loadGrpc();
+  }
+
+  /**
+   * Checks that `@grpc/grpc-js` and `@grpc/proto-loader` are installed. Nest
+   * loads them itself when the first client is created, and exits the process
+   * when they are missing.
+   *
+   * The names are variables on purpose, so that bundlers do not follow the
+   * imports: Nest can only load these two from `node_modules`.
+   */
+  private async loadGrpc(): Promise<void> {
+    const names = ['@grpc/grpc-js', '@grpc/proto-loader'];
+    await loadPackage(
+      names,
+      () =>
+        Promise.all(
+          names.map((name) => import(/* webpackIgnore: true */ name)),
+        ),
+      this.constructor.name,
+    );
   }
 
   /**

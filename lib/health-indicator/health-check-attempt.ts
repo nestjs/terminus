@@ -1,10 +1,11 @@
 import { Logger } from '@nestjs/common';
 import { HealthIndicatorStatus } from './health-indicator-result.interface.js';
-import { type AdditionalData } from './health-indicator-session.js';
 import { errorMessage } from '../utils/errorMessage.js';
 import { type IsAny } from '../utils/types.js';
 import { runWithTimeout } from '../utils/runWithTimeout.js';
 import { type AttemptCache } from './attempt-cache.js';
+
+type AdditionalData = Record<string, unknown>;
 
 type ReservedAttemptKey = (typeof RESERVED_ATTEMPT_KEYS)[number];
 
@@ -35,7 +36,7 @@ type WithDataCheck<TData> =
  * What the builder methods of a `HealthCheckAttempt` have set up so far, as far
  * as the type of the result depends on it.
  */
-export type AttemptState = {
+type AttemptState = {
   /** The additional data of a successful check */
   data: object;
   /** Whether the result can come from the cache */
@@ -47,7 +48,7 @@ export type AttemptState = {
 };
 
 /** The state of the attempt that `attempt()` returns. */
-export type InitialAttemptState = {
+type InitialAttemptState = {
   data: Record<string, any>;
   cached: false;
   success: HealthIndicatorStatus.UP;
@@ -82,7 +83,7 @@ type HealthCheckAttemptResult<
 >;
 
 export type AttemptOutcome = {
-  status: HealthIndicatorStatus;
+  status: HealthIndicatorStatus.UP | HealthIndicatorStatus.DOWN;
   data: AdditionalData;
   responseTime: number;
 };
@@ -104,16 +105,15 @@ function warnOnce(id: string, message: string) {
 }
 
 function assertDuration(ms: number, name: string) {
-  if (ms < 0 || ms > 2 ** 32 - 1) {
+  if (!Number.isInteger(ms) || ms < 0 || ms > 2 ** 32 - 1) {
     throw new Error(
-      `${name} must be between 0 and ${2 ** 32 - 1} milliseconds`,
+      `${name} must be a whole number between 0 and ${2 ** 32 - 1} milliseconds, got ${ms}`,
     );
   }
 }
 
 /**
  * A builder that describes a health check attempt.
- * Use `.withTimeout()` to configure a timeout.
  *
  * @publicApi
  */
@@ -133,6 +133,7 @@ export class HealthCheckAttempt<
   // Typed loosely so `HealthCheckAttempt<Key, TResult>` stays assignable to `HealthCheckAttempt<Key>`.
   private dataFn?: (result: never) => Promise<unknown> | unknown;
 
+  /** @internal */
   constructor(
     private readonly key: Key,
     private readonly fn: (options: { signal: AbortSignal }) => unknown,
@@ -147,10 +148,33 @@ export class HealthCheckAttempt<
       ...outcome.data,
       responseTime: outcome.responseTime,
       ...(cachedResponse && { cachedResponse: true }),
-      status: outcome.status,
+      status: this.toStatus(outcome),
     };
 
     return { [this.key]: detail } as HealthCheckAttemptResult<Key, TState>;
+  }
+
+  /**
+   * Applied to each result and not cached: attempts with the same key share
+   * the cache, but can have different `degraded` settings.
+   */
+  private toStatus(outcome: AttemptOutcome): HealthIndicatorStatus {
+    const failed = outcome.status === HealthIndicatorStatus.DOWN;
+
+    if (failed && this.degradeFailure) {
+      return HealthIndicatorStatus.DEGRADED;
+    }
+    if (failed) {
+      return HealthIndicatorStatus.DOWN;
+    }
+    if (
+      this.degradedAfterMs !== undefined &&
+      outcome.responseTime >= this.degradedAfterMs
+    ) {
+      return HealthIndicatorStatus.DEGRADED;
+    }
+
+    return HealthIndicatorStatus.UP;
   }
 
   private async execute(): Promise<HealthCheckAttemptResult<Key, TState>> {
@@ -178,28 +202,17 @@ export class HealthCheckAttempt<
       outcome = { status: HealthIndicatorStatus.UP, data };
     } catch (err) {
       outcome = {
-        status: this.degradeFailure
-          ? HealthIndicatorStatus.DEGRADED
-          : HealthIndicatorStatus.DOWN,
+        status: HealthIndicatorStatus.DOWN,
         data: { message: errorMessage(err) },
       };
     }
 
-    const responseTime = Math.round(performance.now() - start);
-    if (
-      outcome.status === HealthIndicatorStatus.UP &&
-      this.degradedAfterMs !== undefined &&
-      responseTime >= this.degradedAfterMs
-    ) {
-      outcome.status = HealthIndicatorStatus.DEGRADED;
-    }
-
-    return { ...outcome, responseTime };
+    return { ...outcome, responseTime: Math.round(performance.now() - start) };
   }
 
   /**
    * Set a timeout for the health check attempt.
-   * If the function does not resolve within the given time, the health indicator will be marked as `down`.
+   * If the function does not resolve within the given time, the health indicator will be marked as `down`
    * An `AbortSignal` is passed to the callback so the underlying operation can be cancelled.
    *
    * @param ms The timeout in milliseconds
@@ -369,9 +382,9 @@ export class HealthCheckAttempt<
     // FIXME: Remove this in v13
     if (!this.dataFn && Object.keys(data).length > 0) {
       warnOnce(
-        'implicit-data',
+        `implicit-data:${this.key}`,
         `The value returned by attempt() for health indicator "${this.key}" is added to the health check result. ` +
-          `This is deprecated: the next major version ignores it. Use .withData() to choose the data to add.`,
+          `This is deprecated: the next major version ignores it. Use .withData() to choose the data to add, or return nothing.`,
       );
     }
 
@@ -382,9 +395,9 @@ export class HealthCheckAttempt<
 
     if (ignored.length > 0) {
       warnOnce(
-        'reserved-keys',
+        `reserved-keys:${this.key}`,
         `Ignoring reserved key(s) ${ignored.map((k) => `"${k}"`).join(', ')} in the data of health indicator "${this.key}". ` +
-          `The keys ${RESERVED_ATTEMPT_KEYS.join(', ')} are set by Terminus.`,
+          `The keys ${RESERVED_ATTEMPT_KEYS.join(', ')} are set by Terminus, use other names.`,
       );
     }
 

@@ -5,6 +5,7 @@ import { HealthIndicatorStatus } from '../../health-indicator/health-indicator-r
 
 const GREEN = '\x1b[0m\x1b[32m';
 const RED = '\x1b[0m\x1b[31m';
+const YELLOW = '\x1b[0m\x1b[33m';
 const STOP_COLOR = '\x1b[0m';
 
 @Injectable()
@@ -42,11 +43,19 @@ export class PrettyErrorLogger implements ErrorLogger {
     for (const [key, value] of Object.entries(result)) {
       const summary = this.printIndicatorSummary(value);
 
-      if (value.status === HealthIndicatorStatus.UP) {
-        message += `${GREEN}✅ ${key}\n${summary}${STOP_COLOR}\n`;
-      }
-      if (value.status === HealthIndicatorStatus.DOWN) {
-        message += `${RED}❌ ${key}\n${summary}${STOP_COLOR}\n`;
+      switch (value.status) {
+        case HealthIndicatorStatus.UP:
+          message += `${GREEN}✅ ${key}\n${summary}${STOP_COLOR}\n`;
+          break;
+        case HealthIndicatorStatus.DEGRADED:
+          message += `${YELLOW}⚠️ ${key}\n${summary}${STOP_COLOR}\n`;
+          break;
+        case HealthIndicatorStatus.DOWN:
+          message += `${RED}❌ ${key}\n${summary}${STOP_COLOR}\n`;
+          break;
+        default:
+          // A compile error here means a status is not handled above
+          value.status satisfies never;
       }
     }
     return message;

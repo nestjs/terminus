@@ -2,7 +2,7 @@ import { HealthCheckStatus } from './health-check-result.interface.js';
 import {
   type HealthIndicatorResult,
   HealthIndicatorStatus,
-} from '../health-indicator/index.js';
+} from '../health-indicator/health-indicator-result.interface.js';
 
 /**
  * The parts of `@nestjs/swagger` used in this file.
@@ -73,18 +73,20 @@ function getHealthCheckDtoClasses(swagger: Swagger): HealthCheckDtoClasses {
     responseTime?: number;
 
     @ApiPropertyOptional({
-      description: 'Set by health indicators that report extra context',
+      description: 'Whether this result was served from the cache',
     })
-    message?: string;
+    cachedResponse?: boolean;
   }
 
-  // Each indicator can attach arbitrary custom data beyond `status` /
-  // `responseTime` / `message` (see `HealthIndicatorResult`'s `OptionalData`
-  // generic), so the per-entry schema keeps `additionalProperties: true`
-  // alongside the documented fields above.
+  // Each indicator can attach arbitrary custom data beyond the documented
+  // fields, e.g. a `message` of any type (see `HealthIndicatorResult`'s
+  // `OptionalData` generic). `additionalProperties` is a member of `allOf`,
+  // because some client generators ignore it next to `allOf`.
   const indicatorEntrySchema: RawSchema = {
-    allOf: [{ $ref: swagger.getSchemaPath(TerminusHealthIndicatorResult) }],
-    additionalProperties: true,
+    allOf: [
+      { $ref: swagger.getSchemaPath(TerminusHealthIndicatorResult) },
+      { type: 'object', additionalProperties: true },
+    ],
   };
 
   const indicatorMapSchema: RawSchema = {

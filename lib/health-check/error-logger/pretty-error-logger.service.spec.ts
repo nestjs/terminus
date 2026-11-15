@@ -3,6 +3,7 @@ import { PrettyErrorLogger } from './pretty-error-logger.service.js';
 
 const GREEN = '\x1b[0m\x1b[32m';
 const RED = '\x1b[0m\x1b[31m';
+const YELLOW = '\x1b[0m\x1b[33m';
 const STOP_COLOR = '\x1b[0m';
 
 describe('PrettyErrorLogger', () => {
@@ -28,6 +29,20 @@ describe('PrettyErrorLogger', () => {
 
 ${GREEN}✅ dog
 status: up${STOP_COLOR}
+`);
+  });
+
+  it('should print one "degraded" results', () => {
+    const message = prettyErrorLogger.getErrorMessage('message', {
+      dog: {
+        status: 'degraded',
+      },
+    });
+
+    expect(message).toBe(`message
+
+${YELLOW}⚠️ dog
+status: degraded${STOP_COLOR}
 `);
   });
 

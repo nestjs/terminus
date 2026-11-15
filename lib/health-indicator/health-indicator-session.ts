@@ -6,7 +6,6 @@ import { AttemptCache } from './attempt-cache.js';
 import {
   type AttemptOutcome,
   HealthCheckAttempt,
-  type InitialAttemptState,
 } from './health-check-attempt.js';
 
 /**
@@ -16,7 +15,7 @@ type WithoutStatus<TData> = {
   [K in keyof TData]: K extends 'status' ? never : TData[K];
 };
 
-export type AdditionalData = Record<string, unknown>;
+type AdditionalData = Record<string, unknown>;
 
 function assertNotReserved(data: AdditionalData, keys: readonly string[]) {
   for (const key of keys) {
@@ -144,7 +143,16 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
    */
   attempt<TResult>(
     fn: (options: { signal: AbortSignal }) => TResult,
-  ): HealthCheckAttempt<Key, Awaited<TResult>, InitialAttemptState> {
+  ): HealthCheckAttempt<
+    Key,
+    Awaited<TResult>,
+    {
+      data: Record<string, any>;
+      cached: false;
+      success: HealthIndicatorStatus.UP;
+      failure: HealthIndicatorStatus.DOWN;
+    }
+  > {
     return new HealthCheckAttempt(this.key, fn, this.cache);
   }
 }
