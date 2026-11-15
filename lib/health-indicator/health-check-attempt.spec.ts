@@ -219,7 +219,8 @@ describe('HealthCheckAttempt', () => {
       // AbortSignal.any() retained ~2.5 KB per attempt: 20k attempts ≈ 50 MB.
       // GC noise on CI reaches ~7 MB, so allow 20 MB.
       expect(after - warm).toBeLessThan(20 * 1024 * 1024);
-    });
+      // 40k attempts and two GC runs: close to the default 5s on a slow CI runner
+    }, 30_000);
 
     it('should abort the signal when timeout fires', async () => {
       let receivedSignal: AbortSignal | undefined;
