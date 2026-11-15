@@ -3,7 +3,6 @@ import { MikroOrmHealthIndicator } from './mikro-orm.health.js';
 import { HealthIndicatorService } from '../health-indicator.service.js';
 
 vi.mock('../../utils/checkPackage.util.js', () => ({
-  assertPackages: vi.fn(),
   loadPackage: vi.fn().mockResolvedValue({
     MikroORM: class MikroORM {},
   }),
@@ -33,7 +32,7 @@ describe('MikroOrmHealthIndicator', () => {
     expect(isConnected).toHaveBeenCalledTimes(1);
   });
 
-  it('reports down without crashing when connection provider is absent from context', async () => {
+  it('reports down when MikroORM is not in the context', async () => {
     const result = await mikroOrm.pingCheck('db');
 
     expect(result).toEqual({

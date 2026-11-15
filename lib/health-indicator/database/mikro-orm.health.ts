@@ -57,9 +57,8 @@ export class MikroOrmHealthIndicator implements OnModuleInit {
   private async getContextConnection(): Promise<MikroOrm.Connection | null> {
     const { MikroORM } = await this.loadPeer();
     try {
-      const mikro = this.moduleRef.get(MikroORM, { strict: false });
-      return mikro?.em?.getConnection() ?? null;
-    } catch {
+      return this.moduleRef.get(MikroORM, { strict: false }).em.getConnection();
+    } catch (err) {
       return null;
     }
   }
