@@ -49,8 +49,8 @@ catalogs:
       specifier: 12.0.1
       version: 12.0.1
     '@nestjs/platform-fastify':
-      specifier: 12.0.1
-      version: 12.0.1
+      specifier: 12.0.2
+      version: 12.0.2
     '@nestjs/sequelize':
       specifier: 12.0.0
       version: 12.0.0
@@ -223,7 +223,7 @@ importers:
         version: 12.0.1(@nestjs/common@12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.0.1)
       '@nestjs/platform-fastify':
         specifier: 'catalog:'
-        version: 12.0.1(@nestjs/common@12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.0.1)
+        version: 12.0.2(@nestjs/common@12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.0.1)
       '@nestjs/sequelize':
         specifier: 'catalog:'
         version: 12.0.0(@nestjs/common@12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.0.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(sequelize-typescript@2.1.6(@types/node@22.13.10)(@types/validator@13.15.10)(reflect-metadata@0.2.2)(sequelize@6.37.8(mysql2@3.24.4(@types/node@22.13.10))))(sequelize@6.37.8(mysql2@3.24.4(@types/node@22.13.10)))
@@ -969,6 +969,9 @@ packages:
   '@fastify/merge-json-schemas@0.2.1':
     resolution: {integrity: sha512-OA3KGBCy6KtIvLf8DINC5880o5iBlDX4SxzLQS8HorJAbqluzLRn80UXU0bxZn7UOFhFgpRJDasfwn9nG4FG4A==}
 
+  '@fastify/middie@9.3.4':
+    resolution: {integrity: sha512-dd8phTnVWzx3iKPBKSvtRUT8+Igvy/MP+P5HcY2tjejEyeVbyjkD4HgzKessUObue5RRM5J6PZdxtAqgbn84yw==}
+
   '@fastify/proxy-addr@5.0.0':
     resolution: {integrity: sha512-37qVVA1qZ5sgH7KpHkkC4z9SK6StIsIcOmpjvMPXNb3vx2GQxhZocogVYbr2PbbeLCQxYIPDok307xEvRZOzGA==}
 
@@ -1290,8 +1293,8 @@ packages:
       '@nestjs/common': ^12.0.0
       '@nestjs/core': ^12.0.0
 
-  '@nestjs/platform-fastify@12.0.1':
-    resolution: {integrity: sha512-LqR0kOahuZAei3wJK+SJfHc9o9H/OSdA7gMSMaW+Kfjy6GtpTNPdfpHeq3w2PuiPgUGk2QIX/dqUAYntJ5arSw==}
+  '@nestjs/platform-fastify@12.0.2':
+    resolution: {integrity: sha512-RpXxpYo5DiJqtKAt+BvQ51SIyQZC7c82s9fomoHEFwphExP0pqKXfXsHxrOUBxJ96hgSVqQFNfySJjT7GV4Hug==}
     peerDependencies:
       '@fastify/static': ^10.1.2
       '@fastify/view': ^10.0.0 || ^11.0.0 || ^12.0.0
@@ -2696,11 +2699,11 @@ packages:
   fastify-plugin@6.0.0:
     resolution: {integrity: sha512-fZOty7z3O7vOliF6d8bHE3wiEh1KcNnKEQensSgTk9C1DvN6nRLS++XVd86v33Hw/8u9Un8A1zDrQ8ujcQDHEg==}
 
-  fastify@5.12.1:
-    resolution: {integrity: sha512-FWi+tQvwxR/PeRX7Z2mhfEF5ozJ3jn9asiiclzKXNSzJRHAYcU924aIOKAdHFJ+YIKieh3cqr1IwCOvTr41B3Q==}
-
   fastify@5.12.3:
     resolution: {integrity: sha512-reZ8wce5VNCcufIt9AVtzZa3L4u1j8esikn7OEgHWLVpRpL5R7Y2+Xzj70OUkv5zDfzUAxXZT6cu4Rt0zr3EKA==}
+
+  fastify@5.12.4:
+    resolution: {integrity: sha512-zATD676fP6tBMsn+jQ7Q5/cO/Qo+149TXH0dUqUKel+1/hcZxwIbnflqtPa9EjlrvpY8eCZcL3M1UYrMc31Y7g==}
 
   fastq@1.18.0:
     resolution: {integrity: sha512-QKHXPW0hD8g4UET03SdOdunzSouc9N4AuHdsX8XNcTsuz+yYFILVNIX4l9yHABMhiEI9Db0JTTIpu0wB+Y1QQw==}
@@ -4904,6 +4907,14 @@ snapshots:
     dependencies:
       dequal: 2.0.3
 
+  '@fastify/middie@9.3.4':
+    dependencies:
+      '@fastify/error': 4.0.0
+      fastify-plugin: 6.0.0
+      find-my-way: 9.9.0
+      path-to-regexp: 8.4.2
+      reusify: 1.1.0
+
   '@fastify/proxy-addr@5.0.0':
     dependencies:
       '@fastify/forwarded': 3.0.0
@@ -5218,19 +5229,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@nestjs/platform-fastify@12.0.1(@nestjs/common@12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.0.1)':
+  '@nestjs/platform-fastify@12.0.2(@nestjs/common@12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.0.1)':
     dependencies:
       '@fastify/cors': 11.3.0
       '@fastify/formbody': 9.0.0
+      '@fastify/middie': 9.3.4
       '@nestjs/common': 12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 12.0.1(@nestjs/common@12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/microservices@12.0.1)(@nestjs/platform-express@12.0.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       fast-querystring: 1.1.2
-      fastify: 5.12.1
-      fastify-plugin: 6.0.0
+      fastify: 5.12.4
       find-my-way: 9.9.0
       light-my-request: 6.6.0
       path-to-regexp: 8.4.2
-      reusify: 1.1.0
       tslib: 2.8.1
 
   '@nestjs/sequelize@12.0.0(@nestjs/common@12.0.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.0.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(sequelize-typescript@2.1.6(@types/node@22.13.10)(@types/validator@13.15.10)(reflect-metadata@0.2.2)(sequelize@6.37.8(mysql2@3.24.4(@types/node@22.13.10))))(sequelize@6.37.8(mysql2@3.24.4(@types/node@22.13.10)))':
@@ -6460,7 +6470,7 @@ snapshots:
 
   fastify-plugin@6.0.0: {}
 
-  fastify@5.12.1:
+  fastify@5.12.3:
     dependencies:
       '@fastify/ajv-compiler': 4.0.5
       '@fastify/error': 4.0.0
@@ -6478,7 +6488,7 @@ snapshots:
       semver: 7.7.4
       toad-cache: 3.7.0
 
-  fastify@5.12.3:
+  fastify@5.12.4:
     dependencies:
       '@fastify/ajv-compiler': 4.0.5
       '@fastify/error': 4.0.0
