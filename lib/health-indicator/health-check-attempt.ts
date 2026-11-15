@@ -3,8 +3,8 @@ import { type HealthIndicatorStatus } from './health-indicator-result.interface.
 import { type AdditionalData } from './health-indicator-session.js';
 import { errorMessage } from '../utils/errorMessage.js';
 import { type IsAny } from '../utils/types.js';
-import { rejectOnAbort } from '../utils/rejectOnAbort.js';
-import { anySignal } from '../utils/anySignal.js';
+import { runWithTimeout } from '../utils/runWithTimeout.js';
+import { type AttemptCache } from './attempt-cache.js';
 
 type ReservedAttemptKey = (typeof RESERVED_ATTEMPT_KEYS)[number];
 
@@ -48,16 +48,10 @@ type HealthCheckAttemptResult<
     (TCached extends true ? { cachedResponse?: true } : unknown)
 >;
 
-type AttemptOutcome = {
+export type AttemptOutcome = {
   status: HealthIndicatorStatus;
   data: AdditionalData;
   responseTime: number;
-};
-
-export type CacheEntry = {
-  promise: Promise<AttemptOutcome>;
-  expiresAt: number;
-  settled: boolean;
 };
 
 const RESERVED_ATTEMPT_KEYS = [
@@ -105,7 +99,7 @@ export class HealthCheckAttempt<
   constructor(
     private readonly key: Key,
     private readonly fn: (options: { signal: AbortSignal }) => unknown,
-    private readonly cache: Map<string, CacheEntry>,
+    private readonly cache: AttemptCache<AttemptOutcome>,
   ) {}
 
   private toResult(
@@ -129,58 +123,30 @@ export class HealthCheckAttempt<
   private async execute(): Promise<
     HealthCheckAttemptResult<Key, TData, TCached>
   > {
-    const ttl = this.cacheTtlMs;
-    if (ttl === undefined) {
+    if (this.cacheTtlMs === undefined) {
       return this.toResult(await this.run());
     }
 
-    const cached = this.cache.get(this.key);
-    if (cached && cached.expiresAt > Date.now()) {
-      const isCacheHit = cached.settled;
-      return this.toResult(await cached.promise, isCacheHit);
-    }
-
-    const entry: CacheEntry = {
-      promise: this.run(),
-      expiresAt: Date.now() + ttl,
-      settled: false,
-    };
-    this.cache.set(this.key, entry);
-
-    const outcome = await entry.promise;
-    entry.expiresAt = Date.now() + ttl;
-    entry.settled = true;
-
-    return this.toResult(outcome);
+    const { value, cached } = await this.cache.getOrRun(
+      this.key,
+      this.cacheTtlMs,
+      () => this.run(),
+    );
+    return this.toResult(value, cached);
   }
 
   private async run(): Promise<AttemptOutcome> {
     const start = performance.now();
-    const controller = new AbortController();
-    const signals = [controller.signal];
-    let timeout: AbortSignal | undefined;
-
-    if (this.timeoutMs !== undefined) {
-      timeout = AbortSignal.timeout(this.timeoutMs);
-      signals.push(timeout);
-    }
-    const signal = anySignal(signals);
 
     let outcome: Omit<AttemptOutcome, 'responseTime'>;
     try {
-      const result = await rejectOnAbort(this.fn({ signal }), signal);
-      // Runs inside the try and the timeout: a throwing or slow `withData()` marks the check as down.
-      outcome = {
-        status: 'up',
-        data: await this.toAdditionalData(result, signal),
-      };
+      // `withData()` runs inside the try and the timeout: if it throws or is slow, the check is down.
+      const data = await runWithTimeout(this.timeoutMs, async (signal) =>
+        this.toAdditionalData(await this.fn({ signal })),
+      );
+      outcome = { status: 'up', data };
     } catch (err) {
-      const message = timeout?.aborted
-        ? `timeout of ${this.timeoutMs}ms exceeded`
-        : errorMessage(err);
-      outcome = { status: 'down', data: { message } };
-    } finally {
-      controller.abort();
+      outcome = { status: 'down', data: { message: errorMessage(err) } };
     }
 
     return { ...outcome, responseTime: Math.round(performance.now() - start) };
@@ -275,14 +241,11 @@ export class HealthCheckAttempt<
    * The data to add to an `up` result: picked by `withData()`, or the
    * returned value (deprecated). Reserved keys are dropped, never thrown.
    */
-  private async toAdditionalData(
-    result: unknown,
-    signal: AbortSignal,
-  ): Promise<AdditionalData> {
+  private async toAdditionalData(result: unknown): Promise<AdditionalData> {
     // FIXME: In v13, ignore the returned value and return `{}` without `withData()` (#2796)
     let value = result;
     if (this.dataFn) {
-      value = await rejectOnAbort(this.dataFn(result as never), signal);
+      value = await this.dataFn(result as never);
     }
 
     if (value === null || typeof value !== 'object' || Array.isArray(value)) {

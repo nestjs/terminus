@@ -2,7 +2,11 @@ import {
   type HealthIndicatorResult,
   type HealthIndicatorStatus,
 } from './health-indicator-result.interface.js';
-import { type CacheEntry, HealthCheckAttempt } from './health-check-attempt.js';
+import { AttemptCache } from './attempt-cache.js';
+import {
+  type AttemptOutcome,
+  HealthCheckAttempt,
+} from './health-check-attempt.js';
 
 /**
  * Show a compilation error if `status` is used in the additional data.
@@ -31,7 +35,7 @@ function assertNotReserved(data: AdditionalData, keys: readonly string[]) {
 export class HealthIndicatorSession<Key extends Readonly<string> = string> {
   constructor(
     private readonly key: Key,
-    private readonly cache: Map<string, CacheEntry> = new Map(),
+    private readonly cache: AttemptCache<AttemptOutcome> = new AttemptCache(),
   ) {}
 
   private compose<TStatus extends HealthIndicatorStatus>(
