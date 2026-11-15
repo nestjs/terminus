@@ -2,7 +2,7 @@ import { type DynamicModule, Module, type Provider } from '@nestjs/common';
 import { HealthCheckService } from './health-check/index.js';
 import { HealthCheckExecutor } from './health-check/health-check-executor.service.js';
 import { DiskUsageLibProvider } from './health-indicator/disk/disk-usage-lib.provider.js';
-import { HealthIndicatorService } from './health-indicator/health-indicator.service.js';
+import { HealthIndicatorService } from './health-indicator/service/health-indicator.service.js';
 import { HEALTH_INDICATORS } from './health-indicator/health-indicators.provider.js';
 import {
   type TerminusAsyncOptions,

@@ -5,7 +5,7 @@ import { loadPackage } from '../../utils/index.js';
 import {
   type HealthCheckAttempt,
   HealthIndicatorService,
-} from '../health-indicator.service.js';
+} from '../service/health-indicator.service.js';
 
 export interface TypeOrmPingCheckSettings {
   /**
@@ -13,6 +13,7 @@ export interface TypeOrmPingCheckSettings {
    */
   // `any` type in case of typeorm version mismatch
   connection?: any;
+  // FIXME: Delete the `timeout` option in v13, use `.withTimeout()` instead
   /**
    * The amount of time the check should require in ms
    * @deprecated Chain `.withTimeout(ms)` on the returned attempt instead,
@@ -120,6 +121,9 @@ export class TypeOrmHealthIndicator implements OnModuleInit {
 
         await this.pingDb(connection);
       })
+      .withFailureData((error) => ({
+        code: (error as { code?: string | number }).code,
+      }))
       .withTimeout(options.timeout ?? 1000);
   }
 }

@@ -76,6 +76,7 @@ describe('MicroserviceHealthIndicator', () => {
         tcp: {
           status: 'down',
           message: 'connect ECONNREFUSED 0.0.0.0:8889',
+          code: 'ECONNREFUSED',
           responseTime: expect.any(Number),
         },
       };

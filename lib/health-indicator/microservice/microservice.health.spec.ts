@@ -1,8 +1,9 @@
+import net from 'node:net';
 import { Transport } from '@nestjs/microservices';
 import { Test } from '@nestjs/testing';
 import { MicroserviceHealthIndicator } from './microservice.health.js';
 import { loadPackage } from '../../utils/checkPackage.util.js';
-import { HealthIndicatorService } from '../health-indicator.service.js';
+import { HealthIndicatorService } from '../service/health-indicator.service.js';
 
 vi.mock('../../utils/checkPackage.util.js', () => ({
   loadPackage: vi.fn(),
@@ -58,6 +59,33 @@ describe('MicroserviceHealthIndicator', () => {
       },
     });
     expect(clientMock.close).toHaveBeenCalledTimes(1);
+  });
+
+  it('adds the error code to a failed result (a real TCP client on a closed port)', async () => {
+    vi.mocked(loadPackage).mockResolvedValue(
+      await import('@nestjs/microservices'),
+    );
+    // A port that was just free and is closed again
+    const server = net.createServer();
+    await new Promise<void>((resolve) =>
+      server.listen(0, '127.0.0.1', resolve),
+    );
+    const { port } = server.address() as net.AddressInfo;
+    await new Promise((resolve) => server.close(resolve));
+
+    const result = await microservice.pingCheck('tcp', {
+      transport: Transport.TCP,
+      options: { host: '127.0.0.1', port },
+    });
+
+    expect(result).toEqual({
+      tcp: {
+        status: 'down',
+        message: `connect ECONNREFUSED 127.0.0.1:${port}`,
+        code: 'ECONNREFUSED',
+        responseTime: expect.any(Number),
+      },
+    });
   });
 
   it('falls back to "<key> is not available" when connect rejects with a non-Error', async () => {

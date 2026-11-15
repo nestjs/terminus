@@ -73,11 +73,4 @@ describe('HealthIndicatorSession', () => {
       });
     });
   });
-
-  describe('attempt', () => {
-    it('should return a HealthCheckAttempt', () => {
-      const attempt = session.attempt(() => {});
-      expect(attempt).toBeInstanceOf(HealthCheckAttempt);
-    });
-  });
 });

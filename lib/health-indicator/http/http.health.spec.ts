@@ -5,7 +5,7 @@ import { loadPackage } from '../../utils/checkPackage.util.js';
 import { of } from 'rxjs';
 import { TERMINUS_LOGGER } from '../../terminus.constants.js';
 import { AxiosError } from 'axios';
-import { HealthIndicatorService } from '../health-indicator.service.js';
+import { HealthIndicatorService } from '../service/health-indicator.service.js';
 vi.mock('../../utils/checkPackage.util.js', () => ({
   loadPackage: vi.fn(),
 }));

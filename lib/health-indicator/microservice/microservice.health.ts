@@ -4,7 +4,7 @@ import { loadPackage, type PropType, isError } from '../../utils/index.js';
 import {
   type HealthCheckAttempt,
   HealthIndicatorService,
-} from '../health-indicator.service.js';
+} from '../service/health-indicator.service.js';
 
 // Since @nestjs/microservices is lazily loaded we are not able to use
 // its types. It would end up in the d.ts file if we would use the types.
@@ -27,6 +27,7 @@ export type MicroserviceHealthIndicatorOptions<
   // The transport option is in the `MicroserviceOptionsLike` (e.g. RedisOptions)
   // optional. We need to use this information, therefore it is required
   transport: Required<PropType<MicroserviceOptionsLike, 'transport'>>;
+  // FIXME: Delete the `timeout` option in v13, use `.withTimeout()` instead
   /**
    * The amount of time the check should require in ms
    * @deprecated Chain `.withTimeout(ms)` on the returned attempt instead,
@@ -126,6 +127,9 @@ export class MicroserviceHealthIndicator implements OnModuleInit {
           throw isError(err) ? err : new Error(`${key} is not available`);
         }
       })
+      .withFailureData((error) => ({
+        code: (error as { code?: string | number }).code,
+      }))
       .withTimeout(options.timeout ?? 1000);
   }
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import {
   type HealthCheckAttempt,
   HealthIndicatorService,
-} from '../health-indicator.service.js';
+} from '../service/health-indicator.service.js';
 
 type PingCommandSignature = { [Key in string]?: number };
 
@@ -17,6 +17,7 @@ type PrismaClientSQL = {
 type PrismaClient = PrismaClientDocument | PrismaClientSQL;
 
 export interface PrismaClientPingCheckSettings {
+  // FIXME: Delete the `timeout` option in v13, use `.withTimeout()` instead
   /**
    * The amount of time the check should require in ms
    * @deprecated Chain `.withTimeout(ms)` on the returned attempt instead,
@@ -76,6 +77,9 @@ export class PrismaHealthIndicator {
     return this.healthIndicatorService
       .check(key)
       .attempt(() => this.pingDb(prismaClient))
+      .withFailureData((error) => ({
+        code: (error as { code?: string | number }).code,
+      }))
       .withTimeout(options.timeout ?? 1000);
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { type ErrorLogger } from './error-logger.interface.js';
 import { type HealthIndicatorResult } from '../../health-indicator/index.js';
-import { HealthIndicatorStatus } from '../../health-indicator/health-indicator-result.interface.js';
+import { HealthIndicatorStatus } from '../../health-indicator/service/health-indicator-result.interface.js';
 
 const GREEN = '\x1b[0m\x1b[32m';
 const RED = '\x1b[0m\x1b[31m';
