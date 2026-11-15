@@ -50,8 +50,8 @@
     "build:all": "pnpm run build && pnpm run -r build",
     "test:all": "pnpm run test && pnpm run -r --if-present test",
     "test:e2e:all": "pnpm run test:e2e && pnpm run -r --if-present test:e2e",
-    "format": "prettier --check \"{lib,e2e,sample,tools}/**/*.ts\"",
-    "format:fix": "prettier --write \"{lib,e2e,sample,tools}/**/*.ts\"",
+    "format": "oxfmt --check \"{lib,e2e,sample,tools}/**/*.ts\"",
+    "format:fix": "oxfmt --write \"{lib,e2e,sample,tools}/**/*.ts\"",
     "lint": "oxlint lib e2e tools",
     "lint:fix": "oxlint --fix lib e2e tools",
     "typecheck": "tsc -p tsconfig.json",
@@ -105,7 +105,7 @@
     "mysql2": "catalog:",
     "oxlint": "catalog:",
     "portfinder": "catalog:",
-    "prettier": "catalog:",
+    "oxfmt": "catalog:",
     "prisma": "catalog:",
     "reflect-metadata": "catalog:",
     "release-it": "catalog:",
@@ -186,12 +186,8 @@
   },
   "lint-staged": {
     "*.ts": [
-      "prettier --write"
+      "oxfmt --no-error-on-unmatched-pattern"
     ]
-  },
-  "prettier": {
-    "trailingComma": "all",
-    "singleQuote": true
   },
   "renovate": {
     "semanticCommits": true,

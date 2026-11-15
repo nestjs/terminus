@@ -89,9 +89,8 @@ describe('HealthCheckAttempt', () => {
       const warn = vi
         .spyOn(Logger.prototype, 'warn')
         .mockImplementation(() => {});
-      const { HealthIndicatorSession: FreshSession } = await import(
-        './health-indicator.service.js'
-      );
+      const { HealthIndicatorSession: FreshSession } =
+        await import('./health-indicator.service.js');
 
       await new FreshSession('a').attempt(() => ({ status: 200 }));
       await new FreshSession('b').attempt(() => ({ cachedResponse: 1 }));
@@ -248,9 +247,8 @@ describe('HealthCheckAttempt withData', () => {
     const warn = vi
       .spyOn(Logger.prototype, 'warn')
       .mockImplementation(() => {});
-    const { HealthIndicatorSession: FreshSession } = await import(
-      './health-indicator.service.js'
-    );
+    const { HealthIndicatorSession: FreshSession } =
+      await import('./health-indicator.service.js');
     const deprecationWarnings = () =>
       warn.mock.calls.filter(([msg]) => String(msg).includes('withData()'));
     return { FreshSession, warn, deprecationWarnings };

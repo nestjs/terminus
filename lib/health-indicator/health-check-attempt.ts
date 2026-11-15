@@ -89,8 +89,7 @@ export class HealthCheckAttempt<
   TResult = unknown,
   TData extends object = Record<string, any>,
   TCached extends boolean = false,
-> implements PromiseLike<HealthCheckAttemptResult<Key, TData, TCached>>
-{
+> implements PromiseLike<HealthCheckAttemptResult<Key, TData, TCached>> {
   private timeoutMs?: number;
   private cacheTtlMs?: number;
   // Typed loosely so `HealthCheckAttempt<Key, TResult>` stays assignable to `HealthCheckAttempt<Key>`.
