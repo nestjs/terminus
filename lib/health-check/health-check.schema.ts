@@ -3,9 +3,19 @@ import {
   type HealthIndicatorResult,
   type HealthIndicatorStatus,
 } from '../health-indicator/index.js';
-import type {} from '@nestjs/swagger';
 
-type Swagger = typeof import('@nestjs/swagger');
+/**
+ * The parts of `@nestjs/swagger` used in this file.
+ *
+ * Declared here and not taken from `@nestjs/swagger`, because the functions
+ * below are exported: their types end up in the type definitions of Terminus,
+ * which must not import an optional peer dependency.
+ */
+interface Swagger {
+  ApiProperty: (options?: any) => PropertyDecorator;
+  ApiPropertyOptional: (options?: any) => PropertyDecorator;
+  getSchemaPath: (model: new () => unknown) => string;
+}
 
 // A schema fragment we build by hand (as opposed to deriving it from a
 // decorated DTO class), so its shape doesn't need to satisfy `@nestjs/swagger`'s
@@ -24,9 +34,12 @@ const COMBINED_EXAMPLE: HealthIndicatorResult = {
   ...REDIS_EXAMPLE,
 };
 
+// The class names are the schema names in the OpenAPI document. They have a
+// `Terminus` prefix, because a class of the app with the same name would
+// replace the schema without any warning.
 interface HealthCheckDtoClasses {
-  HealthIndicatorEntryDto: new () => unknown;
-  HealthCheckResultDto: new () => unknown;
+  TerminusHealthIndicatorResult: new () => unknown;
+  TerminusHealthCheckResult: new () => unknown;
 }
 
 // Built once per process (lazily, on first use) so `@nestjs/swagger` always
@@ -43,7 +56,7 @@ function getHealthCheckDtoClasses(swagger: Swagger): HealthCheckDtoClasses {
 
   const { ApiProperty, ApiPropertyOptional } = swagger;
 
-  class HealthIndicatorEntryDto {
+  class TerminusHealthIndicatorResult {
     @ApiProperty({
       enum: ['up', 'degraded', 'down'] satisfies HealthIndicatorStatus[],
       description: 'The status of this health indicator',
@@ -66,7 +79,7 @@ function getHealthCheckDtoClasses(swagger: Swagger): HealthCheckDtoClasses {
   // generic), so the per-entry schema keeps `additionalProperties: true`
   // alongside the documented fields above.
   const indicatorEntrySchema: RawSchema = {
-    allOf: [{ $ref: swagger.getSchemaPath(HealthIndicatorEntryDto) }],
+    allOf: [{ $ref: swagger.getSchemaPath(TerminusHealthIndicatorResult) }],
     additionalProperties: true,
   };
 
@@ -75,7 +88,7 @@ function getHealthCheckDtoClasses(swagger: Swagger): HealthCheckDtoClasses {
     additionalProperties: indicatorEntrySchema,
   };
 
-  class HealthCheckResultDto {
+  class TerminusHealthCheckResult {
     @ApiProperty({
       enum: [
         'error',
@@ -108,7 +121,7 @@ function getHealthCheckDtoClasses(swagger: Swagger): HealthCheckDtoClasses {
     details!: HealthIndicatorResult;
   }
 
-  dtoClasses = { HealthIndicatorEntryDto, HealthCheckResultDto };
+  dtoClasses = { TerminusHealthIndicatorResult, TerminusHealthCheckResult };
   return dtoClasses;
 }
 
@@ -117,19 +130,19 @@ function getHealthCheckDtoClasses(swagger: Swagger): HealthCheckDtoClasses {
  * `getHealthCheckSchema()`'s `$ref`s to resolve.
  */
 export function getHealthCheckExtraModels(swagger: Swagger) {
-  const { HealthIndicatorEntryDto, HealthCheckResultDto } =
+  const { TerminusHealthIndicatorResult, TerminusHealthCheckResult } =
     getHealthCheckDtoClasses(swagger);
-  return [HealthIndicatorEntryDto, HealthCheckResultDto] as const;
+  return [TerminusHealthIndicatorResult, TerminusHealthCheckResult] as const;
 }
 
 export function getHealthCheckSchema(
   swagger: Swagger,
   status: HealthCheckStatus,
 ): RawSchema {
-  const { HealthCheckResultDto } = getHealthCheckDtoClasses(swagger);
+  const { TerminusHealthCheckResult } = getHealthCheckDtoClasses(swagger);
 
   return {
-    allOf: [{ $ref: swagger.getSchemaPath(HealthCheckResultDto) }],
+    allOf: [{ $ref: swagger.getSchemaPath(TerminusHealthCheckResult) }],
     properties: {
       status: {
         enum:
