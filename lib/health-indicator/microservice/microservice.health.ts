@@ -1,11 +1,6 @@
-import { Injectable, Scope } from '@nestjs/common';
+import { Injectable, type OnModuleInit, Scope } from '@nestjs/common';
 import type * as NestJSMicroservices from '@nestjs/microservices';
-import {
-  assertPackages,
-  loadPackage,
-  type PropType,
-  isError,
-} from '../../utils/index.js';
+import { loadPackage, type PropType, isError } from '../../utils/index.js';
 import {
   type HealthCheckAttempt,
   HealthIndicatorService,
@@ -48,9 +43,17 @@ export type MicroserviceHealthIndicatorOptions<
  * @module TerminusModule
  */
 @Injectable({ scope: Scope.TRANSIENT })
-export class MicroserviceHealthIndicator {
-  constructor(private readonly healthIndicatorService: HealthIndicatorService) {
-    assertPackages(['@nestjs/microservices'], this.constructor.name);
+export class MicroserviceHealthIndicator implements OnModuleInit {
+  constructor(
+    private readonly healthIndicatorService: HealthIndicatorService,
+  ) {}
+
+  /**
+   * Loads the optional peers, so that the bootstrap fails when they are
+   * missing
+   */
+  async onModuleInit(): Promise<void> {
+    await this.loadMicroservices();
   }
 
   /**
@@ -58,8 +61,9 @@ export class MicroserviceHealthIndicator {
    */
   private async loadMicroservices(): Promise<typeof NestJSMicroservices> {
     return await loadPackage(
-      '@nestjs/microservices',
+      ['@nestjs/microservices'],
       () => import('@nestjs/microservices'),
+      this.constructor.name,
     );
   }
 

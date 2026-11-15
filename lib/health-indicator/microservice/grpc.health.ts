@@ -1,12 +1,13 @@
 import { join } from 'node:path';
-import { Injectable, type OnApplicationShutdown, Scope } from '@nestjs/common';
+import {
+  Injectable,
+  type OnApplicationShutdown,
+  type OnModuleInit,
+  Scope,
+} from '@nestjs/common';
 import type * as NestJSMicroservices from '@nestjs/microservices';
 import { lastValueFrom, type Observable } from 'rxjs';
-import {
-  assertPackages,
-  loadPackage,
-  type PropType,
-} from '../../utils/index.js';
+import { loadPackage, type PropType } from '../../utils/index.js';
 import {
   type HealthCheckAttempt,
   HealthIndicatorService,
@@ -95,7 +96,9 @@ export type CheckGRPCServiceOptions<
  * @module TerminusModule
  */
 @Injectable({ scope: Scope.TRANSIENT })
-export class GRPCHealthIndicator implements OnApplicationShutdown {
+export class GRPCHealthIndicator
+  implements OnModuleInit, OnApplicationShutdown
+{
   /**
    * One client per result key, kept open across probes: a gRPC channel
    * references itself through its timers, so a new one per check leaks.
@@ -105,9 +108,26 @@ export class GRPCHealthIndicator implements OnApplicationShutdown {
     NestJSMicroservices.ClientGrpcProxy
   >();
 
-  constructor(private readonly healthIndicatorService: HealthIndicatorService) {
-    assertPackages(
+  constructor(
+    private readonly healthIndicatorService: HealthIndicatorService,
+  ) {}
+
+  /**
+   * Loads the optional peers, so that the bootstrap fails when they are
+   * missing
+   */
+  async onModuleInit(): Promise<void> {
+    await this.loadMicroservices();
+  }
+
+  /**
+   * Loads `@nestjs/microservices`. It loads `@grpc/grpc-js` and
+   * `@grpc/proto-loader` itself, when the first client is created
+   */
+  private async loadMicroservices(): Promise<typeof NestJSMicroservices> {
+    return await loadPackage(
       ['@nestjs/microservices', '@grpc/grpc-js', '@grpc/proto-loader'],
+      () => import('@nestjs/microservices'),
       this.constructor.name,
     );
   }
@@ -125,11 +145,7 @@ export class GRPCHealthIndicator implements OnApplicationShutdown {
   ): Promise<NestJSMicroservices.ClientGrpcProxy> {
     let client = this.clients.get(key);
     if (!client) {
-      const { ClientProxyFactory, Transport }: typeof NestJSMicroservices =
-        await loadPackage(
-          '@nestjs/microservices',
-          () => import('@nestjs/microservices'),
-        );
+      const { ClientProxyFactory, Transport } = await this.loadMicroservices();
       const {
         timeout: _t,
         healthServiceName: _hS,

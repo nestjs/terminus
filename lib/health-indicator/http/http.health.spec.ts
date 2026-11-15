@@ -7,7 +7,6 @@ import { TERMINUS_LOGGER } from '../../terminus.constants.js';
 import { AxiosError } from 'axios';
 import { HealthIndicatorService } from '../health-indicator.service.js';
 vi.mock('../../utils/checkPackage.util.js', () => ({
-  assertPackages: vi.fn(),
   loadPackage: vi.fn(),
 }));
 

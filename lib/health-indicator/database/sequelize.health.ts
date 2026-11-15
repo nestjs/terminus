@@ -1,6 +1,6 @@
-import { Injectable, Scope } from '@nestjs/common';
+import { Injectable, type OnModuleInit, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import { assertPackages, loadPackage } from '../../utils/index.js';
+import { loadPackage } from '../../utils/index.js';
 import {
   type HealthCheckAttempt,
   HealthIndicatorService,
@@ -27,29 +27,33 @@ export interface SequelizePingCheckSettings {
  * @module TerminusModule
  */
 @Injectable({ scope: Scope.TRANSIENT })
-export class SequelizeHealthIndicator {
+export class SequelizeHealthIndicator implements OnModuleInit {
   constructor(
     private readonly moduleRef: ModuleRef,
     private readonly healthIndicatorService: HealthIndicatorService,
-  ) {
-    this.checkDependantPackages();
-  }
+  ) {}
 
   /**
-   * Checks if the dependant packages are present
+   * Loads the optional peers, so that the bootstrap fails when they are
+   * missing
    */
-  private checkDependantPackages() {
-    assertPackages(['@nestjs/sequelize', 'sequelize'], this.constructor.name);
+  async onModuleInit(): Promise<void> {
+    await this.loadPeer();
+  }
+
+  private async loadPeer(): Promise<any> {
+    return await loadPackage(
+      ['@nestjs/sequelize', 'sequelize'],
+      () => import('@nestjs/sequelize'),
+      this.constructor.name,
+    );
   }
 
   /**
    * Returns the connection of the current DI context
    */
   private async getContextConnection(): Promise<any | null> {
-    const { getConnectionToken } = await loadPackage(
-      '@nestjs/sequelize',
-      () => import('@nestjs/sequelize'),
-    );
+    const { getConnectionToken } = await this.loadPeer();
 
     try {
       return this.moduleRef.get(getConnectionToken() as string, {

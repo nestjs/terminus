@@ -1,6 +1,12 @@
 import { type URL } from 'url';
 import type * as NestJSAxios from '@nestjs/axios';
-import { ConsoleLogger, Inject, Injectable, Scope } from '@nestjs/common';
+import {
+  ConsoleLogger,
+  Inject,
+  Injectable,
+  type OnModuleInit,
+  Scope,
+} from '@nestjs/common';
 import { lastValueFrom, type Observable } from 'rxjs';
 import { type HealthIndicatorResult } from '../index.js';
 import {
@@ -9,11 +15,7 @@ import {
 } from './axios.interfaces.js';
 import { type AxiosError } from '../../errors/axios.error.js';
 import { TERMINUS_LOGGER } from '../../terminus.constants.js';
-import {
-  assertPackages,
-  isAxiosError,
-  loadPackage,
-} from '../../utils/index.js';
+import { isAxiosError, loadPackage } from '../../utils/index.js';
 import {
   HealthIndicatorService,
   type HealthIndicatorSession,
@@ -33,7 +35,7 @@ interface HttpClientLike {
 @Injectable({
   scope: Scope.TRANSIENT,
 })
-export class HttpHealthIndicator {
+export class HttpHealthIndicator implements OnModuleInit {
   constructor(
     @Inject(TERMINUS_LOGGER)
     private readonly logger: ConsoleLogger,
@@ -42,14 +44,26 @@ export class HttpHealthIndicator {
     if (this.logger instanceof ConsoleLogger) {
       this.logger.setContext(HttpHealthIndicator.name);
     }
-    assertPackages(['@nestjs/axios'], this.constructor.name);
+  }
+
+  /**
+   * Loads the optional peers, so that the bootstrap fails when they are
+   * missing
+   */
+  async onModuleInit(): Promise<void> {
+    await this.loadPeer();
+  }
+
+  private async loadPeer(): Promise<typeof NestJSAxios> {
+    return await loadPackage(
+      ['@nestjs/axios'],
+      () => import('@nestjs/axios'),
+      this.constructor.name,
+    );
   }
 
   private async getHttpService(): Promise<HttpClientLike> {
-    const { HttpService }: typeof NestJSAxios = await loadPackage(
-      '@nestjs/axios',
-      () => import('@nestjs/axios'),
-    );
+    const { HttpService } = await this.loadPeer();
     return new HttpService();
   }
 

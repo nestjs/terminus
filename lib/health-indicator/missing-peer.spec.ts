@@ -1,4 +1,5 @@
-import { assertPackages } from '../utils/checkPackage.util.js';
+import { type OnModuleInit } from '@nestjs/common';
+import { loadPackage } from '../utils/checkPackage.util.js';
 import { MikroOrmHealthIndicator } from './database/mikro-orm.health.js';
 import { MongooseHealthIndicator } from './database/mongoose.health.js';
 import { SequelizeHealthIndicator } from './database/sequelize.health.js';
@@ -8,7 +9,6 @@ import { GRPCHealthIndicator } from './microservice/grpc.health.js';
 import { MicroserviceHealthIndicator } from './microservice/microservice.health.js';
 
 vi.mock('../utils/checkPackage.util.js', () => ({
-  assertPackages: vi.fn(),
   loadPackage: vi.fn(),
 }));
 
@@ -16,10 +16,9 @@ const moduleRef = {} as any;
 const healthIndicatorService = {} as any;
 const logger = { setContext: vi.fn(), error: vi.fn() } as any;
 
-// Every indicator with an optional peer checks for it in its constructor, so a
-// wiring mistake aborts the bootstrap instead of surfacing later as a failing
-// probe.
-const indicators: Array<[string, () => unknown, string[]]> = [
+// Every indicator with an optional peer loads it in `onModuleInit`, so a wiring
+// mistake aborts the bootstrap instead of surfacing later as a failing probe.
+const indicators: Array<[string, () => OnModuleInit, string[]]> = [
   [
     'TypeOrmHealthIndicator',
     () => new TypeOrmHealthIndicator(moduleRef, healthIndicatorService),
@@ -58,26 +57,31 @@ const indicators: Array<[string, () => unknown, string[]]> = [
 ];
 
 describe('missing optional peer', () => {
-  beforeEach(() => vi.mocked(assertPackages).mockClear());
+  beforeEach(() => vi.mocked(loadPackage).mockReset());
 
   it.each(indicators)(
-    '%s checks for its peers',
-    (name, construct, packages) => {
-      construct();
+    '%s loads its peers on module init',
+    async (name, construct, packages) => {
+      await construct().onModuleInit();
 
-      expect(assertPackages).toHaveBeenCalledWith(packages, name);
+      expect(loadPackage).toHaveBeenCalledWith(
+        packages,
+        expect.any(Function),
+        name,
+      );
     },
   );
 
-  it('propagates the failure so the bootstrap aborts', () => {
-    // `mockImplementationOnce`: the throwing behaviour must not outlive this
-    // constructor call, or it leaks into the mock's later use.
-    vi.mocked(assertPackages).mockImplementationOnce(() => {
-      throw new Error('The "typeorm" package is missing.');
-    });
+  it('propagates the failure so the bootstrap aborts', async () => {
+    vi.mocked(loadPackage).mockRejectedValueOnce(
+      new Error('The "typeorm" package is missing.'),
+    );
 
-    expect(
-      () => new TypeOrmHealthIndicator(moduleRef, healthIndicatorService),
-    ).toThrow('The "typeorm" package is missing.');
+    await expect(
+      new TypeOrmHealthIndicator(
+        moduleRef,
+        healthIndicatorService,
+      ).onModuleInit(),
+    ).rejects.toThrow('The "typeorm" package is missing.');
   });
 });

@@ -15,67 +15,66 @@ const MISSING_REQUIRED_DEPENDENCY = (names: string[], reason: string): string =>
   } ($ npm install ${names.join(' ')}) to take advantage of ${reason}.`;
 
 /**
- * Cache of already-loaded packages, keyed by package name, so that a health
- * check does not pay for a dynamic import on every probe.
+ * Cache of already-loaded packages, so that a health check does not pay for a
+ * dynamic import on every probe.
  *
  * @internal
  */
 const packageCache = new Map<string, any>();
 
 /**
- * Asserts that the given optional peer packages are installed, without loading
- * them. Meant for indicator constructors, which are synchronous.
- *
- * `import.meta.resolve` resolves a specifier without evaluating the module and
- * honours an `import`-only `exports` condition, which the ESM-only siblings
- * publish.
- *
- * @param packageNames The package names
- * @param reason The reason why these packages are important
- *
- * @throws {Error} If one of the packages cannot be resolved. A missing peer is
- * a wiring mistake that can never recover, so it aborts the bootstrap instead
- * of surfacing later as a failing probe.
- *
- * @internal
+ * Whether the error says that a module could not be found. Node throws the
+ * first code for `import()`, the second one for `require()`, which is what
+ * bundlers turn an external import into.
  */
-export function assertPackages(packageNames: string[], reason: string): void {
-  const missing = packageNames.filter((packageName) => {
-    try {
-      import.meta.resolve(packageName);
-      return false;
-    } catch (error) {
-      // Bundlers inline the peers and compile `import.meta.resolve` away, so
-      // only a resolve that ran and found nothing means the package is missing
-      return (error as { code?: string })?.code === 'ERR_MODULE_NOT_FOUND';
-    }
-  });
-
-  if (missing.length) {
-    throw new Error(MISSING_REQUIRED_DEPENDENCY(missing, reason));
-  }
+function isModuleNotFound(error: unknown): boolean {
+  const code = (error as { code?: string } | null)?.code;
+  return code === 'ERR_MODULE_NOT_FOUND' || code === 'MODULE_NOT_FOUND';
 }
 
 /**
- * Loads a single optional peer package, caching it after its first load.
- * Meant for the (already asynchronous) check methods.
+ * Loads an optional peer package, caching it after its first load.
  *
- * @param packageName The package name, used as the cache key
+ * The indicators call this from `onModuleInit`, so a missing peer aborts the
+ * bootstrap, and again from their check methods.
+ *
+ * The import itself is the check on purpose. Asking Node whether the package
+ * is on disk (`import.meta.resolve`) gives the wrong answer in a bundle, where
+ * the package is part of the bundle and not on disk.
+ *
+ * @param packageNames The packages the indicator needs. They are named in the
+ * error when the import fails
  * @param loader Imports the package with a literal specifier, which bundlers
  * can follow unlike an import of a variable
+ * @param reason The reason why these packages are important
+ *
+ * @throws {Error} If the package, or a package it imports, cannot be found
  *
  * @internal
  */
 export async function loadPackage(
-  packageName: string,
+  packageNames: string[],
   loader: () => Promise<any>,
+  reason: string,
 ): Promise<any> {
-  const cached = packageCache.get(packageName);
+  const cacheKey = packageNames.join();
+  const cached = packageCache.get(cacheKey);
   if (cached) {
     return cached;
   }
 
-  const pkg = await loader();
-  packageCache.set(packageName, pkg);
+  let pkg: any;
+  try {
+    pkg = await loader();
+  } catch (error) {
+    if (isModuleNotFound(error)) {
+      throw new Error(MISSING_REQUIRED_DEPENDENCY(packageNames, reason), {
+        cause: error,
+      });
+    }
+    throw error;
+  }
+
+  packageCache.set(cacheKey, pkg);
   return pkg;
 }

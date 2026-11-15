@@ -1,7 +1,7 @@
-import { Injectable, Scope } from '@nestjs/common';
+import { Injectable, type OnModuleInit, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { DatabaseNotConnectedError } from '../../errors/database-not-connected.error.js';
-import { assertPackages, loadPackage } from '../../utils/index.js';
+import { loadPackage } from '../../utils/index.js';
 import {
   type HealthCheckAttempt,
   HealthIndicatorService,
@@ -28,29 +28,33 @@ export interface MongoosePingCheckSettings {
  * @module TerminusModule
  */
 @Injectable({ scope: Scope.TRANSIENT })
-export class MongooseHealthIndicator {
+export class MongooseHealthIndicator implements OnModuleInit {
   constructor(
     private readonly moduleRef: ModuleRef,
     private readonly healthIndicatorService: HealthIndicatorService,
-  ) {
-    this.checkDependantPackages();
-  }
+  ) {}
 
   /**
-   * Checks if the dependant packages are present
+   * Loads the optional peers, so that the bootstrap fails when they are
+   * missing
    */
-  private checkDependantPackages() {
-    assertPackages(['@nestjs/mongoose', 'mongoose'], this.constructor.name);
+  async onModuleInit(): Promise<void> {
+    await this.loadPeer();
+  }
+
+  private async loadPeer(): Promise<any> {
+    return await loadPackage(
+      ['@nestjs/mongoose', 'mongoose'],
+      () => import('@nestjs/mongoose'),
+      this.constructor.name,
+    );
   }
 
   /**
    * Returns the connection of the current DI context
    */
   private async getContextConnection(): Promise<any | null> {
-    const { getConnectionToken } = await loadPackage(
-      '@nestjs/mongoose',
-      () => import('@nestjs/mongoose'),
-    );
+    const { getConnectionToken } = await this.loadPeer();
 
     try {
       return this.moduleRef.get(
