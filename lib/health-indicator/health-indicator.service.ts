@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import {
   type HealthIndicatorResult,
   type HealthIndicatorStatus,
@@ -40,6 +40,10 @@ type CacheEntry = {
   expiresAt: number;
   settled: boolean;
 };
+
+const RESERVED_ATTEMPT_KEYS = ['status', 'responseTime', 'cachedResponse'];
+const logger = new Logger('HealthIndicatorService');
+let hasWarnedReservedKeys = false;
 
 function assertNotReserved(data: AdditionalData, keys: readonly string[]) {
   for (const key of keys) {
@@ -139,7 +143,7 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
    *
    * @param fn The function to execute
    * @returns A `HealthCheckAttempt` builder
-   * @remarks The `status`, `responseTime` and `cachedResponse` keys are reserved and cannot be used in the returned data.
+   * @remarks The `status`, `responseTime` and `cachedResponse` keys are reserved; if present in the returned data they are ignored and a warning is logged once.
    *
    * @example
    * ```typescript
@@ -187,8 +191,6 @@ export class HealthCheckAttempt<Key extends Readonly<string> = string>
     outcome: AttemptOutcome,
     cachedResponse = false,
   ): HealthIndicatorResult<Key> {
-    assertNotReserved(outcome.data, ['responseTime', 'cachedResponse']);
-
     const data = {
       ...outcome.data,
       responseTime: outcome.responseTime,
@@ -244,7 +246,7 @@ export class HealthCheckAttempt<Key extends Readonly<string> = string>
 
       return {
         status: 'up',
-        data: toAdditionalData(result),
+        data: toAdditionalData(result, this.cacheKey),
         responseTime: Math.round(performance.now() - start),
       };
     } catch (err) {
@@ -312,11 +314,28 @@ export class HealthCheckAttempt<Key extends Readonly<string> = string>
   ) => this.execute().then(onfulfilled, onrejected);
 }
 
-function toAdditionalData(value: unknown) {
+function toAdditionalData(value: unknown, key: string): AdditionalData {
   if (value === null || typeof value !== 'object' || Array.isArray(value)) {
     return {};
   }
-  return value as AdditionalData;
+
+  // Never let a returned value (e.g. an axios response with `status`) turn a
+  // healthy check into an error: drop reserved keys.
+  const data: AdditionalData = { ...value };
+  const ignored = RESERVED_ATTEMPT_KEYS.filter((k) => k in data);
+  for (const k of ignored) {
+    delete data[k];
+  }
+
+  if (ignored.length > 0 && !hasWarnedReservedKeys) {
+    hasWarnedReservedKeys = true;
+    logger.warn(
+      `Ignoring reserved key(s) ${ignored.map((k) => `"${k}"`).join(', ')} in the value returned by attempt() for health indicator "${key}". ` +
+        `The keys ${RESERVED_ATTEMPT_KEYS.join(', ')} are set by Terminus.`,
+    );
+  }
+
+  return data;
 }
 
 function errorMessage(err: unknown): string {
