@@ -13,3 +13,9 @@ export type XOR<T, U> = T | U extends object
  * @internal
  */
 export type PropType<TObj, TProp extends keyof TObj> = TObj[TProp];
+
+/**
+ * `true` only for `any`: `1 & any` is `any`, every other `1 & T` is `1` or `never`.
+ * @internal
+ */
+export type IsAny<T> = 0 extends 1 & T ? true : false;
