@@ -37,7 +37,7 @@ catalog:
   "kafkajs": "^2.2.4"
   "lint-staged": "15.5.2"
   "mongoose": "8.24.7"
-  "mysql2": "3.24.4"
+  "mysql2": "3.24.6"
   "portfinder": "1.0.38"
   "oxfmt": "0.78.0"
   "prisma": "6.3.1"
