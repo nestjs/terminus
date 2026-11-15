@@ -1,4 +1,4 @@
-import { type HealthIndicatorFunction } from './health-indicator.js';
+import { type HealthIndicatorFunction } from '../health-indicator.js';
 import { type HealthCheckAttempt } from './health-indicator.service.js';
 
 /**

@@ -12,7 +12,7 @@ import { ERROR_LOGGER } from './health-check/error-logger/error-logger.provider.
 import { JsonErrorLogger } from './health-check/error-logger/json-error-logger.service.js';
 import { PrettyErrorLogger } from './health-check/error-logger/pretty-error-logger.service.js';
 import { NOOP_LOGGER } from './health-check/logger/noop-logger.js';
-import { HealthIndicatorService } from './health-indicator/health-indicator.service.js';
+import { HealthIndicatorService } from './health-indicator/service/health-indicator.service.js';
 import {
   TerminusModuleOptions,
   TerminusAsyncModuleOptions,

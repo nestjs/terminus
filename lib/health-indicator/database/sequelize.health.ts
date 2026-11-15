@@ -4,13 +4,14 @@ import { loadPackage } from '../../utils/index.js';
 import {
   type HealthCheckAttempt,
   HealthIndicatorService,
-} from '../health-indicator.service.js';
+} from '../service/health-indicator.service.js';
 
 export interface SequelizePingCheckSettings {
   /**
    * The connection which the ping check should get executed
    */
   connection?: any;
+  // FIXME: Delete the `timeout` option in v13, use `.withTimeout()` instead
   /**
    * The amount of time the check should require in ms
    * @deprecated Chain `.withTimeout(ms)` on the returned attempt instead,
@@ -86,20 +87,26 @@ export class SequelizeHealthIndicator implements OnModuleInit {
     key: Key,
     options: SequelizePingCheckSettings = {},
   ): HealthCheckAttempt<Key> {
-    return this.healthIndicatorService
-      .check(key)
-      .attempt(async () => {
-        const connection =
-          options.connection || (await this.getContextConnection());
+    return (
+      this.healthIndicatorService
+        .check(key)
+        .attempt(async () => {
+          const connection =
+            options.connection || (await this.getContextConnection());
 
-        if (!connection) {
-          throw new Error(
-            'Connection provider not found in application context',
-          );
-        }
+          if (!connection) {
+            throw new Error(
+              'Connection provider not found in application context',
+            );
+          }
 
-        await this.pingDb(connection);
-      })
-      .withTimeout(options.timeout ?? 1000);
+          await this.pingDb(connection);
+        })
+        // Sequelize keeps the error of the driver on `parent`
+        .withFailureData((error) => ({
+          code: (error as { parent?: { code?: string } }).parent?.code,
+        }))
+        .withTimeout(options.timeout ?? 1000)
+    );
   }
 }

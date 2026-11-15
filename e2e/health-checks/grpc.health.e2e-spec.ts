@@ -66,6 +66,8 @@ describe('GRPCHealthIndicator', () => {
       grpc: {
         status: 'down',
         message: 'serving status: NOT_SERVING',
+        statusCode: 2,
+        servingStatus: 'NOT_SERVING',
         responseTime: expect.any(Number),
       },
     };
@@ -115,5 +117,6 @@ describe('GRPCHealthIndicator', () => {
     expect(res.body.status).toBe('error');
     expect(res.body.error.grpc.status).toBe('down');
     expect(res.body.error.grpc.message).toEqual(expect.any(String));
+    expect(res.body.error.grpc.code).toBe(14);
   });
 });

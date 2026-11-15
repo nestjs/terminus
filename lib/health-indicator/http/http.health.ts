@@ -19,7 +19,7 @@ import { isAxiosError, loadPackage } from '../../utils/index.js';
 import {
   HealthIndicatorService,
   type HealthIndicatorSession,
-} from '../health-indicator.service.js';
+} from '../service/health-indicator.service.js';
 
 interface HttpClientLike {
   request<T = any>(config: any): Observable<AxiosResponse<T>>;

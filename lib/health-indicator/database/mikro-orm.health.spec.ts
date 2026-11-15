@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { MikroOrmHealthIndicator } from './mikro-orm.health.js';
-import { HealthIndicatorService } from '../health-indicator.service.js';
+import { HealthIndicatorService } from '../service/health-indicator.service.js';
 
 vi.mock('../../utils/checkPackage.util.js', () => ({
   loadPackage: vi.fn().mockResolvedValue({

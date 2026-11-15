@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { MongooseHealthIndicator } from './mongoose.health.js';
-import { HealthIndicatorService } from '../health-indicator.service.js';
+import { HealthIndicatorService } from '../service/health-indicator.service.js';
 import { DATABASE_NOT_CONNECTED } from '../../errors/messages.constant.js';
 
 vi.mock('../../utils/checkPackage.util.js', () => ({
@@ -42,6 +42,26 @@ describe('MongooseHealthIndicator', () => {
       mongo: {
         status: 'down',
         message: 'server selection failed',
+        responseTime: expect.any(Number),
+      },
+    });
+  });
+
+  it('adds the code of a MongoDB error to a failed result', async () => {
+    command.mockRejectedValue(
+      Object.assign(new Error('command ping requires authentication'), {
+        code: 13,
+        codeName: 'Unauthorized',
+      }),
+    );
+
+    const result = await mongoose.pingCheck('mongo', { connection });
+
+    expect(result).toEqual({
+      mongo: {
+        status: 'down',
+        message: 'command ping requires authentication',
+        code: 13,
         responseTime: expect.any(Number),
       },
     });

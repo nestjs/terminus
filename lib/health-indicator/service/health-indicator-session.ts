@@ -17,16 +17,6 @@ type WithoutStatus<TData> = {
 
 type AdditionalData = Record<string, unknown>;
 
-function assertNotReserved(data: AdditionalData, keys: readonly string[]) {
-  for (const key of keys) {
-    if (key in data) {
-      throw new Error(
-        `"${key}" is a reserved key and cannot be used in additional data`,
-      );
-    }
-  }
-}
-
 /**
  * Indicate the health of a health indicator with the given key
  *
@@ -37,6 +27,16 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
     private readonly key: Key,
     private readonly cache: AttemptCache<AttemptOutcome> = new AttemptCache(),
   ) {}
+
+  private assertNotReserved(data: AdditionalData, keys: readonly string[]) {
+    for (const key of keys) {
+      if (key in data) {
+        throw new Error(
+          `"${key}" is a reserved key and cannot be used in additional data`,
+        );
+      }
+    }
+  }
 
   private compose<TStatus extends HealthIndicatorStatus>(
     status: TStatus,
@@ -50,7 +50,7 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
       additionalData = data;
     }
 
-    assertNotReserved(additionalData, ['status']);
+    this.assertNotReserved(additionalData, ['status']);
 
     const detail = { ...additionalData, status };
 
@@ -122,18 +122,18 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
    * @returns A `HealthCheckAttempt` builder
    * @remarks The `status`, `responseTime` and `cachedResponse` keys are reserved; if present in the returned data they are ignored and a warning is logged once.
    * Adding the value returned by `fn` to the result is deprecated and logs a warning once; the next major
-   * version ignores it. Use `.withData()` to choose what gets added.
+   * version ignores it. Use `.withSuccessData()` to choose what gets added.
    *
    * @example
    * ```typescript
    * this.healthIndicatorService
    *   .check('db')
-   *   .attempt(async () => sql`SELECT(1)`)
+   *   .attempt(async () => { await sql`SELECT 1` })
    *
    * this.healthIndicatorService
    *   .check('mongo')
    *   .attempt(() => db.command({ ping: 1 }))
-   *   .withData((res) => ({ ok: res.ok }))
+   *   .withSuccessData((res) => ({ ok: res.ok }))
    *
    * this.healthIndicatorService
    *   .check('external')
@@ -143,16 +143,7 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
    */
   attempt<TResult>(
     fn: (options: { signal: AbortSignal }) => TResult,
-  ): HealthCheckAttempt<
-    Key,
-    Awaited<TResult>,
-    {
-      data: Record<string, any>;
-      cached: false;
-      success: HealthIndicatorStatus.UP;
-      failure: HealthIndicatorStatus.DOWN;
-    }
-  > {
+  ): HealthCheckAttempt<Key, Awaited<TResult>> {
     return new HealthCheckAttempt(this.key, fn, this.cache);
   }
 }

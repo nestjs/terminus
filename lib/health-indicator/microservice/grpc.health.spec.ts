@@ -2,8 +2,11 @@ import { GRPCHealthIndicator } from './grpc.health.js';
 import { loadPackage } from '../../utils/checkPackage.util.js';
 import { GrpcOptions, Transport } from '@nestjs/microservices';
 import { Test } from '@nestjs/testing';
-import { HealthIndicatorService } from '../health-indicator.service.js';
-import { NEVER, of } from 'rxjs';
+import { HealthIndicatorService } from '../service/health-indicator.service.js';
+import { NEVER, of, throwError } from 'rxjs';
+import * as grpcJs from '@grpc/grpc-js';
+import * as protoLoader from '@grpc/proto-loader';
+import { join } from 'node:path';
 
 vi.mock('../../utils/checkPackage.util.js', () => ({
   loadPackage: vi.fn(),
@@ -59,6 +62,23 @@ describe('GRPCHealthIndicator', () => {
       });
     });
 
+    it('should keep its own data when the user adds data to the attempt', async () => {
+      const result = await grpc
+        .checkService<GrpcOptions>('grpc', 'test')
+        .withData({ owner: 'team-heroes' })
+        .withSuccessData({ region: 'eu' });
+      expect(result).toEqual({
+        grpc: {
+          status: 'up',
+          statusCode: 1,
+          servingStatus: 'SERVING',
+          owner: 'team-heroes',
+          region: 'eu',
+          responseTime: expect.any(Number),
+        },
+      });
+    });
+
     it('should correctly call the ClientProxyFactory with default', async () => {
       await grpc.checkService<GrpcOptions>('grpc', 'test');
       expect(clientProxyFactoryMock.create.mock.calls[0][0]).toEqual({
@@ -101,6 +121,32 @@ describe('GRPCHealthIndicator', () => {
         grpc: {
           status: 'down',
           message: 'serving status: NOT_SERVING',
+          statusCode: 2,
+          servingStatus: 'NOT_SERVING',
+          responseTime: expect.any(Number),
+        },
+      });
+    });
+
+    it('should add the gRPC status code when the call fails', async () => {
+      healthServiceMock.check.mockImplementationOnce((): any =>
+        throwError(() =>
+          Object.assign(
+            new Error('14 UNAVAILABLE: No connection established'),
+            {
+              code: 14,
+              details: 'No connection established',
+              metadata: {},
+            },
+          ),
+        ),
+      );
+      const result = await grpc.checkService<GrpcOptions>('grpc', 'test');
+      expect(result).toEqual({
+        grpc: {
+          status: 'down',
+          message: '14 UNAVAILABLE: No connection established',
+          code: 14,
           responseTime: expect.any(Number),
         },
       });
@@ -165,6 +211,71 @@ describe('GRPCHealthIndicator', () => {
           responseTime: expect.any(Number),
         },
       });
+    });
+  });
+});
+
+describe('GRPCHealthIndicator with a real gRPC server', () => {
+  const protoPath = join(import.meta.dirname, 'protos/health.proto');
+  let grpc: GRPCHealthIndicator;
+  let server: grpcJs.Server;
+  let url: string;
+
+  beforeAll(async () => {
+    const definition = grpcJs.loadPackageDefinition(
+      protoLoader.loadSync(protoPath),
+    ) as any;
+    server = new grpcJs.Server();
+    server.addService(definition.grpc.health.v1.Health.service, {
+      check: (call: any, callback: any) =>
+        callback(null, { status: call.request.service === 'ok' ? 1 : 2 }),
+    });
+    const port = await new Promise<number>((resolve, reject) =>
+      server.bindAsync(
+        '127.0.0.1:0',
+        grpcJs.ServerCredentials.createInsecure(),
+        (err, p) => (err ? reject(err) : resolve(p)),
+      ),
+    );
+    url = `127.0.0.1:${port}`;
+  });
+
+  afterAll(() => server.forceShutdown());
+
+  beforeEach(async () => {
+    vi.mocked(loadPackage).mockResolvedValue(
+      await import('@nestjs/microservices'),
+    );
+    const moduleRef = await Test.createTestingModule({
+      providers: [GRPCHealthIndicator, HealthIndicatorService],
+    }).compile();
+    grpc = await moduleRef.resolve(GRPCHealthIndicator);
+  });
+
+  afterEach(() => grpc.onApplicationShutdown());
+
+  it('should add the serving status when the service is not serving', async () => {
+    const result = await grpc.checkService<GrpcOptions>('grpc', 'down', {
+      url,
+    });
+    expect(result).toEqual({
+      grpc: {
+        status: 'down',
+        message: 'serving status: NOT_SERVING',
+        statusCode: 2,
+        servingStatus: 'NOT_SERVING',
+        responseTime: expect.any(Number),
+      },
+    });
+  });
+
+  it('should add the gRPC status code when nothing listens', async () => {
+    const result = await grpc.checkService<GrpcOptions>('grpc', 'ok', {
+      url: '127.0.0.1:1',
+    });
+    expect(result.grpc).toMatchObject({
+      status: 'down',
+      code: grpcJs.status.UNAVAILABLE,
     });
   });
 });

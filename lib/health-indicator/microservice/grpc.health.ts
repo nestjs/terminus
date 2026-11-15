@@ -7,11 +7,12 @@ import {
 } from '@nestjs/common';
 import type * as NestJSMicroservices from '@nestjs/microservices';
 import { lastValueFrom, type Observable } from 'rxjs';
+import { NotServingError } from '../../errors/not-serving.error.js';
 import { loadPackage, type PropType } from '../../utils/index.js';
 import {
   type HealthCheckAttempt,
   HealthIndicatorService,
-} from '../health-indicator.service.js';
+} from '../service/health-indicator.service.js';
 
 /**
  * The status of the request service
@@ -78,6 +79,7 @@ type GrpcOptionsLike<
 export type CheckGRPCServiceOptions<
   GrpcOptions extends GrpcClientOptionsLike = GrpcClientOptionsLike,
 > = Partial<GrpcOptionsLike<GrpcOptions>> & {
+  // FIXME: Delete the `timeout` option in v13, use `.withTimeout()` instead
   /**
    * The amount of time the check should require in ms
    * @deprecated Chain `.withTimeout(ms)` on the returned attempt instead,
@@ -248,11 +250,20 @@ export class GRPCHealthIndicator
         );
         const servingStatus = ServingStatus[response.status] ?? response.status;
         if (response.status !== ServingStatus.SERVING) {
-          throw new Error(`serving status: ${servingStatus}`);
+          throw new NotServingError(response.status, servingStatus);
         }
         return { statusCode: response.status, servingStatus };
       })
-      .withData((data) => data)
+      .withSuccessData((data) => data)
+      .withFailureData((error) => {
+        // The fields of a success when the service answered, otherwise the
+        // gRPC status code of the call (e.g. 14 for UNAVAILABLE)
+        if (error instanceof NotServingError) {
+          const { statusCode, servingStatus } = error;
+          return { statusCode, servingStatus };
+        }
+        return { code: (error as { code?: number }).code };
+      })
       .withTimeout(settings.timeout);
   }
 }

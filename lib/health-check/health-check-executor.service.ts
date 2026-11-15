@@ -15,8 +15,8 @@ import {
   type HealthIndicatorFunction,
   type HealthIndicatorResult,
 } from '../health-indicator/index.js';
-import { HealthIndicatorStatus } from '../health-indicator/health-indicator-result.interface.js';
-import { HealthCheckAttempt } from '../health-indicator/health-indicator.service.js';
+import { HealthIndicatorStatus } from '../health-indicator/service/health-indicator-result.interface.js';
+import { HealthCheckAttempt } from '../health-indicator/service/health-indicator.service.js';
 import { type TerminusModuleOptions } from '../terminus-options.interface.js';
 import {
   TERMINUS_LOGGER,

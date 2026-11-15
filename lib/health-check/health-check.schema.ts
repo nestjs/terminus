@@ -2,7 +2,7 @@ import { HealthCheckStatus } from './health-check-result.interface.js';
 import {
   type HealthIndicatorResult,
   HealthIndicatorStatus,
-} from '../health-indicator/health-indicator-result.interface.js';
+} from '../health-indicator/service/health-indicator-result.interface.js';
 
 /**
  * The parts of `@nestjs/swagger` used in this file.

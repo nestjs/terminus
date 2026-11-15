@@ -7,7 +7,7 @@ import { type HealthIndicatorResult } from '../index.js';
 import { STORAGE_EXCEEDED } from '../../errors/messages.constant.js';
 import { CHECK_DISK_SPACE_LIB } from '../../terminus.constants.js';
 import { type CheckDiskSpace } from './disk-usage-lib.provider.js';
-import { HealthIndicatorService } from '../health-indicator.service.js';
+import { HealthIndicatorService } from '../service/health-indicator.service.js';
 
 /**
  * The DiskHealthIndicator contains checks which are related

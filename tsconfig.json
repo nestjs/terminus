@@ -17,5 +17,11 @@
     "types": ["node", "vitest/globals"]
   },
   "include": ["lib/**/*", "e2e/**/*", "tools/**/*"],
-  "exclude": ["node_modules", "dist", "sample", "e2e/prisma/generated"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "sample",
+    "e2e/prisma/generated",
+    "tools/pack-check"
+  ]
 }

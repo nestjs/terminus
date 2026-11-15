@@ -7,7 +7,7 @@
  * both invisible to an import out of the source tree.
  */
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readdirSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdtempSync, readdirSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -51,51 +51,10 @@ if (!existsSync(proto)) {
 // Apps built with `declaration: true` (the Nest starter default) must be able
 // to name the inferred return types of their indicators. That fails when a
 // public signature uses a type that the package does not export.
-writeFileSync(join(dir, 'indicator.ts'), `
-  import { HealthCheckService, HealthIndicatorService, TypeOrmHealthIndicator } from '@nestjs/terminus';
-
-  export class Indicators {
-    constructor(
-      private readonly health: HealthCheckService,
-      private readonly indicator: HealthIndicatorService,
-      private readonly db: TypeOrmHealthIndicator,
-    ) {}
-
-    upOrDown(up: boolean) {
-      const session = this.indicator.check('dog');
-      return up ? session.up({ goodBoys: 1 }) : session.down('bad');
-    }
-    degraded() {
-      return this.indicator.check('dog').degraded();
-    }
-    attempt() {
-      return this.indicator.check('dog').attempt(async () => 1);
-    }
-    builders() {
-      return this.indicator
-        .check('dog')
-        .attempt(async () => 1)
-        .withData((n) => ({ n }))
-        .withTimeout(100)
-        .cacheFor(100)
-        .degradedAfter(50)
-        .degradedOnFailure();
-    }
-    builtIn() {
-      return this.db.pingCheck('database').degradedOnFailure().cacheFor(100);
-    }
-    async awaited() {
-      return await this.builders();
-    }
-    check() {
-      return this.health.check([
-        () => this.upOrDown(true),
-        () => this.builders(),
-        this.builtIn(),
-      ]);
-    }
-  }
-`);
+copyFileSync(
+  join(import.meta.dirname, 'pack-check/indicator.ts'),
+  join(dir, 'indicator.ts'),
+);
 run(join(process.cwd(), 'node_modules/.bin/tsc'), [
   'indicator.ts', '--declaration', '--emitDeclarationOnly', '--outDir', 'types',
   '--strict', '--module', 'nodenext', '--target', 'es2022', '--skipLibCheck',
