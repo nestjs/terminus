@@ -6,6 +6,7 @@ import { AttemptCache } from './attempt-cache.js';
 import {
   type AttemptOutcome,
   HealthCheckAttempt,
+  type InitialAttemptState,
 } from './health-check-attempt.js';
 
 /**
@@ -139,11 +140,7 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
    */
   attempt<TResult>(
     fn: (options: { signal: AbortSignal }) => TResult,
-  ): HealthCheckAttempt<Key, Awaited<TResult>> {
-    return new HealthCheckAttempt<Key, Awaited<TResult>>(
-      this.key,
-      fn,
-      this.cache,
-    );
+  ): HealthCheckAttempt<Key, Awaited<TResult>, InitialAttemptState> {
+    return new HealthCheckAttempt(this.key, fn, this.cache);
   }
 }

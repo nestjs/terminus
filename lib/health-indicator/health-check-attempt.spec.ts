@@ -5,6 +5,7 @@ import { HealthCheckAttempt } from './health-check-attempt.js';
 import { HealthIndicatorService } from './health-indicator.service.js';
 import { HealthIndicatorSession } from './health-indicator-session.js';
 import { type HealthIndicatorResult } from './health-indicator-result.interface.js';
+import { HealthCheckExecutor } from '../health-check/health-check-executor.service.js';
 
 describe('HealthCheckAttempt', () => {
   let session: HealthIndicatorSession<'test'>;
@@ -645,5 +646,244 @@ describe('HealthCheckAttempt cacheFor', () => {
         .attempt(() => {})
         .cacheFor(ms),
     ).toThrow('Cache TTL must be between 0 and 4294967295 milliseconds');
+  });
+});
+
+describe('HealthCheckAttempt degraded', () => {
+  let session: HealthIndicatorSession<'test'>;
+
+  beforeEach(() => {
+    session = new HealthIndicatorSession('test');
+  });
+
+  const sleep = (ms: number) =>
+    new Promise<void>((resolve) => setTimeout(resolve, ms));
+  const fail = () => {
+    throw new Error('nope');
+  };
+
+  describe('degradedAfter', () => {
+    it('should return this for chaining', () => {
+      const attempt = session.attempt(() => {});
+      expect(attempt.degradedAfter(100)).toBe(attempt);
+    });
+
+    it('should stay up when faster than the threshold', async () => {
+      const result = await session.attempt(() => {}).degradedAfter(1000);
+      expect(result).toEqual({
+        test: { status: 'up', responseTime: expect.any(Number) },
+      });
+    });
+
+    it('should mark a slow success as degraded and keep the data', async () => {
+      const result = await session
+        .attempt(() => sleep(30))
+        .withData({ owner: 'x' })
+        .degradedAfter(10);
+      expect(result).toEqual({
+        test: {
+          status: 'degraded',
+          owner: 'x',
+          responseTime: expect.any(Number),
+        },
+      });
+      expect(result.test.responseTime).toBeGreaterThanOrEqual(10);
+    });
+
+    it('should mark as degraded when the response time equals the threshold', async () => {
+      const result = await session.attempt(() => {}).degradedAfter(0);
+      expect(result.test.status).toBe('degraded');
+    });
+
+    it('should not change a failure', async () => {
+      const result = await session.attempt(fail).degradedAfter(0);
+      expect(result).toEqual({
+        test: {
+          status: 'down',
+          message: 'nope',
+          responseTime: expect.any(Number),
+        },
+      });
+    });
+
+    it.each([
+      ['degradedAfter().withTimeout()', true],
+      ['withTimeout().degradedAfter()', false],
+    ])('should not depend on the builder order (%s)', async (_, first) => {
+      const build = (fn: () => Promise<void>) => {
+        const attempt = session.attempt(fn);
+        return first
+          ? attempt.degradedAfter(10).withTimeout(100)
+          : attempt.withTimeout(100).degradedAfter(10);
+      };
+      expect((await build(() => sleep(30))).test.status).toBe('degraded');
+      expect((await build(() => sleep(5000))).test).toMatchObject({
+        status: 'down',
+        message: 'timeout of 100ms exceeded',
+      });
+    });
+
+    it.each([-1, Infinity, 2 ** 40])(
+      'should reject a threshold of %p',
+      (ms) => {
+        expect(() => session.attempt(() => {}).degradedAfter(ms)).toThrow(
+          'Degraded threshold must be between 0 and 4294967295 milliseconds',
+        );
+      },
+    );
+  });
+
+  describe('degradedOnFailure', () => {
+    it('should return this for chaining', () => {
+      const attempt = session.attempt(() => {});
+      expect(attempt.degradedOnFailure()).toBe(attempt);
+    });
+
+    it('should stay up when the function succeeds', async () => {
+      const result = await session.attempt(() => {}).degradedOnFailure();
+      expect(result).toEqual({
+        test: { status: 'up', responseTime: expect.any(Number) },
+      });
+    });
+
+    it.each([
+      ['throws', fail, 'nope'],
+      [
+        'rejects',
+        async () => {
+          throw new Error('refused');
+        },
+        'refused',
+      ],
+      ['times out', () => sleep(5000), 'timeout of 50ms exceeded'],
+    ])(
+      'should mark as degraded with the message when the function %s',
+      async (_, fn, message) => {
+        const pick = vi.fn(() => ({ foo: 'bar' }));
+        const result = await session
+          .attempt(fn)
+          .degradedOnFailure()
+          .withData(pick)
+          .withTimeout(50);
+        expect(result).toEqual({
+          test: {
+            status: 'degraded',
+            message,
+            responseTime: expect.any(Number),
+          },
+        });
+        expect(pick).not.toHaveBeenCalled();
+      },
+    );
+
+    it('should combine with degradedAfter', async () => {
+      const slow = await session
+        .attempt(() => sleep(30))
+        .degradedOnFailure()
+        .degradedAfter(10);
+      expect(slow.test.status).toBe('degraded');
+
+      const failed = await session
+        .attempt(fail)
+        .degradedAfter(10)
+        .degradedOnFailure();
+      expect(failed.test).toMatchObject({
+        status: 'degraded',
+        message: 'nope',
+      });
+    });
+  });
+
+  it('should cache the degraded status', async () => {
+    const h = new HealthIndicatorService();
+    const fn = vi.fn(fail);
+    await h.check('db').attempt(fn).degradedOnFailure().cacheFor(1000);
+    const second = await h
+      .check('db')
+      .attempt(fn)
+      .cacheFor(1000)
+      .degradedOnFailure();
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(second).toEqual({
+      db: {
+        status: 'degraded',
+        message: 'nope',
+        responseTime: expect.any(Number),
+        cachedResponse: true,
+      },
+    });
+  });
+
+  it('should keep the health check up with an overall degraded status', async () => {
+    const executor = new HealthCheckExecutor(
+      { log: vi.fn(), error: vi.fn(), warn: vi.fn() },
+      {},
+    );
+    const h = new HealthIndicatorService();
+    const result = await executor.execute([
+      h.check('db').attempt(fail).degradedOnFailure(),
+      () =>
+        h
+          .check('cache')
+          .attempt(() => {})
+          .degradedAfter(0),
+    ]);
+    expect(result).toMatchObject({
+      status: 'degraded',
+      info: {
+        db: { status: 'degraded', message: 'nope' },
+        cache: { status: 'degraded' },
+      },
+      error: {},
+    });
+  });
+
+  it('should type the status after degradedAfter', async () => {
+    const result = await session
+      .attempt(() => {})
+      .withData({ owner: 'x' })
+      .degradedAfter(200);
+    if (result.test.status === 'down') {
+      expectTypeOf(result.test.message).toEqualTypeOf<string>();
+    } else {
+      expectTypeOf(result.test.status).toEqualTypeOf<'up' | 'degraded'>();
+      expectTypeOf(result.test.owner).toEqualTypeOf<'x'>();
+    }
+  });
+
+  it('should type the status after degradedOnFailure', async () => {
+    const result = await session
+      .attempt(() => {})
+      .degradedOnFailure()
+      .withData({ owner: 'x' })
+      .cacheFor(1000);
+    expectTypeOf(result.test.status).toEqualTypeOf<'up' | 'degraded'>();
+    expectTypeOf(result.test.cachedResponse).toEqualTypeOf<true | undefined>();
+    if (result.test.status === 'degraded') {
+      expectTypeOf(result.test.message).toEqualTypeOf<string>();
+      // @ts-expect-error a failed attempt has no data
+      void result.test.owner;
+    } else {
+      expectTypeOf(result.test.owner).toEqualTypeOf<'x'>();
+    }
+
+    const both = await session
+      .attempt(() => {})
+      .degradedAfter(200)
+      .degradedOnFailure();
+    expectTypeOf(both.test.status).toEqualTypeOf<'up' | 'degraded'>();
+  });
+
+  it('should keep a degraded attempt assignable to the untyped types', () => {
+    const attempt = session.attempt(() => {}).withData({ owner: 'x' });
+    expectTypeOf(attempt.degradedAfter(200)).toExtend<
+      HealthCheckAttempt<'test'>
+    >();
+    expectTypeOf(attempt.degradedOnFailure()).toExtend<
+      HealthCheckAttempt<'test'>
+    >();
+    expectTypeOf(attempt.degradedOnFailure()).toExtend<
+      PromiseLike<HealthIndicatorResult<'test'>>
+    >();
   });
 });
