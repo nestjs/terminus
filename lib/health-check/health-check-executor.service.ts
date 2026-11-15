@@ -8,13 +8,14 @@ import {
 } from '@nestjs/common';
 import {
   type HealthCheckResult,
-  type HealthCheckStatus,
+  HealthCheckStatus,
 } from './health-check-result.interface.js';
 import {
   type InferHealthIndicatorResults,
   type HealthIndicatorFunction,
   type HealthIndicatorResult,
 } from '../health-indicator/index.js';
+import { HealthIndicatorStatus } from '../health-indicator/health-indicator-result.interface.js';
 import { HealthCheckAttempt } from '../health-indicator/health-indicator.service.js';
 import { type TerminusModuleOptions } from '../terminus-options.interface.js';
 import {
@@ -93,9 +94,12 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
     result.forEach((res) => {
       if (res.status === 'fulfilled') {
         Object.entries(res.value).forEach(([key, value]) => {
-          if (value.status === 'up' || value.status === 'degraded') {
+          if (
+            value.status === HealthIndicatorStatus.UP ||
+            value.status === HealthIndicatorStatus.DEGRADED
+          ) {
             results.push({ [key]: value });
-          } else if (value.status === 'down') {
+          } else if (value.status === HealthIndicatorStatus.DOWN) {
             errors.push({ [key]: value });
           }
         });
@@ -115,30 +119,40 @@ export class HealthCheckExecutor implements BeforeApplicationShutdown {
     );
   }
 
+  private getStatus(
+    results: HealthIndicatorResult[],
+    errors: HealthIndicatorResult[],
+  ): HealthCheckStatus {
+    if (this.isShuttingDown) {
+      return HealthCheckStatus.SHUTTING_DOWN;
+    }
+
+    if (errors.length > 0) {
+      return HealthCheckStatus.ERROR;
+    }
+
+    const hasDegraded = results.some((result) =>
+      Object.values(result).some(
+        (value) => value.status === HealthIndicatorStatus.DEGRADED,
+      ),
+    );
+
+    if (hasDegraded) {
+      return HealthCheckStatus.DEGRADED;
+    }
+
+    return HealthCheckStatus.OK;
+  }
+
   private getResult(
     results: HealthIndicatorResult[],
     errors: HealthIndicatorResult[],
   ): HealthCheckResult {
-    const infoErrorCombined = results.concat(errors);
-
-    const info = this.getSummary(results);
-    const error = this.getSummary(errors);
-    const details = this.getSummary(infoErrorCombined);
-
-    const hasDegraded = results.some((result) =>
-      Object.values(result).some((value) => value.status === 'degraded'),
-    );
-
-    let status: HealthCheckStatus = 'ok';
-    status = hasDegraded ? 'degraded' : status;
-    status = errors.length > 0 ? 'error' : status;
-    status = this.isShuttingDown ? 'shutting_down' : status;
-
     return {
-      status,
-      info,
-      error,
-      details,
+      status: this.getStatus(results, errors),
+      info: this.getSummary(results),
+      error: this.getSummary(errors),
+      details: this.getSummary(results.concat(errors)),
     };
   }
 }

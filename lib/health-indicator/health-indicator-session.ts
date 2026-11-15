@@ -1,6 +1,6 @@
 import {
   type HealthIndicatorResult,
-  type HealthIndicatorStatus,
+  HealthIndicatorStatus,
 } from './health-indicator-result.interface.js';
 import { AttemptCache } from './attempt-cache.js';
 import {
@@ -68,12 +68,14 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
    */
   down<T extends AdditionalData>(
     data?: T & WithoutStatus<T>,
-  ): HealthIndicatorResult<Key, 'down', T>;
+  ): HealthIndicatorResult<Key, HealthIndicatorStatus.DOWN, T>;
   down<T extends string>(
     data?: T,
-  ): HealthIndicatorResult<Key, 'down', { message: T }>;
-  down(data?: AdditionalData | string): HealthIndicatorResult<Key, 'down'> {
-    return this.compose('down', data);
+  ): HealthIndicatorResult<Key, HealthIndicatorStatus.DOWN, { message: T }>;
+  down(
+    data?: AdditionalData | string,
+  ): HealthIndicatorResult<Key, HealthIndicatorStatus.DOWN> {
+    return this.compose(HealthIndicatorStatus.DOWN, data);
   }
 
   /**
@@ -85,14 +87,14 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
    */
   degraded<T extends AdditionalData>(
     data?: T & WithoutStatus<T>,
-  ): HealthIndicatorResult<Key, 'degraded', T>;
+  ): HealthIndicatorResult<Key, HealthIndicatorStatus.DEGRADED, T>;
   degraded<T extends string>(
     data?: T,
-  ): HealthIndicatorResult<Key, 'degraded', { message: T }>;
+  ): HealthIndicatorResult<Key, HealthIndicatorStatus.DEGRADED, { message: T }>;
   degraded(
     data?: AdditionalData | string,
-  ): HealthIndicatorResult<Key, 'degraded'> {
-    return this.compose('degraded', data);
+  ): HealthIndicatorResult<Key, HealthIndicatorStatus.DEGRADED> {
+    return this.compose(HealthIndicatorStatus.DEGRADED, data);
   }
 
   /**
@@ -102,12 +104,14 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
    */
   up<T extends AdditionalData>(
     data?: T & WithoutStatus<T>,
-  ): HealthIndicatorResult<Key, 'up', T>;
+  ): HealthIndicatorResult<Key, HealthIndicatorStatus.UP, T>;
   up<T extends string>(
     data?: T,
-  ): HealthIndicatorResult<Key, 'up', { message: T }>;
-  up(data?: AdditionalData | string): HealthIndicatorResult<Key, 'up'> {
-    return this.compose('up', data);
+  ): HealthIndicatorResult<Key, HealthIndicatorStatus.UP, { message: T }>;
+  up(
+    data?: AdditionalData | string,
+  ): HealthIndicatorResult<Key, HealthIndicatorStatus.UP> {
+    return this.compose(HealthIndicatorStatus.UP, data);
   }
 
   // FIXME: Remove the deprecation note from the JSDoc in v13 (#2796)

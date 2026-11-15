@@ -1,5 +1,5 @@
 import { Logger } from '@nestjs/common';
-import { type HealthIndicatorStatus } from './health-indicator-result.interface.js';
+import { HealthIndicatorStatus } from './health-indicator-result.interface.js';
 import { type AdditionalData } from './health-indicator-session.js';
 import { errorMessage } from '../utils/errorMessage.js';
 import { type IsAny } from '../utils/types.js';
@@ -41,17 +41,17 @@ export type AttemptState = {
   /** Whether the result can come from the cache */
   cached: boolean;
   /** The statuses of a successful check */
-  success: 'up' | 'degraded';
+  success: HealthIndicatorStatus.UP | HealthIndicatorStatus.DEGRADED;
   /** The statuses of a failed check */
-  failure: 'down' | 'degraded';
+  failure: HealthIndicatorStatus.DOWN | HealthIndicatorStatus.DEGRADED;
 };
 
 /** The state of the attempt that `attempt()` returns. */
 export type InitialAttemptState = {
   data: Record<string, any>;
   cached: false;
-  success: 'up';
-  failure: 'down';
+  success: HealthIndicatorStatus.UP;
+  failure: HealthIndicatorStatus.DOWN;
 };
 
 /** `TState` with the fields of `TChange` replaced. */
@@ -175,21 +175,23 @@ export class HealthCheckAttempt<
       const data = await runWithTimeout(this.timeoutMs, async (signal) =>
         this.toAdditionalData(await this.fn({ signal })),
       );
-      outcome = { status: 'up', data };
+      outcome = { status: HealthIndicatorStatus.UP, data };
     } catch (err) {
       outcome = {
-        status: this.degradeFailure ? 'degraded' : 'down',
+        status: this.degradeFailure
+          ? HealthIndicatorStatus.DEGRADED
+          : HealthIndicatorStatus.DOWN,
         data: { message: errorMessage(err) },
       };
     }
 
     const responseTime = Math.round(performance.now() - start);
     if (
-      outcome.status === 'up' &&
+      outcome.status === HealthIndicatorStatus.UP &&
       this.degradedAfterMs !== undefined &&
       responseTime >= this.degradedAfterMs
     ) {
-      outcome.status = 'degraded';
+      outcome.status = HealthIndicatorStatus.DEGRADED;
     }
 
     return { ...outcome, responseTime };
@@ -292,12 +294,15 @@ export class HealthCheckAttempt<
    * this.db.pingCheck('database').degradedAfter(200).withTimeout(1000)
    * ```
    */
-  degradedAfter(
-    ms: number,
-  ): HealthCheckAttempt<
+  degradedAfter(ms: number): HealthCheckAttempt<
     Key,
     TResult,
-    With<TState, { success: 'up' | 'degraded' }>
+    With<
+      TState,
+      {
+        success: HealthIndicatorStatus.UP | HealthIndicatorStatus.DEGRADED;
+      }
+    >
   > {
     assertDuration(ms, 'Degraded threshold');
 
@@ -325,7 +330,7 @@ export class HealthCheckAttempt<
   degradedOnFailure(): HealthCheckAttempt<
     Key,
     TResult,
-    With<TState, { failure: 'degraded' }>
+    With<TState, { failure: HealthIndicatorStatus.DEGRADED }>
   > {
     this.degradeFailure = true;
 
@@ -333,7 +338,7 @@ export class HealthCheckAttempt<
     return this as HealthCheckAttempt<
       Key,
       TResult,
-      With<TState, { failure: 'degraded' }>
+      With<TState, { failure: HealthIndicatorStatus.DEGRADED }>
     >;
   }
 
