@@ -62,5 +62,13 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    # Without a healthcheck `docker compose up --wait` reports the broker as
+    # healthy as soon as the container runs, about 30s before Kafka accepts
+    # clients, which made the Kafka e2e test flaky. Wait for a real answer.
+    healthcheck:
+      test: ["CMD", "kafka-topics", "--bootstrap-server", "localhost:9092", "--list"]
+      interval: 5s
+      timeout: 10s
+      retries: 30
 networks:
   overlay:
