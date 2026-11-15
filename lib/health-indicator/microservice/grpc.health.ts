@@ -203,12 +203,15 @@ export class GRPCHealthIndicator
   ): HealthCheckAttempt<Key> {
     const settings: Required<CheckGRPCServiceOptions> = {
       package: 'grpc.health.v1',
-      protoPath: join(import.meta.dirname, './protos/health.proto'),
       healthServiceCheck: (healthService: GRPCHealthService, service: string) =>
         lastValueFrom(healthService.check({ service })),
       timeout: 1000,
       healthServiceName: 'Health',
       ...options,
+      // Only read `import.meta.dirname` when it is needed: it is not set in a
+      // CommonJS bundle, where the app has to pass its own copy of the proto
+      protoPath:
+        options.protoPath ?? join(import.meta.dirname, './protos/health.proto'),
     };
 
     return this.healthIndicatorService
