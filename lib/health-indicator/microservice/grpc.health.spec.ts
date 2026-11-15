@@ -6,7 +6,6 @@ import { HealthIndicatorService } from '../health-indicator.service.js';
 import { NEVER, of } from 'rxjs';
 
 vi.mock('../../utils/checkPackage.util.js', () => ({
-  assertPackages: vi.fn(),
   loadPackage: vi.fn(),
 }));
 

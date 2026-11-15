@@ -1,8 +1,8 @@
 import type * as MikroOrm from '@mikro-orm/core';
-import { Injectable, Scope } from '@nestjs/common';
+import { Injectable, type OnModuleInit, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { DatabaseNotConnectedError } from '../../errors/database-not-connected.error.js';
-import { assertPackages, loadPackage } from '../../utils/index.js';
+import { loadPackage } from '../../utils/index.js';
 import {
   type HealthCheckAttempt,
   HealthIndicatorService,
@@ -29,17 +29,24 @@ export interface MikroOrmPingCheckSettings {
  * @module TerminusModule
  */
 @Injectable({ scope: Scope.TRANSIENT })
-export class MikroOrmHealthIndicator {
+export class MikroOrmHealthIndicator implements OnModuleInit {
   constructor(
     private readonly moduleRef: ModuleRef,
     private readonly healthIndicatorService: HealthIndicatorService,
-  ) {
-    this.checkDependantPackages();
+  ) {}
+
+  /**
+   * Loads the optional peers, so that the bootstrap fails when they are
+   * missing
+   */
+  async onModuleInit(): Promise<void> {
+    await this.loadPeer();
   }
 
-  private checkDependantPackages() {
-    assertPackages(
+  private async loadPeer(): Promise<any> {
+    return await loadPackage(
       ['@mikro-orm/nestjs', '@mikro-orm/core'],
+      () => import('@mikro-orm/core'),
       this.constructor.name,
     );
   }
@@ -48,7 +55,7 @@ export class MikroOrmHealthIndicator {
    * Returns the connection of the current DI context
    */
   private async getContextConnection(): Promise<MikroOrm.Connection | null> {
-    const { MikroORM } = await loadPackage('@mikro-orm/core');
+    const { MikroORM } = await this.loadPeer();
     const mikro = this.moduleRef.get(MikroORM, { strict: false });
 
     const connection: MikroOrm.Connection = mikro.em.getConnection();

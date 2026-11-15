@@ -1,7 +1,7 @@
-import { Injectable, Scope } from '@nestjs/common';
+import { Injectable, type OnModuleInit, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import type * as TypeOrm from 'typeorm';
-import { assertPackages, loadPackage } from '../../utils/index.js';
+import { loadPackage } from '../../utils/index.js';
 import {
   type HealthCheckAttempt,
   HealthIndicatorService,
@@ -29,26 +29,33 @@ export interface TypeOrmPingCheckSettings {
  * @module TerminusModule
  */
 @Injectable({ scope: Scope.TRANSIENT })
-export class TypeOrmHealthIndicator {
+export class TypeOrmHealthIndicator implements OnModuleInit {
   constructor(
     private readonly moduleRef: ModuleRef,
     private readonly healthIndicatorService: HealthIndicatorService,
-  ) {
-    this.checkDependantPackages();
-  }
+  ) {}
 
   /**
-   * Checks if the dependant packages are present
+   * Loads the optional peers, so that the bootstrap fails when they are
+   * missing
    */
-  private checkDependantPackages() {
-    assertPackages(['@nestjs/typeorm', 'typeorm'], this.constructor.name);
+  async onModuleInit(): Promise<void> {
+    await this.loadPeer();
+  }
+
+  private async loadPeer(): Promise<any> {
+    return await loadPackage(
+      ['@nestjs/typeorm', 'typeorm'],
+      () => import('@nestjs/typeorm'),
+      this.constructor.name,
+    );
   }
 
   /**
    * Returns the connection of the current DI context
    */
   private async getContextConnection(): Promise<TypeOrm.DataSource | null> {
-    const { getDataSourceToken } = await loadPackage('@nestjs/typeorm');
+    const { getDataSourceToken } = await this.loadPeer();
 
     try {
       return this.moduleRef.get(getDataSourceToken() as string, {

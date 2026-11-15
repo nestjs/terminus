@@ -5,7 +5,6 @@ import { loadPackage } from '../../utils/checkPackage.util.js';
 import { HealthIndicatorService } from '../health-indicator.service.js';
 
 vi.mock('../../utils/checkPackage.util.js', () => ({
-  assertPackages: vi.fn(),
   loadPackage: vi.fn(),
 }));
 

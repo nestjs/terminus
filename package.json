@@ -65,6 +65,7 @@
     "test:ut": "vitest run",
     "test:import": "node tools/import-check.mjs",
     "test:pack": "pnpm run build && node tools/pack-check.mjs",
+    "test:bundle": "pnpm run build && node tools/bundle-check.mjs",
     "release": "release-it",
     "prepare": "husky"
   },
@@ -96,6 +97,7 @@
     "amqp-connection-manager": "catalog:",
     "amqplib": "catalog:",
     "axios": "catalog:",
+    "esbuild": "catalog:",
     "express": "catalog:",
     "fastify": "catalog:",
     "husky": "catalog:",

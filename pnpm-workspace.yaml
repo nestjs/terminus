@@ -29,6 +29,7 @@ catalog:
   "amqp-connection-manager": "4.1.15"
   "amqplib": "0.10.9"
   "axios": "^1.7.9"
+  "esbuild": "0.28.2"
   "express": "5.2.1"
   "fastify": "5.12.8"
   "husky": "9.1.7"

@@ -3,7 +3,6 @@ import { Header } from '@nestjs/common';
 import { getHealthCheckSchema } from './health-check.schema.js';
 
 type Swagger = typeof import('@nestjs/swagger');
-const require = createRequire(import.meta.url);
 
 /**
  * @publicApi
@@ -42,6 +41,9 @@ export const HealthCheck = ({
   if (swaggerDocumentation) {
     let swagger: Swagger | null = null;
     try {
+      // Inside the `try`, because `import.meta.url` is not set in a CommonJS
+      // bundle (e.g. esbuild), where `createRequire` then throws
+      const require = createRequire(import.meta.url);
       swagger = require('@nestjs/swagger');
     } catch {}
 

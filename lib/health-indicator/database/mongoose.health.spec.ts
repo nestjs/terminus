@@ -4,7 +4,6 @@ import { HealthIndicatorService } from '../health-indicator.service.js';
 import { DATABASE_NOT_CONNECTED } from '../../errors/messages.constant.js';
 
 vi.mock('../../utils/checkPackage.util.js', () => ({
-  assertPackages: vi.fn(),
   loadPackage: vi.fn(),
 }));
 
