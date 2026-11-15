@@ -8,6 +8,7 @@ import {
   MicroserviceHealthIndicator,
   GRPCHealthIndicator,
   PrismaHealthIndicator,
+  DrizzleHealthIndicator,
 } from './index.js';
 import { MikroOrmHealthIndicator } from './database/mikro-orm.health.js';
 
@@ -25,4 +26,5 @@ export const HEALTH_INDICATORS = [
   GRPCHealthIndicator,
   MikroOrmHealthIndicator,
   PrismaHealthIndicator,
+  DrizzleHealthIndicator,
 ];

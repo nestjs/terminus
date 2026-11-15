@@ -12,6 +12,7 @@ export * from './database/typeorm.health.js';
 export * from './database/mikro-orm.health.js';
 export * from './database/sequelize.health.js';
 export * from './database/prisma.health.js';
+export * from './database/drizzle.health.js';
 export * from './microservice/microservice.health.js';
 export * from './microservice/grpc.health.js';
 export * from './disk/index.js';
