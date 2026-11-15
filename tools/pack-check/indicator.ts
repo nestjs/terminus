@@ -3,6 +3,7 @@
 // because `@nestjs/terminus` must resolve to the installed package.
 import {
   DiskHealthIndicator,
+  FetchHealthIndicator,
   HealthCheckService,
   HealthIndicatorService,
   MemoryHealthIndicator,
@@ -14,6 +15,7 @@ export class Indicators {
     private readonly health: HealthCheckService,
     private readonly indicator: HealthIndicatorService,
     private readonly db: TypeOrmHealthIndicator,
+    private readonly fetch: FetchHealthIndicator,
     private readonly memory: MemoryHealthIndicator,
     private readonly disk: DiskHealthIndicator,
   ) {}
@@ -53,6 +55,11 @@ export class Indicators {
   builtIn() {
     return this.db.pingCheck('database').degradedOnFailure().cacheFor(100);
   }
+  http() {
+    return this.fetch
+      .pingCheck('api', 'http://localhost', { verify: (res) => res.ok })
+      .degradedAfter(200);
+  }
   memoryAndDisk() {
     return this.health.check([
       () => this.memory.checkHeap('heap', 1024).degradedOnFailure(),
@@ -82,6 +89,7 @@ export class Indicators {
       () => this.upOrDown(true),
       () => this.builders(),
       this.builtIn(),
+      () => this.http(),
     ]);
   }
 }

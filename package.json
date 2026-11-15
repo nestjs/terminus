@@ -81,6 +81,7 @@
     "@nestjs/axios": "catalog:",
     "@nestjs/common": "catalog:",
     "@nestjs/core": "catalog:",
+    "@nestjs/http-client": "catalog:",
     "@nestjs/microservices": "catalog:",
     "@nestjs/mongoose": "catalog:",
     "@nestjs/platform-express": "catalog:",
