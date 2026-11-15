@@ -33,12 +33,10 @@ export interface HealthCheckOptions {
  *
  * @publicApi
  */
-export const HealthCheck = (
-  { noCache, swaggerDocumentation }: HealthCheckOptions = {
-    noCache: true,
-    swaggerDocumentation: true,
-  },
-) => {
+export const HealthCheck = ({
+  noCache = true,
+  swaggerDocumentation = true,
+}: HealthCheckOptions = {}) => {
   const decorators: MethodDecorator[] = [];
 
   if (swaggerDocumentation) {
