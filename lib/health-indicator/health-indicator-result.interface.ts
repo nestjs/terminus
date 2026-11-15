@@ -2,9 +2,33 @@ import { type HealthIndicatorFunction } from './health-indicator.js';
 import { type HealthCheckAttempt } from './health-indicator.service.js';
 
 /**
+ * The statuses a health indicator can have.
+ *
  * @publicApi
  */
-export type HealthIndicatorStatus = 'up' | 'degraded' | 'down';
+export const HealthIndicatorStatus = {
+  UP: 'up',
+  DEGRADED: 'degraded',
+  DOWN: 'down',
+} as const;
+
+/**
+ * @publicApi
+ */
+export type HealthIndicatorStatus =
+  (typeof HealthIndicatorStatus)[keyof typeof HealthIndicatorStatus];
+
+/**
+ * Lets you use a single status as a type, like with an enum:
+ * `HealthIndicatorStatus.UP`.
+ *
+ * @publicApi
+ */
+export declare namespace HealthIndicatorStatus {
+  type UP = typeof HealthIndicatorStatus.UP;
+  type DEGRADED = typeof HealthIndicatorStatus.DEGRADED;
+  type DOWN = typeof HealthIndicatorStatus.DOWN;
+}
 
 /**
  * The result object of a health indicator

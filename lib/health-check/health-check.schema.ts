@@ -1,7 +1,7 @@
-import { type HealthCheckStatus } from './health-check-result.interface.js';
+import { HealthCheckStatus } from './health-check-result.interface.js';
 import {
   type HealthIndicatorResult,
-  type HealthIndicatorStatus,
+  HealthIndicatorStatus,
 } from '../health-indicator/index.js';
 
 /**
@@ -24,10 +24,14 @@ type RawSchema = Record<string, unknown>;
 
 // These examples will be displayed on Swagger
 const DB_EXAMPLE: HealthIndicatorResult = {
-  database: { status: 'up', responseTime: 12 },
+  database: { status: HealthIndicatorStatus.UP, responseTime: 12 },
 };
 const REDIS_EXAMPLE: HealthIndicatorResult = {
-  redis: { status: 'down', message: 'Could not connect', responseTime: 3005 },
+  redis: {
+    status: HealthIndicatorStatus.DOWN,
+    message: 'Could not connect',
+    responseTime: 3005,
+  },
 };
 const COMBINED_EXAMPLE: HealthIndicatorResult = {
   ...DB_EXAMPLE,
@@ -58,7 +62,7 @@ function getHealthCheckDtoClasses(swagger: Swagger): HealthCheckDtoClasses {
 
   class TerminusHealthIndicatorResult {
     @ApiProperty({
-      enum: ['up', 'degraded', 'down'] satisfies HealthIndicatorStatus[],
+      enum: Object.values(HealthIndicatorStatus),
       description: 'The status of this health indicator',
     })
     status!: HealthIndicatorStatus;
@@ -90,13 +94,8 @@ function getHealthCheckDtoClasses(swagger: Swagger): HealthCheckDtoClasses {
 
   class TerminusHealthCheckResult {
     @ApiProperty({
-      enum: [
-        'error',
-        'ok',
-        'degraded',
-        'shutting_down',
-      ] satisfies HealthCheckStatus[],
-      example: 'ok',
+      enum: Object.values(HealthCheckStatus),
+      example: HealthCheckStatus.OK,
     })
     status!: HealthCheckStatus;
 
@@ -140,20 +139,22 @@ export function getHealthCheckSchema(
   status: HealthCheckStatus,
 ): RawSchema {
   const { TerminusHealthCheckResult } = getHealthCheckDtoClasses(swagger);
+  const isError = status === HealthCheckStatus.ERROR;
 
   return {
     allOf: [{ $ref: swagger.getSchemaPath(TerminusHealthCheckResult) }],
     properties: {
       status: {
-        enum:
-          status === 'error' ? ['error', 'shutting_down'] : ['ok', 'degraded'],
+        enum: isError
+          ? [HealthCheckStatus.ERROR, HealthCheckStatus.SHUTTING_DOWN]
+          : [HealthCheckStatus.OK, HealthCheckStatus.DEGRADED],
         example: status,
       },
       error: {
-        example: status === 'error' ? REDIS_EXAMPLE : {},
+        example: isError ? REDIS_EXAMPLE : {},
       },
       details: {
-        example: status === 'error' ? COMBINED_EXAMPLE : DB_EXAMPLE,
+        example: isError ? COMBINED_EXAMPLE : DB_EXAMPLE,
       },
     },
   };

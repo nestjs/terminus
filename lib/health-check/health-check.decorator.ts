@@ -1,5 +1,6 @@
 import { createRequire } from 'node:module';
 import { Header } from '@nestjs/common';
+import { HealthCheckStatus } from './health-check-result.interface.js';
 import {
   getHealthCheckExtraModels,
   getHealthCheckSchema,
@@ -79,12 +80,12 @@ function getSwaggerDefinitions(swagger: Swagger) {
 
   const ServiceUnavailable = ApiServiceUnavailableResponse({
     description: 'The Health Check is not successful',
-    schema: getHealthCheckSchema(swagger, 'error'),
+    schema: getHealthCheckSchema(swagger, HealthCheckStatus.ERROR),
   });
 
   const Ok = ApiOkResponse({
     description: 'The Health Check is successful',
-    schema: getHealthCheckSchema(swagger, 'ok'),
+    schema: getHealthCheckSchema(swagger, HealthCheckStatus.OK),
   });
 
   return [ExtraModels, ServiceUnavailable, Ok];

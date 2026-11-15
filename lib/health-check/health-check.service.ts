@@ -11,6 +11,7 @@ import { TERMINUS_LOGGER } from '../terminus.constants.js';
 import { ErrorLogger } from './error-logger/error-logger.interface.js';
 import { ERROR_LOGGER } from './error-logger/error-logger.provider.js';
 import { HealthCheckExecutor } from './health-check-executor.service.js';
+import { HealthCheckStatus } from './health-check-result.interface.js';
 
 /**
  * Handles Health Checks which can be used in
@@ -49,11 +50,11 @@ export class HealthCheckService {
     const result = await this.healthCheckExecutor.execute(healthIndicators);
 
     switch (result.status) {
-      case 'ok':
-      case 'degraded':
+      case HealthCheckStatus.OK:
+      case HealthCheckStatus.DEGRADED:
         return result;
 
-      case 'error':
+      case HealthCheckStatus.ERROR:
         const msg = this.errorLogger.getErrorMessage(
           'Health Check has failed!',
           result.details,
@@ -61,7 +62,7 @@ export class HealthCheckService {
         this.logger.error(msg);
         throw new ServiceUnavailableException(result);
 
-      case 'shutting_down':
+      case HealthCheckStatus.SHUTTING_DOWN:
         throw new ServiceUnavailableException(result);
 
       default:
