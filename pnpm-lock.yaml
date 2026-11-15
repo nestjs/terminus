@@ -102,9 +102,6 @@ catalogs:
     express:
       specifier: 5.2.1
       version: 5.2.1
-    fastify:
-      specifier: 5.12.8
-      version: 5.12.8
     husky:
       specifier: 9.1.7
       version: 9.1.7
@@ -269,9 +266,6 @@ importers:
       express:
         specifier: 'catalog:'
         version: 5.2.1
-      fastify:
-        specifier: 'catalog:'
-        version: 5.12.8
       husky:
         specifier: 'catalog:'
         version: 9.1.7

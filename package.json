@@ -99,7 +99,6 @@
     "axios": "catalog:",
     "esbuild": "catalog:",
     "express": "catalog:",
-    "fastify": "catalog:",
     "husky": "catalog:",
     "kafkajs": "catalog:",
     "lint-staged": "catalog:",
