@@ -113,7 +113,7 @@ In order to test the library against a sample, go to a sample, build it and
 start it:
 
 ```bash
-cd sample/000-dogs-app
+cd sample/000-kitchen-sink-app
 pnpm build
 pnpm start
 ```

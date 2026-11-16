@@ -336,7 +336,7 @@ importers:
         specifier: 'catalog:'
         version: 1.1.0
 
-  sample/000-dogs-app:
+  sample/000-kitchen-sink-app:
     dependencies:
       '@nestjs/common':
         specifier: 'catalog:'

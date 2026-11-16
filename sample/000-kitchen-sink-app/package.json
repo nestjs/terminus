@@ -1,7 +1,7 @@
 {
-  "name": "sample-000-dogs-app",
+  "name": "sample-000-kitchen-sink-app",
   "version": "1.0.0",
-  "description": "Nest TypeScript starter repository",
+  "description": "The built-in and custom health indicators of Terminus in one app",
   "license": "MIT",
   "private": true,
   "type": "module",
