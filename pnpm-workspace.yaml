@@ -2,8 +2,8 @@ packages:
   - 'sample/**'
 
 catalog:
-  "@commitlint/cli": "20.5.3"
-  "@commitlint/config-angular": "20.5.3"
+  "@commitlint/cli": "21.2.4"
+  "@commitlint/config-angular": "21.2.4"
   "@grpc/grpc-js": "1.14.7"
   "@grpc/proto-loader": "0.8.1"
   "@mikro-orm/core": "6.6.7"
