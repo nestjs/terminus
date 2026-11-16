@@ -39,7 +39,7 @@ catalog:
   "mongoose": "8.24.9"
   "mysql2": "3.24.6"
   "portfinder": "1.0.38"
-  "oxfmt": "0.78.0"
+  "oxfmt": "0.79.0"
   "prisma": "6.19.3"
   "reflect-metadata": "0.2.2"
   "release-it": "20.2.1"
