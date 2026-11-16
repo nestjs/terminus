@@ -1,8 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {
-  type HealthCheckAttempt,
-  HealthIndicatorService,
-} from '../service/health-indicator.service.js';
+import { HealthIndicatorService } from '../service/health-indicator.service.js';
 
 type PingCommandSignature = { [Key in string]?: number };
 
@@ -73,11 +70,11 @@ export class PrismaHealthIndicator {
     key: Key,
     prismaClient: PrismaClient,
     options: PrismaClientPingCheckSettings = {},
-  ): HealthCheckAttempt<Key> {
+  ) {
     return this.healthIndicatorService
       .check(key)
       .attempt(() => this.pingDb(prismaClient))
-      .withFailureData((error) => ({
+      .withFailureData((error): { code?: string | number } => ({
         code: (error as { code?: string | number }).code,
       }))
       .withTimeout(options.timeout ?? 1000);

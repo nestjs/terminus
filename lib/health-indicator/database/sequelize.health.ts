@@ -1,10 +1,7 @@
 import { Injectable, type OnModuleInit, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { loadPackage } from '../../utils/index.js';
-import {
-  type HealthCheckAttempt,
-  HealthIndicatorService,
-} from '../service/health-indicator.service.js';
+import { HealthIndicatorService } from '../service/health-indicator.service.js';
 
 export interface SequelizePingCheckSettings {
   /**
@@ -86,7 +83,7 @@ export class SequelizeHealthIndicator implements OnModuleInit {
   public pingCheck<Key extends string = string>(
     key: Key,
     options: SequelizePingCheckSettings = {},
-  ): HealthCheckAttempt<Key> {
+  ) {
     return (
       this.healthIndicatorService
         .check(key)
@@ -103,7 +100,7 @@ export class SequelizeHealthIndicator implements OnModuleInit {
           await this.pingDb(connection);
         })
         // Sequelize keeps the error of the driver on `parent`
-        .withFailureData((error) => ({
+        .withFailureData((error): { code?: string } => ({
           code: (error as { parent?: { code?: string } }).parent?.code,
         }))
         .withTimeout(options.timeout ?? 1000)

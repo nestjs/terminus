@@ -84,6 +84,14 @@ export class Indicators {
   async awaited() {
     return await this.builders();
   }
+  async failureData() {
+    const { api } = await this.http();
+    return api.status === 'down' ? api.statusCode : undefined;
+  }
+  async dbFailureData() {
+    const { database } = await this.builtIn();
+    return database.status === 'down' ? database.code : undefined;
+  }
   check() {
     return this.health.check([
       () => this.upOrDown(true),

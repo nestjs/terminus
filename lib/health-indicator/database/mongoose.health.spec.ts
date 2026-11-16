@@ -1,3 +1,4 @@
+import { expectTypeOf } from 'vitest';
 import { Test } from '@nestjs/testing';
 import { MongooseHealthIndicator } from './mongoose.health.js';
 import { HealthIndicatorService } from '../service/health-indicator.service.js';
@@ -8,6 +9,15 @@ vi.mock('../../utils/checkPackage.util.js', () => ({
 }));
 
 describe('MongooseHealthIndicator', () => {
+  it('types the code on a failed result', () => {
+    type Entry = Awaited<
+      ReturnType<MongooseHealthIndicator['pingCheck']>
+    >[string];
+    expectTypeOf<Extract<Entry, { message: string }>['code']>().toEqualTypeOf<
+      string | number | undefined
+    >();
+  });
+
   let mongoose: MongooseHealthIndicator;
   const command = vi.fn();
   const connection = { readyState: 1, db: { command } };

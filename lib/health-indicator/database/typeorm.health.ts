@@ -2,10 +2,7 @@ import { Injectable, type OnModuleInit, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import type * as TypeOrm from 'typeorm';
 import { loadPackage } from '../../utils/index.js';
-import {
-  type HealthCheckAttempt,
-  HealthIndicatorService,
-} from '../service/health-indicator.service.js';
+import { HealthIndicatorService } from '../service/health-indicator.service.js';
 
 export interface TypeOrmPingCheckSettings {
   /**
@@ -106,7 +103,7 @@ export class TypeOrmHealthIndicator implements OnModuleInit {
   pingCheck<Key extends string>(
     key: Key,
     options: TypeOrmPingCheckSettings = {},
-  ): HealthCheckAttempt<Key> {
+  ) {
     return this.healthIndicatorService
       .check(key)
       .attempt(async () => {
@@ -121,7 +118,7 @@ export class TypeOrmHealthIndicator implements OnModuleInit {
 
         await this.pingDb(connection);
       })
-      .withFailureData((error) => ({
+      .withFailureData((error): { code?: string | number } => ({
         code: (error as { code?: string | number }).code,
       }))
       .withTimeout(options.timeout ?? 1000);

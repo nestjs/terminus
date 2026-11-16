@@ -2,10 +2,7 @@ import { Injectable, type OnModuleInit, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { DatabaseNotConnectedError } from '../../errors/database-not-connected.error.js';
 import { loadPackage } from '../../utils/index.js';
-import {
-  type HealthCheckAttempt,
-  HealthIndicatorService,
-} from '../service/health-indicator.service.js';
+import { HealthIndicatorService } from '../service/health-indicator.service.js';
 
 export interface MongoosePingCheckSettings {
   /**
@@ -93,7 +90,7 @@ export class MongooseHealthIndicator implements OnModuleInit {
   public pingCheck<Key extends string = string>(
     key: Key,
     options: MongoosePingCheckSettings = {},
-  ): HealthCheckAttempt<Key> {
+  ) {
     return this.healthIndicatorService
       .check(key)
       .attempt(async () => {
@@ -108,7 +105,7 @@ export class MongooseHealthIndicator implements OnModuleInit {
 
         await this.pingDb(connection);
       })
-      .withFailureData((error) => ({
+      .withFailureData((error): { code?: string | number } => ({
         code: (error as { code?: string | number }).code,
       }))
       .withTimeout(options.timeout ?? 1000);

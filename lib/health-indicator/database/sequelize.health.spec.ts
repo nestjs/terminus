@@ -1,3 +1,4 @@
+import { expectTypeOf } from 'vitest';
 import { Test } from '@nestjs/testing';
 import { ConnectionRefusedError } from 'sequelize';
 import { SequelizeHealthIndicator } from './sequelize.health.js';
@@ -8,6 +9,15 @@ vi.mock('../../utils/checkPackage.util.js', () => ({
 }));
 
 describe('SequelizeHealthIndicator', () => {
+  it('types the code on a failed result', () => {
+    type Entry = Awaited<
+      ReturnType<SequelizeHealthIndicator['pingCheck']>
+    >[string];
+    expectTypeOf<Extract<Entry, { message: string }>['code']>().toEqualTypeOf<
+      string | undefined
+    >();
+  });
+
   let sequelize: SequelizeHealthIndicator;
   const query = vi.fn();
   const connection = { query };

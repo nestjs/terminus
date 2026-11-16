@@ -164,6 +164,18 @@ describe('FetchHealthIndicator#pingCheck with verify', () => {
     });
   });
 
+  it('types statusCode and statusText on a failed result', async () => {
+    const result = await indicator.pingCheck('dep', `${base}/down`);
+    if (result.dep.status === 'down') {
+      expectTypeOf(result.dep.statusCode).toEqualTypeOf<number | undefined>();
+      expectTypeOf(result.dep.statusText).toEqualTypeOf<string | undefined>();
+    }
+    if (result.dep.status === 'up') {
+      // Not the failure data: without withSuccessData() any key is `any` (#2796)
+      expectTypeOf(result.dep.statusCode).toBeAny();
+    }
+  });
+
   it('sees the response of a client set not to throw on 4xx/5xx', async () => {
     const result = await indicator.pingCheck('dep', `${base}/down`, {
       fetch: (url, init) =>

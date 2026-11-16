@@ -1,10 +1,7 @@
 import { Injectable, type OnModuleInit, Scope } from '@nestjs/common';
 import type * as NestJSMicroservices from '@nestjs/microservices';
 import { loadPackage, type PropType, isError } from '../../utils/index.js';
-import {
-  type HealthCheckAttempt,
-  HealthIndicatorService,
-} from '../service/health-indicator.service.js';
+import { HealthIndicatorService } from '../service/health-indicator.service.js';
 
 // Since @nestjs/microservices is lazily loaded we are not able to use
 // its types. It would end up in the d.ts file if we would use the types.
@@ -99,7 +96,7 @@ export class MicroserviceHealthIndicator implements OnModuleInit {
   >(
     key: Key,
     options: MicroserviceHealthIndicatorOptions<MicroserviceClientOptions>,
-  ): HealthCheckAttempt<Key> {
+  ) {
     return this.healthIndicatorService
       .check(key)
       .attempt(async () => {
@@ -127,7 +124,7 @@ export class MicroserviceHealthIndicator implements OnModuleInit {
           throw isError(err) ? err : new Error(`${key} is not available`);
         }
       })
-      .withFailureData((error) => ({
+      .withFailureData((error): { code?: string | number } => ({
         code: (error as { code?: string | number }).code,
       }))
       .withTimeout(options.timeout ?? 1000);

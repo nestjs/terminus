@@ -1,8 +1,18 @@
+import { expectTypeOf } from 'vitest';
 import { Test } from '@nestjs/testing';
 import { PrismaHealthIndicator } from './prisma.health.js';
 import { HealthIndicatorService } from '../service/health-indicator.service.js';
 
 describe('PrismaHealthIndicator', () => {
+  it('types the code on a failed result', () => {
+    type Entry = Awaited<
+      ReturnType<PrismaHealthIndicator['pingCheck']>
+    >[string];
+    expectTypeOf<Extract<Entry, { message: string }>['code']>().toEqualTypeOf<
+      string | number | undefined
+    >();
+  });
+
   let prisma: PrismaHealthIndicator;
   // A SQL client: the MongoDB command fails, so the raw query is used
   const client = {

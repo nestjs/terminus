@@ -1,3 +1,4 @@
+import { expectTypeOf } from 'vitest';
 import net from 'node:net';
 import { Transport } from '@nestjs/microservices';
 import { Test } from '@nestjs/testing';
@@ -20,6 +21,15 @@ const nestJSMicroservicesMock = {
 };
 
 describe('MicroserviceHealthIndicator', () => {
+  it('types the code on a failed result', () => {
+    type Entry = Awaited<
+      ReturnType<MicroserviceHealthIndicator['pingCheck']>
+    >[string];
+    expectTypeOf<Extract<Entry, { message: string }>['code']>().toEqualTypeOf<
+      string | number | undefined
+    >();
+  });
+
   let microservice: MicroserviceHealthIndicator;
   const options = { transport: Transport.TCP, options: {} } as const;
 
