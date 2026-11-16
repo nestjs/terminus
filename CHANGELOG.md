@@ -1,5 +1,27 @@
 # Changelog
 
+# [12.2.0](https://github.com/nestjs/terminus/compare/12.1.0...12.2.0) (2026-11-16)
+
+### Bug Fixes
+
+* **health-check:** default each HealthCheck option on its own ([f259b05](https://github.com/nestjs/terminus/commit/f259b05bfae806bc02f74340f051579e33acc252))
+* **health-check:** prefix the swagger schema names and fix the typings ([e787faa](https://github.com/nestjs/terminus/commit/e787faa430f66a471de99b87ee956dc90a454676))
+* **health-indicator:** check optional peers by importing them ([33a45e5](https://github.com/nestjs/terminus/commit/33a45e5de131fea977dbb66934a75eea18ffb085))
+* **health-indicator:** load optional peers in a way bundlers can follow ([066a7db](https://github.com/nestjs/terminus/commit/066a7db96bd15f5a3c8f95a4b235429ee9a2248d))
+* **health-indicator:** safely resolve MikroORM context connection ([2935616](https://github.com/nestjs/terminus/commit/2935616863d0967b9eab49530286760829c0c423))
+* ignore reserved keys returned from `attempt()` ([2c4aedc](https://github.com/nestjs/terminus/commit/2c4aedc495361e671645932196c95e32dec8080e)), closes [#2795](https://github.com/nestjs/terminus/issues/2795)
+* type the failure data of the built-in indicators ([651a376](https://github.com/nestjs/terminus/commit/651a3766e889bcee475e89cfee0ea1404e2dcede))
+
+### Features
+
+* accept duration and size strings like '2s' and '150mb' ([9bfcc20](https://github.com/nestjs/terminus/commit/9bfcc20bcdee7b50ee4265ece81cdad1ba5fb417))
+* add `withData()` to `attempt()` ([b9f1d67](https://github.com/nestjs/terminus/commit/b9f1d671472dfcbcd74b64e8930baf629302f8e3)), closes [#2796](https://github.com/nestjs/terminus/issues/2796)
+* add withData(), withSuccessData() and withFailureData() to attempts ([3bf4cc9](https://github.com/nestjs/terminus/commit/3bf4cc93b3c60d5685947b994f64d361425d7447))
+* **health-indicator:** add degradedAfter() and degradedOnFailure() ([ef957dd](https://github.com/nestjs/terminus/commit/ef957dd1c6fe05cb21abad66bd9f8e46d1611cba))
+* **http:** add FetchHealthIndicator, deprecate HttpHealthIndicator ([8f0a72c](https://github.com/nestjs/terminus/commit/8f0a72c2533d013b398a3504d58fd21904cb893f))
+* register a named swagger schema for health check results ([41081e5](https://github.com/nestjs/terminus/commit/41081e5271fcf20383189ed63f20b1deed54799e)), closes [#2070](https://github.com/nestjs/terminus/issues/2070)
+* return attempts from the memory and disk checks, add catch() and finally() ([ffe964d](https://github.com/nestjs/terminus/commit/ffe964d4e24e1ec7b6832570d794853415b9947b))
+
 # [12.1.0](https://github.com/nestjs/terminus/compare/12.0.0...12.1.0) (2026-09-20)
 
 
