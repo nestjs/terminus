@@ -174,6 +174,24 @@ describe('FetchHealthIndicator#pingCheck with verify', () => {
     }
   });
 
+  it('sees the response a client throws on 4xx/5xx (axios)', async () => {
+    const result = await indicator.pingCheck('dep', `${base}/down`, {
+      fetch: clients['@nestjs/axios'],
+      verify: (res) => res.status === 503,
+    });
+    expect(result.dep).toMatchObject({ status: 'up' });
+  });
+
+  it('does not see an error thrown without the response', async () => {
+    const verify = vi.fn(() => true);
+    const result = await indicator.pingCheck('dep', `${base}/down`, {
+      fetch: httpClient.request,
+      verify,
+    });
+    expect(verify).not.toHaveBeenCalled();
+    expect(result.dep).toMatchObject({ status: 'down', statusCode: 503 });
+  });
+
   it('sees the response of a client set not to throw on 4xx/5xx', async () => {
     const result = await indicator.pingCheck('dep', `${base}/down`, {
       fetch: (url, init) =>

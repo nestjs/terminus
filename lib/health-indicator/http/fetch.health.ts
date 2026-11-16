@@ -54,9 +54,9 @@ export interface FetchCheckOptions<
    * Replaces the default rule (2xx is `up`), so check the status yourself if
    * it matters.
    *
-   * Only sees responses the fetch function resolves with. Clients that throw
-   * on 4xx/5xx (axios, `@nestjs/http-client`) need to be told not to
-   * (`validateStatus: () => true`, `throwOnHttpError: false`).
+   * Also sees the response of a client that throws on 4xx/5xx and keeps it
+   * on the error (axios). `@nestjs/http-client` throws without it, so set
+   * `throwOnHttpError: false` there.
    */
   verify?: (response: TResponse) => boolean | Promise<boolean>;
 }
@@ -117,13 +117,17 @@ export class FetchHealthIndicator {
         try {
           response = await fetch(url.toString(), { method, headers, signal });
         } catch (err) {
-          // Clients that throw on non-2xx (axios, @nestjs/http-client) still
-          // report the status.
-          const failed = statusOf(err);
-          if (failed) {
-            throw statusError(failed);
+          const thrown = responseOf<TResponse>(err);
+          if (!thrown) {
+            // Clients that throw on non-2xx without the response
+            // (@nestjs/http-client) still report the status.
+            const failed = statusOf(err);
+            if (failed) {
+              throw statusError(failed);
+            }
+            throw withCause(err);
           }
-          throw withCause(err);
+          response = thrown;
         }
 
         let healthy: boolean;
@@ -168,11 +172,19 @@ function statusError(
   return new ResponseStatusError(message, status, statusText);
 }
 
-/** `err.response.status` (axios), `err.status` (@nestjs/http-client, ky, …). */
-function statusOf(err: any): HttpResponseLike | undefined {
+/** The response a client attached to the error it threw (axios, ky, …). */
+function responseOf<TResponse>(err: any): TResponse | undefined {
   if (typeof err?.response?.status === 'number') {
     return err.response;
   }
+  return undefined;
+}
+
+/**
+ * The status of an error that has no response attached, e.g. the
+ * `HttpResponseError` of `@nestjs/http-client`.
+ */
+function statusOf(err: any): HttpResponseLike | undefined {
   if (typeof err?.status === 'number') {
     return err;
   }
