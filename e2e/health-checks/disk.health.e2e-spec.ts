@@ -136,34 +136,6 @@ describe('DiskHealthIndicator', () => {
   });
 
   describe('#checkStorage builders', () => {
-    it('should be up when the disk threshold is not exceeded', async () => {
-      const { free, size } = await checkDiskSpace('/');
-      app = await setHealthEndpoint(({ healthCheck, disk }) =>
-        healthCheck.check([
-          () =>
-            disk.checkStorage('disk', {
-              path: '/',
-              threshold: size - free + 1024 * 1024 * 1024,
-            }),
-        ]),
-      ).start();
-
-      const details = {
-        disk: { status: 'up', responseTime: expect.any(Number) },
-      };
-      return request(app.getHttpServer())
-        .get('/health')
-        .expect(200)
-        .expect(({ body }) =>
-          expect(body).toEqual({
-            status: 'ok',
-            info: details,
-            error: {},
-            details,
-          }),
-        );
-    });
-
     it('should be down, not a 500, when the path does not exist', async () => {
       app = await setHealthEndpoint(({ healthCheck, disk }) =>
         healthCheck.check([

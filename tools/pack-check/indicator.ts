@@ -7,7 +7,9 @@ import {
   DiskHealthIndicator,
   FetchHealthIndicator,
   HealthCheckService,
+  HealthCheckStatus,
   HealthIndicatorService,
+  HealthIndicatorStatus,
   MemoryHealthIndicator,
   TypeOrmHealthIndicator,
 } from '@nestjs/terminus';
@@ -22,6 +24,9 @@ export class Indicators {
     private readonly disk: DiskHealthIndicator,
   ) {}
 
+  session() {
+    return this.indicator.check('dog');
+  }
   upOrDown(up: boolean) {
     const session = this.indicator.check('dog');
     return up ? session.up({ goodBoys: 1 }) : session.down('bad');
@@ -103,6 +108,9 @@ export class Indicators {
   async dbFailureData() {
     const { database } = await this.builtIn();
     return database.status === 'down' ? database.code : undefined;
+  }
+  statuses() {
+    return [HealthIndicatorStatus.UP, HealthCheckStatus.OK];
   }
   check() {
     return this.health.check([

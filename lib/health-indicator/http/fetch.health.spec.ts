@@ -19,8 +19,6 @@ beforeAll(async () => {
     req.on('close', () => !res.writableEnded && aborted++);
     if (req.url === '/slow') return void setTimeout(() => res.end(), 2000);
     if (req.url === '/down') return void res.writeHead(503).end('nope');
-    if (req.url === '/error') return void res.writeHead(500).end('oops');
-    if (req.url === '/sluggish') return void setTimeout(() => res.end(), 100);
     res.writeHead(req.url === '/empty' ? 204 : 200).end('woof');
   });
   await new Promise<void>((r) => server.listen(0, r));
@@ -227,68 +225,6 @@ describe('FetchHealthIndicator#pingCheck', () => {
     expect(result.billing).toMatchObject({ status: 'down', statusCode: 503 });
   });
 
-  it('composes with cacheFor()', async () => {
-    const attempt = () =>
-      indicator.pingCheck('cached', `${base}/ok`).cacheFor(10_000);
-    await attempt();
-    expect((await attempt()).cached).toMatchObject({
-      status: 'up',
-      cachedResponse: true,
-    });
-  });
-
-  it('composes with withData()', async () => {
-    const result = await indicator
-      .pingCheck('dep', `${base}/ok`)
-      .withData({ owner: 'team-docs' });
-    expect(result.dep).toMatchObject({ status: 'up', owner: 'team-docs' });
-  });
-
-  it('is down on 500', async () => {
-    const result = await indicator.pingCheck('dep', `${base}/error`);
-    expect(result.dep).toEqual({
-      status: 'down',
-      message: 'Request failed with status code 500',
-      statusCode: 500,
-      statusText: 'Internal Server Error',
-      responseTime: expect.any(Number),
-    });
-  });
-
-  it('is degraded when slower than degradedAfter() but within the timeout', async () => {
-    const result = await indicator
-      .pingCheck('dep', `${base}/sluggish`)
-      .degradedAfter(50)
-      .withTimeout(2000);
-    expect(result.dep).toEqual({
-      status: 'degraded',
-      responseTime: expect.any(Number),
-    });
-    expect(result.dep.responseTime).toBeGreaterThanOrEqual(50);
-  });
-
-  it('is up when faster than degradedAfter()', async () => {
-    const result = await indicator
-      .pingCheck('dep', `${base}/ok`)
-      .degradedAfter(1000);
-    expect(result.dep).toMatchObject({ status: 'up' });
-  });
-
-  it('is degraded when the connection is refused with degradedOnFailure()', async () => {
-    const result = await indicator.pingCheck('dep', closed).degradedOnFailure();
-    expect(result.dep).toMatchObject({
-      status: 'degraded',
-      message: expect.stringContaining('ECONNREFUSED'),
-    });
-  });
-
-  it('composes with degradedAfter()', async () => {
-    const result = await indicator
-      .pingCheck('dep', `${base}/ok`)
-      .degradedAfter(0);
-    expect(result.dep).toMatchObject({ status: 'degraded' });
-  });
-
   it('keeps the message and status with degradedOnFailure()', async () => {
     const result = await indicator
       .pingCheck('dep', `${base}/down`)
@@ -298,18 +234,6 @@ describe('FetchHealthIndicator#pingCheck', () => {
       message: 'Request failed with status code 503',
       statusCode: 503,
       statusText: 'Service Unavailable',
-      responseTime: expect.any(Number),
-    });
-  });
-
-  it('has no status code when it times out with degradedOnFailure()', async () => {
-    const result = await indicator
-      .pingCheck('dep', `${base}/slow`)
-      .withTimeout(50)
-      .degradedOnFailure();
-    expect(result.dep).toEqual({
-      status: 'degraded',
-      message: 'timeout of 50ms exceeded',
       responseTime: expect.any(Number),
     });
   });

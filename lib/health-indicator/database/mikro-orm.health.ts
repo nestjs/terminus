@@ -3,17 +3,15 @@ import { Injectable, type OnModuleInit, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { DatabaseNotConnectedError } from '../../errors/database-not-connected.error.js';
 import { loadPackage } from '../../utils/index.js';
-import {
-  type HealthCheckAttempt,
-  HealthIndicatorService,
-} from '../service/health-indicator.service.js';
+import { type HealthCheckAttempt } from '../service/health-check-attempt.js';
+import { HealthIndicatorService } from '../service/health-indicator.service.js';
 
 export interface MikroOrmPingCheckSettings {
   /**
    * The connection which the ping check should get executed
    */
   connection?: any;
-  // FIXME: Delete the `timeout` option in v13, use `.withTimeout()` instead
+  // FIXME: Delete the `timeout` option in v13, use `.withTimeout()` instead (#2823)
   /**
    * The amount of time the check should require in ms
    * @deprecated Chain `.withTimeout(ms)` on the returned attempt instead,

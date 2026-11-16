@@ -3,10 +3,8 @@ import { errorMessage } from '../../utils/errorMessage.js';
 import { type Merge } from '../../utils/types.js';
 import { runWithTimeout } from '../../utils/runWithTimeout.js';
 import { type Duration, toMs } from '../../utils/units.js';
-import { type AttemptCache } from './attempt-cache.js';
+import { type AttemptCache, type AttemptOutcome } from './attempt-cache.js';
 import { AttemptData } from './attempt-data.js';
-
-type AdditionalData = Record<string, unknown>;
 
 // FIXME: Delete this type in v13 and use `Merge<TStatic, TSuccess>` in its
 // place: the returned value is ignored then (#2796)
@@ -25,15 +23,15 @@ type SuccessData<TStatic, TSuccess> = TSuccess extends object
  * What awaiting a `HealthCheckAttempt` resolves to: one entry under the
  * indicator key. The entry is either a success with the static and success
  * data, or a failure with an error `message`, the static and the failure data.
- * Narrow on `status` to tell them apart.
+ * `up` is a success, `down` is a failure, `degraded` can be both.
  */
 type HealthCheckAttemptResult<
-  Key extends string,
+  TKey extends string,
   TStatic,
   TSuccess,
   TFailure,
 > = Record<
-  Key,
+  TKey,
   | ({
       status: HealthIndicatorStatus.UP | HealthIndicatorStatus.DEGRADED;
       responseTime: number;
@@ -47,16 +45,13 @@ type HealthCheckAttemptResult<
     } & Merge<TStatic, TFailure>)
 >;
 
-export type AttemptOutcome = {
-  status: HealthIndicatorStatus.UP | HealthIndicatorStatus.DOWN;
-  data: AdditionalData;
-  responseTime: number;
-};
+// The longest delay of a Node.js timer. A longer one fires after 1ms.
+const MAX_DURATION_MS = 2 ** 31 - 1;
 
 function assertDuration(ms: number, name: string) {
-  if (!Number.isInteger(ms) || ms < 0 || ms > 2 ** 32 - 1) {
+  if (!Number.isInteger(ms) || ms < 0 || ms > MAX_DURATION_MS) {
     throw new Error(
-      `${name} must be a whole number between 0 and ${2 ** 32 - 1} milliseconds, got ${ms}`,
+      `${name} must be a whole number between 0 and ${MAX_DURATION_MS} milliseconds, got ${ms}`,
     );
   }
 }
@@ -67,7 +62,7 @@ function assertDuration(ms: number, name: string) {
  * @publicApi
  */
 export class HealthCheckAttempt<
-  Key extends Readonly<string> = string,
+  TKey extends Readonly<string> = string,
   TResult = unknown,
   /** The data of `withData()`, added to every result */
   TStatic extends object = {},
@@ -77,7 +72,7 @@ export class HealthCheckAttempt<
   /** The data of `withFailureData()`, added to a failed result */
   TFailure extends object = {},
 > implements Promise<
-  HealthCheckAttemptResult<Key, TStatic, TSuccess, TFailure>
+  HealthCheckAttemptResult<TKey, TStatic, TSuccess, TFailure>
 > {
   private timeoutMs?: number;
   private cacheTtlMs?: number;
@@ -87,9 +82,9 @@ export class HealthCheckAttempt<
 
   /** @internal */
   constructor(
-    private readonly key: Key,
+    private readonly key: TKey,
     private readonly fn: (options: { signal: AbortSignal }) => unknown,
-    private readonly cache: AttemptCache<AttemptOutcome>,
+    private readonly cache: AttemptCache,
   ) {
     this.data = new AttemptData(key);
   }
@@ -97,7 +92,7 @@ export class HealthCheckAttempt<
   private toResult(
     outcome: AttemptOutcome,
     cachedResponse = false,
-  ): HealthCheckAttemptResult<Key, TStatic, TSuccess, TFailure> {
+  ): HealthCheckAttemptResult<TKey, TStatic, TSuccess, TFailure> {
     // The static data is not cached: attempts with the same key can have their own.
     const detail = {
       ...this.data.staticData,
@@ -108,7 +103,7 @@ export class HealthCheckAttempt<
     };
 
     return { [this.key]: detail } as HealthCheckAttemptResult<
-      Key,
+      TKey,
       TStatic,
       TSuccess,
       TFailure
@@ -139,7 +134,7 @@ export class HealthCheckAttempt<
   }
 
   private async execute(): Promise<
-    HealthCheckAttemptResult<Key, TStatic, TSuccess, TFailure>
+    HealthCheckAttemptResult<TKey, TStatic, TSuccess, TFailure>
   > {
     if (this.cacheTtlMs === undefined) {
       return this.toResult(await this.run());
@@ -215,7 +210,7 @@ export class HealthCheckAttempt<
   withData<const TData extends object>(
     data: TData,
   ): HealthCheckAttempt<
-    Key,
+    TKey,
     TResult,
     Merge<TStatic, TData>,
     TSuccess,
@@ -250,7 +245,7 @@ export class HealthCheckAttempt<
   withSuccessData<const TData extends object>(
     fn: (result: TResult) => TData,
   ): HealthCheckAttempt<
-    Key,
+    TKey,
     TResult,
     TStatic,
     Merge<TSuccess, Awaited<TData>>,
@@ -259,7 +254,7 @@ export class HealthCheckAttempt<
   withSuccessData<const TData extends object>(
     data: TData,
   ): HealthCheckAttempt<
-    Key,
+    TKey,
     TResult,
     TStatic,
     Merge<TSuccess, TData>,
@@ -291,7 +286,7 @@ export class HealthCheckAttempt<
   withFailureData<const TData extends object>(
     fn: (error: unknown) => TData,
   ): HealthCheckAttempt<
-    Key,
+    TKey,
     TResult,
     TStatic,
     TSuccess,
@@ -300,7 +295,7 @@ export class HealthCheckAttempt<
   withFailureData<const TData extends object>(
     data: TData,
   ): HealthCheckAttempt<
-    Key,
+    TKey,
     TResult,
     TStatic,
     TSuccess,
@@ -383,16 +378,16 @@ export class HealthCheckAttempt<
   // `then`, `catch` and `finally` make the attempt usable wherever a promise
   // is expected. Each call runs the attempt, like awaiting it does.
   then: Promise<
-    HealthCheckAttemptResult<Key, TStatic, TSuccess, TFailure>
+    HealthCheckAttemptResult<TKey, TStatic, TSuccess, TFailure>
   >['then'] = (onfulfilled, onrejected) =>
     this.execute().then(onfulfilled, onrejected);
 
   catch: Promise<
-    HealthCheckAttemptResult<Key, TStatic, TSuccess, TFailure>
+    HealthCheckAttemptResult<TKey, TStatic, TSuccess, TFailure>
   >['catch'] = (onrejected) => this.execute().catch(onrejected);
 
   finally: Promise<
-    HealthCheckAttemptResult<Key, TStatic, TSuccess, TFailure>
+    HealthCheckAttemptResult<TKey, TStatic, TSuccess, TFailure>
   >['finally'] = (onfinally) => this.execute().finally(onfinally);
 
   readonly [Symbol.toStringTag] = 'HealthCheckAttempt';

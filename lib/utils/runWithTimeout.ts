@@ -8,10 +8,10 @@ import { rejectOnAbort } from './rejectOnAbort.js';
  * @param timeoutMs The timeout in milliseconds, or `undefined` for no timeout
  * @param fn The function to run
  */
-export async function runWithTimeout<T>(
+export async function runWithTimeout<TResult>(
   timeoutMs: number | undefined,
-  fn: (signal: AbortSignal) => T | PromiseLike<T>,
-): Promise<T> {
+  fn: (signal: AbortSignal) => TResult | PromiseLike<TResult>,
+): Promise<TResult> {
   const controller = new AbortController();
   const signals = [controller.signal];
   let timeout: AbortSignal | undefined;

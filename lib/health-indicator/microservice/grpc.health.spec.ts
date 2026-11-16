@@ -1,3 +1,4 @@
+import { expectTypeOf } from 'vitest';
 import { GRPCHealthIndicator } from './grpc.health.js';
 import { loadPackage } from '../../utils/checkPackage.util.js';
 import { GrpcOptions, Transport } from '@nestjs/microservices';
@@ -32,6 +33,17 @@ const nestJSMicroservicesMock = {
 };
 
 describe('GRPCHealthIndicator', () => {
+  it('types the failure data on a failed result', () => {
+    type Entry = Awaited<
+      ReturnType<GRPCHealthIndicator['checkService']>
+    >[string];
+    type Failure = Extract<Entry, { message: string }>;
+    expectTypeOf<Failure['code']>().toEqualTypeOf<number | undefined>();
+    expectTypeOf<Failure['servingStatus']>().toEqualTypeOf<
+      string | number | undefined
+    >();
+  });
+
   let grpc: GRPCHealthIndicator;
   beforeEach(async () => {
     vi.mocked(loadPackage).mockResolvedValue(nestJSMicroservicesMock);

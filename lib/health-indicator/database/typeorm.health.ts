@@ -10,7 +10,7 @@ export interface TypeOrmPingCheckSettings {
    */
   // `any` type in case of typeorm version mismatch
   connection?: any;
-  // FIXME: Delete the `timeout` option in v13, use `.withTimeout()` instead
+  // FIXME: Delete the `timeout` option in v13, use `.withTimeout()` instead (#2823)
   /**
    * The amount of time the check should require in ms
    * @deprecated Chain `.withTimeout(ms)` on the returned attempt instead,

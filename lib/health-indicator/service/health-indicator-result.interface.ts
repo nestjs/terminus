@@ -1,5 +1,4 @@
 import { type HealthIndicatorFunction } from '../health-indicator.js';
-import { type HealthCheckAttempt } from './health-indicator.service.js';
 
 /**
  * The statuses a health indicator can have.
@@ -35,33 +34,28 @@ export declare namespace HealthIndicatorStatus {
  * @publicApi
  */
 export type HealthIndicatorResult<
-  Key extends string = string,
-  Status extends HealthIndicatorStatus = HealthIndicatorStatus,
-  OptionalData extends Record<string, any> = Record<string, any>,
-> = Record<Key, { status: Status } & OptionalData>;
+  TKey extends string = string,
+  TStatus extends HealthIndicatorStatus = HealthIndicatorStatus,
+  TData extends Record<string, any> = Record<string, any>,
+> = Record<TKey, { status: TStatus } & TData>;
 
 /**
  * @internal
  */
 export type InferHealthIndicatorResult<
-  Fn extends HealthIndicatorFunction = HealthIndicatorFunction,
-> =
-  Fn extends HealthCheckAttempt<infer Key>
-    ? HealthIndicatorResult<Key>
-    : Fn extends (...args: any) => any
-      ? Awaited<ReturnType<Fn>>
-      : HealthIndicatorResult;
+  TFn extends HealthIndicatorFunction = HealthIndicatorFunction,
+> = TFn extends (...args: any) => any ? Awaited<ReturnType<TFn>> : Awaited<TFn>;
 
 /**
  * @internal
  */
 export type InferHealthIndicatorResults<
-  Fns extends readonly HealthIndicatorFunction[] = HealthIndicatorFunction[],
-  R extends readonly any[] = [],
-> = Fns extends readonly [
-  infer Fn extends HealthIndicatorFunction,
-  ...infer Rest extends readonly HealthIndicatorFunction[],
+  TFns extends readonly HealthIndicatorFunction[] = HealthIndicatorFunction[],
+  TResults extends readonly any[] = [],
+> = TFns extends readonly [
+  infer TFn extends HealthIndicatorFunction,
+  ...infer TRest extends readonly HealthIndicatorFunction[],
 ]
-  ? InferHealthIndicatorResults<Rest, [...R, Fn]> &
-      InferHealthIndicatorResult<Fn>
+  ? InferHealthIndicatorResults<TRest, [...TResults, TFn]> &
+      InferHealthIndicatorResult<TFn>
   : HealthIndicatorResult;

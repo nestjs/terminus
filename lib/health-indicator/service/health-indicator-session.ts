@@ -3,29 +3,27 @@ import {
   HealthIndicatorStatus,
 } from './health-indicator-result.interface.js';
 import { AttemptCache } from './attempt-cache.js';
-import {
-  type AttemptOutcome,
-  HealthCheckAttempt,
-} from './health-check-attempt.js';
+import { type AdditionalData } from './attempt-data.js';
+import { HealthCheckAttempt } from './health-check-attempt.js';
 
 /**
  * Show a compilation error if `status` is used in the additional data.
  */
 type WithoutStatus<TData> = {
-  [K in keyof TData]: K extends 'status' ? never : TData[K];
+  [TDataKey in keyof TData]: TDataKey extends 'status'
+    ? never
+    : TData[TDataKey];
 };
-
-type AdditionalData = Record<string, unknown>;
 
 /**
  * Indicate the health of a health indicator with the given key
  *
  * @publicApi
  */
-export class HealthIndicatorSession<Key extends Readonly<string> = string> {
+export class HealthIndicatorSession<TKey extends Readonly<string> = string> {
   constructor(
-    private readonly key: Key,
-    private readonly cache: AttemptCache<AttemptOutcome> = new AttemptCache(),
+    private readonly key: TKey,
+    private readonly cache = new AttemptCache(),
   ) {}
 
   private assertNotReserved(data: AdditionalData, keys: readonly string[]) {
@@ -41,7 +39,7 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
   private compose<TStatus extends HealthIndicatorStatus>(
     status: TStatus,
     data?: AdditionalData | string,
-  ): HealthIndicatorResult<Key, TStatus> {
+  ): HealthIndicatorResult<TKey, TStatus> {
     let additionalData: AdditionalData = {};
 
     if (typeof data === 'string') {
@@ -56,8 +54,8 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
 
     return {
       [this.key]: detail,
-      // TypeScript does not infer this.key as Key correctly.
-    } as Record<Key, typeof detail>;
+      // TypeScript does not infer this.key as TKey correctly.
+    } as Record<TKey, typeof detail>;
   }
 
   /**
@@ -65,15 +63,19 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
    * @param data additional data which will get appended to the result object
    * @remarks The `status` key is reserved and cannot be used in additional data.
    */
-  down<T extends AdditionalData>(
-    data?: T & WithoutStatus<T>,
-  ): HealthIndicatorResult<Key, HealthIndicatorStatus.DOWN, T>;
-  down<T extends string>(
-    data?: T,
-  ): HealthIndicatorResult<Key, HealthIndicatorStatus.DOWN, { message: T }>;
+  down<TData extends AdditionalData>(
+    data?: TData & WithoutStatus<TData>,
+  ): HealthIndicatorResult<TKey, HealthIndicatorStatus.DOWN, TData>;
+  down<TMessage extends string>(
+    data?: TMessage,
+  ): HealthIndicatorResult<
+    TKey,
+    HealthIndicatorStatus.DOWN,
+    { message: TMessage }
+  >;
   down(
     data?: AdditionalData | string,
-  ): HealthIndicatorResult<Key, HealthIndicatorStatus.DOWN> {
+  ): HealthIndicatorResult<TKey, HealthIndicatorStatus.DOWN> {
     return this.compose(HealthIndicatorStatus.DOWN, data);
   }
 
@@ -84,15 +86,19 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
    * @param data additional data which will get appended to the result object
    * @remarks The `status` key is reserved and cannot be used in additional data.
    */
-  degraded<T extends AdditionalData>(
-    data?: T & WithoutStatus<T>,
-  ): HealthIndicatorResult<Key, HealthIndicatorStatus.DEGRADED, T>;
-  degraded<T extends string>(
-    data?: T,
-  ): HealthIndicatorResult<Key, HealthIndicatorStatus.DEGRADED, { message: T }>;
+  degraded<TData extends AdditionalData>(
+    data?: TData & WithoutStatus<TData>,
+  ): HealthIndicatorResult<TKey, HealthIndicatorStatus.DEGRADED, TData>;
+  degraded<TMessage extends string>(
+    data?: TMessage,
+  ): HealthIndicatorResult<
+    TKey,
+    HealthIndicatorStatus.DEGRADED,
+    { message: TMessage }
+  >;
   degraded(
     data?: AdditionalData | string,
-  ): HealthIndicatorResult<Key, HealthIndicatorStatus.DEGRADED> {
+  ): HealthIndicatorResult<TKey, HealthIndicatorStatus.DEGRADED> {
     return this.compose(HealthIndicatorStatus.DEGRADED, data);
   }
 
@@ -101,15 +107,19 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
    * @param data additional data which will get appended to the result object
    * @remarks The `status` key is reserved and cannot be used in additional data.
    */
-  up<T extends AdditionalData>(
-    data?: T & WithoutStatus<T>,
-  ): HealthIndicatorResult<Key, HealthIndicatorStatus.UP, T>;
-  up<T extends string>(
-    data?: T,
-  ): HealthIndicatorResult<Key, HealthIndicatorStatus.UP, { message: T }>;
+  up<TData extends AdditionalData>(
+    data?: TData & WithoutStatus<TData>,
+  ): HealthIndicatorResult<TKey, HealthIndicatorStatus.UP, TData>;
+  up<TMessage extends string>(
+    data?: TMessage,
+  ): HealthIndicatorResult<
+    TKey,
+    HealthIndicatorStatus.UP,
+    { message: TMessage }
+  >;
   up(
     data?: AdditionalData | string,
-  ): HealthIndicatorResult<Key, HealthIndicatorStatus.UP> {
+  ): HealthIndicatorResult<TKey, HealthIndicatorStatus.UP> {
     return this.compose(HealthIndicatorStatus.UP, data);
   }
 
@@ -143,7 +153,7 @@ export class HealthIndicatorSession<Key extends Readonly<string> = string> {
    */
   attempt<TResult>(
     fn: (options: { signal: AbortSignal }) => TResult,
-  ): HealthCheckAttempt<Key, Awaited<TResult>> {
+  ): HealthCheckAttempt<TKey, Awaited<TResult>> {
     return new HealthCheckAttempt(this.key, fn, this.cache);
   }
 }

@@ -9,10 +9,7 @@ import type * as NestJSMicroservices from '@nestjs/microservices';
 import { lastValueFrom, type Observable } from 'rxjs';
 import { NotServingError } from '../../errors/not-serving.error.js';
 import { loadPackage, type PropType } from '../../utils/index.js';
-import {
-  type HealthCheckAttempt,
-  HealthIndicatorService,
-} from '../service/health-indicator.service.js';
+import { HealthIndicatorService } from '../service/health-indicator.service.js';
 
 /**
  * The status of the request service
@@ -79,7 +76,7 @@ type GrpcOptionsLike<
 export type CheckGRPCServiceOptions<
   GrpcOptions extends GrpcClientOptionsLike = GrpcClientOptionsLike,
 > = Partial<GrpcOptionsLike<GrpcOptions>> & {
-  // FIXME: Delete the `timeout` option in v13, use `.withTimeout()` instead
+  // FIXME: Delete the `timeout` option in v13, use `.withTimeout()` instead (#2823)
   /**
    * The amount of time the check should require in ms
    * @deprecated Chain `.withTimeout(ms)` on the returned attempt instead,
@@ -149,7 +146,7 @@ export class GRPCHealthIndicator
    */
   private async loadMicroservices(): Promise<typeof NestJSMicroservices> {
     return await loadPackage(
-      ['@nestjs/microservices', '@grpc/grpc-js', '@grpc/proto-loader'],
+      ['@nestjs/microservices'],
       () => import('@nestjs/microservices'),
       this.constructor.name,
     );
@@ -223,7 +220,7 @@ export class GRPCHealthIndicator
     key: Key,
     service: string,
     options: CheckGRPCServiceOptions<GrpcOptions> = {},
-  ): HealthCheckAttempt<Key> {
+  ) {
     const settings: Required<CheckGRPCServiceOptions> = {
       package: 'grpc.health.v1',
       healthServiceCheck: (healthService: GRPCHealthService, service: string) =>
@@ -255,15 +252,23 @@ export class GRPCHealthIndicator
         return { statusCode: response.status, servingStatus };
       })
       .withSuccessData((data) => data)
-      .withFailureData((error) => {
-        // The fields of a success when the service answered, otherwise the
-        // gRPC status code of the call (e.g. 14 for UNAVAILABLE)
-        if (error instanceof NotServingError) {
-          const { statusCode, servingStatus } = error;
-          return { statusCode, servingStatus };
-        }
-        return { code: (error as { code?: number }).code };
-      })
+      .withFailureData(
+        (
+          error,
+        ): {
+          statusCode?: number;
+          servingStatus?: string | number;
+          code?: number;
+        } => {
+          // The fields of a success when the service answered, otherwise the
+          // gRPC status code of the call (e.g. 14 for UNAVAILABLE)
+          if (error instanceof NotServingError) {
+            const { statusCode, servingStatus } = error;
+            return { statusCode, servingStatus };
+          }
+          return { code: (error as { code?: number }).code };
+        },
+      )
       .withTimeout(settings.timeout);
   }
 }

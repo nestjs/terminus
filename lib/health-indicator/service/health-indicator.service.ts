@@ -1,10 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { AttemptCache } from './attempt-cache.js';
-import { type AttemptOutcome } from './health-check-attempt.js';
 import { HealthIndicatorSession } from './health-indicator-session.js';
-
-export { HealthCheckAttempt } from './health-check-attempt.js';
-export { HealthIndicatorSession } from './health-indicator-session.js';
 
 /**
  * Helper service which can be used to create health indicator results
@@ -12,9 +8,9 @@ export { HealthIndicatorSession } from './health-indicator-session.js';
  */
 @Injectable()
 export class HealthIndicatorService {
-  private readonly cache = new AttemptCache<AttemptOutcome>();
+  private readonly cache = new AttemptCache();
 
-  check<const Key extends string>(key: Key) {
+  check<const TKey extends string>(key: TKey) {
     return new HealthIndicatorSession(key, this.cache);
   }
 }

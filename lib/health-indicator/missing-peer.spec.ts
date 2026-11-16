@@ -52,7 +52,12 @@ const indicators: Array<[string, () => OnModuleInit, string[]]> = [
   [
     'GRPCHealthIndicator',
     () => new GRPCHealthIndicator(healthIndicatorService),
-    ['@nestjs/microservices', '@grpc/grpc-js', '@grpc/proto-loader'],
+    ['@nestjs/microservices'],
+  ],
+  [
+    'GRPCHealthIndicator',
+    () => new GRPCHealthIndicator(healthIndicatorService),
+    ['@grpc/grpc-js', '@grpc/proto-loader'],
   ],
 ];
 

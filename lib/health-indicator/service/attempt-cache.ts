@@ -1,5 +1,20 @@
-type CacheEntry<T> = {
-  promise: Promise<T>;
+import { type AdditionalData } from './attempt-data.js';
+import { type HealthIndicatorStatus } from './health-indicator-result.interface.js';
+
+/**
+ * What one run of an attempt function gave, before the settings of the
+ * attempt (static data, `degraded`) are applied.
+ *
+ * @internal
+ */
+export type AttemptOutcome = {
+  status: HealthIndicatorStatus.UP | HealthIndicatorStatus.DOWN;
+  data: AdditionalData;
+  responseTime: number;
+};
+
+type CacheEntry = {
+  promise: Promise<AttemptOutcome>;
   expiresAt: number;
   settled: boolean;
 };
@@ -10,8 +25,8 @@ type CacheEntry<T> = {
  *
  * @internal
  */
-export class AttemptCache<T> {
-  private readonly entries = new Map<string, CacheEntry<T>>();
+export class AttemptCache {
+  private readonly entries = new Map<string, CacheEntry>();
 
   /**
    * Returns the cached value while it is fresh, otherwise runs `run` and caches it.
@@ -21,15 +36,15 @@ export class AttemptCache<T> {
   async getOrRun(
     key: string,
     ttlMs: number,
-    run: () => Promise<T>,
-  ): Promise<{ value: T; cached: boolean }> {
+    run: () => Promise<AttemptOutcome>,
+  ): Promise<{ value: AttemptOutcome; cached: boolean }> {
     const existing = this.entries.get(key);
     if (existing && existing.expiresAt > Date.now()) {
       const cached = existing.settled;
       return { value: await existing.promise, cached };
     }
 
-    const entry: CacheEntry<T> = {
+    const entry: CacheEntry = {
       promise: run(),
       expiresAt: Date.now() + ttlMs,
       settled: false,

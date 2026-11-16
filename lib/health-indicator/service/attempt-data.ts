@@ -2,15 +2,11 @@ import { Logger } from '@nestjs/common';
 import { errorMessage } from '../../utils/errorMessage.js';
 import { runWithTimeout } from '../../utils/runWithTimeout.js';
 
-type AdditionalData = Record<string, unknown>;
+export type AdditionalData = Record<string, unknown>;
 type DataFn = (input: unknown) => unknown;
 
-/**
- * The keys Terminus sets on every result.
- *
- * @internal
- */
-export const RESERVED_ATTEMPT_KEYS = [
+/** The keys Terminus sets on every result. */
+const RESERVED_ATTEMPT_KEYS = [
   'status',
   'responseTime',
   'cachedResponse',
@@ -46,11 +42,11 @@ export class AttemptData {
     return this.staticValues;
   }
 
-  /** Merge static data, from `withData()`. Throws if `data` is a function. */
+  /** Merge static data, from `withData()`. */
   addStatic(data: object): void {
     this.staticValues = {
       ...this.staticValues,
-      ...this.toData(data, RESERVED_ATTEMPT_KEYS),
+      ...this.toData(data),
     };
   }
 
@@ -77,15 +73,13 @@ export class AttemptData {
       let data: AdditionalData = {};
       for (const fn of this.successFns) {
         const value = await fn(result);
-        data = { ...data, ...this.toData(value, RESERVED_ATTEMPT_KEYS) };
+        data = { ...data, ...this.toData(value) };
       }
       return data;
     }
 
-    // We warn the user that returning data via attempt(() => ({result: 'ok'}))
-    // should not be done as it will be removed in v13. https://github.com/nestjs/terminus/issues/2796
-    // FIXME: Remove this in v13
-    if (Object.keys(this.toData(result, [])).length > 0) {
+    const data = this.toData(result);
+    if (Object.keys(data).length > 0) {
       warnOnce(
         `implicit-data:${this.key}`,
         `The value returned by attempt() for health indicator "${this.key}" is added to the health check result. ` +
@@ -93,7 +87,7 @@ export class AttemptData {
       );
     }
 
-    return this.toData(result, RESERVED_ATTEMPT_KEYS);
+    return data;
   }
 
   /**
@@ -121,7 +115,7 @@ export class AttemptData {
 
       try {
         const value = await runWithTimeout(remainingMs, () => fn(error));
-        data = { ...data, ...this.toData(value, RESERVED_ATTEMPT_KEYS) };
+        data = { ...data, ...this.toData(value) };
       } catch (err) {
         warnOnce(
           `failure-data:${this.key}`,
@@ -134,17 +128,17 @@ export class AttemptData {
   }
 
   /**
-   * A copy of `value` without the `reserved` keys, or `{}` if it is not an
+   * A copy of `value` without the reserved keys, or `{}` if it is not an
    * object. Reserved keys are dropped with a warning, never thrown.
    */
-  private toData(value: unknown, reserved: readonly string[]): AdditionalData {
+  private toData(value: unknown): AdditionalData {
     if (value === null || typeof value !== 'object' || Array.isArray(value)) {
       return {};
     }
 
     const data: AdditionalData = { ...value };
 
-    const ignored = reserved.filter((k) => k in data);
+    const ignored = RESERVED_ATTEMPT_KEYS.filter((k) => k in data);
     for (const k of ignored) {
       delete data[k];
     }
@@ -153,7 +147,7 @@ export class AttemptData {
       warnOnce(
         `reserved-keys:${this.key}`,
         `Ignoring reserved key(s) ${ignored.map((k) => `"${k}"`).join(', ')} in the data of health indicator "${this.key}". ` +
-          `The keys ${reserved.join(', ')} are set by Terminus, use other names.`,
+          `The keys ${RESERVED_ATTEMPT_KEYS.join(', ')} are set by Terminus, use other names.`,
       );
     }
 

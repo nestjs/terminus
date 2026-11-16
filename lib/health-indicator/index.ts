@@ -1,9 +1,8 @@
-export type * from './service/health-indicator-result.interface.js';
+export * from './service/health-indicator-result.interface.js';
 export * from './health-indicator.js';
-export {
-  HealthIndicatorService,
-  HealthCheckAttempt,
-} from './service/health-indicator.service.js';
+export { HealthIndicatorService } from './service/health-indicator.service.js';
+export { HealthCheckAttempt } from './service/health-check-attempt.js';
+export type { HealthIndicatorSession } from './service/health-indicator-session.js';
 
 /** Health Indicators */
 export * from './http/http.health.js';
