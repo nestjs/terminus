@@ -6,6 +6,7 @@ import {
   type Duration,
   DiskHealthIndicator,
   FetchHealthIndicator,
+  GRPCHealthIndicator,
   HealthCheckService,
   HealthCheckStatus,
   HealthIndicatorService,
@@ -22,6 +23,7 @@ export class Indicators {
     private readonly fetch: FetchHealthIndicator,
     private readonly memory: MemoryHealthIndicator,
     private readonly disk: DiskHealthIndicator,
+    private readonly grpc: GRPCHealthIndicator,
   ) {}
 
   session() {
@@ -30,6 +32,9 @@ export class Indicators {
   upOrDown(up: boolean) {
     const session = this.indicator.check('dog');
     return up ? session.up({ goodBoys: 1 }) : session.down('bad');
+  }
+  upWithoutData() {
+    return this.indicator.check('dog').up();
   }
   degraded() {
     return this.indicator.check('dog').degraded();
@@ -58,6 +63,9 @@ export class Indicators {
       .withData({ owner: 1, b: 'b' })
       .withSuccessData((n) => ({ n }))
       .withSuccessData(() => ({ n: 'one' }));
+  }
+  grpcService() {
+    return this.grpc.checkService('hero', 'hero.health.v1');
   }
   builtIn() {
     return this.db.pingCheck('database').degradedOnFailure().cacheFor(100);

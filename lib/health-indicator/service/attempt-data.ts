@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Logger, type LoggerService } from '@nestjs/common';
 import { errorMessage } from '../../utils/errorMessage.js';
 import { runWithTimeout } from '../../utils/runWithTimeout.js';
 
@@ -12,7 +12,10 @@ const RESERVED_ATTEMPT_KEYS = [
   'cachedResponse',
 ] as const;
 
-const logger = new Logger('HealthIndicatorService');
+const LOGGER_CONTEXT = 'HealthIndicatorService';
+
+/** For a `HealthIndicatorService` created without Nest, e.g. in a test. */
+const defaultLogger = new Logger(LOGGER_CONTEXT);
 
 /**
  * The data of one health check attempt: the static data of `withData()` and
@@ -34,8 +37,12 @@ export class AttemptData {
 
   /**
    * @param key The indicator key, used in the warnings
+   * @param logger The Terminus logger, for the warnings
    */
-  constructor(private readonly key: string) {}
+  constructor(
+    private readonly key: string,
+    private readonly logger: LoggerService = defaultLogger,
+  ) {}
 
   /** The static data, added to every result. */
   get staticData(): AdditionalData {
@@ -81,6 +88,7 @@ export class AttemptData {
     const data = this.toData(result);
     if (Object.keys(data).length > 0) {
       warnOnce(
+        this.logger,
         `implicit-data:${this.key}`,
         `The value returned by attempt() for health indicator "${this.key}" is added to the health check result. ` +
           `This is deprecated: the next major version ignores it. Use .withSuccessData() to choose the data to add, or return nothing.`,
@@ -118,6 +126,7 @@ export class AttemptData {
         data = { ...data, ...this.toData(value) };
       } catch (err) {
         warnOnce(
+          this.logger,
           `failure-data:${this.key}`,
           `Could not add the failure data to health indicator "${this.key}", withFailureData() failed: ${errorMessage(err)}`,
         );
@@ -145,6 +154,7 @@ export class AttemptData {
 
     if (ignored.length > 0) {
       warnOnce(
+        this.logger,
         `reserved-keys:${this.key}`,
         `Ignoring reserved key(s) ${ignored.map((k) => `"${k}"`).join(', ')} in the data of health indicator "${this.key}". ` +
           `The keys ${RESERVED_ATTEMPT_KEYS.join(', ')} are set by Terminus, use other names.`,
@@ -157,12 +167,12 @@ export class AttemptData {
 
 const warned = new Set<string>();
 
-function warnOnce(id: string, message: string) {
+function warnOnce(logger: LoggerService, id: string, message: string) {
   if (warned.has(id)) {
     return;
   }
   warned.add(id);
-  logger.warn(message);
+  logger.warn(message, LOGGER_CONTEXT);
 }
 
 /** A function as is, or an object wrapped in a function that returns it. */

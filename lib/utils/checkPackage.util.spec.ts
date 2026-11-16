@@ -20,8 +20,7 @@ describe('loadPackage', () => {
         'TestIndicator',
       ),
     ).rejects.toMatchObject({
-      message:
-        'The "not-a-real-package", "me-neither" packages are missing. Please, make sure to install the libraries ($ npm install not-a-real-package me-neither) to take advantage of TestIndicator.',
+      message: `The "not-a-real-package", "me-neither" packages are missing. Please, make sure to install the libraries ($ npm install not-a-real-package me-neither) to take advantage of TestIndicator. (${cause.message})`,
       cause,
     });
   });
@@ -35,6 +34,19 @@ describe('loadPackage', () => {
       loadPackage(['ignored'], () => Promise.reject(cause), 'TestIndicator'),
     ).rejects.toThrow(
       'The "ignored" package is missing. Please, make sure to install the library ($ npm install ignored) to take advantage of TestIndicator.',
+    );
+  });
+
+  it('should show which module was not found, without the require stack', async () => {
+    const cause = Object.assign(
+      new Error("Cannot find module 'axios'\nRequire stack:\n- /app/index.js"),
+      { code: 'MODULE_NOT_FOUND' },
+    );
+
+    await expect(
+      loadPackage(['@nestjs/axios'], () => Promise.reject(cause), 'Test'),
+    ).rejects.toThrow(
+      /to take advantage of Test\. \(Cannot find module 'axios'\)$/,
     );
   });
 

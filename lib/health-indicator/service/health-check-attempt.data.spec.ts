@@ -128,6 +128,29 @@ describe('HealthCheckAttempt data', () => {
     expect(degraded.test).toMatchObject({ status: 'degraded', code: 'EPAY' });
   });
 
+  it('should leave out keys whose value is undefined', async () => {
+    const down = await session
+      .attempt(() => {
+        throw new Error('no code');
+      })
+      .withFailureData((error) => ({ code: (error as PaymentError).code }));
+    expect(down.test).toStrictEqual({
+      status: 'down',
+      message: 'no code',
+      responseTime: expect.any(Number),
+    });
+
+    // `undefined` still replaces the static data, as in the JSON response
+    const up = await session
+      .attempt(() => {})
+      .withData({ region: 'eu' })
+      .withSuccessData(() => ({ region: undefined }));
+    expect(up.test).toStrictEqual({
+      status: 'up',
+      responseTime: expect.any(Number),
+    });
+  });
+
   it('should let the failure data replace the error message', async () => {
     const result = await session
       .attempt(fail)

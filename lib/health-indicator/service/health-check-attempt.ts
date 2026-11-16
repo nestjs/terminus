@@ -1,5 +1,7 @@
+import { type LoggerService } from '@nestjs/common';
 import { HealthIndicatorStatus } from './health-indicator-result.interface.js';
 import { errorMessage } from '../../utils/errorMessage.js';
+import { omitUndefined } from '../../utils/omitUndefined.js';
 import { type Merge } from '../../utils/types.js';
 import { runWithTimeout } from '../../utils/runWithTimeout.js';
 import { type Duration, toMs } from '../../utils/units.js';
@@ -85,8 +87,9 @@ export class HealthCheckAttempt<
     private readonly key: TKey,
     private readonly fn: (options: { signal: AbortSignal }) => unknown,
     private readonly cache: AttemptCache,
+    logger?: LoggerService,
   ) {
-    this.data = new AttemptData(key);
+    this.data = new AttemptData(key, logger);
   }
 
   private toResult(
@@ -102,7 +105,7 @@ export class HealthCheckAttempt<
       status: this.toStatus(outcome),
     };
 
-    return { [this.key]: detail } as HealthCheckAttemptResult<
+    return { [this.key]: omitUndefined(detail) } as HealthCheckAttemptResult<
       TKey,
       TStatic,
       TSuccess,
@@ -321,7 +324,10 @@ export class HealthCheckAttempt<
    */
   cacheFor(ttl: Duration): this {
     const ttlMs = toMs(ttl, 'Cache TTL');
-    assertDuration(ttlMs, 'Cache TTL');
+    // No timer limit: the cache compares with `Date.now()` and uses no timer
+    if (!Number.isFinite(ttlMs) || ttlMs < 0) {
+      throw new Error(`Cache TTL must be 0 or more milliseconds, got ${ttlMs}`);
+    }
 
     this.cacheTtlMs = ttlMs;
 

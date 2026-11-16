@@ -25,7 +25,8 @@ if (!tarball) {
 
 writeFileSync(
   join(dir, 'package.json'),
-  JSON.stringify({ name: 'terminus-pack-check', private: true, version: '1.0.0' }),
+  // ESM, because only an ESM consumer reports a type it cannot import by name
+  JSON.stringify({ name: 'terminus-pack-check', private: true, version: '1.0.0', type: 'module' }),
 );
 run('npm', ['install', '--no-audit', '--no-fund', join(dir, tarball)], dir);
 

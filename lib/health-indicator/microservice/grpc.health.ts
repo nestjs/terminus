@@ -116,26 +116,27 @@ export class GRPCHealthIndicator
    * missing
    */
   async onModuleInit(): Promise<void> {
-    await this.loadMicroservices();
     await this.loadGrpc();
   }
 
   /**
-   * Checks that `@grpc/grpc-js` and `@grpc/proto-loader` are installed. Nest
-   * loads them itself when the first client is created, and exits the process
-   * when they are missing.
+   * Checks that `@nestjs/microservices`, `@grpc/grpc-js` and
+   * `@grpc/proto-loader` are installed, in one call so that the error names
+   * all three. Nest loads the last two itself when the first client is
+   * created, and exits the process when they are missing.
    *
-   * The names are variables on purpose, so that bundlers do not follow the
-   * imports: Nest can only load these two from `node_modules`.
+   * The gRPC names are variables on purpose, so that bundlers do not follow
+   * the imports: Nest can only load these two from `node_modules`.
    */
   private async loadGrpc(): Promise<void> {
     const names = ['@grpc/grpc-js', '@grpc/proto-loader'];
     await loadPackage(
-      names,
+      ['@nestjs/microservices', ...names],
       () =>
-        Promise.all(
-          names.map((name) => import(/* webpackIgnore: true */ name)),
-        ),
+        Promise.all([
+          import('@nestjs/microservices'),
+          ...names.map((name) => import(/* webpackIgnore: true */ name)),
+        ]),
       this.constructor.name,
     );
   }
@@ -249,7 +250,9 @@ export class GRPCHealthIndicator
         if (response.status !== ServingStatus.SERVING) {
           throw new NotServingError(response.status, servingStatus);
         }
-        return { statusCode: response.status, servingStatus };
+        // A number, not `ServingStatus`: the enum is not exported, so apps
+        // built with `declaration: true` could not name the result
+        return { statusCode: response.status as number, servingStatus };
       })
       .withSuccessData((data) => data)
       .withFailureData(

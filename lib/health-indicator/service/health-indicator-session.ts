@@ -1,10 +1,12 @@
+import { type LoggerService } from '@nestjs/common';
 import {
   type HealthIndicatorResult,
   HealthIndicatorStatus,
 } from './health-indicator-result.interface.js';
 import { AttemptCache } from './attempt-cache.js';
-import { type AdditionalData } from './attempt-data.js';
 import { HealthCheckAttempt } from './health-check-attempt.js';
+
+type AdditionalData = Record<string, unknown>;
 
 /**
  * Show a compilation error if `status` is used in the additional data.
@@ -24,6 +26,7 @@ export class HealthIndicatorSession<TKey extends Readonly<string> = string> {
   constructor(
     private readonly key: TKey,
     private readonly cache = new AttemptCache(),
+    private readonly logger?: LoggerService,
   ) {}
 
   private assertNotReserved(data: AdditionalData, keys: readonly string[]) {
@@ -154,6 +157,6 @@ export class HealthIndicatorSession<TKey extends Readonly<string> = string> {
   attempt<TResult>(
     fn: (options: { signal: AbortSignal }) => TResult,
   ): HealthCheckAttempt<TKey, Awaited<TResult>> {
-    return new HealthCheckAttempt(this.key, fn, this.cache);
+    return new HealthCheckAttempt(this.key, fn, this.cache, this.logger);
   }
 }

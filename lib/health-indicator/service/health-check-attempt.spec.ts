@@ -27,7 +27,6 @@ describe('HealthCheckAttempt', () => {
 
   it.each([
     ['withTimeout', 'Timeout'],
-    ['cacheFor', 'Cache TTL'],
     ['degradedAfter', 'Degraded threshold'],
   ] as const)('should reject an invalid duration in %s', (method, name) => {
     for (const ms of [-1, Infinity, 2 ** 31, NaN, 1.5]) {
@@ -47,9 +46,11 @@ describe('HealthCheckAttempt', () => {
       expect(() => session.attempt(() => {})[method]('2S' as '2s')).toThrow(
         `${name}: Invalid duration "2S".`,
       );
-      expect(() => session.attempt(() => {})[method]('50w')).toThrow(
-        `${name} must be a whole number between 0 and 2147483647 milliseconds, got 30240000000`,
-      );
+      if (method !== 'cacheFor') {
+        expect(() => session.attempt(() => {})[method]('50w')).toThrow(
+          `${name} must be a whole number between 0 and 2147483647 milliseconds, got 30240000000`,
+        );
+      }
     },
   );
 
@@ -162,6 +163,30 @@ describe('HealthCheckAttempt', () => {
 
     afterEach(() => {
       vi.useRealTimers();
+    });
+
+    it('should reject a negative or invalid TTL', () => {
+      for (const ms of [-1, -0.5, Infinity, NaN]) {
+        expect(() => session.attempt(() => {}).cacheFor(ms)).toThrow(
+          `Cache TTL must be 0 or more milliseconds, got ${ms}`,
+        );
+      }
+    });
+
+    // The same values as 12.1.0, and longer: the cache uses no timer
+    it.each([
+      1000 / 3,
+      2 ** 32 - 1,
+      30 * 86_400_000,
+      '4w',
+      '25d',
+      '50w',
+    ] as const)('should accept the TTL %s', async (ttl) => {
+      const fn = vi.fn(async () => {});
+      await h.check('db').attempt(fn).cacheFor(ttl);
+      const second = await h.check('db').attempt(fn).cacheFor(ttl);
+      expect(fn).toHaveBeenCalledTimes(1);
+      expect(second.db.cachedResponse).toBe(true);
     });
 
     it('should accept a duration string', async () => {

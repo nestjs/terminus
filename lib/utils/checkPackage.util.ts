@@ -1,3 +1,5 @@
+import { errorMessage } from './errorMessage.js';
+
 /**
  * Generates the string which packages are missing and
  * how to install them
@@ -68,9 +70,13 @@ export async function loadPackage(
     pkg = await loader();
   } catch (error) {
     if (isModuleNotFound(error)) {
-      throw new Error(MISSING_REQUIRED_DEPENDENCY(packageNames, reason), {
-        cause: error,
-      });
+      // The first line names the module that was not found. It can also be
+      // a package that a peer imports, so it is part of the message.
+      const [notFound] = errorMessage(error).split('\n');
+      throw new Error(
+        `${MISSING_REQUIRED_DEPENDENCY(packageNames, reason)} (${notFound})`,
+        { cause: error },
+      );
     }
     throw error;
   }
