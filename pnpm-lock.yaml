@@ -19,14 +19,14 @@ catalogs:
       specifier: 0.8.1
       version: 0.8.1
     '@mikro-orm/core':
-      specifier: 6.6.7
-      version: 6.6.7
+      specifier: 6.6.18
+      version: 6.6.18
     '@mikro-orm/mongodb':
-      specifier: 6.6.7
-      version: 6.6.7
+      specifier: 6.6.18
+      version: 6.6.18
     '@mikro-orm/mysql':
-      specifier: 6.6.7
-      version: 6.6.7
+      specifier: 6.6.18
+      version: 6.6.18
     '@mikro-orm/nestjs':
       specifier: 6.1.2
       version: 6.1.2
@@ -196,16 +196,16 @@ importers:
         version: 0.8.1
       '@mikro-orm/core':
         specifier: 'catalog:'
-        version: 6.6.7
+        version: 6.6.18
       '@mikro-orm/mongodb':
         specifier: 'catalog:'
-        version: 6.6.7(@mikro-orm/core@6.6.7)(socks@2.8.4)
+        version: 6.6.18(@mikro-orm/core@6.6.18)(socks@2.8.4)
       '@mikro-orm/mysql':
         specifier: 'catalog:'
-        version: 6.6.7(@mikro-orm/core@6.6.7)
+        version: 6.6.18(@mikro-orm/core@6.6.18)(@types/node@22.20.5)
       '@mikro-orm/nestjs':
         specifier: 'catalog:'
-        version: 6.1.2(@mikro-orm/core@6.6.7)(@nestjs/common@12.5.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.0)
+        version: 6.1.2(@mikro-orm/core@6.6.18)(@nestjs/common@12.5.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.0)
       '@nestjs/axios':
         specifier: 'catalog:'
         version: 12.0.2(@nestjs/common@12.5.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.21.1)(rxjs@7.8.2)
@@ -241,7 +241,7 @@ importers:
         version: 12.5.0(@nestjs/common@12.5.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.0)(@nestjs/microservices@12.5.0)(@nestjs/platform-express@12.5.0)
       '@nestjs/typeorm':
         specifier: 'catalog:'
-        version: 12.0.3(@nestjs/common@12.5.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.20.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3))
+        version: 12.0.3(@nestjs/common@12.5.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3))
       '@prisma/client':
         specifier: 'catalog:'
         version: 6.19.3(prisma@6.19.3(typescript@7.0.2))(typescript@7.0.2)
@@ -322,7 +322,7 @@ importers:
         version: 7.3.2
       typeorm:
         specifier: 'catalog:'
-        version: 0.3.31(ioredis@5.11.1)(mongodb@6.20.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3)
+        version: 0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3)
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -573,7 +573,7 @@ importers:
         version: link:../..
       '@nestjs/typeorm':
         specifier: 'catalog:'
-        version: 12.0.3(@nestjs/common@12.5.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.20.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3))
+        version: 12.0.3(@nestjs/common@12.5.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3))
       mysql2:
         specifier: 'catalog:'
         version: 3.24.6(@types/node@22.20.5)
@@ -585,7 +585,7 @@ importers:
         version: 7.8.2
       typeorm:
         specifier: 'catalog:'
-        version: 0.3.31(ioredis@5.11.1)(mongodb@6.20.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3)
+        version: 0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3)
     devDependencies:
       '@nestjs/testing':
         specifier: 'catalog:'
@@ -613,7 +613,7 @@ importers:
         version: link:../..
       '@nestjs/typeorm':
         specifier: 'catalog:'
-        version: 12.0.3(@nestjs/common@12.5.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.20.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3))
+        version: 12.0.3(@nestjs/common@12.5.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3))
       mysql2:
         specifier: 'catalog:'
         version: 3.24.6(@types/node@22.20.5)
@@ -625,7 +625,7 @@ importers:
         version: 7.8.2
       typeorm:
         specifier: 'catalog:'
-        version: 0.3.31(ioredis@5.11.1)(mongodb@6.20.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3)
+        version: 0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3)
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
@@ -789,13 +789,13 @@ importers:
     dependencies:
       '@mikro-orm/core':
         specifier: 'catalog:'
-        version: 6.6.7
+        version: 6.6.18
       '@mikro-orm/mysql':
         specifier: 'catalog:'
-        version: 6.6.7(@mikro-orm/core@6.6.7)
+        version: 6.6.18(@mikro-orm/core@6.6.18)(@types/node@22.20.5)
       '@mikro-orm/nestjs':
         specifier: 'catalog:'
-        version: 6.1.2(@mikro-orm/core@6.6.7)(@nestjs/common@12.5.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.0)
+        version: 6.1.2(@mikro-orm/core@6.6.18)(@nestjs/common@12.5.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.0)
       '@nestjs/common':
         specifier: 'catalog:'
         version: 12.5.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -1338,12 +1338,12 @@ packages:
   '@microsoft/tsdoc@0.17.1':
     resolution: {integrity: sha512-VHyYyyoH63jFoO3shpw9Zfijk5v/9p/VrClW35z0/q6ooK7sSmxpzOkS4iZPxs3vO4XtBW4H38HRAKkAMIK7DA==}
 
-  '@mikro-orm/core@6.6.7':
-    resolution: {integrity: sha512-VuL9WK6Z1Op5Lg5FCDOfFeVQdfpCrtEDQXEMHnlb0mRL7WnNz2vUu8AJ96t7iOIxkIBJUXrlzpkaHPdrV9lmkA==}
+  '@mikro-orm/core@6.6.18':
+    resolution: {integrity: sha512-UXev/R574jun5k0kcOl5Vy5Gp+IJntLEJ6WAp75o+ovW6Vq38jGaz5OAYgXV0vV06TZf2Udxgg72bHYnZDbcRg==}
     engines: {node: '>= 18.12.0'}
 
-  '@mikro-orm/knex@6.6.7':
-    resolution: {integrity: sha512-/EfSu3D1A5OrV3vyHSILbFrV0B4FFbHn4Fa3qc1wKf8Dl5adZlPe7jj+R4c87V1+oLo6VzST1sT4Rhp7NWArdw==}
+  '@mikro-orm/knex@6.6.18':
+    resolution: {integrity: sha512-D6IYXJiAA8mVjNWAk2Yp2lrOmBCCSdDwQrjiGr7O7E1tgcU8GXgXFrJL/eenBOYgQi4pTicljDYzTR3ZAU3itA==}
     engines: {node: '>= 18.12.0'}
     peerDependencies:
       '@mikro-orm/core': ^6.0.0
@@ -1358,14 +1358,14 @@ packages:
       mariadb:
         optional: true
 
-  '@mikro-orm/mongodb@6.6.7':
-    resolution: {integrity: sha512-QgQBa/r11Y5OuD7S9jQ5kEYTs0rWE5g19Poq/Qx6ZkEMPUUigd1megtbUiTIdpLKzmaR8E+4cSepBPtmN2SegA==}
+  '@mikro-orm/mongodb@6.6.18':
+    resolution: {integrity: sha512-x+tCxK4wCiYYB6YSB2J4dEKAkk1gT5AJ6LUgQFdfy37QY1BJeg+zaqf+7Lpeu77hCg1G0E0DnD8KNVxIoMVRrA==}
     engines: {node: '>= 18.12.0'}
     peerDependencies:
       '@mikro-orm/core': ^6.0.0
 
-  '@mikro-orm/mysql@6.6.7':
-    resolution: {integrity: sha512-yGrAKnLAa7KeeKathhFTif6dodQhNvjdPTH40Ke22llYW1m2ekEM3gnUznoBe7b6Cq8N+zIZl5j+LJgpaUnOlg==}
+  '@mikro-orm/mysql@6.6.18':
+    resolution: {integrity: sha512-oU3AaoE9+KFPUlXldWJU9pEKOke33SQfq/mlwMModuBJrQpAKmKPByX/p7XOxTmt0Mhe7hC6bwGmiUDAdzi67g==}
     engines: {node: '>= 18.12.0'}
     peerDependencies:
       '@mikro-orm/core': ^6.0.0
@@ -2913,12 +2913,8 @@ packages:
     resolution: {integrity: sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow==}
     engines: {node: '>=12'}
 
-  dotenv@17.2.3:
-    resolution: {integrity: sha512-JVUnt+DUIzu87TABbhPmNfVdBDt18BLOWjMUFJMSi/Qqg7NTYtabbvSNJGOJ7afbRuv9D/lngizHtP7QyLQ+9w==}
-    engines: {node: '>=12'}
-
-  dotenv@17.4.1:
-    resolution: {integrity: sha512-k8DaKGP6r1G30Lx8V4+pCsLzKr8vLmV2paqEj1Y55GdAgJuIqpRp5FfajGF8KtwMxCz9qJc6wUIJnm053d/WCw==}
+  dotenv@17.3.1:
+    resolution: {integrity: sha512-IO8C/dzEb6O3F9/twg6ZLXz164a2fhTnEWb95H23Dm4OuN+92NmEAlTrupP9VW6Jm3sO26tQlqyvyi4CsnY9GA==}
     engines: {node: '>=12'}
 
   dotenv@17.4.2:
@@ -3303,10 +3299,6 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  iconv-lite@0.7.2:
-    resolution: {integrity: sha512-im9DjEDQ55s9fL4EYzOAv0yMqmMBSZp6G0VvFyTMPKWxiSBHUj9NW/qqLmXUwXrrM7AvqSlTCfvqRb0cM8yYqw==}
-    engines: {node: '>=0.10.0'}
-
   iconv-lite@0.7.3:
     resolution: {integrity: sha512-IKXpvIzjnC9XTAUbVBcMfGS0EPaIXtW6v+zr+RRp+hqULEpo0owZax6wyRwPOJbWbzjYspQwusTsfVr0ifh4uQ==}
     engines: {node: '>=0.10.0'}
@@ -3500,8 +3492,8 @@ packages:
     resolution: {integrity: sha512-C3iHfuGUXK2u8/ipq9LfjFfXFxAZMQJJq7vLS45r3D9Y2xQ/m4S8zaR4zMLFWh9AsNPXmcFfUDhTEO8UIC/V6Q==}
     engines: {node: '>=12.0.0'}
 
-  knex@3.1.0:
-    resolution: {integrity: sha512-GLoII6hR0c4ti243gMs5/1Rb3B+AjwMOfjYm97pu0FOQa7JH56hgBxYf5WK2525ceSbBY1cjeZ9yk99GPMB6Kw==}
+  knex@3.2.10:
+    resolution: {integrity: sha512-oypTHfrc9i72iyxaUQBKHOxhcr0xM65MPf6FpN02nimsftXwzXprIkLjfXdubvhbu4PMWLp023q8o8CYvHSuZw==}
     engines: {node: '>=16'}
     hasBin: true
     peerDependencies:
@@ -3510,6 +3502,7 @@ packages:
       mysql2: '*'
       pg: '*'
       pg-native: '*'
+      pg-query-stream: ^4.14.0
       sqlite3: '*'
       tedious: '*'
     peerDependenciesMeta:
@@ -3522,6 +3515,8 @@ packages:
       pg:
         optional: true
       pg-native:
+        optional: true
+      pg-query-stream:
         optional: true
       sqlite3:
         optional: true
@@ -3669,10 +3664,6 @@ packages:
     resolution: {integrity: sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==}
     engines: {node: '>=12'}
 
-  lru.min@1.1.1:
-    resolution: {integrity: sha512-FbAj6lXil6t8z4z3j0E5mfRlPzxkySotzUHwRXjlpRh10vc6AI6WN62ehZj82VG7M20rqogJ0GLwar2Xa05a8Q==}
-    engines: {bun: '>=1.0.0', deno: '>=1.30.0', node: '>=8.0.0'}
-
   lru.min@1.1.5:
     resolution: {integrity: sha512-5J9ysMYUpYIg9RF2vJpy9SinEmSviFSe0GyPpCQ4L5QSkLAgeLXlTAOu2ZwWUU5m+0SBl6gUU1R1ZQB3aKypfA==}
     engines: {bun: '>=1.0.0', deno: '>=1.30.0', node: '>=8.0.0'}
@@ -3719,8 +3710,8 @@ packages:
     resolution: {integrity: sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA==}
     engines: {node: '>=8.6'}
 
-  mikro-orm@6.6.7:
-    resolution: {integrity: sha512-Iw8BC2qMeyqgU6lQS86Ht+yzxjK0DKfmXkGQC2wRzDLYiUQj/CEn5ne8Q+5yIrZdIr/y53KqUNyUWDSup+ZT5w==}
+  mikro-orm@6.6.18:
+    resolution: {integrity: sha512-cjBN6HpspFC2N3Myj6jqBPMwYE73lgFl1/C9dzX7lWeZ1sy4pkX/mjHZkxnAhqVdGW3fVp/u5Dj4JkmYmqiGsQ==}
     engines: {node: '>= 18.12.0'}
 
   mime-db@1.52.0:
@@ -3802,6 +3793,33 @@ packages:
       socks:
         optional: true
 
+  mongodb@6.21.0:
+    resolution: {integrity: sha512-URyb/VXMjJ4da46OeSXg+puO39XH9DeQpWCslifrRn9JWugy0D+DvvBvkm2WxmHe61O/H19JM66p1z7RHVkZ6A==}
+    engines: {node: '>=16.20.1'}
+    peerDependencies:
+      '@aws-sdk/credential-providers': ^3.188.0
+      '@mongodb-js/zstd': ^1.1.0 || ^2.0.0
+      gcp-metadata: ^5.2.0
+      kerberos: ^2.0.1
+      mongodb-client-encryption: '>=6.0.0 <7'
+      snappy: ^7.3.2
+      socks: ^2.7.1
+    peerDependenciesMeta:
+      '@aws-sdk/credential-providers':
+        optional: true
+      '@mongodb-js/zstd':
+        optional: true
+      gcp-metadata:
+        optional: true
+      kerberos:
+        optional: true
+      mongodb-client-encryption:
+        optional: true
+      snappy:
+        optional: true
+      socks:
+        optional: true
+
   mongoose@8.24.9:
     resolution: {integrity: sha512-+roDmtsLlBjv42fIlhqX6AmCgSznqK3CDxFcAZZv2fkovgGunZpXGTEEZoL5agz9JbFH4r7i6CGJ8T3p7Ub5Jg==}
     engines: {node: '>=16.20.1'}
@@ -3828,19 +3846,17 @@ packages:
     resolution: {integrity: sha512-gSrprq0fJ3EiOErzjdIZrjysVVmJ4uu1QWfCDss5LypA5OXvrMje5Ym5z6V6RLyJ2eF87lasX7t6a0AnFvZblg==}
     engines: {node: ^22.22.2 || ^24.15.0 || >=26.0.0}
 
-  mysql2@3.16.0:
-    resolution: {integrity: sha512-AEGW7QLLSuSnjCS4pk3EIqOmogegmze9h8EyrndavUQnIUcfkVal/sK7QznE+a3bc6rzPbAiui9Jcb+96tPwYA==}
+  mysql2@3.20.0:
+    resolution: {integrity: sha512-eCLUs7BNbgA6nf/MZXsaBO1SfGs0LtLVrJD3WeWq+jPLDWkSufTD+aGMwykfUVPdZnblaUK1a8G/P63cl9FkKg==}
     engines: {node: '>= 8.0'}
+    peerDependencies:
+      '@types/node': '>= 8'
 
   mysql2@3.24.6:
     resolution: {integrity: sha512-enu73KhbAua2L3dIxjc6qg6ZJ7H3pt1BImZASWNWY5xSsmJ1ZuUPULTDGXgmJbI61vb+nJAG19IZclIq19UidQ==}
     engines: {node: '>= 8.0'}
     peerDependencies:
       '@types/node': '>= 8'
-
-  named-placeholders@1.1.3:
-    resolution: {integrity: sha512-eLoBxg6wE/rZkJPhU/xRX1WTpkFEwDJEN96oxFrTsqBdbT5ec295Q+CoHrL9IT0DipqKhmGcaZmwOt8OON5x1w==}
-    engines: {node: '>=12.0.0'}
 
   named-placeholders@1.1.6:
     resolution: {integrity: sha512-Tz09sEL2EEuv5fFowm419c1+a/jSMiBjI9gHxVLrVdbUkkNUUfjsVYs9pVZu5oCon/kmRh9TfLEObFtkVxmY0w==}
@@ -4285,9 +4301,6 @@ packages:
   send@1.2.1:
     resolution: {integrity: sha512-1gnZf7DFcoIcajTjTwjwuDjzuz4PPcY2StKPlsGAQ1+YH20IRVrBaXSWmdjowTJ6u8Rc01PoYOGHXfP1mYcZNQ==}
     engines: {node: '>= 18'}
-
-  seq-queue@0.0.5:
-    resolution: {integrity: sha512-hr3Wtp/GZIc/6DAGPDcV4/9WoZhjrkXsi5B/07QgX8tsdc6ilr7BFM6PM6rbdAX1kFSDYeZGLipIZZKyQP0O5Q==}
 
   sequelize-pool@7.1.0:
     resolution: {integrity: sha512-G9c0qlIWQSK29pR/5U2JF5dDQeqqHRragoyahj/Nx4KOOQ3CPPfzxnfqFPCSB7x5UgjOgnZ61nSxz+fjDpRlJg==}
@@ -5431,36 +5444,37 @@ snapshots:
 
   '@microsoft/tsdoc@0.17.1': {}
 
-  '@mikro-orm/core@6.6.7':
+  '@mikro-orm/core@6.6.18':
     dependencies:
       dataloader: 2.2.3
-      dotenv: 17.2.3
+      dotenv: 17.3.1
       esprima: 4.0.1
       fs-extra: 11.3.3
       globby: 11.1.0
-      mikro-orm: 6.6.7
+      mikro-orm: 6.6.18
       reflect-metadata: 0.2.2
 
-  '@mikro-orm/knex@6.6.7(@mikro-orm/core@6.6.7)(mysql2@3.16.0)':
+  '@mikro-orm/knex@6.6.18(@mikro-orm/core@6.6.18)(mysql2@3.20.0(@types/node@22.20.5))':
     dependencies:
-      '@mikro-orm/core': 6.6.7
+      '@mikro-orm/core': 6.6.18
       fs-extra: 11.3.3
-      knex: 3.1.0(mysql2@3.16.0)
+      knex: 3.2.10(mysql2@3.20.0(@types/node@22.20.5))
       sqlstring: 2.3.3
     transitivePeerDependencies:
       - mysql
       - mysql2
       - pg
       - pg-native
+      - pg-query-stream
       - sqlite3
       - supports-color
       - tedious
 
-  '@mikro-orm/mongodb@6.6.7(@mikro-orm/core@6.6.7)(socks@2.8.4)':
+  '@mikro-orm/mongodb@6.6.18(@mikro-orm/core@6.6.18)(socks@2.8.4)':
     dependencies:
-      '@mikro-orm/core': 6.6.7
+      '@mikro-orm/core': 6.6.18
       bson: 6.10.4
-      mongodb: 6.20.0(socks@2.8.4)
+      mongodb: 6.21.0(socks@2.8.4)
     transitivePeerDependencies:
       - '@aws-sdk/credential-providers'
       - '@mongodb-js/zstd'
@@ -5470,25 +5484,27 @@ snapshots:
       - snappy
       - socks
 
-  '@mikro-orm/mysql@6.6.7(@mikro-orm/core@6.6.7)':
+  '@mikro-orm/mysql@6.6.18(@mikro-orm/core@6.6.18)(@types/node@22.20.5)':
     dependencies:
-      '@mikro-orm/core': 6.6.7
-      '@mikro-orm/knex': 6.6.7(@mikro-orm/core@6.6.7)(mysql2@3.16.0)
-      mysql2: 3.16.0
+      '@mikro-orm/core': 6.6.18
+      '@mikro-orm/knex': 6.6.18(@mikro-orm/core@6.6.18)(mysql2@3.20.0(@types/node@22.20.5))
+      mysql2: 3.20.0(@types/node@22.20.5)
     transitivePeerDependencies:
+      - '@types/node'
       - better-sqlite3
       - libsql
       - mariadb
       - mysql
       - pg
       - pg-native
+      - pg-query-stream
       - sqlite3
       - supports-color
       - tedious
 
-  '@mikro-orm/nestjs@6.1.2(@mikro-orm/core@6.6.7)(@nestjs/common@12.5.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.0)':
+  '@mikro-orm/nestjs@6.1.2(@mikro-orm/core@6.6.18)(@nestjs/common@12.5.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.0)':
     dependencies:
-      '@mikro-orm/core': 6.6.7
+      '@mikro-orm/core': 6.6.18
       '@nestjs/common': 12.5.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 12.5.0(@nestjs/common@12.5.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/microservices@12.5.0)(@nestjs/platform-express@12.5.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)
 
@@ -5647,13 +5663,13 @@ snapshots:
       '@nestjs/microservices': 12.5.0(@grpc/grpc-js@1.14.7)(@nestjs/common@12.5.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.0)(amqp-connection-manager@4.1.15(amqplib@0.10.9))(amqplib@0.10.9)(ioredis@5.11.1)(kafkajs@2.2.4)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/platform-express': 12.5.0(@nestjs/common@12.5.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.0)(rxjs@7.8.2)
 
-  '@nestjs/typeorm@12.0.3(@nestjs/common@12.5.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.20.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3))':
+  '@nestjs/typeorm@12.0.3(@nestjs/common@12.5.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3))':
     dependencies:
       '@nestjs/common': 12.5.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 12.5.0(@nestjs/common@12.5.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/microservices@12.5.0)(@nestjs/platform-express@12.5.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       reflect-metadata: 0.2.2
       rxjs: 7.8.2
-      typeorm: 0.3.31(ioredis@5.11.1)(mongodb@6.20.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3)
+      typeorm: 0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3)
 
   '@noble/hashes@1.8.0': {}
 
@@ -6424,7 +6440,7 @@ snapshots:
       chokidar: 5.0.0
       confbox: 0.2.4
       defu: 6.1.7
-      dotenv: 17.4.1
+      dotenv: 17.4.2
       exsolve: 1.2.0
       giget: 2.0.0
       jiti: 2.7.0
@@ -6742,9 +6758,7 @@ snapshots:
 
   dotenv@16.6.1: {}
 
-  dotenv@17.2.3: {}
-
-  dotenv@17.4.1: {}
+  dotenv@17.3.1: {}
 
   dotenv@17.4.2: {}
 
@@ -7223,10 +7237,6 @@ snapshots:
 
   husky@9.1.7: {}
 
-  iconv-lite@0.7.2:
-    dependencies:
-      safer-buffer: 2.1.2
-
   iconv-lite@0.7.3:
     dependencies:
       safer-buffer: 2.1.2
@@ -7390,7 +7400,7 @@ snapshots:
 
   kareem@2.6.3: {}
 
-  knex@3.1.0(mysql2@3.16.0):
+  knex@3.2.10(mysql2@3.20.0(@types/node@22.20.5)):
     dependencies:
       colorette: 2.0.19
       commander: 10.0.1
@@ -7407,7 +7417,7 @@ snapshots:
       tarn: 3.0.2
       tildify: 2.0.0
     optionalDependencies:
-      mysql2: 3.16.0
+      mysql2: 3.20.0(@types/node@22.20.5)
     transitivePeerDependencies:
       - supports-color
 
@@ -7530,8 +7540,6 @@ snapshots:
 
   lru-cache@7.18.3: {}
 
-  lru.min@1.1.1: {}
-
   lru.min@1.1.5: {}
 
   macos-release@3.5.1: {}
@@ -7561,7 +7569,7 @@ snapshots:
       braces: 3.0.3
       picomatch: 2.3.1
 
-  mikro-orm@6.6.7: {}
+  mikro-orm@6.6.18: {}
 
   mime-db@1.52.0: {}
 
@@ -7615,6 +7623,14 @@ snapshots:
     optionalDependencies:
       socks: 2.8.4
 
+  mongodb@6.21.0(socks@2.8.4):
+    dependencies:
+      '@mongodb-js/saslprep': 1.4.6
+      bson: 6.10.4
+      mongodb-connection-string-url: 3.0.2
+    optionalDependencies:
+      socks: 2.8.4
+
   mongoose@8.24.9(socks@2.8.4):
     dependencies:
       bson: 6.10.4
@@ -7654,17 +7670,17 @@ snapshots:
 
   mute-stream@4.0.0: {}
 
-  mysql2@3.16.0:
+  mysql2@3.20.0(@types/node@22.20.5):
     dependencies:
+      '@types/node': 22.20.5
       aws-ssl-profiles: 1.1.2
       denque: 2.1.0
       generate-function: 2.3.1
-      iconv-lite: 0.7.2
-      long: 5.2.4
-      lru.min: 1.1.1
-      named-placeholders: 1.1.3
-      seq-queue: 0.0.5
-      sqlstring: 2.3.3
+      iconv-lite: 0.7.3
+      long: 5.3.2
+      lru.min: 1.1.5
+      named-placeholders: 1.1.6
+      sql-escaper: 1.5.1
 
   mysql2@3.24.6(@types/node@22.20.5):
     dependencies:
@@ -7676,10 +7692,6 @@ snapshots:
       lru.min: 1.1.5
       named-placeholders: 1.1.6
       sql-escaper: 1.5.1
-
-  named-placeholders@1.1.3:
-    dependencies:
-      lru-cache: 7.18.3
 
   named-placeholders@1.1.6:
     dependencies:
@@ -8193,8 +8205,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  seq-queue@0.0.5: {}
-
   sequelize-pool@7.1.0: {}
 
   sequelize-typescript@2.1.6(@types/node@22.20.5)(@types/validator@13.15.10)(reflect-metadata@0.2.2)(sequelize@6.37.8(mysql2@3.24.6(@types/node@22.20.5))):
@@ -8543,7 +8553,7 @@ snapshots:
 
   typedarray@0.0.6: {}
 
-  typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.20.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3):
+  typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3):
     dependencies:
       '@sqltools/formatter': 1.2.5
       ansis: 4.3.1
@@ -8562,7 +8572,7 @@ snapshots:
       yargs: 17.7.3
     optionalDependencies:
       ioredis: 5.11.1
-      mongodb: 6.20.0(socks@2.8.4)
+      mongodb: 6.21.0(socks@2.8.4)
       mysql2: 3.24.6(@types/node@22.20.5)
       redis: 5.12.3
     transitivePeerDependencies:
