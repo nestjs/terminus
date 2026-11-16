@@ -1,10 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { errorMessage } from '../../utils/errorMessage.js';
 import { ResponseStatusError } from '../../errors/response-status.error.js';
-import {
-  HealthIndicatorService,
-  type HealthCheckAttempt,
-} from '../service/health-indicator.service.js';
+import { HealthIndicatorService } from '../service/health-indicator.service.js';
 
 /**
  * The part of a response the indicator reads. Satisfied as-is by the web
@@ -112,7 +109,7 @@ export class FetchHealthIndicator {
       headers,
       verify = isSuccess,
     }: FetchCheckOptions<TResponse> = {},
-  ): HealthCheckAttempt<Key> {
+  ) {
     return this.healthIndicatorService
       .check(key)
       .attempt(async ({ signal }) => {
@@ -145,13 +142,16 @@ export class FetchHealthIndicator {
           throw statusError(response);
         }
       })
-      .withFailureData((error) => {
-        if (error instanceof ResponseStatusError) {
-          const { statusCode, statusText } = error;
-          return { statusCode, statusText };
-        }
-        return {};
-      })
+      .withFailureData(
+        (error): { statusCode?: number; statusText?: string } => {
+          // Optional: a network error has no response
+          if (error instanceof ResponseStatusError) {
+            const { statusCode, statusText } = error;
+            return { statusCode, statusText };
+          }
+          return {};
+        },
+      )
       .withTimeout(1000);
   }
 }
