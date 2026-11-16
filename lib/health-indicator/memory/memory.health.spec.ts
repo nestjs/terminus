@@ -86,6 +86,27 @@ describe('MemoryHealthIndicator', () => {
     });
   });
 
+  describe('size strings', () => {
+    it('checks the heap against a size string', async () => {
+      expect((await memory.checkHeap('heap', '150mb')).heap.status).toBe('up');
+      expect((await memory.checkHeap('heap', '50mb')).heap.status).toBe('down');
+    });
+
+    it('checks the RSS against a size string', async () => {
+      expect((await memory.checkRSS('rss', '0.25gb')).rss.status).toBe('up');
+      expect((await memory.checkRSS('rss', '150mb')).rss.status).toBe('down');
+    });
+
+    it('throws on an invalid size string when the check is created', () => {
+      expect(() => memory.checkHeap('heap', '150MB' as '150mb')).toThrow(
+        'Heap threshold: Invalid size "150MB".',
+      );
+      expect(() => memory.checkRSS('rss', '150 mb' as '150mb')).toThrow(
+        'RSS threshold: Invalid size "150 mb".',
+      );
+    });
+  });
+
   describe('#checkRSS', () => {
     it('is up below the threshold', async () => {
       expect(await memory.checkRSS('rss', 250 * MB)).toEqual({

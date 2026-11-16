@@ -54,6 +54,22 @@ describe('HealthCheckAttempt', () => {
     }
   });
 
+  it.each([
+    ['withTimeout', 'Timeout'],
+    ['cacheFor', 'Cache TTL'],
+    ['degradedAfter', 'Degraded threshold'],
+  ] as const)(
+    'should reject an invalid duration string in %s',
+    (method, name) => {
+      expect(() => session.attempt(() => {})[method]('2S' as '2s')).toThrow(
+        `${name}: Invalid duration "2S".`,
+      );
+      expect(() => session.attempt(() => {})[method]('50w')).toThrow(
+        `${name} must be a whole number between 0 and 4294967295 milliseconds, got 30240000000`,
+      );
+    },
+  );
+
   describe('execute', () => {
     it('should pass an AbortSignal to the callback', async () => {
       let receivedSignal: AbortSignal | undefined;
@@ -140,6 +156,16 @@ describe('HealthCheckAttempt', () => {
       expect(receivedSignal?.aborted).toBe(true);
     });
 
+    it('should accept a duration string', async () => {
+      const result = await session
+        .attempt(() => sleep(5000))
+        .withTimeout('50ms');
+      expect(result.test).toMatchObject({
+        status: 'down',
+        message: 'timeout of 50ms exceeded',
+      });
+    });
+
     // Test for https://github.com/nestjs/terminus/issues/2767
     // More info: https://github.com/nodejs/node/issues/54614
     it('should not retain memory across attempts (nodejs/node#54614)', async () => {
@@ -174,6 +200,14 @@ describe('HealthCheckAttempt', () => {
 
     afterEach(() => {
       vi.useRealTimers();
+    });
+
+    it('should accept a duration string', async () => {
+      const fn = vi.fn(async () => {});
+      await h.check('db').attempt(fn).cacheFor('1s');
+      const second = await h.check('db').attempt(fn).cacheFor('1s');
+      expect(fn).toHaveBeenCalledTimes(1);
+      expect(second.db.cachedResponse).toBe(true);
     });
 
     it('should return the cached result within the TTL without re-running', async () => {
@@ -287,6 +321,13 @@ describe('HealthCheckAttempt', () => {
   });
 
   describe('degradedAfter', () => {
+    it('should accept a duration string', async () => {
+      const slow = await session.attempt(() => sleep(30)).degradedAfter('10ms');
+      const fast = await session.attempt(() => {}).degradedAfter('1s');
+      expect(slow.test.status).toBe('degraded');
+      expect(fast.test.status).toBe('up');
+    });
+
     it('should stay up when faster than the threshold', async () => {
       const result = await session.attempt(() => {}).degradedAfter(1000);
       expect(result).toEqual({

@@ -2,6 +2,9 @@ import { expectTypeOf } from 'vitest';
 import { type HealthCheckAttempt } from './health-check-attempt.js';
 import { HealthIndicatorSession } from './health-indicator-session.js';
 import { type HealthIndicatorResult } from './health-indicator-result.interface.js';
+import { HealthIndicatorService } from './health-indicator.service.js';
+import { MemoryHealthIndicator } from '../memory/memory.health.js';
+import { DiskHealthIndicator } from '../disk/disk.health.js';
 
 class PaymentError extends Error {
   constructor(public readonly code: string) {
@@ -201,5 +204,32 @@ describe('HealthCheckAttempt types', () => {
       responseTime: expect.any(Number),
     });
     expectTypeOf(result.test.owner).toEqualTypeOf<'x'>();
+  });
+
+  it('should accept duration strings with a known unit only', () => {
+    const attempt = session.attempt(() => {});
+    attempt.withTimeout('2s').cacheFor('1.5m').degradedAfter(300);
+    // @ts-expect-error not a unit
+    expect(() => attempt.withTimeout('2 seconds')).toThrow();
+    // @ts-expect-error units are lower case
+    expect(() => attempt.cacheFor('2S')).toThrow();
+    // @ts-expect-error a plain string needs a cast
+    attempt.degradedAfter('300ms' as string);
+  });
+
+  it('should accept size strings with a known unit only', () => {
+    const memory = new MemoryHealthIndicator(new HealthIndicatorService());
+    const disk = new DiskHealthIndicator(vi.fn(), new HealthIndicatorService());
+    memory.checkHeap('heap', '150mb');
+    memory.checkRSS('rss', 1024);
+    disk.checkStorage('disk', { path: '/', threshold: '250gb' });
+    // @ts-expect-error units are lower case
+    expect(() => memory.checkHeap('heap', '150MB')).toThrow();
+    // @ts-expect-error not a unit
+    expect(() => memory.checkRSS('rss', '150 megabytes')).toThrow();
+    expect(() =>
+      // @ts-expect-error a duration is not a size
+      disk.checkStorage('disk', { path: '/', threshold: '2s' }),
+    ).toThrow();
   });
 });

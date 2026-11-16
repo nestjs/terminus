@@ -2,6 +2,8 @@
 // `declaration: true`. Not part of the repo's own typecheck (see tsconfig.json),
 // because `@nestjs/terminus` must resolve to the installed package.
 import {
+  type ByteSize,
+  type Duration,
   DiskHealthIndicator,
   FetchHealthIndicator,
   HealthCheckService,
@@ -71,6 +73,16 @@ export class Indicators {
         this.disk
           .checkStorage('disk', { path: '/', thresholdPercent: 0.9 })
           .withTimeout(100),
+    ]);
+  }
+  strings(timeout: Duration, heap: ByteSize) {
+    return this.health.check([
+      () => this.memory.checkHeap('heap', heap).withTimeout(timeout),
+      () =>
+        this.disk
+          .checkStorage('disk', { path: '/', threshold: '250gb' })
+          .cacheFor('15s')
+          .degradedAfter('300ms'),
     ]);
   }
   caught() {

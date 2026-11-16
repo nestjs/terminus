@@ -2,6 +2,7 @@ import { HealthIndicatorStatus } from './health-indicator-result.interface.js';
 import { errorMessage } from '../../utils/errorMessage.js';
 import { type Merge } from '../../utils/types.js';
 import { runWithTimeout } from '../../utils/runWithTimeout.js';
+import { type Duration, toMs } from '../../utils/units.js';
 import { type AttemptCache } from './attempt-cache.js';
 import { AttemptData } from './attempt-data.js';
 
@@ -183,10 +184,11 @@ export class HealthCheckAttempt<
    * If the function does not resolve within the given time, the health indicator will be marked as `down`
    * An `AbortSignal` is passed to the callback so the underlying operation can be cancelled.
    *
-   * @param ms The timeout in milliseconds
+   * @param timeout The timeout in milliseconds, or a string such as `'2s'`
    * @returns this (for chaining)
    */
-  withTimeout(ms: number): this {
+  withTimeout(timeout: Duration): this {
+    const ms = toMs(timeout, 'Timeout');
     assertDuration(ms, 'Timeout');
 
     this.timeoutMs = ms;
@@ -319,10 +321,11 @@ export class HealthCheckAttempt<
    * in-flight run. Results served from the cache are marked with
    * `cachedResponse: true`.
    *
-   * @param ttlMs Time to live in milliseconds
+   * @param ttl Time to live in milliseconds, or a string such as `'15s'`
    * @returns this (for chaining)
    */
-  cacheFor(ttlMs: number): this {
+  cacheFor(ttl: Duration): this {
+    const ttlMs = toMs(ttl, 'Cache TTL');
     assertDuration(ttlMs, 'Cache TTL');
 
     this.cacheTtlMs = ttlMs;
@@ -332,20 +335,22 @@ export class HealthCheckAttempt<
 
   /**
    * Mark the check as `degraded` instead of `up` when it succeeds but takes
-   * `ms` or longer (measured by `responseTime`). Combine with `.withTimeout()`
+   * `threshold` or longer (measured by `responseTime`). Combine with `.withTimeout()`
    * to mark it as `down` when it is too slow.
    * The data from `.withSuccessData()` is still added.
    *
-   * @param ms The response time in milliseconds from which the check is degraded
+   * @param threshold The response time from which the check is degraded, in
+   * milliseconds or as a string such as `'300ms'`
    * @returns this (for chaining)
    *
    * @example
    * ```typescript
    * // < 200ms: up, 200–1000ms: degraded, > 1000ms: down
-   * this.db.pingCheck('database').degradedAfter(200).withTimeout(1000)
+   * this.db.pingCheck('database').degradedAfter(200).withTimeout('1s')
    * ```
    */
-  degradedAfter(ms: number): this {
+  degradedAfter(threshold: Duration): this {
+    const ms = toMs(threshold, 'Degraded threshold');
     assertDuration(ms, 'Degraded threshold');
 
     this.degradedAfterMs = ms;
