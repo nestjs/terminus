@@ -1,3 +1,4 @@
+import { setTimeout as sleep } from 'node:timers/promises';
 import { Controller, Get, type INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
@@ -9,9 +10,6 @@ import { TerminusModule } from '../../terminus.module.js';
 // That each data method reaches the result. The rules of the data itself
 // (merging, reserved keys, warnings, failing functions) are tested in
 // `attempt-data.spec.ts`.
-
-const sleep = (ms: number) =>
-  new Promise<void>((resolve) => setTimeout(resolve, ms));
 
 class PaymentError extends Error {
   constructor(public readonly code: string) {

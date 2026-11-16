@@ -1,3 +1,4 @@
+import { setTimeout as sleep } from 'node:timers/promises';
 import v8 from 'node:v8';
 import vm from 'node:vm';
 import { HealthIndicatorService } from './health-indicator.service.js';
@@ -6,9 +7,6 @@ import { HealthCheckExecutor } from '../../health-check/health-check-executor.se
 
 // The data methods are tested in `health-check-attempt.data.spec.ts` and
 // `attempt-data.spec.ts`, the types in `health-check-attempt.types.spec.ts`.
-
-const sleep = (ms: number) =>
-  new Promise<void>((resolve) => setTimeout(resolve, ms));
 
 class PaymentError extends Error {
   constructor(public readonly code: string) {
@@ -177,7 +175,7 @@ describe('HealthCheckAttempt', () => {
           await session.attempt(async () => {}).withTimeout(1);
         }
         // let the AbortSignal.timeout timers fire so only real leaks remain
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        await sleep(500);
         gc();
         gc();
         return process.memoryUsage().heapUsed;

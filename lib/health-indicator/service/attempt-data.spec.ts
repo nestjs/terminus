@@ -1,9 +1,7 @@
+import { setTimeout as sleep } from 'node:timers/promises';
 import { Logger } from '@nestjs/common';
 import { type MockInstance } from 'vitest';
 import { AttemptData } from './attempt-data.js';
-
-const sleep = (ms: number) =>
-  new Promise<void>((resolve) => setTimeout(resolve, ms));
 
 describe('AttemptData', () => {
   let warn: MockInstance;
