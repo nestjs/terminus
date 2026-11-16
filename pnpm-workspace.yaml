@@ -23,7 +23,7 @@ catalog:
   "@nestjs/testing": "12.5.0"
   "@nestjs/typeorm": "12.0.3"
   "@prisma/client": "6.19.3"
-  "@release-it/conventional-changelog": "11.0.1"
+  "@release-it/conventional-changelog": "12.0.2"
   "@types/express": "5.0.6"
   "@types/node": "22.20.5"
   "@types/supertest": "7.2.1"
