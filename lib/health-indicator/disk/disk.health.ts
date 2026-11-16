@@ -5,6 +5,7 @@ import {
 } from './disk-health-options.type.js';
 import { STORAGE_EXCEEDED } from '../../errors/messages.constant.js';
 import { CHECK_DISK_SPACE_LIB } from '../../terminus.constants.js';
+import { toBytes } from '../../utils/units.js';
 import { type CheckDiskSpace } from './disk-usage-lib.provider.js';
 import {
   type HealthCheckAttempt,
@@ -56,7 +57,7 @@ export class DiskHealthIndicator {
    *
    * @example
    * // The used disk storage should not exceed 250 GB
-   * diskHealthIndicator.checkStorage('storage', { threshold: 250 * 1024 * 1024 * 1024, path: '/' });
+   * diskHealthIndicator.checkStorage('storage', { threshold: '250gb', path: '/' });
    * // A full disk is a warning, not an outage; give up after 2 seconds
    * diskHealthIndicator
    *   .checkStorage('storage', { thresholdPercent: 0.9, path: '/' })
@@ -67,6 +68,8 @@ export class DiskHealthIndicator {
     key: Key,
     options: DiskHealthIndicatorOptions,
   ): HealthCheckAttempt<Key> {
+    // `0` is not used with `thresholdPercent`
+    const threshold = toBytes(options.threshold ?? 0, 'Disk threshold');
     return this.healthIndicatorService.check(key).attempt(async () => {
       const { free, size } = await this.checkDiskSpace(options.path);
       const used = size - free;
@@ -80,7 +83,7 @@ export class DiskHealthIndicator {
       if (this.isOptionThresholdPercent(options)) {
         isHealthy = options.thresholdPercent >= used / size;
       } else {
-        isHealthy = options.threshold >= used;
+        isHealthy = threshold >= used;
       }
 
       if (!isHealthy) {

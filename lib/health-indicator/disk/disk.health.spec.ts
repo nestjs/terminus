@@ -40,6 +40,25 @@ describe('DiskHealthIndicator', () => {
       });
     });
 
+    it('accepts a size string as the threshold', async () => {
+      const up = await disk.checkStorage('disk', {
+        path: '/',
+        threshold: '50gb',
+      });
+      const down = await disk.checkStorage('disk', {
+        path: '/',
+        threshold: '30gb',
+      });
+      expect(up.disk.status).toBe('up');
+      expect(down.disk).toMatchObject({ status: 'down', message });
+    });
+
+    it('throws on an invalid size string when the check is created', () => {
+      expect(() =>
+        disk.checkStorage('disk', { path: '/', threshold: '50GB' as '50gb' }),
+      ).toThrow('Disk threshold: Invalid size "50GB".');
+    });
+
     it('is up below thresholdPercent', async () => {
       const result = await disk.checkStorage('disk', {
         path: '/',

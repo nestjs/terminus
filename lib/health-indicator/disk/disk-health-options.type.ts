@@ -1,4 +1,5 @@
 import { type XOR } from '../../utils/types.js';
+import { type ByteSize } from '../../utils/units.js';
 
 /**
  * @internal
@@ -15,9 +16,9 @@ interface DiskOptionsBase {
  */
 interface DiskOptionsThreshold {
   /**
-   * The threshold in bytes
+   * The threshold in bytes, or a string such as `'250gb'`
    */
-  threshold: number;
+  threshold: ByteSize;
 }
 
 /**

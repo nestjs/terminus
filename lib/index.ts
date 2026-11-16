@@ -12,3 +12,4 @@ export {
   HealthCheckResult,
 } from './health-check/index.js';
 export type { HealthCheckStatus } from './health-check/index.js';
+export type { Duration, ByteSize } from './utils/units.js';
