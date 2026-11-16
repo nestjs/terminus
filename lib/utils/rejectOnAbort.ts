@@ -4,10 +4,10 @@
  * @param signal The abort signal to listen to
  * @returns A promise that resolves to the result of the input promise or rejects if the signal is aborted
  */
-export function rejectOnAbort<T>(
-  promise: T | PromiseLike<T>,
+export function rejectOnAbort<TValue>(
+  promise: TValue | PromiseLike<TValue>,
   signal: AbortSignal,
-): Promise<T> {
+): Promise<TValue> {
   if (signal.aborted) {
     return Promise.reject(signal.reason);
   }

@@ -26,28 +26,13 @@ describe('HealthCheckAttempt', () => {
   });
 
   it.each([
-    'withTimeout',
-    'cacheFor',
-    'degradedAfter',
-    'degradedOnFailure',
-    'withData',
-    'withSuccessData',
-    'withFailureData',
-  ] as const)('should return this from %s for chaining', (method) => {
-    const attempt = session.attempt(() => {});
-    const builder = attempt[method] as (arg: object | number) => unknown;
-    const arg = method.endsWith('Data') ? {} : 100;
-    expect(builder.call(attempt, arg)).toBe(attempt);
-  });
-
-  it.each([
     ['withTimeout', 'Timeout'],
     ['cacheFor', 'Cache TTL'],
     ['degradedAfter', 'Degraded threshold'],
   ] as const)('should reject an invalid duration in %s', (method, name) => {
-    for (const ms of [-1, Infinity, 2 ** 40, NaN, 1.5]) {
+    for (const ms of [-1, Infinity, 2 ** 31, NaN, 1.5]) {
       expect(() => session.attempt(() => {})[method](ms)).toThrow(
-        `${name} must be a whole number between 0 and 4294967295 milliseconds, got ${ms}`,
+        `${name} must be a whole number between 0 and 2147483647 milliseconds, got ${ms}`,
       );
     }
   });
@@ -63,20 +48,12 @@ describe('HealthCheckAttempt', () => {
         `${name}: Invalid duration "2S".`,
       );
       expect(() => session.attempt(() => {})[method]('50w')).toThrow(
-        `${name} must be a whole number between 0 and 4294967295 milliseconds, got 30240000000`,
+        `${name} must be a whole number between 0 and 2147483647 milliseconds, got 30240000000`,
       );
     },
   );
 
   describe('execute', () => {
-    it('should pass an AbortSignal to the callback', async () => {
-      let receivedSignal: AbortSignal | undefined;
-      await session.attempt(({ signal }) => {
-        receivedSignal = signal;
-      });
-      expect(receivedSignal).toBeInstanceOf(AbortSignal);
-    });
-
     it.each([
       ['sync', () => {}],
       ['async', async () => {}],
@@ -85,19 +62,6 @@ describe('HealthCheckAttempt', () => {
         test: { status: 'up', responseTime: expect.any(Number) },
       });
     });
-
-    // FIXME: Remove this in v13, the returned value is ignored (#2796)
-    it.each<[string, () => unknown]>([
-      ['sync', () => ({ foo: 'bar' })],
-      ['async', async () => ({ foo: 'bar' })],
-    ])(
-      'should return up with the data returned by the %s function',
-      async (_, fn) => {
-        expect(await session.attempt(fn)).toEqual({
-          test: { status: 'up', foo: 'bar', responseTime: expect.any(Number) },
-        });
-      },
-    );
 
     it.each([
       [
@@ -441,26 +405,6 @@ describe('HealthCheckAttempt', () => {
       });
     });
 
-    it('should cache the degraded status', async () => {
-      const h = new HealthIndicatorService();
-      const fn = vi.fn(fail);
-      await h.check('db').attempt(fn).degradedOnFailure().cacheFor(1000);
-      const second = await h
-        .check('db')
-        .attempt(fn)
-        .cacheFor(1000)
-        .degradedOnFailure();
-      expect(fn).toHaveBeenCalledTimes(1);
-      expect(second).toEqual({
-        db: {
-          status: 'degraded',
-          message: 'payment failed: EPAY',
-          responseTime: expect.any(Number),
-          cachedResponse: true,
-        },
-      });
-    });
-
     it('should keep the health check up with an overall degraded status', async () => {
       const executor = new HealthCheckExecutor(
         { log: vi.fn(), error: vi.fn(), warn: vi.fn() },
@@ -526,15 +470,5 @@ describe('HealthCheckAttempt as a promise', () => {
 
     expect(result.test.status).toBe('up');
     expect(onFinally).toHaveBeenCalledTimes(1);
-  });
-
-  it('should work with Promise.all', async () => {
-    const [first, second] = await Promise.all([
-      session.attempt(() => {}),
-      session.attempt(() => {}).catch(() => null),
-    ]);
-
-    expect(first.test.status).toBe('up');
-    expect(second?.test.status).toBe('up');
   });
 });

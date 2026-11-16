@@ -2,7 +2,7 @@
  * Generates the string which packages are missing and
  * how to install them
  *
- * @param name The name of the packages
+ * @param names The names of the packages
  * @param reason The reason why these packages are important
  *
  * @internal

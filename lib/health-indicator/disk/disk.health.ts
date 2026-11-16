@@ -7,10 +7,8 @@ import { STORAGE_EXCEEDED } from '../../errors/messages.constant.js';
 import { CHECK_DISK_SPACE_LIB } from '../../terminus.constants.js';
 import { toBytes } from '../../utils/units.js';
 import { type CheckDiskSpace } from './disk-usage-lib.provider.js';
-import {
-  type HealthCheckAttempt,
-  HealthIndicatorService,
-} from '../service/health-indicator.service.js';
+import { type HealthCheckAttempt } from '../service/health-check-attempt.js';
+import { HealthIndicatorService } from '../service/health-indicator.service.js';
 
 /**
  * The DiskHealthIndicator contains checks which are related
@@ -49,8 +47,7 @@ export class DiskHealthIndicator {
    * `down` when it has, or when the disk usage of `path` cannot be read
    * (for example, the path does not exist).
    *
-   * Returns a `HealthCheckAttempt`, so you can chain `.degradedOnFailure()`,
-   * `.withTimeout()`, `.cacheFor()`, `.withData()` and `.degradedAfter()`.
+   * Returns a `HealthCheckAttempt`, so you can chain e.g. `.degradedOnFailure()`.
    *
    * @param key The key which will be used for the result object
    * @param options The path to check and the threshold in bytes or in percent

@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { STORAGE_EXCEEDED } from '../../errors/messages.constant.js';
 import { type ByteSize, toBytes } from '../../utils/units.js';
-import {
-  type HealthCheckAttempt,
-  HealthIndicatorService,
-} from '../service/health-indicator.service.js';
+import { type HealthCheckAttempt } from '../service/health-check-attempt.js';
+import { HealthIndicatorService } from '../service/health-indicator.service.js';
 
 /**
  * The MemoryHealthIndicator contains checks which are related
@@ -23,8 +21,7 @@ export class MemoryHealthIndicator {
    * Checks the heap space. `down` when the process uses more than
    * `heapUsedThreshold` bytes of heap.
    *
-   * Returns a `HealthCheckAttempt`, so you can chain `.degradedOnFailure()`,
-   * `.cacheFor()`, `.withData()`, `.degradedAfter()` and `.withTimeout()`.
+   * Returns a `HealthCheckAttempt`, so you can chain e.g. `.degradedOnFailure()`.
    *
    * @param key The key which will be used for the result object
    * @param heapUsedThreshold The most heap the process may use, in bytes or
@@ -54,8 +51,7 @@ export class MemoryHealthIndicator {
    * Checks the RSS (all memory the process has allocated). `down` when it is
    * more than `rssThreshold` bytes.
    *
-   * Returns a `HealthCheckAttempt`, so you can chain `.degradedOnFailure()`,
-   * `.cacheFor()`, `.withData()`, `.degradedAfter()` and `.withTimeout()`.
+   * Returns a `HealthCheckAttempt`, so you can chain e.g. `.degradedOnFailure()`.
    *
    * @param key The key which will be used for the result object
    * @param rssThreshold The most memory the process may have allocated, in

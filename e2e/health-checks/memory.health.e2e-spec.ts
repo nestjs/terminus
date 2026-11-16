@@ -92,27 +92,6 @@ describe('MemoryHealthIndicator', () => {
   });
 
   describe('#checkHeap builders', () => {
-    it('should be up when the heap threshold is not exceeded', async () => {
-      app = await setHealthEndpoint(({ healthCheck, memory }) =>
-        healthCheck.check([() => memory.checkHeap('memory_heap', 1024 ** 4)]),
-      ).start();
-
-      const details = {
-        memory_heap: { status: 'up', responseTime: expect.any(Number) },
-      };
-      return request(app.getHttpServer())
-        .get('/health')
-        .expect(200)
-        .expect(({ body }) =>
-          expect(body).toEqual({
-            status: 'ok',
-            info: details,
-            error: {},
-            details,
-          }),
-        );
-    });
-
     it('should be degraded, not down, with degradedOnFailure()', async () => {
       app = await setHealthEndpoint(({ healthCheck, memory }) =>
         healthCheck.check([

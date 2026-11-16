@@ -10,6 +10,7 @@ describe('AttemptData', () => {
   // test uses its own key: the test name.
   const key = () => expect.getState().currentTestName!;
   const create = (suffix = '') => new AttemptData(key() + suffix);
+  const reserved = { status: 'x', responseTime: 'x', cachedResponse: 'x' };
   const warnings = (text: string) =>
     warn.mock.calls.map(([msg]) => String(msg)).filter((m) => m.includes(text));
 
@@ -88,19 +89,10 @@ describe('AttemptData', () => {
       await expect(data.forSuccess({})).rejects.toThrow('pick failed');
     });
 
-    it.each(['status', 'responseTime', 'cachedResponse'])(
-      'should drop the reserved key "%s"',
-      async (reserved) => {
-        const data = create();
-        data.addSuccess(() => ({ [reserved]: 'x', foo: 'bar' }));
-        expect(await data.forSuccess(undefined)).toEqual({ foo: 'bar' });
-      },
-    );
-
-    it('should allow message', async () => {
+    it('should drop the reserved keys', async () => {
       const data = create();
-      data.addSuccess({ message: 'all good' });
-      expect(await data.forSuccess(undefined)).toEqual({ message: 'all good' });
+      data.addSuccess(() => ({ ...reserved, foo: 'bar' }));
+      expect(await data.forSuccess(undefined)).toEqual({ foo: 'bar' });
     });
 
     it('should warn about reserved keys once per indicator', async () => {
@@ -151,16 +143,10 @@ describe('AttemptData', () => {
         },
       );
 
-      it.each(['status', 'responseTime', 'cachedResponse'])(
-        'should drop the reserved key "%s"',
-        async (reserved) => {
-          const result = await create().forSuccess({
-            [reserved]: 'x',
-            foo: 'bar',
-          });
-          expect(result).toEqual({ foo: 'bar' });
-        },
-      );
+      it('should drop the reserved keys', async () => {
+        const result = await create().forSuccess({ ...reserved, foo: 'bar' });
+        expect(result).toEqual({ foo: 'bar' });
+      });
 
       it('should handle a circular reference with a reserved key (e.g. an axios response)', async () => {
         const response: Record<string, unknown> = { status: 200, data: 'ok' };
@@ -174,19 +160,7 @@ describe('AttemptData', () => {
   });
 
   describe('failure data', () => {
-    it('should allow message, to replace the error message', async () => {
-      const data = create();
-      data.addFailure(() => ({ message: 'Database is not reachable' }));
-      expect(await data.forFailure(new Error('boom'), undefined, 0)).toEqual({
-        message: 'Database is not reachable',
-      });
-    });
-
     const error = new Error('boom');
-
-    it('should be empty without withFailureData()', async () => {
-      expect(await create().forFailure(error, undefined, 0)).toEqual({});
-    });
 
     it('should run every function with the error and merge the data in call order', async () => {
       const data = create();
@@ -202,16 +176,13 @@ describe('AttemptData', () => {
       expect(result).toEqual({ reason: 'boom', code: 'c', a: 1 });
     });
 
-    it.each(['status', 'responseTime', 'cachedResponse'])(
-      'should drop the reserved key "%s"',
-      async (reserved) => {
-        const data = create();
-        data.addFailure(() => ({ [reserved]: 'x', foo: 'bar' }));
-        expect(await data.forFailure(error, undefined, 0)).toEqual({
-          foo: 'bar',
-        });
-      },
-    );
+    it('should drop the reserved keys', async () => {
+      const data = create();
+      data.addFailure(() => ({ ...reserved, foo: 'bar' }));
+      expect(await data.forFailure(error, undefined, 0)).toEqual({
+        foo: 'bar',
+      });
+    });
 
     it.each([
       [

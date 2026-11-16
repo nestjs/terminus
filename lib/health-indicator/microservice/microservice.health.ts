@@ -24,7 +24,7 @@ export type MicroserviceHealthIndicatorOptions<
   // The transport option is in the `MicroserviceOptionsLike` (e.g. RedisOptions)
   // optional. We need to use this information, therefore it is required
   transport: Required<PropType<MicroserviceOptionsLike, 'transport'>>;
-  // FIXME: Delete the `timeout` option in v13, use `.withTimeout()` instead
+  // FIXME: Delete the `timeout` option in v13, use `.withTimeout()` instead (#2823)
   /**
    * The amount of time the check should require in ms
    * @deprecated Chain `.withTimeout(ms)` on the returned attempt instead,

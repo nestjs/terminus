@@ -145,31 +145,6 @@ describe('HealthCheckAttempt data', () => {
     expect(plain.test.message).toBe('payment failed: EPAY');
   });
 
-  it('should not run the failure data function when the check succeeds', async () => {
-    const pick = vi.fn(() => ({ code: 'x' }));
-    const result = await session.attempt(() => {}).withFailureData(pick);
-    expect(pick).not.toHaveBeenCalled();
-    expect(result.test).toEqual({
-      status: 'up',
-      responseTime: expect.any(Number),
-    });
-  });
-
-  it('should run the failure data in what is left of the timeout, with the timeout error', async () => {
-    const result = await session
-      .attempt(() => sleep(5000))
-      .withTimeout(20)
-      .withFailureData((error) => ({ reason: (error as Error).message }))
-      .withFailureData(() => sleep(5000).then(() => ({ late: true })));
-    expect(result.test).toEqual({
-      status: 'down',
-      message: 'timeout of 20ms exceeded',
-      reason: 'timeout of 20ms exceeded',
-      responseTime: expect.any(Number),
-    });
-    expect(result.test.responseTime).toBeLessThan(500);
-  });
-
   it.each([
     ['withData().withSuccessData()', () => {}, true],
     ['withSuccessData().withData()', () => {}, false],

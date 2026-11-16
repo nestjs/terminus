@@ -98,10 +98,10 @@ export class FetchHealthIndicator {
    * })
    */
   pingCheck<
-    const Key extends string,
+    const TKey extends string,
     TResponse extends HttpResponseLike = Response,
   >(
-    key: Key,
+    key: TKey,
     url: string | URL,
     {
       fetch = globalThis.fetch as unknown as FetchLike<TResponse>,
@@ -118,7 +118,7 @@ export class FetchHealthIndicator {
           response = await fetch(url.toString(), { method, headers, signal });
         } catch (err) {
           // Clients that throw on non-2xx (axios, @nestjs/http-client) still
-          // report the status, as HttpHealthIndicator does today.
+          // report the status.
           const failed = statusOf(err);
           if (failed) {
             throw statusError(failed);

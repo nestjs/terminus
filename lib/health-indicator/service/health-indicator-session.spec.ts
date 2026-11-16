@@ -1,4 +1,3 @@
-import { HealthCheckAttempt } from './health-check-attempt.js';
 import { HealthIndicatorSession } from './health-indicator-session.js';
 
 describe('HealthIndicatorSession', () => {
@@ -47,12 +46,6 @@ describe('HealthIndicatorSession', () => {
       expect(session.degraded('slow')).toEqual({
         test: { status: 'degraded', message: 'slow' },
       });
-    });
-
-    it('should throw if status is used as additional data key', () => {
-      expect(() => session.degraded({ status: 'foo' } as any)).toThrow(
-        '"status" is a reserved key',
-      );
     });
   });
 

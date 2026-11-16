@@ -54,16 +54,35 @@ describe('HealthCheckExecutorService', () => {
 
   describe('execute', () => {
     it('should support HealthCheckAttempt in the health indicators array', async () => {
-      const attempt = h.check('db').attempt(async () => {});
+      const attempt = h
+        .check('db')
+        .attempt(async () => {})
+        .withData({ owner: 'team-db' });
       const result = await healthCheckExecutor.execute([attempt]);
+      // A bare attempt keeps its key and its data types, like `() => attempt`
       expectTypeOf<
-        keyof InferHealthIndicatorResult<typeof attempt>
-      >().toEqualTypeOf<'db'>();
+        InferHealthIndicatorResult<typeof attempt>['db']['owner']
+      >().toEqualTypeOf<'team-db'>();
+      expectTypeOf<
+        InferHealthIndicatorResult<() => typeof attempt>
+      >().toEqualTypeOf<InferHealthIndicatorResult<typeof attempt>>();
       expect(result).toEqual<HealthCheckResult>({
         status: 'ok',
-        info: { db: { status: 'up', responseTime: expect.any(Number) } },
+        info: {
+          db: {
+            status: 'up',
+            owner: 'team-db',
+            responseTime: expect.any(Number),
+          },
+        },
         error: {},
-        details: { db: { status: 'up', responseTime: expect.any(Number) } },
+        details: {
+          db: {
+            status: 'up',
+            owner: 'team-db',
+            responseTime: expect.any(Number),
+          },
+        },
       });
     });
 

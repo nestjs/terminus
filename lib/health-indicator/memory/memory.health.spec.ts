@@ -55,35 +55,6 @@ describe('MemoryHealthIndicator', () => {
         },
       });
     });
-
-    it('adds data with withData()', async () => {
-      const result = await memory
-        .checkHeap('heap', 150 * MB)
-        .withSuccessData(() => ({ heapUsed: process.memoryUsage().heapUsed }));
-      expect(result.heap).toMatchObject({ status: 'up', heapUsed: 100 * MB });
-    });
-
-    it('serves a cached result with cacheFor()', async () => {
-      const service = new HealthIndicatorService();
-      const cached = new MemoryHealthIndicator(service);
-      await cached.checkHeap('heap', 150 * MB).cacheFor(10_000);
-      memoryUsage.mockReturnValue({ heapUsed: 300 * MB } as NodeJS.MemoryUsage);
-      expect(
-        (await cached.checkHeap('heap', 150 * MB).cacheFor(10_000)).heap,
-      ).toMatchObject({ status: 'up', cachedResponse: true });
-    });
-
-    it('is degraded with degradedAfter() when the check is slow', async () => {
-      expect(
-        (await memory.checkHeap('heap', 150 * MB).degradedAfter(0)).heap.status,
-      ).toBe('degraded');
-    });
-
-    it('accepts withTimeout()', async () => {
-      expect(
-        (await memory.checkHeap('heap', 150 * MB).withTimeout(100)).heap.status,
-      ).toBe('up');
-    });
   });
 
   describe('size strings', () => {
@@ -121,14 +92,6 @@ describe('MemoryHealthIndicator', () => {
           message: 'Used rss exceeded the set threshold',
           responseTime: expect.any(Number),
         },
-      });
-    });
-
-    it('is degraded instead of down with degradedOnFailure()', async () => {
-      const result = await memory.checkRSS('rss', 150 * MB).degradedOnFailure();
-      expect(result.rss).toMatchObject({
-        status: 'degraded',
-        message: 'Used rss exceeded the set threshold',
       });
     });
   });

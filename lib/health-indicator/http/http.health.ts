@@ -16,10 +16,8 @@ import {
 import { type AxiosError } from '../../errors/axios.error.js';
 import { TERMINUS_LOGGER } from '../../terminus.constants.js';
 import { isAxiosError, loadPackage } from '../../utils/index.js';
-import {
-  HealthIndicatorService,
-  type HealthIndicatorSession,
-} from '../service/health-indicator.service.js';
+import { type HealthIndicatorSession } from '../service/health-indicator-session.js';
+import { HealthIndicatorService } from '../service/health-indicator.service.js';
 
 interface HttpClientLike {
   request<T = any>(config: any): Observable<AxiosResponse<T>>;
