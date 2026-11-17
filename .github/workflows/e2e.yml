@@ -2,6 +2,9 @@ name: e2e tests
 
 on: [push, pull_request]
 
+permissions:
+  contents: read
+
 jobs:
   build:
 
@@ -21,7 +24,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'pnpm'
 
-    - run: docker compose up -d --wait
+    - run: docker compose up -d --wait || { docker compose logs --tail 100; exit 1; }
     - run: pnpm i
     - run: pnpm build:all
     - run: pnpm test:e2e:all
