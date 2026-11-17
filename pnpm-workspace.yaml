@@ -36,7 +36,7 @@ catalog:
   "ioredis": "5.11.1"
   "kafkajs": "^2.2.4"
   "lint-staged": "17.6.1"
-  "mongoose": "8.24.9"
+  "mongoose": "9.12.2"
   "mysql2": "3.24.6"
   "portfinder": "1.0.38"
   "oxfmt": "0.79.0"
