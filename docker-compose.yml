@@ -42,7 +42,7 @@ services:
 
   # Single node in KRaft mode: broker and controller in one container, no ZooKeeper.
   kafka_broker:
-    image: confluentinc/cp-kafka:7.9.11
+    image: confluentinc/cp-kafka:8.4.1
     container_name: broker
     ports:
       - "9092:9092"
