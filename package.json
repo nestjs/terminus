@@ -200,10 +200,7 @@
     ],
     "packageRules": [
       {
-        "description": "Automerge green non-major npm updates once the release is a week old. Majors, GitHub Actions and Docker images stay manual.",
-        "matchDatasources": [
-          "npm"
-        ],
+        "description": "Automerge green non-major updates (npm, GitHub Actions, Docker images) once the release is a week old. Majors stay manual.",
         "matchUpdateTypes": [
           "minor",
           "patch"
