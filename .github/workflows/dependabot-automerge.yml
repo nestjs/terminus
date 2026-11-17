@@ -1,0 +1,45 @@
+name: Dependabot automerge
+
+# Merges a Dependabot PR once every check on its head commit is green.
+# `workflow_run` executes this file from master and never checks out PR code,
+# so the write token below is not exposed to the updated dependency.
+on:
+  workflow_run:
+    workflows: [Build Samples, e2e tests, Format, Lint, Packaging, Unit Tests]
+    types: [completed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency: dependabot-automerge-${{ github.event.workflow_run.head_branch }}
+
+jobs:
+  automerge:
+    # `actor` is whoever pushed the head commit: a human commit on top of
+    # Dependabot's opts the PR out.
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.actor.login == 'dependabot[bot]'
+    runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      BRANCH: ${{ github.event.workflow_run.head_branch }}
+      SHA: ${{ github.event.workflow_run.head_sha }}
+    steps:
+      - run: |
+          pr=$(gh pr list --head "$BRANCH" --author app/dependabot --state open \
+            --json number,title,headRefOid \
+            --jq ".[] | select(.headRefOid == \"$SHA\") | \"\(.number) \(.title)\"")
+          [ -n "$pr" ] || { echo "No open Dependabot PR at $SHA"; exit 0; }
+          number=${pr%% *} title=${pr#* }
+
+          # "bump x from 1.2.3 to 1.2.4": majors and grouped updates stay manual
+          if ! [[ $title =~ from\ v?([0-9]+)\.[^\ ]*\ to\ v?([0-9]+)\. ]] ||
+            [ "${BASH_REMATCH[1]}" != "${BASH_REMATCH[2]}" ]; then
+            echo "Not a single non-major bump, leaving for a human: $title"; exit 0
+          fi
+
+          gh pr checks "$number" || { echo "Checks not all green (yet)"; exit 0; }
+          gh pr merge "$number" --squash --match-head-commit "$SHA"

@@ -192,17 +192,26 @@
     ]
   },
   "renovate": {
-    "semanticCommits": true,
+    "semanticCommits": "enabled",
+    "extends": [
+      "config:recommended",
+      "security:minimumReleaseAgeNpm",
+      "helpers:pinGitHubActionDigests"
+    ],
     "packageRules": [
       {
-        "matchDepTypes": [
-          "devDependencies"
+        "description": "Automerge green non-major npm updates once the release is a week old. Majors, GitHub Actions and Docker images stay manual.",
+        "matchDatasources": [
+          "npm"
         ],
+        "matchUpdateTypes": [
+          "minor",
+          "patch"
+        ],
+        "minimumReleaseAge": "7 days",
+        "internalChecksFilter": "strict",
         "automerge": true
       }
-    ],
-    "extends": [
-      "config:recommended"
     ]
   },
   "commitlint": {
