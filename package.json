@@ -221,6 +221,29 @@
         "minimumReleaseAge": "7 days",
         "internalChecksFilter": "strict",
         "automerge": true
+      },
+      {
+        "description": "Majors of tooling that cannot change the published package. Not release-it (runs with publish credentials, untested by CI), typescript (emits dist) or @types/node (sets the Node API baseline).",
+        "matchPackageNames": [
+          "oxlint",
+          "oxfmt",
+          "@commitlint/**",
+          "husky",
+          "lint-staged",
+          "rimraf",
+          "concurrently",
+          "wait-port",
+          "portfinder",
+          "supertest",
+          "@types/express",
+          "@types/supertest"
+        ],
+        "matchUpdateTypes": [
+          "major"
+        ],
+        "minimumReleaseAge": "7 days",
+        "internalChecksFilter": "strict",
+        "automerge": true
       }
     ]
   },
