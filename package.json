@@ -208,6 +208,19 @@
         "minimumReleaseAge": "7 days",
         "internalChecksFilter": "strict",
         "automerge": true
+      },
+      {
+        "description": "GitHub Actions and Docker images only feed CI, so their majors are automerged under the same conditions.",
+        "matchDatasources": [
+          "github-tags",
+          "docker"
+        ],
+        "matchUpdateTypes": [
+          "major"
+        ],
+        "minimumReleaseAge": "7 days",
+        "internalChecksFilter": "strict",
+        "automerge": true
       }
     ]
   },
