@@ -121,8 +121,8 @@ catalogs:
       specifier: 4.18.1
       version: 4.18.1
     mongoose:
-      specifier: 8.24.9
-      version: 8.24.9
+      specifier: 8.24.10
+      version: 8.24.10
     mysql2:
       specifier: 3.24.6
       version: 3.24.6
@@ -223,7 +223,7 @@ importers:
         version: 12.5.1(@grpc/grpc-js@1.14.7)(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(amqp-connection-manager@5.0.1(amqplib@2.4.0))(amqplib@2.4.0)(ioredis@5.11.1)(kafkajs@2.2.4)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/mongoose':
         specifier: 'catalog:'
-        version: 12.0.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(mongoose@8.24.9(socks@2.8.4))(rxjs@7.8.2)
+        version: 12.0.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(mongoose@8.24.10(socks@2.8.4))(rxjs@7.8.2)
       '@nestjs/platform-express':
         specifier: 'catalog:'
         version: 12.5.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(rxjs@7.8.2)
@@ -283,7 +283,7 @@ importers:
         version: 17.6.1
       mongoose:
         specifier: 'catalog:'
-        version: 8.24.9(socks@2.8.4)
+        version: 8.24.10(socks@2.8.4)
       mysql2:
         specifier: 'catalog:'
         version: 3.24.6(@types/node@22.20.5)
@@ -389,7 +389,7 @@ importers:
         version: 12.5.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/microservices@12.5.1)(@nestjs/platform-express@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/mongoose':
         specifier: 'catalog:'
-        version: 12.0.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(mongoose@8.24.9(socks@2.8.4))(rxjs@7.8.2)
+        version: 12.0.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(mongoose@8.24.10(socks@2.8.4))(rxjs@7.8.2)
       '@nestjs/platform-express':
         specifier: 'catalog:'
         version: 12.5.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(rxjs@7.8.2)
@@ -398,7 +398,7 @@ importers:
         version: link:../..
       mongoose:
         specifier: 'catalog:'
-        version: 8.24.9(socks@2.8.4)
+        version: 8.24.10(socks@2.8.4)
       reflect-metadata:
         specifier: 'catalog:'
         version: 0.2.2
@@ -684,7 +684,7 @@ importers:
         version: 12.5.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/microservices@12.5.1)(@nestjs/platform-express@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/mongoose':
         specifier: 'catalog:'
-        version: 12.0.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(mongoose@8.24.9(socks@2.8.4))(rxjs@7.8.2)
+        version: 12.0.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(mongoose@8.24.10(socks@2.8.4))(rxjs@7.8.2)
       '@nestjs/platform-express':
         specifier: 'catalog:'
         version: 12.5.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(rxjs@7.8.2)
@@ -693,7 +693,7 @@ importers:
         version: link:../..
       mongoose:
         specifier: 'catalog:'
-        version: 8.24.9(socks@2.8.4)
+        version: 8.24.10(socks@2.8.4)
       reflect-metadata:
         specifier: 'catalog:'
         version: 0.2.2
@@ -3713,8 +3713,8 @@ packages:
       socks:
         optional: true
 
-  mongoose@8.24.9:
-    resolution: {integrity: sha512-+roDmtsLlBjv42fIlhqX6AmCgSznqK3CDxFcAZZv2fkovgGunZpXGTEEZoL5agz9JbFH4r7i6CGJ8T3p7Ub5Jg==}
+  mongoose@8.24.10:
+    resolution: {integrity: sha512-mvIBeudAZjSXteYMl66KA/2SJoTPAYqkkFLiZK5mzrquNDbDwmtvnK9azSRXKz0TWcCcc5ATG6WiOU0qsp2xNw==}
     engines: {node: '>=16.20.1'}
 
   mpath@0.9.0:
@@ -5435,11 +5435,11 @@ snapshots:
       ioredis: 5.11.1
       kafkajs: 2.2.4
 
-  '@nestjs/mongoose@12.0.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(mongoose@8.24.9(socks@2.8.4))(rxjs@7.8.2)':
+  '@nestjs/mongoose@12.0.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(mongoose@8.24.10(socks@2.8.4))(rxjs@7.8.2)':
     dependencies:
       '@nestjs/common': 12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 12.5.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/microservices@12.5.1)(@nestjs/platform-express@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      mongoose: 8.24.9(socks@2.8.4)
+      mongoose: 8.24.10(socks@2.8.4)
       rxjs: 7.8.2
 
   '@nestjs/platform-express@12.5.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(rxjs@7.8.2)':
@@ -7381,7 +7381,7 @@ snapshots:
     optionalDependencies:
       socks: 2.8.4
 
-  mongoose@8.24.9(socks@2.8.4):
+  mongoose@8.24.10(socks@2.8.4):
     dependencies:
       bson: 6.10.4
       kareem: 2.6.3
