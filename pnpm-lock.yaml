@@ -109,8 +109,8 @@ catalogs:
       specifier: 9.1.7
       version: 9.1.7
     ioredis:
-      specifier: 5.11.1
-      version: 5.11.1
+      specifier: 6.0.0
+      version: 6.0.0
     kafkajs:
       specifier: ^2.2.4
       version: 2.2.4
@@ -220,7 +220,7 @@ importers:
         version: 0.0.3(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(reflect-metadata@0.2.2)
       '@nestjs/microservices':
         specifier: 'catalog:'
-        version: 12.5.1(@grpc/grpc-js@1.14.7)(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(amqp-connection-manager@5.0.1(amqplib@2.4.0))(amqplib@2.4.0)(ioredis@5.11.1)(kafkajs@2.2.4)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+        version: 12.5.1(@grpc/grpc-js@1.14.7)(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(amqp-connection-manager@5.0.1(amqplib@2.4.0))(amqplib@2.4.0)(ioredis@6.0.0)(kafkajs@2.2.4)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/mongoose':
         specifier: 'catalog:'
         version: 12.0.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(mongoose@9.12.2(socks@2.8.4))(rxjs@7.8.2)
@@ -241,7 +241,7 @@ importers:
         version: 12.5.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(@nestjs/microservices@12.5.1)(@nestjs/platform-express@12.5.1)
       '@nestjs/typeorm':
         specifier: 'catalog:'
-        version: 12.0.3(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5)))
+        version: 12.0.3(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5)))
       '@prisma/client':
         specifier: 'catalog:'
         version: 6.19.3(prisma@6.19.3(typescript@7.0.2))(typescript@7.0.2)
@@ -322,7 +322,7 @@ importers:
         version: 7.3.2
       typeorm:
         specifier: 'catalog:'
-        version: 0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))
+        version: 0.3.31(ioredis@6.0.0)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -423,7 +423,7 @@ importers:
         version: 12.5.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/microservices@12.5.1)(@nestjs/platform-express@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/microservices':
         specifier: 'catalog:'
-        version: 12.5.1(@grpc/grpc-js@1.14.7)(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(amqp-connection-manager@5.0.1(amqplib@2.4.0))(amqplib@2.4.0)(ioredis@5.11.1)(kafkajs@2.2.4)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+        version: 12.5.1(@grpc/grpc-js@1.14.7)(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(amqp-connection-manager@5.0.1(amqplib@2.4.0))(amqplib@2.4.0)(ioredis@6.0.0)(kafkajs@2.2.4)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/platform-express':
         specifier: 'catalog:'
         version: 12.5.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(rxjs@7.8.2)
@@ -438,7 +438,7 @@ importers:
         version: 0.15.1
       ioredis:
         specifier: 'catalog:'
-        version: 5.11.1
+        version: 6.0.0
       lodash:
         specifier: 'catalog:'
         version: 4.18.1
@@ -521,7 +521,7 @@ importers:
         version: 12.5.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/microservices@12.5.1)(@nestjs/platform-express@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/microservices':
         specifier: 'catalog:'
-        version: 12.5.1(@grpc/grpc-js@1.14.7)(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(amqp-connection-manager@5.0.1(amqplib@2.4.0))(amqplib@2.4.0)(ioredis@5.11.1)(kafkajs@2.2.4)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+        version: 12.5.1(@grpc/grpc-js@1.14.7)(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(amqp-connection-manager@5.0.1(amqplib@2.4.0))(amqplib@2.4.0)(ioredis@6.0.0)(kafkajs@2.2.4)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/platform-express':
         specifier: 'catalog:'
         version: 12.5.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(rxjs@7.8.2)
@@ -573,7 +573,7 @@ importers:
         version: link:../..
       '@nestjs/typeorm':
         specifier: 'catalog:'
-        version: 12.0.3(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5)))
+        version: 12.0.3(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5)))
       mysql2:
         specifier: 'catalog:'
         version: 3.24.6(@types/node@22.20.5)
@@ -585,7 +585,7 @@ importers:
         version: 7.8.2
       typeorm:
         specifier: 'catalog:'
-        version: 0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))
+        version: 0.3.31(ioredis@6.0.0)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))
     devDependencies:
       '@nestjs/testing':
         specifier: 'catalog:'
@@ -613,7 +613,7 @@ importers:
         version: link:../..
       '@nestjs/typeorm':
         specifier: 'catalog:'
-        version: 12.0.3(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5)))
+        version: 12.0.3(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5)))
       mysql2:
         specifier: 'catalog:'
         version: 3.24.6(@types/node@22.20.5)
@@ -625,7 +625,7 @@ importers:
         version: 7.8.2
       typeorm:
         specifier: 'catalog:'
-        version: 0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))
+        version: 0.3.31(ioredis@6.0.0)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
@@ -1300,8 +1300,8 @@ packages:
       '@types/node':
         optional: true
 
-  '@ioredis/commands@1.10.0':
-    resolution: {integrity: sha512-UmeW7z4LfctwoQ5wkhVzgq8tXkreED2xZGpX+Bg+zA+WJFZCT6c062AfCK/Dfk81xZnnwdhJCUMkitihRaoC2Q==}
+  '@ioredis/commands@2.0.0':
+    resolution: {integrity: sha512-vrx0AE/T0h7cRZwfo1M39Cr+ZhZrkf0V8mQN75wucKCxCLD9l/VX6no3gFvrLqD1IlG/1LtzWovqEw3t0Vr9zg==}
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -3262,9 +3262,9 @@ packages:
     resolution: {integrity: sha512-Ju0Bz/cEia55xDwUWEa8+olFpCiQoypjnQySseKtmjNrnps3P+xfpUmGr90T7yjlVJmOtybRvPXhKMbHr+fWnw==}
     engines: {node: '>= 0.10'}
 
-  ioredis@5.11.1:
-    resolution: {integrity: sha512-ehuGcf94bQXhfagULNXrJdfnWO38v070jxSx/qE87Kjzmu2fU7ro5EFAb+OPituLqgfyuQaym5DlrNydW2sJ9A==}
-    engines: {node: '>=12.22.0'}
+  ioredis@6.0.0:
+    resolution: {integrity: sha512-f+Dtubxfpf6KYFq7WVXJoOLn0bk4TJrMrN9SzeE+jrWrCWj7XX3fA6vkryafhADX+GMymRxgDJDOI33COkJc0w==}
+    engines: {node: '>=20.0.0'}
 
   ip-address@9.0.5:
     resolution: {integrity: sha512-zHtQzGojZXTwZTHQqra+ETKd4Sn3vgi7uBmlPoXVWZqYvuKmtI0l/VZTjqGmJY9x88GGOaZ9+G9ES8hC4T4X8g==}
@@ -4090,10 +4090,6 @@ packages:
 
   redis-errors@1.2.0:
     resolution: {integrity: sha512-1qny3OExCf0UvUV/5wpYKf2YwPcOqXzkwKKSmKHiE6ZMQs5heeE/c8eXK+PNllPvmjgAbfnsbpkGZWy8cBpn9w==}
-    engines: {node: '>=4'}
-
-  redis-parser@3.0.0:
-    resolution: {integrity: sha512-DJnGAeenTdpMEH6uAJRK/uiyEIH9WVsUmoLwzudwGJUwZPp80PDBWPHXSAGNPwNvIXAbe7MSUB1zQFugFml66A==}
     engines: {node: '>=4'}
 
   redis@6.3.1:
@@ -5291,7 +5287,7 @@ snapshots:
     optionalDependencies:
       '@types/node': 22.20.5
 
-  '@ioredis/commands@1.10.0': {}
+  '@ioredis/commands@2.0.0': {}
 
   '@isaacs/cliui@8.0.2':
     dependencies:
@@ -5433,7 +5429,7 @@ snapshots:
       tslib: 2.9.1
       uid: 2.0.2
     optionalDependencies:
-      '@nestjs/microservices': 12.5.1(@grpc/grpc-js@1.14.7)(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(amqp-connection-manager@5.0.1(amqplib@2.4.0))(amqplib@2.4.0)(ioredis@5.11.1)(kafkajs@2.2.4)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/microservices': 12.5.1(@grpc/grpc-js@1.14.7)(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(amqp-connection-manager@5.0.1(amqplib@2.4.0))(amqplib@2.4.0)(ioredis@6.0.0)(kafkajs@2.2.4)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/platform-express': 12.5.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(rxjs@7.8.2)
 
   '@nestjs/http-client@0.0.3(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(reflect-metadata@0.2.2)':
@@ -5450,7 +5446,7 @@ snapshots:
       class-transformer: 0.5.1
       class-validator: 0.15.1
 
-  '@nestjs/microservices@12.5.1(@grpc/grpc-js@1.14.7)(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(amqp-connection-manager@5.0.1(amqplib@2.4.0))(amqplib@2.4.0)(ioredis@5.11.1)(kafkajs@2.2.4)(reflect-metadata@0.2.2)(rxjs@7.8.2)':
+  '@nestjs/microservices@12.5.1(@grpc/grpc-js@1.14.7)(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(amqp-connection-manager@5.0.1(amqplib@2.4.0))(amqplib@2.4.0)(ioredis@6.0.0)(kafkajs@2.2.4)(reflect-metadata@0.2.2)(rxjs@7.8.2)':
     dependencies:
       '@nestjs/common': 12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 12.5.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/microservices@12.5.1)(@nestjs/platform-express@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -5462,7 +5458,7 @@ snapshots:
       '@grpc/grpc-js': 1.14.7
       amqp-connection-manager: 5.0.1(amqplib@2.4.0)
       amqplib: 2.4.0
-      ioredis: 5.11.1
+      ioredis: 6.0.0
       kafkajs: 2.2.4
 
   '@nestjs/mongoose@12.0.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(mongoose@9.12.2(socks@2.8.4))(rxjs@7.8.2)':
@@ -5532,16 +5528,16 @@ snapshots:
       '@nestjs/core': 12.5.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/microservices@12.5.1)(@nestjs/platform-express@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       tslib: 2.9.1
     optionalDependencies:
-      '@nestjs/microservices': 12.5.1(@grpc/grpc-js@1.14.7)(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(amqp-connection-manager@5.0.1(amqplib@2.4.0))(amqplib@2.4.0)(ioredis@5.11.1)(kafkajs@2.2.4)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/microservices': 12.5.1(@grpc/grpc-js@1.14.7)(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(amqp-connection-manager@5.0.1(amqplib@2.4.0))(amqplib@2.4.0)(ioredis@6.0.0)(kafkajs@2.2.4)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/platform-express': 12.5.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(rxjs@7.8.2)
 
-  '@nestjs/typeorm@12.0.3(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5)))':
+  '@nestjs/typeorm@12.0.3(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5)))':
     dependencies:
       '@nestjs/common': 12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 12.5.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/microservices@12.5.1)(@nestjs/platform-express@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       reflect-metadata: 0.2.2
       rxjs: 7.8.2
-      typeorm: 0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))
+      typeorm: 0.3.31(ioredis@6.0.0)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))
 
   '@noble/hashes@1.8.0': {}
 
@@ -7079,14 +7075,13 @@ snapshots:
 
   interpret@2.2.0: {}
 
-  ioredis@5.11.1:
+  ioredis@6.0.0:
     dependencies:
-      '@ioredis/commands': 1.10.0
+      '@ioredis/commands': 2.0.0
       cluster-key-slot: 1.1.1
       debug: 4.4.3
       denque: 2.1.0
       redis-errors: 1.2.0
-      redis-parser: 3.0.0
       standard-as-callback: 2.1.0
     transitivePeerDependencies:
       - supports-color
@@ -7829,10 +7824,6 @@ snapshots:
 
   redis-errors@1.2.0: {}
 
-  redis-parser@3.0.0:
-    dependencies:
-      redis-errors: 1.2.0
-
   redis@6.3.1:
     dependencies:
       '@redis/bloom': 6.3.1(@redis/client@6.3.1)
@@ -8304,7 +8295,7 @@ snapshots:
 
   typedarray@0.0.6: {}
 
-  typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5)):
+  typeorm@0.3.31(ioredis@6.0.0)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5)):
     dependencies:
       '@sqltools/formatter': 1.2.5
       ansis: 4.3.1
@@ -8322,7 +8313,7 @@ snapshots:
       uuid: 11.1.1
       yargs: 17.7.3
     optionalDependencies:
-      ioredis: 5.11.1
+      ioredis: 6.0.0
       mongodb: 6.21.0(socks@2.8.4)
       mysql2: 3.24.6(@types/node@22.20.5)
     transitivePeerDependencies:
