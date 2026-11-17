@@ -139,8 +139,8 @@ catalogs:
       specifier: 6.19.3
       version: 6.19.3
     redis:
-      specifier: 5.12.3
-      version: 5.12.3
+      specifier: 6.3.1
+      version: 6.3.1
     reflect-metadata:
       specifier: 0.2.2
       version: 0.2.2
@@ -241,7 +241,7 @@ importers:
         version: 12.5.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(@nestjs/microservices@12.5.1)(@nestjs/platform-express@12.5.1)
       '@nestjs/typeorm':
         specifier: 'catalog:'
-        version: 12.0.3(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3))
+        version: 12.0.3(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5)))
       '@prisma/client':
         specifier: 'catalog:'
         version: 6.19.3(prisma@6.19.3(typescript@7.0.2))(typescript@7.0.2)
@@ -322,7 +322,7 @@ importers:
         version: 7.3.2
       typeorm:
         specifier: 'catalog:'
-        version: 0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3)
+        version: 0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -539,7 +539,7 @@ importers:
         version: 4.18.1
       redis:
         specifier: 'catalog:'
-        version: 5.12.3
+        version: 6.3.1
       reflect-metadata:
         specifier: 'catalog:'
         version: 0.2.2
@@ -573,7 +573,7 @@ importers:
         version: link:../..
       '@nestjs/typeorm':
         specifier: 'catalog:'
-        version: 12.0.3(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3))
+        version: 12.0.3(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5)))
       mysql2:
         specifier: 'catalog:'
         version: 3.24.6(@types/node@22.20.5)
@@ -585,7 +585,7 @@ importers:
         version: 7.8.2
       typeorm:
         specifier: 'catalog:'
-        version: 0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3)
+        version: 0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))
     devDependencies:
       '@nestjs/testing':
         specifier: 'catalog:'
@@ -613,7 +613,7 @@ importers:
         version: link:../..
       '@nestjs/typeorm':
         specifier: 'catalog:'
-        version: 12.0.3(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3))
+        version: 12.0.3(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5)))
       mysql2:
         specifier: 'catalog:'
         version: 3.24.6(@types/node@22.20.5)
@@ -625,7 +625,7 @@ importers:
         version: 7.8.2
       typeorm:
         specifier: 'catalog:'
-        version: 0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3)
+        version: 0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
@@ -1939,15 +1939,15 @@ packages:
   '@protobufjs/utf8@1.1.2':
     resolution: {integrity: sha512-b1UQwcEZ4yCnMCD8DAL1VlbvBJE9/IX4FTIp7BG1xYpf29SLazLSrqUkj4w7Y5y7cCVP6E5tcqqcI0xemPkHug==}
 
-  '@redis/bloom@5.12.3':
-    resolution: {integrity: sha512-XgEX64JuoNsEeH3mZurmX/cfqrbJZBZeYDiUybzd1uPK/XfisqX2WnsgjR3qRlPZN995oi5EMT4vKkvLKwzlNQ==}
-    engines: {node: '>= 18.19.0'}
+  '@redis/bloom@6.3.1':
+    resolution: {integrity: sha512-dpF9j2yJDoPzSCaZn0MSB3xzmnXQVJeTSAWJcQVcgbmluwhpFeemmII0cF1t+WYfoVS+shEFq79+MmUItgzJLg==}
+    engines: {node: '>= 20.0.0'}
     peerDependencies:
-      '@redis/client': ^5.12.3
+      '@redis/client': ^6.3.1
 
-  '@redis/client@5.12.3':
-    resolution: {integrity: sha512-EFw4mJ5wgqtWRUhdxEiRsZ6StZi12PG1MMcRLXUZ2j4N2ymIOupLiL2tA22CobMyrfKlGOiwwzK+U+gGvgVruA==}
-    engines: {node: '>= 18.19.0'}
+  '@redis/client@6.3.1':
+    resolution: {integrity: sha512-masbfVKULdoAofwddepZxRhWa4w6zvBHn6TRn90TRPrRkVIlGCur3pFqwWaCbMxtYI9twepkz63e/T/tEH8GjA==}
+    engines: {node: '>= 20.0.0'}
     peerDependencies:
       '@node-rs/xxhash': ^1.1.0
       '@opentelemetry/api': '>=1 <2'
@@ -1957,23 +1957,23 @@ packages:
       '@opentelemetry/api':
         optional: true
 
-  '@redis/json@5.12.3':
-    resolution: {integrity: sha512-HjKbazxaB4K2FcVewLE8DAmfyxlCpEaRdfj7CYuEK/hJb8oAWIA/ZnK98r5xp6E3P2yW2s/Payjhp7BSpFr+MA==}
-    engines: {node: '>= 18.19.0'}
+  '@redis/json@6.3.1':
+    resolution: {integrity: sha512-fMz4kUwJzEftcU9EMaqsjZcUwzpTQLOYRqhQsAD6uKvZWeamblK13ZhgO5SzVSZVk31jmwLeTRpU5GAl5egfUw==}
+    engines: {node: '>= 20.0.0'}
     peerDependencies:
-      '@redis/client': ^5.12.3
+      '@redis/client': ^6.3.1
 
-  '@redis/search@5.12.3':
-    resolution: {integrity: sha512-NRHipjwbFRLTUWkRSjDI7DQhn8I+goOpConP7RN6GTcVh2xg1eP6BrKiCJKdfUpM9VjctFBYDrnfivA8VJgSsg==}
-    engines: {node: '>= 18.19.0'}
+  '@redis/search@6.3.1':
+    resolution: {integrity: sha512-T67pvPUpW82VrZLvihO8O2DFMC7eY2oMAzMzapCbiPZn7mdWqHMEIlohYim12gIawT5kn6qT/Cvmm4WulKB+kQ==}
+    engines: {node: '>= 20.0.0'}
     peerDependencies:
-      '@redis/client': ^5.12.3
+      '@redis/client': ^6.3.1
 
-  '@redis/time-series@5.12.3':
-    resolution: {integrity: sha512-V7M6Axcbiinzo7ZriL7/TC9wWaY22wJyVhUiWLHoegAo5eZLNxCQTKEl+0e/Q5sTU20FTAP1MJleGZGBMRP38w==}
-    engines: {node: '>= 18.19.0'}
+  '@redis/time-series@6.3.1':
+    resolution: {integrity: sha512-MNDgrm+i63M/1a+XA+HcDsScwt4uBh/fGGJ84swTQZTFK5K5wMmxdlTRa4ZgmNJzjxMaszW/ipPScMUGV3aAMg==}
+    engines: {node: '>= 20.0.0'}
     peerDependencies:
-      '@redis/client': ^5.12.3
+      '@redis/client': ^6.3.1
 
   '@release-it/conventional-changelog@12.0.2':
     resolution: {integrity: sha512-mJsfycScVqud9O+GzVLT1wQBsIR2WO3kEe6Xm7ucf9yP9KyKRTY9yqoFe/kjLCNSu0lP0PzpuOooUYyzHm1oFw==}
@@ -2609,10 +2609,6 @@ packages:
 
   cluster-key-slot@1.1.1:
     resolution: {integrity: sha512-rwHwUfXL40Chm1r08yrhU3qpUvdVlgkKNeyeGPOxnW8/SyVDvgRaed/Uz54AqWNaTCAThlj6QAs3TZcKI0xDEw==}
-    engines: {node: '>=0.10.0'}
-
-  cluster-key-slot@1.1.2:
-    resolution: {integrity: sha512-RMr0FhtfXemyinomL4hrWcYJxmX6deFdCxpJzhDttxgO1+bcCnkk+9drydLVDmAMG7NE6aN/fl4F7ucU/90gAA==}
     engines: {node: '>=0.10.0'}
 
   color-convert@2.0.1:
@@ -4086,9 +4082,9 @@ packages:
     resolution: {integrity: sha512-DJnGAeenTdpMEH6uAJRK/uiyEIH9WVsUmoLwzudwGJUwZPp80PDBWPHXSAGNPwNvIXAbe7MSUB1zQFugFml66A==}
     engines: {node: '>=4'}
 
-  redis@5.12.3:
-    resolution: {integrity: sha512-dL9GfnhQrfu49ugu7guMQshMLGWfXXgSKwFtxDoWvW52tynUolB6V/NopEppZiBavaz62+AJrLDywmdEPJg98w==}
-    engines: {node: '>= 18.19.0'}
+  redis@6.3.1:
+    resolution: {integrity: sha512-mV96ZKxQ4CGn3SyEGaY0Lb9YA443mdVey3c+mdr0NAUaBxiOZGoYCWX8PoM55kictSOmxlJRtZJxIsmZm3jL+w==}
+    engines: {node: '>= 20.0.0'}
 
   reflect-metadata@0.2.2:
     resolution: {integrity: sha512-urBwgfrvVP/eAyXx4hluJivBKzuEbSQs9rKWCrCkbSxNv8mxPcUZKeuoF3Uy4mJl3Lwprp6yy5/39VWigZ4K6Q==}
@@ -5509,13 +5505,13 @@ snapshots:
       '@nestjs/microservices': 12.5.1(@grpc/grpc-js@1.14.7)(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(amqp-connection-manager@5.0.1(amqplib@2.4.0))(amqplib@2.4.0)(ioredis@5.11.1)(kafkajs@2.2.4)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/platform-express': 12.5.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(rxjs@7.8.2)
 
-  '@nestjs/typeorm@12.0.3(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3))':
+  '@nestjs/typeorm@12.0.3(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5)))':
     dependencies:
       '@nestjs/common': 12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 12.5.1(@nestjs/common@12.5.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/microservices@12.5.1)(@nestjs/platform-express@12.5.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       reflect-metadata: 0.2.2
       rxjs: 7.8.2
-      typeorm: 0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3)
+      typeorm: 0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))
 
   '@noble/hashes@1.8.0': {}
 
@@ -5782,25 +5778,23 @@ snapshots:
 
   '@protobufjs/utf8@1.1.2': {}
 
-  '@redis/bloom@5.12.3(@redis/client@5.12.3)':
+  '@redis/bloom@6.3.1(@redis/client@6.3.1)':
     dependencies:
-      '@redis/client': 5.12.3
+      '@redis/client': 6.3.1
 
-  '@redis/client@5.12.3':
-    dependencies:
-      cluster-key-slot: 1.1.2
+  '@redis/client@6.3.1': {}
 
-  '@redis/json@5.12.3(@redis/client@5.12.3)':
+  '@redis/json@6.3.1(@redis/client@6.3.1)':
     dependencies:
-      '@redis/client': 5.12.3
+      '@redis/client': 6.3.1
 
-  '@redis/search@5.12.3(@redis/client@5.12.3)':
+  '@redis/search@6.3.1(@redis/client@6.3.1)':
     dependencies:
-      '@redis/client': 5.12.3
+      '@redis/client': 6.3.1
 
-  '@redis/time-series@5.12.3(@redis/client@5.12.3)':
+  '@redis/time-series@6.3.1(@redis/client@6.3.1)':
     dependencies:
-      '@redis/client': 5.12.3
+      '@redis/client': 6.3.1
 
   '@release-it/conventional-changelog@12.0.2(conventional-commits-filter@6.0.1)(conventional-commits-parser@7.1.4)(release-it@21.1.2(@types/node@22.20.5))':
     dependencies:
@@ -6366,8 +6360,6 @@ snapshots:
       wrap-ansi: 9.0.0
 
   cluster-key-slot@1.1.1: {}
-
-  cluster-key-slot@1.1.2: {}
 
   color-convert@2.0.1:
     dependencies:
@@ -7805,13 +7797,13 @@ snapshots:
     dependencies:
       redis-errors: 1.2.0
 
-  redis@5.12.3:
+  redis@6.3.1:
     dependencies:
-      '@redis/bloom': 5.12.3(@redis/client@5.12.3)
-      '@redis/client': 5.12.3
-      '@redis/json': 5.12.3(@redis/client@5.12.3)
-      '@redis/search': 5.12.3(@redis/client@5.12.3)
-      '@redis/time-series': 5.12.3(@redis/client@5.12.3)
+      '@redis/bloom': 6.3.1(@redis/client@6.3.1)
+      '@redis/client': 6.3.1
+      '@redis/json': 6.3.1(@redis/client@6.3.1)
+      '@redis/search': 6.3.1(@redis/client@6.3.1)
+      '@redis/time-series': 6.3.1(@redis/client@6.3.1)
     transitivePeerDependencies:
       - '@node-rs/xxhash'
       - '@opentelemetry/api'
@@ -8272,7 +8264,7 @@ snapshots:
 
   typedarray@0.0.6: {}
 
-  typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5))(redis@5.12.3):
+  typeorm@0.3.31(ioredis@5.11.1)(mongodb@6.21.0(socks@2.8.4))(mysql2@3.24.6(@types/node@22.20.5)):
     dependencies:
       '@sqltools/formatter': 1.2.5
       ansis: 4.3.1
@@ -8293,7 +8285,6 @@ snapshots:
       ioredis: 5.11.1
       mongodb: 6.21.0(socks@2.8.4)
       mysql2: 3.24.6(@types/node@22.20.5)
-      redis: 5.12.3
     transitivePeerDependencies:
       - babel-plugin-macros
       - supports-color
