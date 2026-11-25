@@ -164,9 +164,12 @@ export class GRPCHealthIndicator
     key: string,
     options: CheckGRPCServiceOptions,
   ): Promise<NestJSMicroservices.ClientGrpcProxy> {
+    // Load the package before looking the client up: the lookup and the `set`
+    // below must not be separated by an `await`, or concurrent checks with
+    // the same key each create a client and only the last one is ever closed
+    const { ClientProxyFactory, Transport } = await this.loadMicroservices();
     let client = this.clients.get(key);
     if (!client) {
-      const { ClientProxyFactory, Transport } = await this.loadMicroservices();
       const {
         timeout: _t,
         healthServiceName: _hS,

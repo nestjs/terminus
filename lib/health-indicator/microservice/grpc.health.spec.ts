@@ -118,6 +118,18 @@ describe('GRPCHealthIndicator', () => {
       expect(clientProxyFactoryMock.create).toHaveBeenCalledTimes(2);
     });
 
+    it('should create a single client for concurrent checks with the same key', async () => {
+      await Promise.all([
+        grpc.checkService<GrpcOptions>('a', 'test', { url: 'a:50051' }),
+        grpc.checkService<GrpcOptions>('a', 'test', { url: 'a:50051' }),
+      ]);
+      expect(clientProxyFactoryMock.create).toHaveBeenCalledTimes(1);
+
+      // Every client that was created is closed on shutdown
+      grpc.onApplicationShutdown();
+      expect(grpcClientMock.close).toHaveBeenCalledTimes(1);
+    });
+
     it('should close the clients on shutdown', async () => {
       await grpc.checkService<GrpcOptions>('grpc', 'test');
       grpc.onApplicationShutdown();
