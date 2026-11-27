@@ -229,9 +229,10 @@ export class GRPCHealthIndicator
       package: 'grpc.health.v1',
       healthServiceCheck: (healthService: GRPCHealthService, service: string) =>
         lastValueFrom(healthService.check({ service })),
-      timeout: 1000,
       healthServiceName: 'Health',
       ...options,
+      // `timeout: undefined` (e.g. an unset config value) keeps the default
+      timeout: options.timeout ?? 1000,
       // Only read `import.meta.dirname` when it is needed: it is not set in a
       // CommonJS bundle, where the app has to pass its own copy of the proto
       protoPath:

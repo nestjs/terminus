@@ -190,6 +190,20 @@ describe('GRPCHealthIndicator', () => {
       });
     });
 
+    it('should use the default timeout when the timeout is undefined', async () => {
+      healthServiceMock.check.mockImplementationOnce((): any => NEVER);
+      const result = await grpc.checkService<GrpcOptions>('grpc', 'test', {
+        timeout: undefined,
+      });
+      expect(result).toEqual({
+        grpc: {
+          status: 'down',
+          message: 'timeout of 1000ms exceeded',
+          responseTime: expect.any(Number),
+        },
+      });
+    });
+
     it('should be down when the client cannot be created', async () => {
       clientProxyFactoryMock.create.mockImplementationOnce((): any => {
         throw new Error('ENOENT: no such file or directory');
