@@ -43,7 +43,7 @@
   ],
   "license": "MIT",
   "author": "Livio Brunner",
-  "packageManager": "pnpm@9.15.9",
+  "packageManager": "pnpm@12.23.0",
   "scripts": {
     "dev": "tsc -p tsconfig.build.json --watch",
     "build": "rimraf dist && tsc -p tsconfig.build.json && cp -R lib/health-indicator/microservice/protos dist/health-indicator/microservice/",
