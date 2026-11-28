@@ -69,13 +69,27 @@ export class MicroserviceHealthIndicator implements OnModuleInit {
     MicroserviceClientOptions extends MicroserviceOptionsLike,
   >(
     options: MicroserviceHealthIndicatorOptions<MicroserviceClientOptions>,
+    signal: AbortSignal,
   ): Promise<void> {
     const { ClientProxyFactory } = await this.loadMicroservices();
     const client = ClientProxyFactory.create(options);
+
+    let closed: Promise<unknown> | undefined;
+    const close = () => (closed ??= Promise.resolve(client.close()));
+    // The attempt gives up on timeout while `connect()` can still be pending
+    // (e.g. for minutes on a host that drops the SYN): close the client then,
+    // or every probe leaves one more connecting client behind
+    const onAbort = () => void close().catch(() => undefined);
+    if (signal.aborted) {
+      onAbort();
+    } else {
+      signal.addEventListener('abort', onAbort, { once: true });
+    }
     try {
       await client.connect();
     } finally {
-      await client.close();
+      signal.removeEventListener('abort', onAbort);
+      await close();
     }
   }
 
@@ -99,7 +113,7 @@ export class MicroserviceHealthIndicator implements OnModuleInit {
   ) {
     return this.healthIndicatorService
       .check(key)
-      .attempt(async () => {
+      .attempt(async ({ signal }) => {
         const { Transport } = await this.loadMicroservices();
 
         // A probe only connects, so it must be cheap and leave nothing behind:
@@ -119,7 +133,7 @@ export class MicroserviceHealthIndicator implements OnModuleInit {
           };
 
         try {
-          await this.pingMicroservice(clientOptions);
+          await this.pingMicroservice(clientOptions, signal);
         } catch (err) {
           throw isError(err) ? err : new Error(`${key} is not available`);
         }

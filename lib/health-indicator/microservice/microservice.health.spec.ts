@@ -71,6 +71,25 @@ describe('MicroserviceHealthIndicator', () => {
     expect(clientMock.close).toHaveBeenCalledTimes(1);
   });
 
+  it('closes the client when connect does not settle before the timeout', async () => {
+    // e.g. a TCP connect to a host that drops the SYN hangs for minutes
+    clientMock.connect.mockReturnValue(new Promise(() => {}));
+
+    const result = await microservice.pingCheck('tcp', {
+      ...options,
+      timeout: 20,
+    });
+
+    expect(result).toEqual({
+      tcp: {
+        status: 'down',
+        message: 'timeout of 20ms exceeded',
+        responseTime: expect.any(Number),
+      },
+    });
+    expect(clientMock.close).toHaveBeenCalledTimes(1);
+  });
+
   it('adds the error code to a failed result (a real TCP client on a closed port)', async () => {
     vi.mocked(loadPackage).mockResolvedValue(
       await import('@nestjs/microservices'),
